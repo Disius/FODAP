@@ -6,11 +6,13 @@ use App\Models\Carrera;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
+use App\Models\Lugar;
 use App\Models\User;
 use App\Notifications\DeteccionEditadaNotification;
 use App\Notifications\NewDeteccionNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use PhpParser\Node\Stmt\Return_;
@@ -43,10 +45,13 @@ class CoursesController extends Controller
         $docentes = Docente::select('nombre', 'id')->get();
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->select('nameCarrera', 'id', 'departamento_id')->get();
         $departamento = Departamento::all();
+//        $lugar = Lugar::select('id', 'nombreAula')->get();
+        $lugar = DB::table('lugar')->get();
         return Inertia::render('Views/academicos/Create.Detecciones', [
             'base_docente' => $docentes,
             'carrera_filtro' => $carrera,
-            'todos_los_departamentos' => $departamento
+            'todos_los_departamentos' => $departamento,
+            'lugar' => $lugar
         ]);
     }
 

@@ -34,7 +34,13 @@ const form = useForm({
     id_docente: props.user.user.docente_id,
 });
 
+const cursosFiltrados = computed(() => {
+    let filtro = props.cursos.filter(e => {
+        console.log(e)
+    })
+})
 
+console.log(cursosFiltrados.value)
 </script>
 
 <template>
@@ -62,6 +68,8 @@ const form = useForm({
                 </th>
                 <th class="text-left">Dirigido a:</th>
                 <th class="text-left">Observaciones
+                </th>
+                <th class="text-left">Inscripción
                 </th>
             </tr>
             </thead>
@@ -111,40 +119,8 @@ const form = useForm({
                     {{ curso.observaciones }}
                 </td>
                 <td class="v-card--hover">
-
-                </td>
-                <td class="v-card--hover">
                     <div v-for="inscrito in curso.docente_inscrito">
-                         <template v-if="inscrito.id !== props.user.user.docente_id">
-                             <form @submit.prevent="form.post(route('inscripcion.docente', curso.id))">
-                                 <PrimaryButton>
-                                     Inscribirme
-                                 </PrimaryButton>
-                             </form>
-                         </template>
-                        <template v-else>
-                            <div>
-                                <v-alert
-                                    v-model="alert"
-                                    border="start"
-                                    variant="tonal"
-                                    closable
-                                    close-label="Close Alert"
-                                    color="deep-purple-accent-4"
-                                >
-                                  Para no participar en el curso debes comunicarte al jefe del departamento
-                                </v-alert>
-
-                                <div
-                                    v-if="!alert"
-                                    class="text-center"
-                                >
-                                    <v-btn @click="alert = true" size="small" prepend-icon="mdi-help ">
-                                        Te encuentras inscrito a este curso
-                                    </v-btn>
-                                </div>
-                            </div>
-                        </template>
+                         {{inscrito}}
                     </div>
                 </td>
             </tr>

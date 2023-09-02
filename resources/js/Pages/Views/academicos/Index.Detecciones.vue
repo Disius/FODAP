@@ -4,7 +4,7 @@ import {Head} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
 import {onMounted, ref} from "vue";
-import DeteccionDialog from "@/Pages/Views/academicos/dialogs/DeteccionDialog.PDF.vue";
+import DeteccionDialog from "@/Pages/Views/dialogs/DeteccionDialogPDF.vue";
 
 
 const props = defineProps({
@@ -19,11 +19,11 @@ const props = defineProps({
 
 const pdf_dialog = ref(false);
 
-const menu = [
-    {
-        name: "Generar Deteccion de Necesidades"
-    }
-];
+// const menu = [
+//     {
+//         name: "Generar Deteccion de Necesidades"
+//     }
+// ];
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -50,39 +50,23 @@ onMounted(() => {
         <Head title="Detecciones"/>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Deteccion de Necesidades</h2>
+            <NavLink :href="route('detecciones.create')" :active="route().current('detecciones.create')" as="button">
+                <v-btn prepend-icon="mdi-pen-plus" rounded="xl" color="blue-darken-1">CREAR DETECCION DE NECESIDADES</v-btn>
+            </NavLink>
         </template>
 
-        <v-container>
-            <v-row justify="end">
-                <v-col cols="6">
-                    <v-menu>
-                        <template v-slot:activator="{ props }">
-                            <v-btn v-bind="props" size="x-large">
-                                Documentos
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item
-                                v-for="(item, index) in menu"
-                                :key="item.id"
-                                :value="item.id"
-                                link
-                            >
-                                <v-list-item-title @click="pdf_dialog = true">{{ item.name }}</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
+        <v-container fluid>
+            <v-row justify="start">
+                <v-col cols="4" align="center">
+                    <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl">
+                        Generar Deteccion de Necesidades
+                    </v-btn>
                 </v-col>
-                <v-col cols="2">
-                    <NavLink :href="route('detecciones.create')" :active="route().current('detecciones.create')">
-                        <PrimaryButton>CREAR DETECCION DE NECESIDADES</PrimaryButton>
-                    </NavLink>
-                </v-col>
-                <v-col cols="3">
-                    <NavLink :href="route('index.registros')" :active="route().current('index.registros')">
-                        <PrimaryButton>Todos los registros</PrimaryButton>
-                    </NavLink>
-                </v-col>
+<!--                <v-col cols="6" align="center">-->
+<!--                    <NavLink :href="route('detecciones.create')" :active="route().current('detecciones.create')">-->
+<!--                        <v-btn rounded="xl" size="large" color="blue-darken-1">CREAR DETECCION DE NECESIDADES</v-btn>-->
+<!--                    </NavLink>-->
+<!--                </v-col>-->
             </v-row>
         </v-container>
 
@@ -173,5 +157,16 @@ onMounted(() => {
             </div>
         </div>
 
+        <v-container>
+            <v-row justify="center">
+                <v-col cols="12" align="center">
+                    <NavLink :href="route('index.registros')" :active="route().current('index.registros')" as="button">
+                        <v-btn rounded="xl" block size="x-large" color="blue-darken-1">
+                            Todos los registros
+                        </v-btn>
+                    </NavLink>
+                </v-col>
+            </v-row>
+        </v-container>
     </AuthenticatedLayout>
 </template>

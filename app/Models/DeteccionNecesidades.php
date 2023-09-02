@@ -24,7 +24,7 @@ class DeteccionNecesidades extends Model
     protected $fillable = [
         'asignaturaFA', 'contenidosTM', 'numeroProfesores', 'periodo',
         'nombreCurso', 'fecha_I', 'fecha_F', 'hora_I', 'hora_F', 'objetivoEvento', 'tipo_FDoAP', 'tipo_actividad',
-        'carrera_dirigido', 'observaciones', 'id_jefe', 'obs', 'aceptado', 'modalidad', 'facilitador_externo', 'total_horas', 'id_departamento'
+        'carrera_dirigido', 'observaciones', 'id_jefe', 'obs', 'aceptado', 'modalidad', 'facilitador_externo', 'total_horas', 'id_departamento', 'id_lugar'
     ];
 
     /**
@@ -74,5 +74,9 @@ class DeteccionNecesidades extends Model
     public function docente_inscrito(): BelongsToMany
     {
         return $this->belongsToMany(Docente::class, 'inscripcion', 'curso_id', 'docente_id');
+    }
+
+    public function lugar(): HasOne {
+        return $this->hasOne(Lugar::class, 'id', 'id_lugar');
     }
 }

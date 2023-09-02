@@ -7,7 +7,7 @@ import {Head, usePage} from '@inertiajs/vue3';
 import DocenteInfo from "@/Pages/Profile/Partials/DocenteInfo.vue";
 import {computed, onMounted} from "vue";
 
-defineProps({
+const props = defineProps({
     mustVerifyEmail: {
         type: Boolean,
     },

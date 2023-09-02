@@ -8,7 +8,7 @@ import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const user = computed(() => usePage().props.auth.user);
-
+const alert = ref(true)
 const props = defineProps({
     docente: Object,
     carrera: Array,
@@ -199,11 +199,23 @@ onMounted(() => {
                 />
 
                 <InputError class="mt-2" />
+                <v-alert
+                    v-model="alert"
+                    border="start"
+                    variant="tonal"
+                    closable
+                    close-label="Alerta"
+                    color="info"
+                    title="Alerta"
+                    class="mt-4"
+                >
+                    La licenciatura debe iniciar por mayusculas
+                </v-alert>
             </div>
             <div>
                 <InputLabel for="posgrado" value="Ultimo grado de estudios" />
 
-                <v-select :items="props.posgrado" item-title="nombre" item-value="id" v-model="form.id_posgrado"></v-select>
+                <v-select variant="solo" :items="props.posgrado" item-title="nombre" item-value="id" v-model="form.id_posgrado"></v-select>
 
                 <InputError class="mt-2" />
             </div>

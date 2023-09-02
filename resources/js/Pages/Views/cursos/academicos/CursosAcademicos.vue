@@ -6,8 +6,8 @@ import TablaCursoAcademico from "@/Pages/Views/cursos/tablas/TablaCursoAcademico
 import {Head} from "@inertiajs/vue3";
 import NavLink from "@/Components/NavLink.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import DialogPIFAP from "@/Pages/Views/cursos/academicos/dialogs/DialogPIFAP.vue";
-import DeteccionDialog from "@/Pages/Views/academicos/dialogs/DeteccionDialog.PDF.vue";
+import DialogPIFAP from "@/Pages/Views/dialogs/DialogPIFAP.vue";
+import DeteccionDialog from "@/Pages/Views/dialogs/DeteccionDialogPDF.vue";
 
 const props = defineProps({
     cursos: Array,

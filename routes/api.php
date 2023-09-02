@@ -18,3 +18,7 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware('auth:api')->prefix('pdf')->group(function () {
 //    Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
 //});
+Route::prefix('pdf')->group(function () {
+    Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
+    Route::get('/PIFDAP', [PDFController::class, 'PIFDAP_pdf'])->name('pdf.pifdap');
+});

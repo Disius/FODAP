@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Carrera;
 use App\Models\DeteccionNecesidades;
 use App\Models\User;
 use App\Notifications\AceptadoNotification;
@@ -17,12 +18,14 @@ class CoordinacionController extends Controller
      */
     public function index()
     {
+        $carrera = Carrera::all();
         $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador')
             ->where('aceptado', '=', 0)
             ->get();
 
         return Inertia::render('Views/desarrollo/coordinacion/DeteccionCoordinacion', [
-            'detecciones' => $detecciones
+            'detecciones' => $detecciones,
+            'carrera' => $carrera
         ]);
     }
 

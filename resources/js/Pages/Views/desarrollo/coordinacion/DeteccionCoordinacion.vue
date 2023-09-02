@@ -3,13 +3,17 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import TablaDetecciones from "@/Pages/Views/desarrollo/tablas/TablaDetecciones.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
-import {onMounted} from "vue";
+import {onMounted, ref} from "vue";
+import DeteccionDialog from '/resources/js/Pages/Views/dialogs/DeteccionDialogPDF.vue'
 
 
 const props = defineProps({
     detecciones: Array,
-    auth: Object
+    auth: Object,
+    carrera: Array
 });
+
+const pdf_dialog = ref(false);
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -37,20 +41,33 @@ onMounted(() => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Deteccion de Necesidades</h2>
         </template>
 
-        <v-row justify="end" class="mt-2">
-            <v-col cols="2">
-                <NavLink :href="route('index.registros.c')" as="button">
-                    <PrimaryButton>Ver todos los registros</PrimaryButton>
-                </NavLink>
-            </v-col>
-        </v-row>
-        <div class="py-12">
+        <DeteccionDialog :carreras="props.carrera" v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DeteccionDialog>
+
+        <div class="py-2">
+            <v-container>
+                <v-row>
+                    <v-col>
+                        <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl">
+                            Generar Deteccion de Necesidades
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-container>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <TablaDetecciones :detecciones="props.detecciones"></TablaDetecciones>
                 </div>
             </div>
         </div>
+        <v-row justify="center" class="">
+            <v-col cols="2">
+                <NavLink :href="route('index.registros.c')" as="button">
+                    <v-btn rounded="xl" block size="large" color="blue-darken-1">
+                        Ver todos los registros
+                    </v-btn>
+                </NavLink>
+            </v-col>
+        </v-row>
     </AuthenticatedLayout>
 </template>
 
