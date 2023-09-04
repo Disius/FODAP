@@ -22,8 +22,7 @@ class CoursesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index(){
 
         $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
             ->where('id_jefe', auth()->user()->docente_id)
@@ -40,14 +39,12 @@ class CoursesController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $docentes = Docente::select('nombre', 'id')->get();
+    public function create(){
+        $docentes = Docente::select('nombre_completo', 'id')->get();
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->select('nameCarrera', 'id', 'departamento_id')->get();
         $departamento = Departamento::all();
-//        $lugar = Lugar::select('id', 'nombreAula')->get();
-        $lugar = DB::table('lugar')->get();
-        return Inertia::render('Views/academicos/Create.Detecciones', [
+        $lugar = Lugar::with('curso')->get();
+        return Inertia::render('Views/academicos/CreateDetecciones', [
             'base_docente' => $docentes,
             'carrera_filtro' => $carrera,
             'todos_los_departamentos' => $departamento,
@@ -77,6 +74,7 @@ class CoursesController extends Controller
             'id_jefe' => 'required',
             'modalidad' => ['required'],
             'id_departamento' => ['required'],
+            'id_lugar' => ['required'],
         ]);
 
         $totalHoras = $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
@@ -101,7 +99,8 @@ class CoursesController extends Controller
             'total_horas' => $totalHoras,
             'modalidad' => $request->modalidad,
             'facilitador_externo' =>  $request->facilitador_externo,
-            'id_departamento' => $request->id_departamento
+            'id_departamento' => $request->id_departamento,
+            'id_lugar' => $request->id_lugar,
         ]);
 
         $deteccion->save();
@@ -134,11 +133,13 @@ class CoursesController extends Controller
     {
         $deteccion = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])->where('id', $id)->first();
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->select('nameCarrera', 'id', 'departamento_id')->get();
-        $docente = Docente::select('id', 'nombre')->get();
+        $docente = Docente::select('id', 'nombre_completo')->get();
+        $lugar = Lugar::with('curso')->get();
         return Inertia::render('Views/academicos/Edit.Detecciones', [
             'deteccion' => $deteccion,
             'carrera' => $carrera,
-            'docentes' => $docente
+            'docentes' => $docente,
+            'lugar' => $lugar,
         ]);
     }
 
@@ -167,6 +168,7 @@ class CoursesController extends Controller
         $deteccion->id_jefe = $request->id_jefe;
         $deteccion->modalidad = $request->modalidad;
         $deteccion->total_horas = $totalHoras;
+        $deteccion->id_lugar = $request->id_lugar;
         $deteccion->deteccion_facilitador()->sync($request->input('facilitadores', []));
 
         $deteccion->save();
@@ -189,7 +191,7 @@ class CoursesController extends Controller
     public function registros(){
         $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
             ->where('aceptado', '=', 1)->where('id_jefe', auth()->user()->docente_id)->orderBy('id', 'desc')->get();
-        return Inertia::render('Views/academicos/Index.Registros', [
+        return Inertia::render('Views/academicos/IndexRegistros', [
             'detecciones' => $detecciones
         ]);
     }
@@ -198,6 +200,7 @@ class CoursesController extends Controller
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
 //            ->where('id_jefe', auth()->user()->docente_id)
         ->get();
+        $this->state_curso();
         return Inertia::render('Views/cursos/docentes/CursosDocentes', [
             'cursos' => $cursos
         ]);
@@ -207,24 +210,32 @@ class CoursesController extends Controller
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
             ->where('id_jefe', '=', auth()->user()->docente_id)
         ->get();
+
+        //Actualiza el estado del curso
+        $this->state_curso();
+
         return Inertia::render('Views/cursos/academicos/CursosAcademicos', [
-            'cursos' => $cursos
+            'cursos' => $cursos,
         ]);
     }
 
-    public function index_curso_inscrito($id){
+    public function index_curso_academicos_inscrito($id){
+        $docente = Docente::all();
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
             ->find($id);
         return Inertia::render('Views/cursos/academicos/Show.Inscritos', [
-            'curso' => $curso
+            'curso' => $curso,
+            'docente' => $docente
         ]);
     }
 
     public function index_curso_inscrito_desarrollo($id){
+        $docente = Docente::all();
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
             ->find($id);
-        return Inertia::render('Views/cursos/desarrollo/Inscritos.Desarrollo', [
-            'curso' => $curso
+        return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
+            'curso' => $curso,
+            'docente' => $docente,
         ]);
     }
     public function inscripcion_docente(Request $request, $id){
@@ -233,9 +244,15 @@ class CoursesController extends Controller
         return Redirect::route('index.cursos.docentes');
     }
 
+    public function inscripcion_por_desarrollo($id, Request $request){
+        $deteccion = DeteccionNecesidades::find($id);
+        $deteccion->docente_inscrito()->sync($request->input('id_docente', []));
+        return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
+    }
+
     public function misCursos(){
         $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
-
+        $this->state_curso();
         return Inertia::render('Views/cursos/docentes/MisCursosDocentes', [
             'docente' => $docente,
         ]);
@@ -244,13 +261,13 @@ class CoursesController extends Controller
     public function desarrollo_cursos(){
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
             ->get();
-
-        return Inertia::render('Views/cursos/desarrollo/Desarrollo.Cursos', [
+        $this->state_curso();
+        return Inertia::render('Views/cursos/desarrollo/DesarrolloCursos', [
             'cursos' => $cursos,
         ]);
     }
 
-    public function total_horas($fecha_inicio, $fecha_final, $hora_inicio, $hora_final){
+    public static function total_horas($fecha_inicio, $fecha_final, $hora_inicio, $hora_final){
         $fechaInicio = Carbon::parse($fecha_inicio);
         $fechaFinal = Carbon::parse($fecha_final);
         $horaInicio = Carbon::parse($hora_inicio);
@@ -274,5 +291,22 @@ class CoursesController extends Controller
         }
 
         return $horasTotales;
+    }
+
+    public function state_curso(){
+        $cursos = DeteccionNecesidades::where('aceptado', 1)->get();
+        $now = Carbon::now();
+
+        foreach ($cursos as $curso){
+            if ($now < $curso->fecha_I){
+                $curso->estado = 0;
+            }
+            elseif ($now >= $curso->fecha_I && $now <= $curso->fecha_F){
+                $curso->estado = 1;
+            }else {
+                $curso->estado = 2;
+            }
+            $curso->save();
+        }
     }
 }

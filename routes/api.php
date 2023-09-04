@@ -23,4 +23,4 @@ Route::prefix('pdf')->group(function () {
     Route::get('/PIFDAP', [PDFController::class, 'PIFDAP_pdf'])->name('pdf.pifdap');
 });
 
-Route::middleware('auth')->get('/deteccion', [\App\Http\Controllers\CoordinacionController::class, 'index'])->name('index.C');
+Route::middleware('auth')->get('/deteccion', [\App\Http\Controllers\DesarrolloController::class, 'index'])->name('index.C');

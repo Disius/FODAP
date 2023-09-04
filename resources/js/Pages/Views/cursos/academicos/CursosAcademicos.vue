@@ -11,17 +11,13 @@ import DeteccionDialog from "@/Pages/Views/dialogs/DeteccionDialogPDF.vue";
 
 const props = defineProps({
     cursos: Array,
-    auth: Object
+    auth: Object,
+    curso_estado: Array
 });
 
 const pdf_dialog = ref(false);
 
-const menu = [
-    {
-        name: "Generar PROGRAMA INSTITUCIONAL DE FORMACIÓN DOCENTE\n" +
-            "INSTITUTO TECNOLÓGICO DE TUXTLA GUTIERREZ"
-    }
-];
+
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -54,23 +50,9 @@ onMounted(() => {
         <v-container>
             <v-row justify="end">
                 <v-col cols="12">
-                    <v-menu>
-                        <template v-slot:activator="{ props }">
-                            <v-btn v-bind="props" size="x-large">
-                                Documentos
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item
-                                v-for="(item, index) in menu"
-                                :key="item.id"
-                                :value="item.id"
-                                link
-                            >
-                                <v-list-item-title @click="pdf_dialog = true">{{ item.name }}</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
+                    <v-btn prepend-icon="mdi-file-pdf-box" size="large" @click="pdf_dialog = true" color="blue-darken-1">
+                        Generar PIFDAP
+                    </v-btn>
                 </v-col>
             </v-row>
         </v-container>
@@ -78,7 +60,7 @@ onMounted(() => {
 
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-3 sm:p-8 bg-white shadow sm:rounded-lg">
-                <TablaCursoAcademico :cursos="props.cursos" :user="props.auth"></TablaCursoAcademico>
+                <TablaCursoAcademico :cursos="props.cursos" :user="props.auth" :curso_estado="props.curso_estado"></TablaCursoAcademico>
             </div>
         </div>
     </AuthenticatedLayout>

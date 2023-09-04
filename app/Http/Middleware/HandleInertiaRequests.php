@@ -49,12 +49,6 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
-            'notification_count' => [
-                fn(NotificationController $coordinacion) => $coordinacion->coordinacion_number_notifications()
-            ],
-            'coordinacion_notification' => [
-                fn(NotificationController $coordinacion_notifications) => $coordinacion_notifications->coordinacion_notifications()
-            ]
         ]);
     }
 }

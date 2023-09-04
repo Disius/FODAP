@@ -1,19 +1,22 @@
 <script setup>
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import TablaCursoAcademicoInscritos from "@/Pages/Views/cursos/tablas/TablaCursoAcademicoInscritos.vue";
 import {Head} from "@inertiajs/vue3";
-import {computed, onMounted} from "vue";
+import {computed, onMounted, ref} from "vue";
+import Inscripcion from "../../dialogs/Inscripcion.vue";
 const props = defineProps({
     curso: Object,
-    auth: Object
+    auth: Object,
+    docente: Array
 });
+
+
+const dialog_inscripcion = ref(false);
 
 const formatFechaF = computed(() => {
     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
 })
-// Computed propierties
-
-
 const formatFechaI = computed(() => {
     return new Date(props.curso.fecha_I).toLocaleDateString('es-MX');
 });
@@ -156,6 +159,10 @@ onMounted(() => {
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h2 class="text-lg font-medium text-gray-900">Docentes inscritos a este curso</h2>
+                <div class="flex justify-end items-end mt-2">
+                    <v-btn @click="dialog_inscripcion = true" block size="large" color="blue-darken-1">Inscribir Docentes a Este Curso</v-btn>
+                </div>
+                <Inscripcion :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
             </div>
         </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">

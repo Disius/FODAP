@@ -7,7 +7,10 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 const props = defineProps({
     deteccion: Object,
     carrera: Array,
-    docentes: Array
+    docentes: Array,
+    lugar: {
+        type: Array
+    },
 });
 
 const user = computed(() => usePage().props.auth.user);
@@ -30,7 +33,8 @@ const form = useForm({
     dirigido: null,
     modalidad: null,
     id_jefe: user.value.docente_id,
-    facilitador_externo: null
+    facilitador_externo: null,
+    id_lugar: null,
 });
 
 const tipoSolicitud = ref([
@@ -90,6 +94,7 @@ onMounted(() => {
     form.objetivo = props.deteccion.objetivoEvento
     form.modalidad = props.deteccion.modalidad
     form.facilitador_externo = props.deteccion.facilitador_externo
+    form.id_lugar = props.deteccion.id_lugar
     // !!!!
     form.facilitadores = idFacilitador.value
 });
@@ -127,6 +132,26 @@ onMounted(() => {
                             </template>
                         </v-row>
                         <v-row justify="center">
+                            <v-col cols="12">
+                                <InputLabel for="lugar" value="Lugar en que se realizara el curso o actividad"/>
+                                    <v-select variant="solo" :items="props.lugar" item-value="id" item-title="nombreAula" v-model="form.id_lugar"></v-select>
+                                    <v-tooltip
+                                        location="right"
+                                    >
+                                        <template v-slot:activator="{ props }">
+                                            <v-btn
+                                                icon
+                                                v-bind="props"
+                                                size="small"
+                                            >
+                                                <v-icon color="blue-lighten-1">
+                                                    mdi-help
+                                                </v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>Indicar el lugar donde se realizara el curso</span>
+                                    </v-tooltip>
+                            </v-col>
                             <v-col class="" cols="6">
                                 <InputLabel for="tipo_solicitud" value="Tipo de solicitud" />
                                 <v-row align="center" justify="center" class="mt-2">
@@ -168,7 +193,7 @@ onMounted(() => {
                                 </v-select>
                             </v-col>
                             <v-col >
-                                <v-autocomplete multiple label="Facilitadores" :items="props.docentes" item-title="nombre" item-value="id" v-model="form.facilitadores">
+                                <v-autocomplete multiple label="Facilitadores" :items="props.docentes" item-title="nombre_completo" item-value="id" v-model="form.facilitadores">
 
                                 </v-autocomplete>
                             </v-col>

@@ -34,7 +34,7 @@ const formatFechaI = computed(() => {
 </script>
 
 <template>
-   <v-table fixed-header height="500px" hover>
+   <v-table fixed-header height="400px">
         <thead>
             <tr>
                 <th class="text-left">Nombre de los
@@ -58,6 +58,9 @@ const formatFechaI = computed(() => {
                 </th>
                 <th class="text-left">Dirigido a:</th>
                 <th class="text-left">Observaciones
+                </th>
+                <th>
+                    Estado
                 </th>
                 <th class="text-left">Ver Inscritos
 
@@ -108,6 +111,17 @@ const formatFechaI = computed(() => {
                 </td>
                 <td class="v-card--hover">
                     {{ curso.observaciones }}
+                </td>
+                <td class="v-card--hover">
+                    <div v-if="curso.estado === 0">
+                        <v-alert min-width="100" color="warning">Por realizarse</v-alert>
+                    </div>
+                    <div v-else-if="curso.estado === 1">
+                        <v-alert min-width="100" color="success">En curso</v-alert>
+                    </div>
+                    <div v-else>
+                        <v-alert min-width="150" color="error">Finalizado</v-alert>
+                    </div>
                 </td>
                 <td class="v-card--hover">
                     <NavLink :href="route('index.desarrollo.inscritos', curso.id)" type="button" as="button">

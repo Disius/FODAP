@@ -27,5 +27,5 @@ Route::middleware(['auth', 'role:Jefes Academicos'])->group(function(){
 
 
     Route::get('/academicos/cursos', [CoursesController::class, 'index_cursos_academico'])->name('index.cursos.academicos');
-    Route::get('/academicos/curso/inscritos/{id}', [CoursesController::class, 'index_curso_inscrito'])->name('show.inscritos.academicos');
+    Route::get('/academicos/curso/inscritos/{id}', [CoursesController::class, 'index_curso_academicos_inscrito'])->name('show.inscritos.academicos');
 });

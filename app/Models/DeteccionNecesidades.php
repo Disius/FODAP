@@ -24,7 +24,7 @@ class DeteccionNecesidades extends Model
     protected $fillable = [
         'asignaturaFA', 'contenidosTM', 'numeroProfesores', 'periodo',
         'nombreCurso', 'fecha_I', 'fecha_F', 'hora_I', 'hora_F', 'objetivoEvento', 'tipo_FDoAP', 'tipo_actividad',
-        'carrera_dirigido', 'observaciones', 'id_jefe', 'obs', 'aceptado', 'modalidad', 'facilitador_externo', 'total_horas', 'id_departamento', 'id_lugar'
+        'carrera_dirigido', 'observaciones', 'id_jefe', 'obs', 'aceptado', 'modalidad', 'facilitador_externo', 'total_horas', 'id_departamento', 'id_lugar', 'estado', 'anio_realizacion'
     ];
 
     /**
@@ -49,7 +49,8 @@ class DeteccionNecesidades extends Model
         'created_at',
         'updated_at',
         'fecha_I',
-        'fecha_F'
+        'fecha_F',
+        'anio_realizacion'
     ];
 
     public function deteccion_facilitador(){
@@ -76,7 +77,7 @@ class DeteccionNecesidades extends Model
         return $this->belongsToMany(Docente::class, 'inscripcion', 'curso_id', 'docente_id');
     }
 
-    public function lugar(): HasOne {
-        return $this->hasOne(Lugar::class, 'id', 'id_lugar');
+    public function lugar(): BelongsTo {
+        return $this->belongsTo(Lugar::class, 'id', 'id_lugar');
     }
 }

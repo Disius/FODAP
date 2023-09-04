@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Lugar extends Model
 {
@@ -16,9 +17,9 @@ class Lugar extends Model
       'nombreAula'
     ];
 
-    public function curso(): BelongsTo {
-        return $this->belongsTo(DeteccionNecesidades::class, 'id_lugar', 'id');
+    public function curso(): HasOne {
+        return $this->hasOne(DeteccionNecesidades::class, 'id_lugar', 'id');
     }
 
-
+    public $timestamps = false;
 }

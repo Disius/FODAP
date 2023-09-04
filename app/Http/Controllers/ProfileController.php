@@ -23,7 +23,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        $carrera = Carrera::select('nameCarrera', 'id')->except(['11'])->get();
+        $carrera = Carrera::select('nameCarrera', 'id')->get();
         $departamento = Departamento::select('nameDepartamento', 'id')->get();
         $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
@@ -42,7 +42,7 @@ class ProfileController extends Controller
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'docente' => $docente,
-            'carrera' => $carrera,
+            'carrera' => $carrera->except(['11']),
             'departamento' => $departamento,
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,

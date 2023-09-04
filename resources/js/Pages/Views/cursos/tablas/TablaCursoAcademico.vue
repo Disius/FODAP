@@ -3,31 +3,32 @@
 import NavLink from "@/Components/NavLink.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
-import {computed} from "vue";
+import {computed, proxyRefs} from "vue";
 
 const props = defineProps({
     cursos: Array,
-    user: Object
+    user: Object,
+    curso_estado: Array
 })
 
 
-const formatFechaF = computed(() => {
-    let date = null
-    for (let i of props.cursos){
-        date = new Date(i.fecha_F).toLocaleDateString('es-MX')
-    }
-    return date;
-});
-// Computed propierties
-
-
-const formatFechaI = computed(() => {
-    let date = null
-    for (let i of props.cursos){
-        date = new Date(i.fecha_I).toLocaleDateString('es-MX')
-    }
-    return date;
-});
+// const formatFechaF = computed(() => {
+//     let date = null
+//     for (let i of props.cursos){
+//         date = new Date(i.fecha_F).toLocaleDateString('es-MX')
+//     }
+//     return date;
+// });
+// // Computed propierties
+//
+//
+// const formatFechaI = computed(() => {
+//     let date = null
+//     for (let i of props.cursos){
+//         date = new Date(i.fecha_I).toLocaleDateString('es-MX')
+//     }
+//     return date;
+// });
 
 
 
@@ -60,8 +61,9 @@ const formatFechaI = computed(() => {
                 <th class="text-left">Dirigido a:</th>
                 <th class="text-left">Observaciones
                 </th>
-                <th class="text-left">Ver Inscritos
-
+                <th>Estado</th>
+                <th class="text-left">
+                    Ver Inscritos
                 </th>
             </tr>
             </thead>
@@ -78,7 +80,7 @@ const formatFechaI = computed(() => {
                     {{ curso.objetivoEvento }}
                 </td>
                 <td class="v-card--hover">
-                    {{ formatFechaI }}  {{formatFechaF}}
+                    {{ curso.fecha_I }} al {{curso.fecha_F}}
                 </td>
                 <td class="v-card--hover">
                     <template v-if="curso.modalidad === 1">
@@ -95,7 +97,7 @@ const formatFechaI = computed(() => {
                     {{ curso.hora_I }} a {{curso.hora_F}}
                 </td>
                 <td class="v-card--hover">
-
+                    {{curso.total_horas}}
                 </td>
                 <td class="v-card--hover">
                     <template
@@ -109,6 +111,17 @@ const formatFechaI = computed(() => {
                 </td>
                 <td class="v-card--hover">
                     {{ curso.observaciones }}
+                </td>
+                <td>
+                    <div v-if="curso.estado === 0">
+                        <v-alert min-width="100" color="warning">Por realizarse</v-alert>
+                    </div>
+                    <div v-else-if="curso.estado === 1">
+                        <v-alert color="success">En curso</v-alert>
+                    </div>
+                    <div v-else>
+                        <v-alert color="error">Finalizado</v-alert>
+                    </div>
                 </td>
                 <td class="v-card--hover">
                     <NavLink :href="route('show.inscritos.academicos', curso.id)" type="button" as="button">
@@ -124,5 +137,7 @@ const formatFechaI = computed(() => {
 </template>
 
 <style scoped>
-
+    td {
+        font-size: 14px;
+    }
 </style>

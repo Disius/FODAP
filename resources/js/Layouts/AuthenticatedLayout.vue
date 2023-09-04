@@ -11,24 +11,16 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 const showingNavigationDropdown = ref(false);
 const docente = computed(() => usePage().props.info[0]);
 const user = computed(() => usePage().props.auth.user);
-const number_notification = computed(() => usePage().props.notification_count[0]);
-const coordinacion_notification = computed(() => usePage().props.coordinacion_notification[0]);
 
 // let usernotification = computed(() => usePage().props.auth.usernotifications);
-// const UserNotification = ref({
-//     noti: usernotification.value
-// });
-// onBeforeMount(() => {
-//     window.Echo.private(`App.Models.User.${user.value.id}`).notification((notification) => {
-//         switch (notification.type){
-//             case 'App\\Notifications\\ObservacionNotification':
-//                 console.log(UserNotification.value.noti++)
-//                 break;
-//         }
-//     })
-//
-//
-// });
+const notificationObject = ref({});
+onMounted(() => {
+    window.Echo.private(`App.Models.User.${user.value.id}`).notification((notification) => {
+        notificationObject.value = notification
+    })
+
+
+});
 </script>
 
 <template>
@@ -55,7 +47,7 @@ const coordinacion_notification = computed(() => usePage().props.coordinacion_no
                                 </NavLink>
                                 <template v-if="user.role === 1">
                                     <NavLink :href="route('parametros.edit')" :active="route().current('parametros.edit')">
-                                        Gestión de departamentos y carreras
+                                        Configuración
                                     </NavLink>
                                 </template>
                                 <template v-if="user.role === 3">
@@ -96,33 +88,21 @@ const coordinacion_notification = computed(() => usePage().props.coordinacion_no
                             <div class="hidden sm:flex sm:items-center sm:ml-6">
                                 <!-- Settings Dropdown -->
                                 <div class="ml-3 relative">
-                                    <Dropdown align="right" width="48">
-                                        <template #trigger>
-                                            <v-badge
-                                                color="red"
-                                                :content="$page.props.auth.usernotifications"
-                                            >
+                                    <v-badge
+                                        color="red"
+                                        :content="$page.props.auth.usernotifications"
+                                    >
                                                 <span class="inline-flex rounded-md">
-                                                    <button
-                                                        type="button"
-                                                        class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                                    >
-                                                    <v-icon icon="mdi-bell"></v-icon>
-                                                </button>
-                                                </span>
-                                            </v-badge>
-                                        </template>
-                                        <template #content>
-                                            <div v-for="notification in coordinacion_notification">
-                                                <DropdownLink :href="notification.data.route + '/' + notification.data.id" class="">
-                                                    {{notification.data.email}} {{notification.data.messegue}}
-                                                    <NavLink :href="route('markNotification')" :data="{ id: notification.id }" method="post" as="button">
-                                                        <primary-button class="mt-2">Notificación vista <v-icon class="ml-3">mdi-eye</v-icon></primary-button>
+                                                    <NavLink :href="route('index.notifications')" as="button">
+                                                        <button
+                                                            type="button"
+                                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                        >
+                                                            <v-icon icon="mdi-bell"></v-icon>
+                                                        </button>
                                                     </NavLink>
-                                                </DropdownLink>
-                                            </div>
-                                        </template>
-                                    </Dropdown>
+                                                </span>
+                                    </v-badge>
                                 </div>
                             </div>
                             <!-- Settings Dropdown -->

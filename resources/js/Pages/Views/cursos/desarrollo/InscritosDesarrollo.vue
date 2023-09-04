@@ -1,10 +1,15 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {computed, onMounted} from "vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import NavLink from "@/Components/NavLink.vue";
+import Inscripcion from "../../dialogs/Inscripcion.vue";
+import {ref} from 'vue';
 
 const props = defineProps({
     curso: Object,
-    auth: Object
+    auth: Object,
+    docente: Array,
 });
 
 const formatFechaF = computed(() => {
@@ -17,6 +22,7 @@ const formatFechaI = computed(() => {
     return new Date(props.curso.fecha_I).toLocaleDateString('es-MX');
 });
 
+const dialog_inscripcion = ref(false);
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -42,6 +48,11 @@ onMounted(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">{{curso.nombreCurso}}</h2>
+            <NavLink href="">
+                <NavLink :href="route('edit.curso', props.curso.id)" as="button" type="button">
+                    <PrimaryButton class="mt-5">Editar</PrimaryButton>
+                </NavLink>
+            </NavLink>
         </template>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -155,6 +166,10 @@ onMounted(() => {
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h2 class="text-lg font-medium text-gray-900">Docentes inscritos a este curso</h2>
+                <div class="flex justify-end items-end mt-2">
+                    <v-btn @click="dialog_inscripcion = true" block size="large" color="blue-darken-1">Inscribir Docentes a Este Curso</v-btn>
+                </div>
+                <Inscripcion :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
             </div>
         </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -162,9 +177,10 @@ onMounted(() => {
                 <v-table fixed-header height="500px" hover>
                     <thead>
                     <tr>
-                        <th class="text-left">Nombre</th>
-                        <th class="text-left">Apellido Paterno</th>
-                        <th class="text-left">Apellido Materno</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Apellido Paterno</th>
+                        <th class="text-center">Apellido Materno</th>
+                        <td class="text-center">Cédula</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -177,9 +193,11 @@ onMounted(() => {
                         <td>{{inscrito.apellidoPat}}</td>
                         <td>{{inscrito.apellidoMat}}</td>
                         <td>
-                            <v-btn prepend-icon="mdi-file-pdf-box">
-                                GENERAR CÉDULA DE INSCRIPCIÓN
-                            </v-btn>
+                            <div class="flex justify-center items-center">
+                                <v-btn prepend-icon="mdi-file-pdf-box">
+                                    GENERAR CÉDULA DE INSCRIPCIÓN
+                                </v-btn>
+                            </div>
                         </td>
                     </tr>
                     </tbody>

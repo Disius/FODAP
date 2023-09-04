@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Carrera;
 use App\Models\Departamento;
 use App\Models\Docente;
+use App\Models\Lugar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rules\In;
 use Inertia\Inertia;
 
 class   GestionParametrosController extends Controller
 {
     public function edit(Request $request){
+        $lugar = Lugar::with('curso')->get();
         $departamento = Departamento::with('jefe_docente')->get();
         $carrera = Carrera::with('departamento')->get();
         $docente = Docente::all();
@@ -19,7 +22,8 @@ class   GestionParametrosController extends Controller
             'docente' => $docente,
             'carrera_relacion' => $carrera->pluck('departamento'),
             'departamento' => $departamento,
-            'carrera' => $carrera->except('11')
+            'carrera' => $carrera->except('11'),
+            'lugar' => $lugar,
         ]);
     }
 
@@ -115,5 +119,34 @@ class   GestionParametrosController extends Controller
 
         return redirect()->route('parametros.edit');
 
+    }
+
+    public function create_lugar(){
+        return Inertia::render('Views/desarrollo/forms/CreateLugar');
+    }
+
+    public function store_lugar(Request $request){
+        $lugar = Lugar::create($request->all());
+        $lugar->save();
+        return Redirect::route('parametros.edit');
+    }
+
+    public function edit_lugar($id){
+        return Inertia::render('Views/desarrollo/forms/EditLugar', [
+            'lugar' => Lugar::find($id)
+        ]);
+    }
+
+    public function update_lugar($id, Request $request){
+        $lugar = Lugar::find($id);
+        $lugar->nombreAula = $request->nombreAula;
+        $lugar->save();
+        return Redirect::route('parametros.edit');
+    }
+
+    public function delete_lugar($id){
+        $lugar = Lugar::find($id);
+        $lugar->delete();
+        return Redirect::route('parametros.edit');
     }
 }

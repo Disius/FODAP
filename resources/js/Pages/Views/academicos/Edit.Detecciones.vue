@@ -8,7 +8,8 @@ const props = defineProps({
     deteccion: Object,
     carrera: Array,
     docentes: Array,
-    auth: Object
+    auth: Object,
+    lugar: Array,
 })
 // const dialog = ref(true);
 onMounted(() => {
@@ -40,7 +41,7 @@ onMounted(() => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <DeteccionesEditForm :deteccion="props.deteccion" :carrera="props.carrera" :docentes="props.docentes"></DeteccionesEditForm>
+                    <DeteccionesEditForm :lugar="props.lugar" :deteccion="props.deteccion" :carrera="props.carrera" :docentes="props.docentes"></DeteccionesEditForm>
                 </div>
             </div>
         </div>

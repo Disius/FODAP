@@ -40,8 +40,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/docente', [ProfileController::class, 'DocenteProfileCreate'])->name('docente.create');
     Route::put('/profile/docente/actualizado/{id}', [ProfileController::class, 'update_docente'])->name('update.docente');
 
-
+    Route::get('/notificaciones', [NotificationController::class, 'notifications'])->name('index.notifications');
     Route::post('/notificacion/leida', [NotificationController::class, 'markNotifications'])->name('markNotification');
+
 
     Route::prefix('pdf')->group(function () {
         Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');

@@ -74,6 +74,13 @@ const carreraFilter = computed(() => {
 
     return filtro;
 });
+
+const lugarSinOcupar = computed(() => {
+    return props.lugar.filter(e => {
+        return e.curso === null
+    })
+});
+
 </script>
 
 <template>
@@ -211,7 +218,24 @@ const carreraFilter = computed(() => {
                         </v-row>
                         <v-row justify="center">
                             <v-col cols="12">
-                                <v-select label="Lugar en que se realizara el curso o actividad" :items="lugar" item-value="id" item-title="nombreAula"></v-select>
+                                <v-select label="Lugar en que se realizara el curso o actividad" :items="lugarSinOcupar" item-value="id" item-title="nombreAula" v-model="form.id_lugar"></v-select>
+                                <v-tooltip
+                                    location="right"
+                                >
+                                    <template v-slot:activator="{ props }">
+                                        <v-btn
+                                            icon
+                                            v-bind="props"
+                                            size="small"
+                                            @click="exist = !exist"
+                                        >
+                                            <v-icon color="blue-lighten-1">
+                                                mdi-help
+                                            </v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Indicar el lugar donde se realizara el curso</span>
+                                </v-tooltip>
                             </v-col>
                             <v-col cols="6" class="mt-1">
                                 <template v-if="form.tipo === 1">
