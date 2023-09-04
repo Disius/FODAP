@@ -324,7 +324,7 @@ const carreraFilter = computed(() => {
                             </v-col>
                             <v-col>
                                 <InputLabel for="facilitador" value="Facilitador(a) que impartirá el curso/taller"  />
-                                <v-autocomplete multiple :items="props.docente" item-title="nombre" item-value="id" v-model="form.facilitadores">
+                                <v-autocomplete multiple :items="props.docente" item-title="nombre_completo" item-value="id" v-model="form.facilitadores">
 
                                 </v-autocomplete>
                             </v-col>

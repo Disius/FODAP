@@ -3,17 +3,22 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import TablaDetecciones from "@/Pages/Views/desarrollo/tablas/TablaDetecciones.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import DeteccionDialog from '/resources/js/Pages/Views/dialogs/DeteccionDialogPDF.vue'
-
+import axios from "axios";
+import {router} from "@inertiajs/vue3";
 
 const props = defineProps({
     detecciones: Array,
     auth: Object,
-    carrera: Array
+    carrera: Array,
 });
 
 const pdf_dialog = ref(false);
+
+const detecciones = ref([]);
+
+
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -31,7 +36,11 @@ onMounted(() => {
                 props.auth.usernotifications++
                 break;
         }
-    })
+    });
+
+
+
+
 });
 </script>
 
@@ -43,7 +52,7 @@ onMounted(() => {
 
         <DeteccionDialog :carreras="props.carrera" v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DeteccionDialog>
 
-        <div class="py-2">
+        <div class="py-4">
             <v-container>
                 <v-row>
                     <v-col>
@@ -53,13 +62,13 @@ onMounted(() => {
                     </v-col>
                 </v-row>
             </v-container>
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-4">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <TablaDetecciones :detecciones="props.detecciones"></TablaDetecciones>
                 </div>
             </div>
         </div>
-        <v-row justify="center" class="">
+        <v-row justify="center" class="mt-2">
             <v-col cols="2">
                 <NavLink :href="route('index.registros.c')" as="button">
                     <v-btn rounded="xl" block size="large" color="blue-darken-1">

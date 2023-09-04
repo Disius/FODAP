@@ -23,7 +23,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
-        $carrera = Carrera::select('nameCarrera', 'id')->get();
+        $carrera = Carrera::select('nameCarrera', 'id')->except(['11'])->get();
         $departamento = Departamento::select('nameDepartamento', 'id')->get();
         $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
@@ -104,6 +104,7 @@ class ProfileController extends Controller
                 'user_id' => $request->id,
                 'licenciatura' => $request->licenciatura,
                 'id_posgrado' => $request->id_posgrado,
+                'nombre_completo' => $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat
             ]);
 
             $docente->save();
@@ -132,9 +133,10 @@ class ProfileController extends Controller
         $docente->id_puesto = $request->id_puesto;
         $docente->tipo_plaza = $request->tipo_plaza;
         $docente->departamento_id = $request->departamento_id;
-        $docente->user_id = $request->user_id;
+        $docente->user_id = $request->id;
         $docente->licenciatura = $request->licenciatura;
         $docente->id_posgrado = $request->id_posgrado;
+        $docente->nombre_completo = $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat;
 
         $docente->save();
 

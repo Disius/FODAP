@@ -188,17 +188,6 @@ onMounted(() => {
                 <InputError class="mt-2" />
             </div>
             <div>
-                <InputLabel for="licenciatura" value="Licenciatura" />
-
-                <TextInput
-                    id="Licenciatura"
-                    type="text"
-                    class="mt-1 rounded w-full"
-                    v-model="form.licenciatura"
-                    required
-                />
-
-                <InputError class="mt-2" />
                 <v-alert
                     v-model="alert"
                     border="start"
@@ -211,6 +200,17 @@ onMounted(() => {
                 >
                     La licenciatura debe iniciar por mayusculas
                 </v-alert>
+                <InputLabel for="licenciatura" value="Licenciatura" class="mt-2"/>
+
+                <TextInput
+                    id="Licenciatura"
+                    type="text"
+                    class="mt-1 rounded w-full"
+                    v-model="form.licenciatura"
+                    required
+                />
+
+                <InputError class="mt-2" />
             </div>
             <div>
                 <InputLabel for="posgrado" value="Ultimo grado de estudios" />

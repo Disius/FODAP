@@ -14,7 +14,7 @@
                                 </v-col>
                                 <v-col cols="12">
                                     <InputLabel for="jefe_id" value="Jefe del departamento"/>
-                                    <v-autocomplete v-model="form.jefe_id" :items="props.docente" item-title="nombre" item-value="id"></v-autocomplete>
+                                    <v-autocomplete v-model="form.jefe_id" :items="props.docente" item-title="nombre_completo" item-value="id"></v-autocomplete>
                                 </v-col>
                             </v-row>
                         </v-container>

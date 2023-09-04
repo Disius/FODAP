@@ -19,7 +19,9 @@
             <td>{{c.nameDepartamento}}</td>
 <!--            <td>{{c.departamento_id }}</td>-->
             <td>
-                {{c.jefe_id}}
+                <div v-if="c.jefe_docente != null">
+                    {{c.jefe_docente.nombre_completo}}
+                </div>
             </td>
             <td>
                 <div class="flex justify-end  h-6 items-center gap-4">

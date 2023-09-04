@@ -34,13 +34,18 @@ const form = useForm({
     id_docente: props.user.user.docente_id,
 });
 
-const cursosFiltrados = computed(() => {
-    let filtro = props.cursos.filter(e => {
-        console.log(e)
+/*const cursosFiltrados = computed(() => {
+    let inscrito = false;
+    props.cursos.filter(e => {
+        if (e.docente_inscrito > 0){
+            for(let i in e.docente_inscrito){
+                i.id === props.user.user.docente_id ? inscrito = true : false
+            }
+        }
     })
-})
+    return inscrito
+})*/
 
-console.log(cursosFiltrados.value)
 </script>
 
 <template>
@@ -103,7 +108,7 @@ console.log(cursosFiltrados.value)
                     {{ curso.hora_I }} a {{curso.hora_F}}
                 </td>
                 <td class="v-card--hover">
-
+                    {{curso.total_horas}}
                 </td>
                 <td class="v-card--hover">
                     <template
@@ -119,8 +124,20 @@ console.log(cursosFiltrados.value)
                     {{ curso.observaciones }}
                 </td>
                 <td class="v-card--hover">
-                    <div v-for="inscrito in curso.docente_inscrito">
-                         {{inscrito}}
+                    <div v-if="curso.docente_inscrito.length > 0">
+                        <div v-for="inscrito in curso.docente_inscrito">
+                            <div v-if="inscrito.id === props.user.user.docente_id">
+                                <v-alert
+                                    variant="outlined"
+                                    color="success"
+                                >
+                                   <strong class=""> Inscrito </strong>
+                                </v-alert>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <primary-button @click="form.post(route('inscripcion.docente', curso.id))">Inscribirse</primary-button>
                     </div>
                 </td>
             </tr>
@@ -129,5 +146,7 @@ console.log(cursosFiltrados.value)
 </template>
 
 <style scoped>
-
+    td {
+        font-size: 14px;
+    }
 </style>

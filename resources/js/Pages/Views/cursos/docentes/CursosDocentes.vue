@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import TablaCursoDocente from  "@/Pages/Views/cursos/tablas/TablaCursoDocente.vue"
+import TablaCursoDocente from "@/Pages/Views/cursos/tablas/TablaCursoDocente.vue"
 import {computed, onMounted} from "vue";
 import {Head} from "@inertiajs/vue3";
 

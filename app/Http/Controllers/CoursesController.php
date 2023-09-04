@@ -198,7 +198,7 @@ class CoursesController extends Controller
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
 //            ->where('id_jefe', auth()->user()->docente_id)
         ->get();
-        return Inertia::render('Views/cursos/CursosDocentes', [
+        return Inertia::render('Views/cursos/docentes/CursosDocentes', [
             'cursos' => $cursos
         ]);
     }
@@ -236,7 +236,7 @@ class CoursesController extends Controller
     public function misCursos(){
         $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
 
-        return Inertia::render('Views/cursos/MisCursosDocentes', [
+        return Inertia::render('Views/cursos/docentes/MisCursosDocentes', [
             'docente' => $docente,
         ]);
     }

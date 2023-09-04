@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Storage;
 
 class PDFController extends Controller
 {
-    public function deteccion_pdf(Request $request, $anio, $periodo, $carrera){
+    public function deteccion_pdf(Request $request){
         $pdf_data = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'jefe', 'departamento'])
-            ->where('periodo', '=', $periodo)
-            ->where('carrera_dirigido', '=', $carrera)
-            ->whereYear('created_at', '=', $anio)->get();
+            ->where('periodo', '=', $request->input('periodo'))
+            ->where('carrera_dirigido', '=', $request->input('carrera'))
+            ->whereYear('created_at', '=', $request->input('anio'))->get();
 
         $deteccion_1 = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'jefe', 'departamento'])
             ->where('periodo', '=', $request->input('periodo'))

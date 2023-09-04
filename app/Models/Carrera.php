@@ -27,4 +27,8 @@ class Carrera extends Model
     {
         return $this->belongsTo(DeteccionNecesidades::class, 'carrera_dirigido', 'id');
     }
+    //Academia
+//    public function jefe_academia(){
+//        return $this->hasOne();
+//    }
 }

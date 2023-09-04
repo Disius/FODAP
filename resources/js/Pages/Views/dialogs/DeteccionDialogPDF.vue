@@ -1,7 +1,6 @@
 <script setup>
 import {computed, ref} from "vue";
 import {saveAs} from "save-as";
-import {f} from "../../../../../public/build/assets/app-0e3a6992.js";
 
 const props = defineProps({
     modelValue: Boolean,
@@ -34,7 +33,7 @@ const fullYears = computed(() => {
 });
 
 function submit(){
-    console.log("Hola")
+    console.log("Hola ")
 }
 
 </script>

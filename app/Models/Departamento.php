@@ -48,6 +48,11 @@ class Departamento extends Model
         return $this->belongsTo(DeteccionNecesidades::class, 'id_departamento', 'id');
     }
 
+
+    public function jefe_docente(){
+        return $this->hasOne(Docente::class, 'id', 'jefe_id');
+    }
+
     public $timestamps = false;
 
 }

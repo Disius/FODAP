@@ -12,7 +12,7 @@ use Inertia\Inertia;
 class   GestionParametrosController extends Controller
 {
     public function edit(Request $request){
-        $departamento = Departamento::all();
+        $departamento = Departamento::with('jefe_docente')->get();
         $carrera = Carrera::with('departamento')->get();
         $docente = Docente::all();
         return Inertia::render('Views/desarrollo/GestionEdit', [
@@ -71,7 +71,7 @@ class   GestionParametrosController extends Controller
     }
 
     public function create_departamento(){
-        $departamento = Departamento::all();
+        $departamento = Departamento::with('jefe_docente')->get();
         $carrera = Carrera::all()->except(['11']);
         $docente = Docente::all();
         return Inertia::render('Views/desarrollo/forms/CreateDepartamento', [
