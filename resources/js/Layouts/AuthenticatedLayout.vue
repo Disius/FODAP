@@ -52,7 +52,7 @@ onMounted(() => {
                                 </template>
                                 <template v-if="user.role === 3">
                                     <NavLink :href="route('detecciones.index')" :active="route().current('detecciones.index')">
-                                        Detecciones
+                                        Deteccion de Necesidades
                                     </NavLink>
                                 </template>
                                 <template v-if="user.role === 3">

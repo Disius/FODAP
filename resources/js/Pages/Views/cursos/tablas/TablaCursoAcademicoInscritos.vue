@@ -5,7 +5,7 @@ import { useForm } from "@inertiajs/vue3";
 import {computed} from "vue";
 
 const props = defineProps({
-    curso: Array,
+    curso: Object,
     user: Object
 })
 
@@ -20,6 +20,7 @@ const props = defineProps({
                 <th class="text-left">Nombre</th>
                 <th class="text-left">Apellido Paterno</th>
                 <th class="text-left">Apellido Materno</th>
+                <th class="text-left"></th>
             </tr>
             </thead>
             <tbody>
@@ -31,6 +32,13 @@ const props = defineProps({
                 <td>{{inscrito.nombre}}</td>
                 <td>{{inscrito.apellidoPat}}</td>
                 <td>{{inscrito.apellidoMat}}</td>
+                <td>
+                    <div class="flex justify-center items-center">
+                        <v-btn prepend-icon="mdi-file-pdf-box">
+                            Generar Cédula de Inscripcion
+                        </v-btn>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </v-table>

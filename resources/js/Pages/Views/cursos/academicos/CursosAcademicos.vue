@@ -63,6 +63,7 @@ onMounted(() => {
                 <TablaCursoAcademico :cursos="props.cursos" :user="props.auth" :curso_estado="props.curso_estado"></TablaCursoAcademico>
             </div>
         </div>
+        
     </AuthenticatedLayout>
 </template>
 

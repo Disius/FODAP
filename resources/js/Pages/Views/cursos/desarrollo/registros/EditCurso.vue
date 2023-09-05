@@ -534,7 +534,7 @@ onMounted(() => {
                                                 </v-icon>
                                             </v-btn>
                                         </template>
-                                        <span>Anotar el objetivo de la actividad o evento. </span>
+                                        <span>Anotar el objetivo de la actividad o evento.</span>
                                     </v-tooltip>
                                 </v-col>
                             </v-row>

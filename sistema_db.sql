@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 21-08-2023 a las 17:56:04
+-- Tiempo de generación: 05-09-2023 a las 19:09:09
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -118,7 +118,7 @@ INSERT INTO `departamento` (`id`, `nameDepartamento`, `jefe_id`, `created_at`, `
 (4, 'Departamento de Ingeniería Industrial', NULL, NULL, NULL),
 (5, 'Departamento de Metal Mecánica', NULL, NULL, NULL),
 (6, 'Departamento de Ingeniería Química y Bioquímica', NULL, NULL, NULL),
-(7, 'Departamento de Sistemas y Computación', 408, NULL, NULL),
+(7, 'Departamento de Sistemas y Computación', 415, NULL, NULL),
 (8, 'Departamento Económico Administrativo', NULL, NULL, NULL),
 (9, 'Departamento de Ingenierías', NULL, NULL, NULL);
 
@@ -157,7 +157,19 @@ INSERT INTO `deteccion_has_facilitadores` (`id`, `deteccion_id`, `docente_id`, `
 (23, 70, 408, NULL, NULL),
 (24, 71, 409, NULL, NULL),
 (25, 72, 407, NULL, NULL),
-(26, 73, 408, NULL, NULL);
+(26, 73, 408, NULL, NULL),
+(27, 74, 407, NULL, NULL),
+(29, 76, 407, NULL, NULL),
+(30, 75, 408, NULL, NULL),
+(32, 77, 409, NULL, NULL),
+(33, 78, 409, NULL, NULL),
+(34, 79, 408, NULL, NULL),
+(35, 80, 407, NULL, NULL),
+(36, 81, 413, NULL, NULL),
+(37, 82, 414, NULL, NULL),
+(38, 82, 413, NULL, NULL),
+(39, 83, 413, NULL, NULL),
+(40, 85, 415, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -184,10 +196,13 @@ CREATE TABLE `deteccion_necesidades` (
   `total_horas` bigint DEFAULT NULL,
   `objetivoEvento` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `modalidad` bigint DEFAULT NULL,
+  `id_lugar` bigint DEFAULT NULL,
   `facilitador_externo` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `observaciones` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `obs` int DEFAULT NULL,
   `aceptado` int DEFAULT NULL,
+  `estado` bigint DEFAULT NULL,
+  `anio_realizacion` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -196,13 +211,12 @@ CREATE TABLE `deteccion_necesidades` (
 -- Volcado de datos para la tabla `deteccion_necesidades`
 --
 
-INSERT INTO `deteccion_necesidades` (`id`, `id_jefe`, `asignaturaFA`, `contenidosTM`, `numeroProfesores`, `periodo`, `carrera_dirigido`, `id_departamento`, `nombreCurso`, `tipo_FDoAP`, `tipo_actividad`, `fecha_I`, `fecha_F`, `hora_I`, `hora_F`, `total_horas`, `objetivoEvento`, `modalidad`, `facilitador_externo`, `observaciones`, `obs`, `aceptado`, `created_at`, `updated_at`) VALUES
-(61, 408, 'Contabilidad financiera, cultura empresarial, gestion de proyectos de software, formulacion y evaluacion de proyectos', 'Todos', 20, 1, 2, 7, 'Principios de sistemas de informacion financiera', 1, 2, '2023-01-16', '2023-07-20', '08:00:00', '17:00:00', NULL, 'Conocer, analizar e interpretar la informacion financiera para la toma de decisiones empresariales.', 2, NULL, NULL, 0, 1, '2023-07-30 00:36:34', '2023-08-02 01:50:28'),
-(69, 408, 'Asignatura', 'a', 12, 1, 2, NULL, 'a', 2, 2, '2023-07-30', '2023-08-23', '02:51:00', '03:52:00', NULL, 'Objetivo', 1, NULL, 'sigue mal', 1, 1, '2023-08-07 12:49:10', '2023-08-10 09:11:18'),
-(70, 408, 'b', 'b', 12, 2, 2, NULL, 'b', 1, 3, '2023-08-09', '2023-08-30', '23:21:00', '13:23:00', NULL, 'b', 1, NULL, NULL, 0, 1, '2023-08-10 09:19:49', '2023-08-10 09:22:34'),
-(71, 408, 'c', 'c', 12, 1, 2, NULL, 'c', 2, 3, '2023-08-14', '2023-08-30', '12:28:00', '12:28:00', NULL, 'c', 2, NULL, NULL, 0, 1, '2023-08-10 09:25:30', '2023-08-10 09:26:00'),
-(72, 408, 'd', 'd', 12, 1, 2, NULL, 'd', 1, 2, '2023-08-09', '2023-08-29', '09:40:00', '23:42:00', NULL, 'd', 3, NULL, NULL, 0, 1, '2023-08-10 09:40:23', '2023-08-10 09:40:43'),
-(73, 408, 'f', 'f', 12, 2, 2, NULL, 'f', 1, 2, '2023-08-09', '2023-08-15', '12:45:00', '23:44:00', NULL, 'f', 2, NULL, NULL, 0, 1, '2023-08-10 09:42:16', '2023-08-10 09:42:35');
+INSERT INTO `deteccion_necesidades` (`id`, `id_jefe`, `asignaturaFA`, `contenidosTM`, `numeroProfesores`, `periodo`, `carrera_dirigido`, `id_departamento`, `nombreCurso`, `tipo_FDoAP`, `tipo_actividad`, `fecha_I`, `fecha_F`, `hora_I`, `hora_F`, `total_horas`, `objetivoEvento`, `modalidad`, `id_lugar`, `facilitador_externo`, `observaciones`, `obs`, `aceptado`, `estado`, `anio_realizacion`, `created_at`, `updated_at`) VALUES
+(81, 415, 'Fundamentos de programacion web', 'Todo lo relacionado a programacion web', 12, 1, 2, 7, 'Programacion web', 1, 3, '2023-09-11', '2023-09-15', '08:00:00', '16:00:00', 40, 'Aprender los fundamentos de programacion web', 2, 1, NULL, NULL, 0, 1, 0, NULL, '2023-09-04 15:20:15', '2023-09-04 17:17:12'),
+(82, 415, 'Redes', 'Taller de redes', 12, 1, 2, 7, 'Redes para oficinas', 1, 3, '2023-09-18', '2023-09-22', '15:00:00', '21:00:00', 30, 'Aprender de redes', 2, 6, NULL, 'Consideras', 1, 1, 0, NULL, '2023-09-04 15:36:09', '2023-09-04 17:17:12'),
+(83, 415, 'Profesional', 'ser profesional', 12, 1, 2, 7, 'Profesionalismo', 2, 3, '2023-09-04', '2023-09-08', '08:00:00', '14:00:00', 30, 'Lograr ser profesional', 1, 3, NULL, NULL, 0, 1, 1, NULL, '2023-09-04 16:37:38', '2023-09-04 17:17:12'),
+(84, 415, 'Todos los temas de programacion en arduino', 'Temas programacion en arduino', 12, 1, 2, 7, 'Programacion en arduino', 1, 3, '2020-01-06', '2020-01-10', '10:00:00', '17:00:00', 35, 'Aprender y reforzar conocimientos en arduino', 1, 3, NULL, NULL, 0, 1, 2, NULL, '2023-09-05 01:17:15', '2023-09-05 01:17:15'),
+(85, 415, 'a', 'a', 12, 1, 2, 7, 'a', 1, 3, '2003-03-12', '2003-04-12', '16:37:00', '17:38:00', 23, 'a', 1, 4, NULL, NULL, 0, 0, NULL, NULL, '2023-09-05 02:35:27', '2023-09-05 02:35:27');
 
 -- --------------------------------------------------------
 
@@ -227,7 +241,7 @@ CREATE TABLE `docente` (
   `horarioEntrada` time DEFAULT NULL,
   `horarioSalida` time DEFAULT NULL,
   `tipo_plaza` bigint DEFAULT NULL,
-  `id_nivel` bigint DEFAULT NULL,
+  `licenciatura` varchar(60) DEFAULT NULL,
   `prodep` varchar(45) DEFAULT NULL,
   `departamento_id` bigint UNSIGNED DEFAULT NULL,
   `empresa` varchar(75) DEFAULT NULL,
@@ -242,10 +256,10 @@ CREATE TABLE `docente` (
 -- Volcado de datos para la tabla `docente`
 --
 
-INSERT INTO `docente` (`id`, `rfc`, `curp`, `nombre`, `apellidoPat`, `apellidoMat`, `sexo`, `telefono`, `interno`, `carrera_id`, `id_posgrado`, `id_puesto`, `clavePresup`, `horarioEntrada`, `horarioSalida`, `tipo_plaza`, `id_nivel`, `prodep`, `departamento_id`, `empresa`, `tipodecurso`, `user_id`, `created_at`, `updated_at`, `nombre_completo`) VALUES
-(407, 'FEPD9908247J2', 'FEPD990824HCSRRN09', 'Salvador', 'Hernandez', 'Garduza', 1, '961-579-7102', NULL, 2, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, 2, NULL, NULL, NULL, '2023-07-26 09:45:10', '2023-07-26 09:46:10', NULL),
-(408, 'FEPD9908247J2', 'FEPD990824HCSRRN09', 'Maria', 'Monjaras', 'Gutierrez', 2, '961-427-6822', NULL, 2, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, 7, NULL, NULL, 2, '2023-07-26 09:48:01', '2023-07-26 09:48:01', NULL),
-(409, 'FEPD9908247J2', 'FEPD990824HCSRRN09', 'Daniel Eduardo', 'Fernandez', 'Perez', 1, '961-579-7102', NULL, 2, NULL, 3, NULL, NULL, NULL, 2, NULL, NULL, 7, NULL, NULL, 6, '2023-08-03 07:08:58', '2023-08-03 07:08:58', NULL);
+INSERT INTO `docente` (`id`, `rfc`, `curp`, `nombre`, `apellidoPat`, `apellidoMat`, `sexo`, `telefono`, `interno`, `carrera_id`, `id_posgrado`, `id_puesto`, `clavePresup`, `horarioEntrada`, `horarioSalida`, `tipo_plaza`, `licenciatura`, `prodep`, `departamento_id`, `empresa`, `tipodecurso`, `user_id`, `created_at`, `updated_at`, `nombre_completo`) VALUES
+(413, 'FWFWEFWFWFWEFWEF', 'FEPD990824HCSRRN09', 'Daniel Eduardo', 'Fernández', 'Pérez', 1, '9615797102', NULL, 2, 1, 3, NULL, NULL, NULL, 2, 'Ingenieria en Sisitemas Computacionales', NULL, 7, NULL, NULL, 7, '2023-09-04 02:52:26', '2023-09-04 03:23:53', 'Daniel Eduardo Fernández Pérez'),
+(414, 'BEDJ850506ND8', 'FEPD990824HCSRRN09', 'Salvador', 'Hernandez', 'Garduza', 1, '9615797102', NULL, 4, 2, 2, NULL, NULL, NULL, 1, 'Ingenieria Electronica', NULL, 1, NULL, NULL, 8, '2023-09-04 12:24:09', '2023-09-04 12:24:09', 'Salvador Hernandez Garduza'),
+(415, 'BEDJ850506ND8', 'FEPD990824HCSRRN09', 'Maria', 'Mojaras', 'Gutierrez', 1, '9615797102', NULL, 2, 3, 2, NULL, NULL, NULL, 1, 'Ingenieria en Sisitemas Computacionales', NULL, 7, NULL, NULL, 2, '2023-09-04 12:31:15', '2023-09-04 12:31:15', 'Maria Mojaras Gutierrez');
 
 -- --------------------------------------------------------
 
@@ -282,7 +296,50 @@ CREATE TABLE `inscripcion` (
 --
 
 INSERT INTO `inscripcion` (`id`, `curso_id`, `docente_id`, `created_at`, `updated_at`) VALUES
-(1, 61, 409, NULL, NULL);
+(18, 84, 413, NULL, NULL),
+(19, 84, 414, NULL, NULL),
+(20, 84, 415, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lugar`
+--
+
+CREATE TABLE `lugar` (
+  `id` int NOT NULL,
+  `nombreAula` varchar(60) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Volcado de datos para la tabla `lugar`
+--
+
+INSERT INTO `lugar` (`id`, `nombreAula`) VALUES
+(1, 'AULA H-6'),
+(2, 'AUDIO VISUAL EL EDIF. D1'),
+(3, 'EDIFICIO D1 - LCOM 1'),
+(4, 'AUDIOVISUAL DEL EDIF. I'),
+(5, 'SALA DE USOS MULTIPLES EDIF. I'),
+(6, 'AULA DE CAPACITACIÓN DE GESTIÓN Y VINCULACIÓN TECNOLÓGICA'),
+(7, 'AULA LMEC'),
+(8, 'EDFICIO D1 - LCOM 4'),
+(9, 'EDIFICIO W'),
+(10, 'SALA DE JUNTAS: EDIFICIO Z'),
+(11, 'SALA DE JUNTAS: CIENCIAS BASICAS'),
+(12, 'SALA DE JUNTAS: INGENIERíA ELECTRÓNICA'),
+(13, 'SALA DE JUNTAS: POSGRADO EDIF. Z'),
+(14, 'SALA DE JUNTAS: EDIFICIO D1'),
+(15, 'SALA DE USOS MÚLTIPLES 1 EDIFICIO I'),
+(16, 'SALA MAGNA: EDIF. K'),
+(17, 'MODALIDAD VIRTUAL - GRUPO A'),
+(18, 'MODALIDAD VIRTUAL - GRUPO B'),
+(19, 'LABORATORIO DE BIOLOGIA MOLECULAR POLO TECNOLOGICO'),
+(20, 'LABORATORIO DE SISTEMAS DIGITALES: EDIF. I'),
+(21, 'LABORATORIOS DE MECÁNICA'),
+(22, 'SIN ASIGNACIÓN'),
+(23, 'AULA I - 13'),
+(24, 'VIRTUAL');
 
 -- --------------------------------------------------------
 
@@ -356,7 +413,9 @@ INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
 (3, 'App\\Models\\User', 2),
 (1, 'App\\Models\\User', 4),
 (2, 'App\\Models\\User', 5),
-(4, 'App\\Models\\User', 6);
+(4, 'App\\Models\\User', 6),
+(4, 'App\\Models\\User', 7),
+(1, 'App\\Models\\User', 8);
 
 -- --------------------------------------------------------
 
@@ -399,19 +458,95 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `type`, `notifiable_type`, `notifiable_id`, `data`, `read_at`, `created_at`, `updated_at`) VALUES
+('029c4ea4-7348-4245-a00f-b83a4550461b', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:43', '2023-08-23 13:36:44', '2023-08-31 04:10:43'),
+('045e814d-968b-4727-8ac2-7753335c2324', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":76,\"route\":\"\\/academicos\\/curso\\/inscritos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-08-23 12:44:05', '2023-08-23 11:24:58', '2023-08-23 12:44:05'),
+('1134815e-7e71-42d7-9564-09b24b5897be', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 02:17:21', '2023-08-23 13:37:46', '2023-09-02 02:17:21'),
+('122639e1-e80e-43c0-af59-7b45afdb97bf', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":78,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:12', '2023-08-29 02:17:32', '2023-08-31 04:10:12'),
 ('14ba31cb-c0a8-4f1a-9afe-45610760a717', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":69,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-10 09:24:54', '2023-08-07 13:24:23', '2023-08-10 09:24:54'),
+('14efb221-b0a0-481f-a7eb-04f4846de888', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 02:17:58', '2023-08-23 13:17:40', '2023-09-02 02:17:58'),
+('15b929ba-4a35-43ad-8f7b-807f5cbcff2d', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":78,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:49:45', '2023-08-29 02:13:21', '2023-09-02 01:49:45'),
+('183783e2-10b8-4f4e-9f7a-7106c471483b', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":83,\"route\":\"\\/academicos\\/curso\\/inscritos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-09-05 15:16:55', '2023-09-04 16:38:12', '2023-09-05 15:16:55'),
+('1abd0bdc-e3b5-475b-b892-8efe521746f6', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-08-26 06:28:07', '2023-08-26 06:27:49', '2023-08-26 06:28:07'),
 ('1be4dc84-5be9-47de-8ed0-5ae205de7790', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":72,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"Se ha creado una nueva deteccion de necesidades\"}', '2023-08-10 09:46:22', '2023-08-10 09:40:23', '2023-08-10 09:46:22'),
 ('1f21e336-9748-4936-959d-fefef4e58500', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":71,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"Se ha creado una nueva deteccion de necesidades\"}', '2023-08-10 09:46:24', '2023-08-10 09:25:31', '2023-08-10 09:46:24'),
+('24e452c0-0fef-4587-9f2e-b78c7750b3f9', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:31', '2023-08-23 22:53:26', '2023-08-31 04:10:31'),
+('276385cd-77e3-46a0-8c8b-be3982ba2bb0', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":77,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:21', '2023-08-26 15:12:47', '2023-08-31 04:10:21'),
+('279f42bd-5bab-4e8c-b479-72c6e9354f64', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":76,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-23 12:44:02', '2023-08-23 11:23:45', '2023-08-23 12:44:02'),
+('2d0ced6c-043a-48e7-9ac3-2c97bbd4c2cd', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":77,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:49:56', '2023-08-26 15:20:00', '2023-09-02 01:49:56'),
+('2e604ca3-5be5-4577-b967-2744f5d31bee', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:33', '2023-08-23 22:38:03', '2023-08-31 04:10:33'),
+('2f8a7624-c609-476a-872d-cb21e8f2ceb8', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:21', '2023-08-23 23:48:42', '2023-09-02 01:50:21'),
+('34254496-80bc-4c15-a20f-93b0d12f7369', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":82,\"route\":\"\\/academicos\\/curso\\/inscritos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-09-04 16:16:05', '2023-09-04 16:15:57', '2023-09-04 16:16:05'),
+('342594eb-07aa-459e-b618-897a52f4df19', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:29', '2023-08-23 22:55:37', '2023-08-31 04:10:29'),
+('3d78f78d-caf1-4b2d-9219-5787c11d85e7', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:26', '2023-08-23 22:57:28', '2023-08-31 04:10:26'),
+('469e6135-3dcb-4874-a103-4ddacf34b4ed', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":80,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-09-04 16:13:40', '2023-09-02 02:14:48', '2023-09-04 16:13:40'),
+('4977a78e-b389-4cfd-9be0-c01e9867585a', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":78,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:49:49', '2023-08-29 02:09:35', '2023-09-02 01:49:49'),
+('4ec3e5d9-a30c-4280-988a-548bd07b78f4', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":79,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"creo una nueva deteccion de necesidades\"}', '2023-08-31 11:44:45', '2023-08-29 03:23:27', '2023-08-31 11:44:45'),
+('4f625b11-3044-4e85-b0c3-e761314bf55f', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:40', '2023-08-23 21:53:26', '2023-08-31 04:10:40'),
+('544b1fef-3d50-4446-83ef-f1bfccc2495c', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:38', '2023-08-23 21:53:50', '2023-08-31 04:10:38'),
+('56d5c2b4-b8ca-4cce-9125-90a30476ff9c', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:26', '2023-08-23 22:57:13', '2023-09-02 01:50:26'),
+('5b8fa932-22cb-4d66-8e45-c4e22f6da041', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:18', '2023-08-23 23:59:22', '2023-09-02 01:50:18'),
+('61872dad-e83a-490e-812c-23ceb87d36c8', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":78,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:15', '2023-08-29 02:12:32', '2023-08-31 04:10:15'),
+('67fc9cc6-ce44-4db1-b1f8-43f1fdbb4486', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"Edito la deteccion de necesidades\"}', '2023-09-04 16:16:13', '2023-08-23 13:01:52', '2023-09-04 16:16:13'),
+('6a45db6f-64ba-4532-b660-a95d98dd741c', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":null,\"id\":76,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"Se ha creado una nueva deteccion de necesidades\"}', '2023-08-23 12:42:18', '2023-08-23 06:02:43', '2023-08-23 12:42:18'),
+('6a8aa33d-deb4-498a-ac6c-d0319b7c83f6', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:23', '2023-08-24 00:27:53', '2023-08-31 04:10:23'),
+('6c567cbd-41c2-4f31-94d4-85e21ed42922', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":78,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-04 16:16:11', '2023-09-02 14:57:41', '2023-09-04 16:16:11'),
+('6c7ab0a1-d337-45f7-aea7-20c7f7fb0943', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-23 12:44:07', '2023-08-23 11:28:58', '2023-08-23 12:44:07'),
+('7112903a-4618-407f-96b1-da7b29d5fdd4', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:41', '2023-08-23 13:54:31', '2023-08-31 04:10:41'),
 ('72c08d2d-1205-4b62-b8b1-838fa66aa90d', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":69,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-08-07 13:26:10', '2023-08-07 13:25:22', '2023-08-07 13:26:10'),
-('92adb9a3-b674-43eb-8344-92163943bd1b', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":73,\"route\":\"\\/academicos\\/curso\\/inscritos\",\"messegue\":\"El curso se ha aceptado\"}', NULL, '2023-08-10 09:42:35', '2023-08-10 09:42:35'),
+('75cdda9c-df00-4872-8068-165bba397cf9', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:47', '2023-08-23 12:47:45', '2023-08-31 04:10:47'),
+('78a9bba3-2c59-475f-9244-25a2be6ebc11', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:28', '2023-08-23 22:55:02', '2023-09-02 01:50:28'),
+('794e620a-589e-48f6-81b9-dc2b0d722729', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":78,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-09-04 16:13:26', '2023-09-02 14:56:01', '2023-09-04 16:13:26'),
+('7a8a18e6-c775-4947-8068-016d95dfdff7', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:11', '2023-08-24 00:04:03', '2023-09-02 01:50:11'),
+('7e74d6fd-d412-45c8-b5f2-73654155e807', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":77,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"creo una nueva deteccion de necesidades\"}', '2023-09-02 01:50:00', '2023-08-26 15:07:22', '2023-09-02 01:50:00'),
+('875c05e5-bea6-4036-beab-d5eab5ef2d6f', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":85,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"creo una nueva deteccion de necesidades\"}', NULL, '2023-09-05 02:35:27', '2023-09-05 02:35:27'),
+('8c339bdb-65ae-4c99-8e8c-55a4a3a54c26', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":76,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-23 12:44:00', '2023-08-23 11:21:57', '2023-08-23 12:44:00'),
+('90f10f8e-617e-43fc-b5e1-9ee51cf3c3bb', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":81,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"creo una nueva deteccion de necesidades\"}', '2023-09-04 16:16:09', '2023-09-04 15:20:16', '2023-09-04 16:16:09'),
+('916eafe1-6623-46fc-9b09-1b6bee423acc', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":76,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-23 12:44:03', '2023-08-23 11:22:16', '2023-08-23 12:44:03'),
+('92adb9a3-b674-43eb-8344-92163943bd1b', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":73,\"route\":\"\\/academicos\\/curso\\/inscritos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-08-23 00:56:29', '2023-08-10 09:42:35', '2023-08-23 00:56:29'),
+('9ac83596-7a52-44ec-8a0e-c2477499052a', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:23', '2023-08-23 23:00:35', '2023-09-02 01:50:23'),
+('9f27f056-1615-4254-b635-9c9b6fcf58c7', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:44', '2023-08-23 13:09:22', '2023-08-31 04:10:44'),
+('9fbe461f-c5e0-4e2f-9b12-3ace2b26fe2f', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:31', '2023-08-23 22:53:58', '2023-09-02 01:50:31'),
+('a18d6970-5a20-46b2-91da-c56bd6da22f6', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:08', '2023-08-24 00:11:38', '2023-09-02 01:50:08'),
 ('a1c4e865-a844-4bec-a08d-a1c821b61dd8', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":70,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"Se ha creado una nueva deteccion de necesidades\"}', '2023-08-10 09:25:56', '2023-08-10 09:19:50', '2023-08-10 09:25:56'),
+('a5e6c924-1488-4266-bf32-fc573e7716d6', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":82,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"creo una nueva deteccion de necesidades\"}', '2023-09-04 16:16:09', '2023-09-04 15:36:09', '2023-09-04 16:16:09'),
 ('a7dc0f6a-bf4b-4743-bf3a-af628984cb37', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":73,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"Se ha creado una nueva deteccion de necesidades\"}', '2023-08-10 09:46:20', '2023-08-10 09:42:16', '2023-08-10 09:46:20'),
+('a98e6ca9-ac15-4951-bc29-914294bbafdd', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":78,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-04 16:16:10', '2023-09-02 15:17:58', '2023-09-04 16:16:10'),
+('b228151c-ef01-40da-91e5-4486bda24be3', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":75,\"route\":\"\\/academicos\\/curso\\/inscritos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-08-31 04:10:18', '2023-08-26 15:25:10', '2023-08-31 04:10:18'),
 ('b2c1f915-817b-4ccf-9a53-7c1fa45751f6', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":71,\"route\":\"\\/academicos\\/cursos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-08-10 09:39:13', '2023-08-10 09:26:00', '2023-08-10 09:39:13'),
+('b7d122b1-cae0-478d-bf14-9aebbb7a308e', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:36', '2023-08-23 21:54:10', '2023-08-31 04:10:36'),
 ('b98aaeb4-a70a-454b-b355-404e268dff8d', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":72,\"route\":\"\\/academicos\\/curso\\/inscritos\\/\",\"messegue\":\"El curso se ha aceptado\"}', '2023-08-10 09:41:28', '2023-08-10 09:40:43', '2023-08-10 09:41:28'),
+('bd75d6da-bbcc-46b5-9973-041278f9fa4e', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":82,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-04 16:16:08', '2023-09-04 16:15:37', '2023-09-04 16:16:08'),
+('be285990-6554-436b-808c-59789640631d', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:30', '2023-08-23 22:53:36', '2023-08-31 04:10:30'),
+('bee43515-e749-4b47-80a5-ad61e2b623a8', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:14', '2023-08-24 00:03:31', '2023-09-02 01:50:14'),
+('c4d190cc-9ec0-486d-b697-52c7af23863a', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":81,\"route\":\"\\/academicos\\/curso\\/inscritos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-09-04 16:11:42', '2023-09-04 15:39:33', '2023-09-04 16:11:42'),
+('c53c5d71-67e3-466d-be81-65998767ef58', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":77,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:22', '2023-08-26 15:09:04', '2023-08-31 04:10:22'),
+('c5aac0a7-bc20-43ed-bd01-10852d174e70', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":82,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-09-04 16:13:25', '2023-09-04 15:41:52', '2023-09-04 16:13:25'),
+('c749ed7d-071e-4667-8744-2136312729a8', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:38', '2023-08-23 22:38:18', '2023-09-02 01:50:38'),
+('caa2d3da-4c37-49ef-8d42-7623049d7a69', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:45', '2023-08-23 13:05:38', '2023-08-31 04:10:45'),
 ('cbd6de64-9a10-4fdf-9385-5fee29ab43c1', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":69,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"Se ha creado una nueva deteccion de necesidades\"}', '2023-08-07 13:19:08', '2023-08-07 12:49:11', '2023-08-07 13:19:08'),
+('cc3bad33-fd46-482a-b032-c301e44d0ab7', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":78,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:13', '2023-08-29 02:15:39', '2023-08-31 04:10:13'),
+('cca2f2ea-ef8b-4661-aaf3-aec6ef41e6da', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:41', '2023-08-23 22:37:30', '2023-09-02 01:50:41'),
+('cd125be4-7ae7-40d5-9cc7-a85831065ab1', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":80,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"creo una nueva deteccion de necesidades\"}', '2023-09-02 01:49:43', '2023-09-01 02:02:11', '2023-09-02 01:49:43'),
+('cd84a130-a871-4781-917e-7954e86ecdf1', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":83,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"creo una nueva deteccion de necesidades\"}', '2023-09-04 18:26:19', '2023-09-04 16:37:38', '2023-09-04 18:26:19'),
+('d053706d-f37a-46e4-aaf4-b0b11711b98a', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:33', '2023-08-23 22:53:16', '2023-09-02 01:50:33'),
+('d07f0421-f293-480c-9aa0-ed16ba5069fa', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:28', '2023-08-23 22:55:49', '2023-08-31 04:10:28'),
+('d227e869-2953-4070-9e24-fce0780f073f', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":77,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:49:58', '2023-08-26 15:10:32', '2023-09-02 01:49:58'),
+('ddcf3368-c2b9-4f92-8e02-1835660e02d4', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":null,\"id\":75,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"Se ha creado una nueva deteccion de necesidades\"}', '2023-09-04 16:16:14', '2023-08-23 00:54:23', '2023-09-04 16:16:14'),
 ('df08bb2f-472f-436d-b5bf-5d7ec66a12aa', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":69,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"Edito la deteccion de necesidades\"}', '2023-08-10 09:11:07', '2023-08-07 13:27:13', '2023-08-10 09:11:07'),
+('e14b4045-fe30-4554-89f5-2828f29792f7', 'App\\Notifications\\NewDeteccionNotification', 'App\\Models\\User', 5, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":78,\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"creo una nueva deteccion de necesidades\"}', '2023-09-02 01:49:52', '2023-08-29 02:01:46', '2023-09-02 01:49:52'),
+('e3b03312-2aba-47cb-8c0b-7bc78084fbc2', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":82,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-09-04 16:11:38', '2023-09-04 15:43:39', '2023-09-04 16:11:38'),
+('e42e5c3d-e59a-4a9c-9ff5-0e9ab9d48204', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:03', '2023-08-24 00:13:17', '2023-09-02 01:50:03'),
+('e54726a8-22f6-4ba4-90af-aded975d967e', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:05', '2023-08-24 00:13:02', '2023-09-02 01:50:05'),
+('ea77682a-cdbf-4790-bd9c-69b8aea9a293', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":80,\"route\":\"\\/academicos\\/curso\\/inscritos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-09-04 16:13:27', '2023-09-02 14:50:22', '2023-09-04 16:13:27'),
+('eb765299-fbd3-4103-8eda-fbc8722e642a', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"cformacion@tuxtla.tecnm.mx\",\"id\":77,\"route\":\"\\/academicos\\/curso\\/inscritos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-08-31 04:10:19', '2023-08-26 15:22:57', '2023-08-31 04:10:19'),
+('ee924548-5eb8-4aa9-acbb-f3ea0d449fe6', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-02 01:50:36', '2023-08-23 22:52:21', '2023-09-02 01:50:36'),
+('ef9a5b75-cc72-45a5-a4e4-0f7a9525cff9', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":78,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:16', '2023-08-29 02:02:57', '2023-08-31 04:10:16'),
 ('f01d9932-4810-4a61-9c58-fbbe8b73dbf4', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":69,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-10 09:24:52', '2023-08-07 13:26:40', '2023-08-10 09:24:52'),
-('fc17637e-d07d-4dfd-a204-800f4d9cffcb', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/academicos\\/cursos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-08-10 09:24:51', '2023-08-10 09:22:34', '2023-08-10 09:24:51');
+('f39ed76c-0bf6-4f21-ac1b-2621b2dd8ad1', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":75,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-04 16:16:12', '2023-08-23 13:08:17', '2023-09-04 16:16:12'),
+('f42b8d09-e4b9-4fa1-a615-dc279ae52cef', 'App\\Notifications\\DeteccionEditadaNotification', 'App\\Models\\User', 5, '{\"id\":80,\"email\":\"sistemas@tuxtla.tecnm.mx\",\"route\":\"\\/coordinacion\\/detecciones\\/deteccion\",\"messegue\":\"edito la deteccion de necesidades\"}', '2023-09-04 16:16:12', '2023-09-02 02:26:07', '2023-09-04 16:16:12'),
+('f70f1ef5-138a-447d-9fec-24ec59123330', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:34', '2023-08-23 21:55:04', '2023-08-31 04:10:34'),
+('fc17637e-d07d-4dfd-a204-800f4d9cffcb', 'App\\Notifications\\AceptadoNotification', 'App\\Models\\User', 2, '{\"email\":\"sistemas@tuxtla.tecnm.mx\",\"id\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/academicos\\/cursos\",\"messegue\":\"El curso se ha aceptado\"}', '2023-08-10 09:24:51', '2023-08-10 09:22:34', '2023-08-10 09:24:51'),
+('fefb3097-d139-4cd4-909f-49776f648390', 'App\\Notifications\\ObservacionNotification', 'App\\Models\\User', 2, '{\"id\":75,\"email\":\"cformacion@tuxtla.tecnm.mx\",\"route\":\"\\/deteccion\",\"messegue\":\"agrego una observacion\"}', '2023-08-31 04:10:48', '2023-08-23 12:44:18', '2023-08-31 04:10:48');
 
 -- --------------------------------------------------------
 
@@ -436,6 +571,13 @@ CREATE TABLE `password_reset_tokens` (
   `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `password_reset_tokens`
+--
+
+INSERT INTO `password_reset_tokens` (`email`, `token`, `created_at`) VALUES
+('l17270705@tuxtla.tecnm.mx', '$2y$10$3bv.KuuPBLFbbB/9qXRK5OTHLOqcfLbohsUKjIG7KJIQBFZEvgis2', '2023-08-23 23:11:20');
 
 -- --------------------------------------------------------
 
@@ -486,8 +628,9 @@ CREATE TABLE `posgrado` (
 --
 
 INSERT INTO `posgrado` (`id`, `nombre`) VALUES
-(1, 'MAESTRÍA'),
-(2, 'DOCTORADO');
+(1, 'LICENCIATURA'),
+(2, 'MAESTRIA'),
+(3, 'DOCTORADO');
 
 -- --------------------------------------------------------
 
@@ -509,13 +652,10 @@ INSERT INTO `puesto` (`id`, `nombre`) VALUES
 (2, 'JEFE DE DEPARTAMENTO'),
 (3, 'DOCENTE'),
 (4, 'DIRECTOR'),
-(5, 'SUBDIRECCION'),
-(6, 'COORDINADOR DE ACTUALIZACION'),
-(7, 'CATEDRATICO'),
+(5, 'SUBDIRECCIÓN DE PLANEACIÓN Y VINCULACIÓN'),
+(7, 'SUBDIRECCIÓN DE SERVICIOS ADMINISTRATIVOS'),
 (8, 'AUXILIAR ADMINISTRATIVO'),
-(9, 'JEFE DE LA OFICINA DE PROMOCION DEPORTIVA'),
-(10, 'PROMOTOR CULTURAL'),
-(11, 'PREFECTO');
+(9, 'SUBDIRECCIÓN ACADÉMICA');
 
 -- --------------------------------------------------------
 
@@ -568,9 +708,9 @@ CREATE TABLE `tipo_plaza` (
 --
 
 INSERT INTO `tipo_plaza` (`id`, `nombre`) VALUES
-(1, 'Base'),
-(2, 'Honorarios'),
-(3, 'Interinato');
+(1, 'Directivo'),
+(2, 'Docente / Interinato'),
+(3, 'Honorarios');
 
 -- --------------------------------------------------------
 
@@ -597,10 +737,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `docente_id`, `role`, `departamento_id`, `created_at`, `updated_at`) VALUES
-(2, NULL, 'sistemas@tuxtla.tecnm.mx', NULL, '$2y$10$SQWcjmohQTsAzvRsMAtpMeM240qQQIb8Y4XOqQzDTNDt/s.6cIRsW', NULL, 408, 3, 7, '2023-07-19 12:52:28', '2023-07-26 09:48:01'),
-(4, NULL, 'dda_tgutierrez@tuxtla.tecnm.mx', NULL, '$2y$10$NbZ6iSAGfUO.Al9xaUpjHOm9SWG12STSb/HLzjWhGJV/pqj9yankG', NULL, 407, 1, 2, '2023-07-25 13:42:21', '2023-07-26 09:45:10'),
+(2, NULL, 'sistemas@tuxtla.tecnm.mx', NULL, '$2y$10$SQWcjmohQTsAzvRsMAtpMeM240qQQIb8Y4XOqQzDTNDt/s.6cIRsW', NULL, 415, 3, 7, '2023-07-19 12:52:28', '2023-09-04 12:31:15'),
 (5, NULL, 'cformacion@tuxtla.tecnm.mx', NULL, '$2y$10$EniwEJeEOB3xbUY/l3PHeuiZrKSttlp535d0ksqZcLb5jRM5LTJuC', NULL, NULL, 2, 2, '2023-07-31 12:28:26', '2023-07-31 12:28:26'),
-(6, NULL, 'l17270705@tuxtla.tecnm.mx', NULL, '$2y$10$dNXEzW2jzmBTul4Peh2ybe16D2E2fAd4V1vSuB1kpjYCRj4thHfbO', NULL, 409, 4, 7, '2023-08-03 07:08:02', '2023-08-03 07:08:58');
+(7, NULL, 'l17270705@tuxtla.tecnm.mx', NULL, '$2y$10$JRnzeWbTsUenjoT4Rm1QlunYD2h0Hf0BvMwoSXK1AH5l2wa8t9hqa', NULL, 413, 4, 7, '2023-08-31 12:06:20', '2023-09-04 02:52:26'),
+(8, NULL, 'dda_tgutierrez@tecnm.mx', NULL, '$2y$10$2cZ6le6lCG2XMDbKDdtTae7rdaJvYYANYXkLdiBMVkKDmRcPszLdO', NULL, 414, 1, 1, '2023-09-04 12:21:41', '2023-09-04 12:24:09');
 
 --
 -- Índices para tablas volcadas
@@ -651,7 +791,7 @@ ALTER TABLE `deteccion_necesidades`
 ALTER TABLE `docente`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_Docente_Puesto1_idx` (`id_puesto`),
-  ADD KEY `fk_Docente_Nivel1_idx` (`id_nivel`),
+  ADD KEY `fk_Docente_Nivel1_idx` (`licenciatura`),
   ADD KEY `fk_Docente_Departamento1_idx` (`departamento_id`),
   ADD KEY `fk_docente_carrera1_idx` (`carrera_id`),
   ADD KEY `fk_docente_posgrado1_idx` (`id_posgrado`),
@@ -670,6 +810,12 @@ ALTER TABLE `failed_jobs`
 -- Indices de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `lugar`
+--
+ALTER TABLE `lugar`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -720,6 +866,12 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indices de la tabla `posgrado`
+--
+ALTER TABLE `posgrado`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `puesto`
 --
 ALTER TABLE `puesto`
@@ -760,19 +912,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `deteccion_has_facilitadores`
 --
 ALTER TABLE `deteccion_has_facilitadores`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT de la tabla `deteccion_necesidades`
 --
 ALTER TABLE `deteccion_necesidades`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT de la tabla `docente`
 --
 ALTER TABLE `docente`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=410;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=416;
 
 --
 -- AUTO_INCREMENT de la tabla `failed_jobs`
@@ -784,7 +936,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT de la tabla `inscripcion`
 --
 ALTER TABLE `inscripcion`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT de la tabla `lugar`
+--
+ALTER TABLE `lugar`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -814,7 +972,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restricciones para tablas volcadas

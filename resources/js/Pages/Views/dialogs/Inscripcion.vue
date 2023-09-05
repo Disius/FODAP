@@ -21,9 +21,9 @@ const form = useForm({
 
 const filterData = computed(() => {
     const busqueda = search.value.toLowerCase().trim();
-    
+
     return props.docente.filter(item => {
-        return item.nombre.toLowerCase().includes(busqueda) || 
+        return item.nombre.toLowerCase().includes(busqueda) ||
         item.apellidoPat.toLowerCase().includes(busqueda) ||
         item.apellidoMat.toLowerCase().includes(busqueda) ||
         item.nombre_completo.toLowerCase().includes(busqueda)
@@ -34,16 +34,9 @@ function addTeachers(teacher){
     if(!form.id_docente.includes(teacher)){
         form.id_docente.push(teacher.id)
         form.post(route('inscribir.docente', props.curso.id))
-    }else{
-        form.hasErrors
     }
 }
 
-function submit(){
-
-    form.post(route('inscribir.docente', props.curso.id));
-    form.reset();
-}
 
 
 </script>
@@ -53,7 +46,7 @@ function submit(){
     <v-card width="600" height="500">
         <v-card-title class="text-center">Inscribir Docentes</v-card-title>
         <v-card-text>
-            <v-text-field label="Buscar" v-model="search" class="mt-4"></v-text-field>
+            <v-text-field variant="solo" label="Buscar" v-model="search" class="mt-4"></v-text-field>
             <!-- <v-autocomplete multiple variant="solo" :items="props.docente" item-title="nombre_completo" item-value="id" v-model="teacherSelected"></v-autocomplete> -->
             <v-table>
                 <thead>
@@ -62,7 +55,7 @@ function submit(){
                         Nombre
                     </th>
                     <th class="text-left">
-                    
+
                     </th>
                 </tr>
                 </thead>
