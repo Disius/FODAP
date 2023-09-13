@@ -14,7 +14,8 @@ const props = defineProps({
     carrera: {
         type: Array
     },
-    auth: Object
+    auth: Object,
+    dates: Array
 });
 
 const pdf_dialog = ref(false);
@@ -50,16 +51,18 @@ onMounted(() => {
         <Head title="Detecciones"/>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Deteccion de Necesidades</h2>
-            <NavLink :href="route('detecciones.create')" :active="route().current('detecciones.create')" as="button">
-                <v-btn prepend-icon="mdi-pen-plus" rounded="xl" color="blue-darken-1">CREAR DETECCION DE NECESIDADES</v-btn>
-            </NavLink>
+            <template v-if="props.dates[0] === true">
+                <NavLink :href="route('detecciones.create')" :active="route().current('detecciones.create')" as="button">
+                    <v-btn prepend-icon="mdi-pen-plus" rounded="xl" color="blue-darken-1">CREAR DETECCION DE NECESIDADES</v-btn>
+                </NavLink>
+            </template>
         </template>
 
         <v-container fluid>
             <v-row justify="start">
                 <v-col cols="4" align="center">
                     <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl">
-                        Generar Deteccion de Necesidades
+                        Generar PDF
                     </v-btn>
                 </v-col>
 <!--                <v-col cols="6" align="center">-->

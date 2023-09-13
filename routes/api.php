@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DesarrolloController;
 use App\Http\Controllers\PDFController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,9 +19,10 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware('auth:api')->prefix('pdf')->group(function () {
 //    Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
 //});
-Route::prefix('pdf')->group(function () {
-    Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
-    Route::get('/PIFDAP', [PDFController::class, 'PIFDAP_pdf'])->name('pdf.pifdap');
-});
 
-Route::middleware('auth')->get('/deteccion', [\App\Http\Controllers\DesarrolloController::class, 'index'])->name('index.C');
+
+//Route::get('/deteccion', [DesarrolloController::class, 'index'])->name('index.C');
+//Route::prefix('pdf')->group(function () {
+//        Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
+//        Route::get('/PIFDAP', [PDFController::class, 'PIFDAP_pdf'])->name('pdf.pifdap');
+//    });

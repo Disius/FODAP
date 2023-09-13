@@ -1,7 +1,7 @@
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Nueva Carrera</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Nueva Área Academica</h2>
         </template>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -10,16 +10,16 @@
                         <v-container>
                             <v-row justify="center">
                                 <v-col cols="12">
-                                    <InputLabel for="nombre_carrera" value="Nombre de la carrera"/>
+                                    <InputLabel for="nombre_carrera" value="Nombre del área"/>
                                     <v-text-field v-model="form.nameCarrera"></v-text-field>
                                 </v-col>
                                 <v-col cols="12">
                                     <InputLabel for="presidente_academia" value="Presidente de la academia"/>
-                                    <v-autocomplete v-model="form.presidente_academia" :items="props.docente" item-title="nombre" item-value="id"></v-autocomplete>
+                                    <v-autocomplete variant="solo" v-model="form.presidente_academia" :items="props.docente" item-title="nombre_completo" item-value="id"></v-autocomplete>
                                 </v-col>
                                 <v-col cols="12">
-                                    <InputLabel for="presidente_academia" value="Departamento al que la carrera pertenece"/>
-                                    <v-select v-model="form.departamento_id" :items="props.departamento" item-value="id" item-title="nameDepartamento"></v-select>
+                                    <InputLabel for="presidente_academia" value="Departamento al que pertenece"/>
+                                    <v-select v-model="form.departamento_id" :items="props.departamento" item-value="id" item-title="nameDepartamento" variant="solo"></v-select>
                                 </v-col>
                             </v-row>
                         </v-container>

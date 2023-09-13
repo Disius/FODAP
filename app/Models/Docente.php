@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 class Docente extends Model
 {
@@ -36,5 +37,9 @@ class Docente extends Model
 
     public function jefe_departamento(){
         return $this->belongsTo(Departamento::class, 'jefe_id', 'id');
+    }
+
+    public function academia_presidente(): BelongsTo {
+        return $this->belongsTo(Carrera::class, 'presidente_academia', 'id');
     }
 }

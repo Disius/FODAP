@@ -22,9 +22,13 @@
             <td>
                 {{c.departamento.nameDepartamento}}
             </td>
-            <td>{{c.presidente_academia}}</td>
             <td>
-                <div class="flex justify-end  h-6 items-center gap-4">
+                <template v-if="c.presidente_academia != null">
+                    {{c.presidente_academia.nombre_completo}}
+                </template>
+            </td>
+            <td>
+                <div class="flex justify-end  h-4 items-center gap-4">
                     <NavLink :href="route('edit.carrera', c.id)">
                         <PrimaryButton class="bg-blue-accent-4">Editar carrera</PrimaryButton>
                     </NavLink>

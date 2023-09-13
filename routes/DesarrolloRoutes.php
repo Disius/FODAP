@@ -32,6 +32,9 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::get('/departamento/editar/{id}', [GestionParametrosController::class, 'edit_departamento'])->name('edit.departamento');
     Route::put('/departamento/actualizado/{id}', [GestionParametrosController::class, 'update_departamento'])->name('update.departamento');
 
+//  Rutas para establecer fechas
+    Route::post('/fechas', [GestionParametrosController::class, 'dates_detecciones'])->name('config.dates');
+
 //rutas lugar
 
     Route::get('/desarrollo/create/lugar', [GestionParametrosController::class, 'create_lugar'])->name('create.lugar');
@@ -48,13 +51,11 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
 //inscripciones
     Route::post('/docente/inscribir/{id}', [CoursesController::class, 'inscripcion_por_desarrollo'])->name('inscribir.docente');
 
-    Route::middleware('role:Coordinacion de FD y AP')->group(function (){
-        Route::get('/coordinacion/detecciones', [DesarrolloController::class, 'index'])->name('index.detecciones');
-        Route::get('/coordinacion/detecciones/deteccion/{id}', [DesarrolloController::class, 'show'])->name('show.Cdetecciones');
-        Route::put('/coordinacion/detecciones/deteccion/observacion/{id}', [DesarrolloController::class, 'update'])->name('update.observaciones');
-        Route::post('/coordinacion/detecciones/aceptado/{id}', [DesarrolloController::class, 'store'])->name('store.aceptado');
-        Route::get('/coordinacion/registros', [DesarrolloController::class, 'index_registros'])->name('index.registros.c');
-    });
+    Route::get('/desarrollo/detecciones', [DesarrolloController::class, 'index'])->name('index.detecciones');
+    Route::get('/desarrollo/detecciones/deteccion/{id}', [DesarrolloController::class, 'show'])->name('show.Cdetecciones');
+    Route::put('/desarrollo/detecciones/deteccion/observacion/{id}', [DesarrolloController::class, 'update'])->name('update.observaciones');
+    Route::post('/desarrollo/detecciones/aceptado/{id}', [DesarrolloController::class, 'store'])->name('store.aceptado');
+    Route::get('/desarrollo/registros', [DesarrolloController::class, 'index_registros'])->name('index.registros.c');
 
     Route::get('/desarrollo/cursos', [CoursesController::class, 'desarrollo_cursos'])->name('index.desarrollo.cursos');
     Route::get('/desarrollo/curso/{id}', [CoursesController::class, 'index_curso_inscrito_desarrollo'])->name('index.desarrollo.inscritos');

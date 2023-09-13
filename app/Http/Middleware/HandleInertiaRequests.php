@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Controllers\GestionParametrosController;
 use App\Http\Controllers\NotificationController;
 use App\Models\Docente;
 use Illuminate\Http\Request;
@@ -49,6 +50,9 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'dates' => [
+                GestionParametrosController::if_enable_detecciones()
+            ]
         ]);
     }
 }

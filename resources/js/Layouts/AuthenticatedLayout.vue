@@ -45,7 +45,7 @@ onMounted(() => {
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <template v-if="user.role === 1">
+                                <template v-if="user.role === 1 || user.role === 2">
                                     <NavLink :href="route('parametros.edit')" :active="route().current('parametros.edit')">
                                         Configuración
                                     </NavLink>
@@ -60,7 +60,7 @@ onMounted(() => {
                                         Cursos
                                     </NavLink>
                                 </template>
-                                <template v-if="user.role === 2">
+                                <template v-if="user.role === 1 || user.role === 2">
                                     <NavLink :href="route('index.detecciones')" :active="route().current('index.detecciones')">
                                         Detecciones
                                     </NavLink>

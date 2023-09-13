@@ -14,7 +14,7 @@ class Carrera extends Model
     protected $table = 'carreras';
 
     protected $fillable = [
-        'nameCarrera', 'departamento_id'
+        'nameCarrera', 'departamento_id', 'presidente_academia'
     ];
 
     protected $primaryKey = 'id';
@@ -28,7 +28,8 @@ class Carrera extends Model
         return $this->belongsTo(DeteccionNecesidades::class, 'carrera_dirigido', 'id');
     }
     //Academia
-//    public function jefe_academia(){
-//        return $this->hasOne();
-//    }
+    public function presidente_academia(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Docente::class, 'id', 'presidente_academia');
+    }
 }

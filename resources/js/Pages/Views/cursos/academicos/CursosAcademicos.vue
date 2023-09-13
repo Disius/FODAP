@@ -47,23 +47,23 @@ onMounted(() => {
         </template>
 
 
-        <v-container>
-            <v-row justify="end">
-                <v-col cols="12">
-                    <v-btn prepend-icon="mdi-file-pdf-box" size="large" @click="pdf_dialog = true" color="blue-darken-1">
-                        Generar PIFDAP
-                    </v-btn>
-                </v-col>
-            </v-row>
-        </v-container>
-        <DialogPIFAP v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DialogPIFAP>
+<!--        <v-container>-->
+<!--            <v-row justify="end">-->
+<!--                <v-col cols="12">-->
+<!--                    <v-btn prepend-icon="mdi-file-pdf-box" size="large" @click="pdf_dialog = true" color="blue-darken-1">-->
+<!--                        Generar PIFDAP-->
+<!--                    </v-btn>-->
+<!--                </v-col>-->
+<!--            </v-row>-->
+<!--        </v-container>-->
+<!--        <DialogPIFAP v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DialogPIFAP>-->
 
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-3 sm:p-8 bg-white shadow sm:rounded-lg">
                 <TablaCursoAcademico :cursos="props.cursos" :user="props.auth" :curso_estado="props.curso_estado"></TablaCursoAcademico>
             </div>
         </div>
-        
+
     </AuthenticatedLayout>
 </template>
 

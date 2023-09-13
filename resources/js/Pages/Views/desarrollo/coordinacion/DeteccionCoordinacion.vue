@@ -12,6 +12,7 @@ const props = defineProps({
     detecciones: Array,
     auth: Object,
     carrera: Array,
+    errors: Object
 });
 
 const pdf_dialog = ref(false);

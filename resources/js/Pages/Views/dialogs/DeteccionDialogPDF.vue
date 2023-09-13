@@ -1,6 +1,8 @@
 <script setup>
 import {computed, ref} from "vue";
 import {saveAs} from "save-as";
+import {router, useForm} from "@inertiajs/vue3";
+import axios from "axios";
 
 const props = defineProps({
     modelValue: Boolean,
@@ -33,7 +35,18 @@ const fullYears = computed(() => {
 });
 
 function submit(){
-    console.log("Hola ")
+  axios.get(route('pdf.deteccion'), {
+    params: {
+      anio: form.value.anio,
+      periodo: form.value.periodo,
+      carrera: form.value.carrera
+    }
+  }).then(res => {
+    console.log(res.data)
+  }).catch(error => {
+    console.log(error)
+  })
+
 }
 
 </script>
