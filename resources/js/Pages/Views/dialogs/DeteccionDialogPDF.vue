@@ -3,7 +3,7 @@ import {computed, ref} from "vue";
 import {saveAs} from "save-as";
 import {router, useForm} from "@inertiajs/vue3";
 import axios from "axios";
-
+import getCursos, {event_download_deteccion} from '@/pdf/Deteccion.js'
 const props = defineProps({
     modelValue: Boolean,
     carreras: Array,
@@ -12,7 +12,7 @@ const emit = defineEmits([
     'update:modelValue'
 ]);
 
-const form = ref({
+const form = useForm({
    periodo: null,
    carrera: null,
    anio: null
@@ -34,19 +34,26 @@ const fullYears = computed(() => {
     return years
 });
 
-function submit(){
-  axios.get(route('pdf.deteccion'), {
-    params: {
-      anio: form.value.anio,
-      periodo: form.value.periodo,
-      carrera: form.value.carrera
-    }
-  }).then(res => {
-    console.log(res.data)
-  }).catch(error => {
-    console.log(error)
-  })
 
+let cursos = ref();
+function submit(){
+
+    axios.get('/pdf/deteccion', {
+        params: {
+            anio: form.anio,
+            carrera: form.carrera,
+            periodo: form.periodo,
+        }
+    }).then(res => {
+        // cursos.value = res.data.cursos
+        getCursos(res.data.cursos)
+        event_download_deteccion()
+        form.reset()
+
+    }).catch(error => {
+        console.log(error)
+    })
+    console.log(cursos)
 }
 
 </script>

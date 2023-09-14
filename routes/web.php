@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
 
 
     Route::prefix('pdf')->group(function () {
+//        Route::post('/datos/deteccion', [PDFController::class, 'requestPDFDeteccion'])->name('data.pdf.deteccion');
         Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
         Route::get('/PIFDAP', [PDFController::class, 'PIFDAP_pdf'])->name('pdf.pifdap');
     });
