@@ -14,24 +14,14 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
 class PDFController extends Controller
 {
-    public static function consultPDFDeteccion($request){
+    public function deteccion_pdf(RequestPDF $request){
         $request->validated();
-        return DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe', 'departamento')
+        $cursos = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe', 'departamento')
             ->whereYear('fecha_I', '=', $request->anio)
             ->where('periodo', '=', $request->periodo)
             ->where('carrera_dirigido', '=', $request->carrera)
             ->get();
-    }
-    public function deteccion_pdf(RequestPDF $request){
-    $cursos = $this->consultPDFDeteccion($request);
-//        $pdf = App::make('dompdf.wrapper');
-//        $contenido = $pdf->loadView('pdf.deteccion', compact('cursos'))->output();
-//        Storage::disk('local')->put('deteccion.pdf', $contenido);
-//        $file = storage_path('app/deteccion.pdf');
-//        $headers = [
-//          'Content-TYpe' => 'application/pdf'
-//        ];
-//        return response()->download($file, 'deteccion.pdf', $headers);
+
         return response()->json([
             'cursos' => $cursos,
             'status' => 'Ok'

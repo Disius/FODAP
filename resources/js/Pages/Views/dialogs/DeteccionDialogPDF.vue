@@ -1,9 +1,13 @@
 <script setup>
 import {computed, ref} from "vue";
-import {saveAs} from "save-as";
 import {router, useForm} from "@inertiajs/vue3";
 import axios from "axios";
-import getCursos, {event_download_deteccion} from '@/pdf/Deteccion.js'
+import {cursoStore} from '@/store/cursos.js'
+
+const store = cursoStore()
+
+const { getCursos } = store
+
 const props = defineProps({
     modelValue: Boolean,
     carreras: Array,
@@ -35,9 +39,7 @@ const fullYears = computed(() => {
 });
 
 
-let cursos = ref();
 function submit(){
-
     axios.get('/pdf/deteccion', {
         params: {
             anio: form.anio,
@@ -47,13 +49,13 @@ function submit(){
     }).then(res => {
         // cursos.value = res.data.cursos
         getCursos(res.data.cursos)
-        event_download_deteccion()
+        //event_download_deteccion()
         form.reset()
 
     }).catch(error => {
         console.log(error)
     })
-    console.log(cursos)
+
 }
 
 </script>

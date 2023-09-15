@@ -1,26 +1,35 @@
 import axios from 'axios';
-import {computed, ref} from 'vue';
+import {computed, reactive, ref} from 'vue';
 import { jsPDF } from "jspdf";
+import {cursoStore} from '@/store/cursos.js'
+import {storeToRefs} from 'pinia'
 
-let cursos = ref();
+const store = cursoStore()
+const { cursos } = storeToRefs(store)
 
+console.log(cursos)
+//imagenes
 let img = document.createElement('img')
 img.src = '/storage/img/ITTG.png';
-const nameI = "INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ";
-export default function getCursos(curso){
-    cursos.value = curso
-}
 
 function generateDeteccionPDF(){
     const doc = new jsPDF();
+
+    //logo y nombre de la institución
     doc.setFontSize(12);
     doc.setFont("Times-Roman");
-    doc.addImage(img, 'PNG', 28, 14.5, 11.5, 10.5)
-    doc.text(nameI, 48, 21);
-
+    doc.addImage(img, 'PNG', 40, 12, 11, 11)
+    doc.text("INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ", 56, 19);
+    //segunda seccion, subdireccion, departamento
     doc.setFontSize(10)
     doc.setFont("Times-Roman")
-    doc.text("Subdirección Académica", 60, 40)
+    doc.text("Subdirección Académica", 88, 37)
+    doc.text(`Departamento Académico: `, 52, 40)
+
+
+
+
+    //save
     doc.save('deteccion.pdf')
 }
 
