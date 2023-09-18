@@ -5,7 +5,7 @@ import axios from "axios";
 import {cursoStore} from '@/store/cursos.js'
 import {jsPDF} from "jspdf";
 import {storeToRefs} from "pinia";
-
+import autoTable from 'jspdf-autotable'
 
 const store = cursoStore()
 const { cursos } = storeToRefs(store)
@@ -70,28 +70,59 @@ function pdfGenerate(){
     img2.src = '/storage/img/logo.jpg';
 
 
-        const doc = new jsPDF();
+        const doc = new jsPDF('p', 'cm');
 
-        // //logo y nombre de la institución
-        // doc.setFontSize(12);
-        // doc.setFont("Arial")
-        // doc.addImage(img2, 'JPG', 40, 12, 14, 11)
-        // doc.text("INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ", 56, 19);
-        // //segunda seccion, subdireccion, departamento
-        // doc.setFontSize(10)
-        // doc.setFont("Arial", 'bold')
-        // doc.text("Subdirección Académica", 88, 37)
-        // doc.text(`Departamento Académico: ${store.course.value[0].departamento.nameDepartamento}`, 52, 40)
-        // //tercera seccion
-        // doc.setFontSize(10)
-        // doc.setFont("Arial", 'bold')
-        // doc.text("DIAGNÓSTICO DE NECESIDADES DE", 77, 47)
-        // doc.text("FORMACIÓN DOCENTE Y ACTUALIZACIÓN PROFESIONAL", 61, 52)
-        //
-        //
-        //
-        // //save
-        // doc.save('deteccion.pdf')
+        //logo y nombre de la institución
+        doc.setFontSize(12);
+        doc.setFont("Arial")
+        doc.addImage(img2, 'JPG', 4, 1.1, 1.2, 1)
+        doc.text("INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ", 5.7, 1.7);
+
+        //segunda seccion, subdireccion, departamento
+        doc.setFontSize(10)
+        doc.setFont("Arial", 'bold')
+        doc.text("Subdirección Académica", 8.8, 3.1)
+        doc.text(`Departamento Académico: ${store.course.value[0].departamento.nameDepartamento}`, 5.9, 3.5)
+
+        //tercera seccion
+        doc.setFontSize(10)
+        doc.setFont("Arial", 'bold')
+        doc.text("DIAGNÓSTICO DE NECESIDADES DE", 7.8, 4.3)
+        doc.text("FORMACIÓN DOCENTE Y ACTUALIZACIÓN PROFESIONAL", 6, 4.7)
+
+        //cuarta seccion
+        doc.setFontSize(10)
+        doc.setFont("Arial", 'bold')
+        doc.text(`PARA LAS(OS) PROFESORAS(ES) DE LA ACADEMIA DE: ${store.course.value[0].carrera.nameCarrera}`, 3.6, 5.8)
+        doc.setFontSize(10)
+        doc.setFont("Arial", 'normal')
+        doc.text(`Fecha de realización del diagnóstico: `, 3.6, 6.3)
+
+        //tablas
+        doc.setFontSize(10)
+        doc.setFont("Arial", 'normal')
+        doc.text('Jefa (e) del Departamento Académico', 3.7, 6.9)
+
+        autoTable(doc, {
+            margin: {left: 2.5, right: 4},
+            styles: {
+                fontSize: 10,
+                lineWidth: 0.01,
+                lineColor: [0,0,0]
+            },
+            tableWidth: 14,
+            theme: 'plain',
+            columnStyles: { 0: { cellWidth: 8 }, 1: { cellWidth: 8} },
+            startY: 7.0,
+            startX: 3.5,
+            head: [['Nombre', 'Firma']],
+            body: [
+                [[store.course.value[0].jefe.nombre_completo]],
+                // ...
+            ],
+        })
+        //save
+        doc.save('deteccion.pdf')
 }
 
 </script>
