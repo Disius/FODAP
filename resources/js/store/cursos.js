@@ -8,7 +8,11 @@ export const cursoStore = defineStore('cursos', {
             cursos: []
         }
     },
-
+    getters: {
+        course(){
+            return computed(() => this.cursos)
+        }
+    },
     actions: {
         getCursos(curso){
             this.cursos = curso

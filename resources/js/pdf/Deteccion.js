@@ -4,10 +4,10 @@ import { jsPDF } from "jspdf";
 import {cursoStore} from '@/store/cursos.js'
 import {storeToRefs} from 'pinia'
 
-const store = cursoStore()
-const { cursos } = storeToRefs(store)
+// const store = cursoStore()
+// const { cursos } = storeToRefs(store)
 
-console.log(cursos)
+
 //imagenes
 let img = document.createElement('img')
 img.src = '/storage/img/ITTG.png';

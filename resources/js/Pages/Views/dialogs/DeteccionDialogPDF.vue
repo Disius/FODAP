@@ -3,10 +3,14 @@ import {computed, ref} from "vue";
 import {router, useForm} from "@inertiajs/vue3";
 import axios from "axios";
 import {cursoStore} from '@/store/cursos.js'
+import {jsPDF} from "jspdf";
+import {storeToRefs} from "pinia";
+
 
 const store = cursoStore()
-
+const { cursos } = storeToRefs(store)
 const { getCursos } = store
+const {course} = store
 
 const props = defineProps({
     modelValue: Boolean,
@@ -49,13 +53,45 @@ function submit(){
     }).then(res => {
         // cursos.value = res.data.cursos
         getCursos(res.data.cursos)
-        //event_download_deteccion()
+        pdfGenerate()
         form.reset()
 
     }).catch(error => {
         console.log(error)
     })
 
+}
+
+function pdfGenerate(){
+    //imagenes
+    let img = document.createElement('img')
+    img.src = '/storage/img/ITTG.png';
+    let img2 = document.createElement('img')
+    img2.src = '/storage/img/logo.jpg';
+
+
+        const doc = new jsPDF();
+
+        // //logo y nombre de la institución
+        // doc.setFontSize(12);
+        // doc.setFont("Arial")
+        // doc.addImage(img2, 'JPG', 40, 12, 14, 11)
+        // doc.text("INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ", 56, 19);
+        // //segunda seccion, subdireccion, departamento
+        // doc.setFontSize(10)
+        // doc.setFont("Arial", 'bold')
+        // doc.text("Subdirección Académica", 88, 37)
+        // doc.text(`Departamento Académico: ${store.course.value[0].departamento.nameDepartamento}`, 52, 40)
+        // //tercera seccion
+        // doc.setFontSize(10)
+        // doc.setFont("Arial", 'bold')
+        // doc.text("DIAGNÓSTICO DE NECESIDADES DE", 77, 47)
+        // doc.text("FORMACIÓN DOCENTE Y ACTUALIZACIÓN PROFESIONAL", 61, 52)
+        //
+        //
+        //
+        // //save
+        // doc.save('deteccion.pdf')
 }
 
 </script>
