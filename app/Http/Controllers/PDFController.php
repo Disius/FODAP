@@ -14,22 +14,31 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
 class PDFController extends Controller
 {
+    public static function pdf_request($data){
+        return DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe', 'departamento')
+            ->whereYear('fecha_I', '=', $data->anio)
+            ->where('periodo', '=', $data->periodo)
+            ->where('carrera_dirigido', '=', $data->carrera)
+            ->get();
+    }
+
+    public static function save_file($file){
+        return Storage::disk('public')->put('Deteccion.pdf', $file);
+    }
+    public static function download_file_deteccion($file){
+        return Storage::download($file);
+    }
     public function deteccion_pdf(RequestPDF $request){
         $request->validated();
-        $cursos = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe', 'departamento')
-            ->whereYear('fecha_I', '=', $request->anio)
-            ->where('periodo', '=', $request->periodo)
-            ->where('carrera_dirigido', '=', $request->carrera)
-            ->get();
+        $cursos = $this->pdf_request($request);
+        $pdf = Pdf::loadView('pdf.deteccion', compact('cursos'))->output();
+        $this->save_file($pdf);
         if (count($cursos) == 0){
             return response()->json([
                 'mensaje' => 'No se encontro ningun dato con ese criterio de busqueda'
             ]);
         }else{
-            return response()->json([
-                'cursos' => $cursos,
-                'status' => 'Ok'
-            ]);
+            return $this->download_file_deteccion('Deteccion.pdf');
         }
     }
     public function PIFDAP_pdf(Request $request){
