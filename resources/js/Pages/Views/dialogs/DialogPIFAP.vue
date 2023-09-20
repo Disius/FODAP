@@ -3,6 +3,11 @@
 import {computed, ref} from "vue";
 import {saveAs} from "save-as";
 
+
+const errorHandle = ref("");
+const alert = ref(false);
+
+
 const props = defineProps({
     modelValue: Boolean,
 });
@@ -39,8 +44,17 @@ function submit(){
             anio: form.value.anio
         }
     }).then(res => {
-        let blob = new Blob([res.data], {type: 'application/pdf'})
-        saveAs(blob, 'PIFDAP.pdf')
+        if (res.data.mensaje){
+            alert.value = true
+            errorHandle.value = res.data.mensaje
+        }else {
+            const url = '/storage/PIFDAP.pdf';
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'PIFDAP.pdf');
+            document.body.appendChild(link);
+            link.click();
+        }
     }).catch(error => {
         console.log(error)
     })
@@ -53,6 +67,18 @@ function submit(){
             <v-card elevation="3" width="500" height="400">
                 <v-card-title>Ingresar los datos para generar PDF</v-card-title>
                 <v-card-text>
+                    <div class="pb-2">
+                        <v-alert
+                            v-model="alert"
+                            closable
+                            close-label="Cerrar"
+                            color="error"
+                            icon="$error"
+                            title="Error"
+                        >
+                            {{errorHandle}}
+                        </v-alert>
+                    </div>
                     <label for="anio" class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Año: </label>
                     <div class="pt-5">
                         <v-select v-model="form.anio" :items="fullYears" item-title="name" item-value="id"></v-select>

@@ -10,23 +10,23 @@ const props = defineProps({
 })
 
 
-const formatFechaF = computed(() => {
-    let date = null
-    for (let i of props.cursos){
-        date = new Date(i.fecha_F).toLocaleDateString('es-MX')
-    }
-    return date;
-});
-// Computed propierties
-
-
-const formatFechaI = computed(() => {
-    let date = null
-    for (let i of props.cursos){
-        date = new Date(i.fecha_I).toLocaleDateString('es-MX')
-    }
-    return date;
-});
+// const formatFechaF = computed(() => {
+//     let date = null
+//     for (let i of props.cursos){
+//         date = new Date(i.fecha_F).toLocaleDateString('es-MX')
+//     }
+//     return date;
+// });
+// // Computed propierties
+//
+//
+// const formatFechaI = computed(() => {
+//     let date = null
+//     for (let i of props.cursos){
+//         date = new Date(i.fecha_I).toLocaleDateString('es-MX')
+//     }
+//     return date;
+// });
 
 
 
@@ -80,7 +80,7 @@ const formatFechaI = computed(() => {
                     {{ curso.objetivoEvento }}
                 </td>
                 <td class="v-card--hover">
-                    {{ formatFechaI }}  {{formatFechaF}}
+                    {{ curso.fecha_I }} - {{curso.fecha_F}}
                 </td>
                 <td class="v-card--hover">
                     <template v-if="curso.modalidad === 1">

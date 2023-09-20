@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RequestPDF extends FormRequest
+class PIFDAPRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,6 @@ class RequestPDF extends FormRequest
         return [
             'anio' => ['required'],
             'periodo' => ['required'],
-            'carrera' => ['required']
         ];
     }
 
@@ -32,7 +31,6 @@ class RequestPDF extends FormRequest
     {
         return [
             'anio.required' => 'El año es requerido!',
-            'carrera.required' => 'Debe indicar a la carrera a la que va dirigido',
             'periodo.required' => 'Debe indicar el periodo'
         ];
     }

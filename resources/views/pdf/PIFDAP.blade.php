@@ -12,7 +12,7 @@
 
         .header {
             position: fixed;
-            top: -2cm;
+            top: -1.0cm;
             width: 100%;
             height: 100px;
             text-align: center;
@@ -22,17 +22,19 @@
         .header p {
             margin: 0;
             font-size: 10pt;
+            font-family: "Arial", "Helvetica", sans-serif;
+            font-weight: bold;
         }
 
         .logo {
             position: fixed;
-            top: -2cm;
-            left: 0;
+            top: -2.0cm;
+            left: 1.8cm;
         }
 
         .logo img {
-            width: 50px;
-            height: 50px;
+            width: 75px;
+            height: 60px;
         }
 
         .footer {
@@ -84,7 +86,15 @@
 <div class="header">
     <p>PROGRAMA INSTITUCIONAL DE FORMACIÓN DOCENTE</p>
     <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIERREZ</p>
-
+    @php
+        $anio = explode('-', $cursos[0]->fecha_F)
+    @endphp
+    @if($cursos[0]->periodo == 1)
+        <p>PERIODO ENERO - JUNIO {{$anio[0]}}</p>
+    @endif
+    <div class="logo">
+        <img src="{{public_path('/storage/img/logo.jpg')}}" alt="">
+    </div>
 </div>
 </body>
 
