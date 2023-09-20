@@ -9,8 +9,21 @@ export const cursoStore = defineStore('cursos', {
         }
     },
     getters: {
-        course(){
-            return computed(() => this.cursos)
+        course(state){
+            return state.cursos
+        },
+        FDCourse(state){
+            return state.cursos.filter(c => {
+                return c.tipo_FDoAP === 1
+            })
+        },
+        APCourse(state){
+          return state.cursos.filter(c => {
+              return c.tipo_FDoAP === 2
+          })
+        },
+        anio_realizacion(state){
+            return new Date(state.cursos[0].created_at).toLocaleDateString('es-MX')
         }
     },
     actions: {

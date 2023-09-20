@@ -21,11 +21,16 @@ class PDFController extends Controller
             ->where('periodo', '=', $request->periodo)
             ->where('carrera_dirigido', '=', $request->carrera)
             ->get();
-
-        return response()->json([
-            'cursos' => $cursos,
-            'status' => 'Ok'
-        ]);
+        if (count($cursos) == 0){
+            return response()->json([
+                'mensaje' => 'No se encontro ningun dato con ese criterio de busqueda'
+            ]);
+        }else{
+            return response()->json([
+                'cursos' => $cursos,
+                'status' => 'Ok'
+            ]);
+        }
     }
     public function PIFDAP_pdf(Request $request){
         $pdf_data = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'jefe', 'departamento'])
