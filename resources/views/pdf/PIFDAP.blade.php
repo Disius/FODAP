@@ -12,7 +12,7 @@
 
         .header {
             position: fixed;
-            top: -1.0cm;
+            top: -0.5cm;
             width: 100%;
             height: 100px;
             text-align: center;
@@ -42,12 +42,16 @@
             bottom: -1cm;
             width: 100%;
             height: 30px;
-            font-weight: bold;
+            font-weight: normal;
+            justify-content: center;
+            align-content: center;
         }
 
         .footer p {
             display: inline-block;
-            font-size: 7pt;
+            font-size: 9pt;
+            margin-left: 50px;
+            margin-right: 50px;
         }
 
         .custom_table {
@@ -83,19 +87,26 @@
 </head>
 
 <body>
-<div class="header">
-    <p>PROGRAMA INSTITUCIONAL DE FORMACIÓN DOCENTE</p>
-    <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIERREZ</p>
-    @php
-        $anio = explode('-', $cursos[0]->fecha_F)
-    @endphp
-    @if($cursos[0]->periodo == 1)
-        <p>PERIODO ENERO - JUNIO {{$anio[0]}}</p>
-    @endif
+    <div class="header">
+        <p>PROGRAMA INSTITUCIONAL DE FORMACIÓN DOCENTE</p>
+        <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIERREZ</p>
+        @php
+            $anio = explode('-', $cursos[0]->fecha_F)
+        @endphp
+        @if($cursos[0]->periodo == 1)
+            <p>PERIODO ENERO - JUNIO {{$anio[0]}}</p>
+        @endif
+    </div>
     <div class="logo">
         <img src="{{public_path('/storage/img/logo.jpg')}}" alt="">
     </div>
-</div>
+    <div class="footer">
+        <p>ITTG-AC-PO-006-02</p>
+        <p style="float:right;margin-top: 23px">Rev.{{0}}</p>
+    </div>
+
+{{--    Tabla de formacion docente--}}
+
 </body>
 
 </html>

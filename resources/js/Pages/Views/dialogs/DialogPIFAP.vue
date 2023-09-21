@@ -2,8 +2,10 @@
 
 import {computed, ref} from "vue";
 import {saveAs} from "save-as";
+import {cursoStore} from "@/store/cursos.js";
+import {jsPDF} from "jspdf";
 
-
+const store = cursoStore();
 const errorHandle = ref("");
 const alert = ref(false);
 
@@ -48,16 +50,45 @@ function submit(){
             alert.value = true
             errorHandle.value = res.data.mensaje
         }else {
-            const url = '/storage/PIFDAP.pdf';
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'PIFDAP.pdf');
-            document.body.appendChild(link);
-            link.click();
+            store.getCursos(res.data.cursos)
+            generatePDF()
+            // const url = '/storage/PIFDAP.pdf';
+            // const link = document.createElement('a');
+            // link.href = url;
+            // link.setAttribute('download', 'PIFDAP.pdf');
+            // document.body.appendChild(link);
+            // link.click();
         }
     }).catch(error => {
         console.log(error)
     })
+
+
+
+    const generatePDF = () => {
+        const doc = new jsPDF('l', 'cm', 'a4')
+
+        let img2 = document.createElement('img')
+        img2.src = '/storage/img/logo.jpg';
+
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++){
+            let x = doc.internal.pageSize.getWidth()
+            let y = doc.internal.pageSize.getHeight()
+            // Add header
+            doc.setFontSize(12);
+            doc.setFont("Arial", 'bold')
+            doc.addImage(img2, 'JPG', x - 25 , y - 17, 2.3, 2.3,)
+            doc.text("PROGRAMA INSTITUCIONAL DE FORMACIÓN DOCENTE", x-10, y-12, {align:"center"});
+            doc.text("INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ", x-10, y-10, {align:"center"});
+            doc.text(`Periodo ${store.anio_realizacion}`, x-10, y-8, {align:"center"});
+        }
+
+        window.open(doc.output('bloburl', {
+            filename: 'deteccion.pdf'
+        }))
+
+    }
 }
 </script>
 

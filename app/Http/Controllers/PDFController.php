@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PIFDAPRequest;
 use App\Http\Requests\RequestPDFDeteccion;
 use App\Models\DeteccionNecesidades;
+use http\Env\Response;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -31,37 +32,43 @@ class PDFController extends Controller
     public static function save_file($file, $path){
         return Storage::disk('public')->put($path, $file);
     }
-    public static function download_file_deteccion($file){
+    public static function download_file($file): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
         return Storage::download($file);
     }
+
     public function deteccion_pdf(RequestPDFDeteccion $request){
         $request->validated();
         $cursos = $this->pdf_request_deteccion($request);
-        $pdf = Pdf::loadView('pdf.deteccion', compact('cursos'))->output();
-        $path = "Deteccion.pdf";
-        $this->save_file($pdf, $path);
         if (count($cursos) == 0){
             return response()->json([
                 'mensaje' => 'No se encontro ningun dato con ese criterio de busqueda'
             ]);
-        }else{
-            return $this->download_file_deteccion($path);
+        }else {
+            $pdf = Pdf::loadView('pdf.deteccion', compact('cursos'))->output();
+            $path = "Deteccion.pdf";
+            $this->save_file($pdf, $path);
+            return $this->download_file($path);
         }
+
     }
     public function PIFDAP_pdf(PIFDAPRequest $request){
         $request->validated();
         $cursos = $this->pdf_request_PIFDAP($request);
-        $pdf = Pdf::loadView('pdf.PIFDAP', compact('cursos'))
-            ->setPaper('letter', 'landscape')
-            ->output();
-        $path = 'PIFDAP.pdf';
-        $this->save_file($pdf, $path);
         if (count($cursos) == 0){
             return response()->json([
                 'mensaje' => 'No se encontro ningun dato con ese criterio de busqueda'
             ]);
-        }else{
-            return $this->download_file_deteccion($path);
+        }else {
+            $pdf = Pdf::loadView('pdf.PIFDAP', compact('cursos'))
+                ->setPaper('letter', 'landscape')
+                ->output();
+            $path = 'PIFDAP.pdf';
+            $this->save_file($pdf, $path);
+
+            return response()->json([
+                'cursos' => $cursos
+            ]);
         }
     }
 }

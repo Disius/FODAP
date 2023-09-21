@@ -23,7 +23,8 @@ export const cursoStore = defineStore('cursos', {
           })
         },
         anio_realizacion(state){
-            return new Date(state.cursos[0].created_at).toLocaleDateString('es-MX')
+            let date = new Date(state.cursos[0].created_at);
+            return date.getFullYear()
         }
     },
     actions: {
