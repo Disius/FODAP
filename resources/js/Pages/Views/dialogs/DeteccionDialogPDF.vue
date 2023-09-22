@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {router, useForm} from "@inertiajs/vue3";
 import axios from "axios";
 import {cursoStore} from '@/store/cursos.js'
@@ -70,20 +70,25 @@ function submit(){
         }
 
     }).catch(error => {
-        console.log(error)
+        alert2.value = true
     })
 
 }
 
 
-
+onMounted(() => {
+    setTimeout(()=>{
+        alert.value = false
+        alert2.value = false
+    },10000)
+})
 
 </script>
 
 <template>
     <v-dialog width="auto" persistent v-model="props.modelValue">
         <form @submit.prevent="submit">
-            <v-card elevation="3" width="500" height="500">
+            <v-card elevation="3" width="500" height="600">
                 <v-card-title>Ingresar los datos para generar PDF</v-card-title>
                 <v-card-text>
                     <div class="pb-2">
@@ -98,18 +103,18 @@ function submit(){
                             {{errorHandle}}
                         </v-alert>
                     </div>
-<!--                    <div class="pb-2">-->
-<!--                        <v-alert-->
-<!--                            v-model="alert2"-->
-<!--                            closable-->
-<!--                            close-label="Cerrar"-->
-<!--                            color="error"-->
-<!--                            icon="$error"-->
-<!--                            title="Error"-->
-<!--                        >-->
-<!--                            Debe indicar el año, carrera a la que va dirigido y el periodo-->
-<!--                        </v-alert>-->
-<!--                    </div>-->
+                    <div class="pb-2">
+                        <v-alert
+                            v-model="alert2"
+                            closable
+                            close-label="Cerrar"
+                            color="error"
+                            icon="$error"
+                            title="Error"
+                        >
+                            ¡Debe ingresar los datos para generar el documento!
+                        </v-alert>
+                    </div>
                     <label for="carrera" class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Carrera a la que va dirigida: </label>
                     <div class="pt-5">
                         <v-select v-model="form.carrera" :items="props.carreras" item-title="nameCarrera" item-value="id"></v-select>

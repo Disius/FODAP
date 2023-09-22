@@ -16,7 +16,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
 class PDFController extends Controller
 {
-    public static function pdf_request_deteccion($data){
+    public static function pdf_request_deteccion($data): \Illuminate\Database\Eloquent\Collection|array
+    {
         return DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe', 'departamento')
             ->whereYear('fecha_I', '=', $data->anio)
             ->where('periodo', '=', $data->periodo)
@@ -24,12 +25,22 @@ class PDFController extends Controller
             ->get();
     }
 
-    public static function pdf_request_PIFDAP($data){
+    public static function FD_request($data)
+    {
         return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'jefe', 'departamento'])
             ->where('periodo', '=', $data->input('periodo'))
+            ->where('tipo_FDoAP', '=', 1)
+            ->whereYear('fecha_I', '=', $data->input('anio'))->get();
+
+    }
+    public static function AP_request($data){
+        return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'jefe', 'departamento'])
+            ->where('periodo', '=', $data->input('periodo'))
+            ->where('tipo_FDoAP', '=', 2)
             ->whereYear('fecha_I', '=', $data->input('anio'))->get();
     }
-    public static function save_file($file, $path){
+    public static function save_file($file, $path): bool
+    {
         return Storage::disk('public')->put($path, $file);
     }
     public static function download_file($file): \Symfony\Component\HttpFoundation\StreamedResponse
@@ -37,7 +48,8 @@ class PDFController extends Controller
         return Storage::download($file);
     }
 
-    public function deteccion_pdf(RequestPDFDeteccion $request){
+    public function deteccion_pdf(RequestPDFDeteccion $request): \Symfony\Component\HttpFoundation\StreamedResponse|\Illuminate\Http\JsonResponse
+    {
         $request->validated();
         $cursos = $this->pdf_request_deteccion($request);
         if (count($cursos) == 0){
@@ -52,23 +64,22 @@ class PDFController extends Controller
         }
 
     }
-    public function PIFDAP_pdf(PIFDAPRequest $request){
+    public function PIFDAP_pdf(PIFDAPRequest $request)
+    {
         $request->validated();
-        $cursos = $this->pdf_request_PIFDAP($request);
-        if (count($cursos) == 0){
+        $FD = $this->FD_request($request);
+        $AP = $this->AP_request($request);
+        if (count($FD) == 0 && count($AP) == 0){
             return response()->json([
-                'mensaje' => 'No se encontro ningun dato con ese criterio de busqueda'
+                'mensaje' => 'No se encontro ningun dato con ese criterio de busqueda',
             ]);
         }else {
-            $pdf = Pdf::loadView('pdf.PIFDAP', compact('cursos'))
+            $pdf = Pdf::loadView('pdf.PIFDAP', compact('FD', 'AP'))
                 ->setPaper('letter', 'landscape')
                 ->output();
             $path = 'PIFDAP.pdf';
             $this->save_file($pdf, $path);
-
-            return response()->json([
-                'cursos' => $cursos
-            ]);
+            return $this->download_file($path);
         }
     }
 }

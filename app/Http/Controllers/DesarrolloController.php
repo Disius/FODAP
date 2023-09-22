@@ -129,7 +129,7 @@ class DesarrolloController extends Controller
 
     public function update_curso(Request $request, $id){
         $totalHoras = CoursesController::total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
-        
+
         $curso = DeteccionNecesidades::find($id);
 
         $curso->asignaturaFA = $request->AsignaturasFA;
@@ -154,7 +154,7 @@ class DesarrolloController extends Controller
 
 
         return Redirect::route('detecciones.index');
-    }   
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -221,12 +221,29 @@ class DesarrolloController extends Controller
         return Redirect::route('index.detecciones');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function index_curso_inscrito_desarrollo($id){
+        $docente = Docente::all();
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
+            ->find($id);
+        return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
+            'curso' => $curso,
+            'docente' => $docente,
+        ]);
+    }
+
+    public function inscripcion_por_desarrollo($id, Request $request){
+        $deteccion = DeteccionNecesidades::find($id);
+        $deteccion->docente_inscrito()->sync($request->input('id_docente', []));
+        return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
+    }
+
+    public function desarrollo_cursos(){
+        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
+            ->get();
+        $this->state_curso();
+        return Inertia::render('Views/cursos/desarrollo/DesarrolloCursos', [
+            'cursos' => $cursos,
+        ]);
     }
 
 }

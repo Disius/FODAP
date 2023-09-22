@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicosController;
 use App\Http\Controllers\CoursesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -17,15 +18,15 @@ use Inertia\Inertia;
 */
 
 Route::middleware(['auth', 'role:Jefes Academicos'])->group(function(){
-    Route::get('/detecciones', [CoursesController::class, 'index'])->name('detecciones.index');
-    Route::get('/detecciones/create', [CoursesController::class, 'create'])->name('detecciones.create');
-    Route::post('/deteccion/guardado', [CoursesController::class, 'store'])->name('store.detecciones');
-    Route::get('/deteccion/{id}', [CoursesController::class, 'show'])->name('show.detecciones');
-    Route::get('/deteccion/editar/{id}', [CoursesController::class, 'edit'])->name('edit.detecciones');
-    Route::put('/deteccion/actualizado/{id}', [CoursesController::class, 'update'])->name('update.detecciones');
-    Route::get('/registros', [CoursesController::class, 'registros'])->name('index.registros');
+    Route::get('/detecciones', [AcademicosController::class, 'index'])->name('detecciones.index');
+    Route::get('/detecciones/create', [AcademicosController::class, 'create'])->name('detecciones.create');
+    Route::post('/deteccion/guardado', [AcademicosController::class, 'store'])->name('store.detecciones');
+    Route::get('/deteccion/{id}', [AcademicosController::class, 'show'])->name('show.detecciones');
+    Route::get('/deteccion/editar/{id}', [AcademicosController::class, 'edit'])->name('edit.detecciones');
+    Route::put('/deteccion/actualizado/{id}', [AcademicosController::class, 'update'])->name('update.detecciones');
+    Route::get('/registros', [AcademicosController::class, 'registros'])->name('index.registros');
 
 
-    Route::get('/academicos/cursos', [CoursesController::class, 'index_cursos_academico'])->name('index.cursos.academicos');
-    Route::get('/academicos/curso/inscritos/{id}', [CoursesController::class, 'index_curso_academicos_inscrito'])->name('show.inscritos.academicos');
+    Route::get('/academicos/cursos', [AcademicosController::class, 'index_cursos_academico'])->name('index.cursos.academicos');
+    Route::get('/academicos/curso/inscritos/{id}', [AcademicosController::class, 'index_curso_academicos_inscrito'])->name('show.inscritos.academicos');
 });

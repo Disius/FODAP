@@ -49,14 +49,17 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::get('/desarrollo/editar/curso/{id}', [DesarrolloController::class, 'edit_curso'])->name('edit.curso');
 
 //inscripciones
-    Route::post('/docente/inscribir/{id}', [CoursesController::class, 'inscripcion_por_desarrollo'])->name('inscribir.docente');
+    Route::post('/docente/inscribir/{id}', [DesarrolloController::class, 'inscripcion_por_desarrollo'])->name('inscribir.docente');
 
+
+//detecciones de necesidades
     Route::get('/desarrollo/detecciones', [DesarrolloController::class, 'index'])->name('index.detecciones');
     Route::get('/desarrollo/detecciones/deteccion/{id}', [DesarrolloController::class, 'show'])->name('show.Cdetecciones');
     Route::put('/desarrollo/detecciones/deteccion/observacion/{id}', [DesarrolloController::class, 'update'])->name('update.observaciones');
     Route::post('/desarrollo/detecciones/aceptado/{id}', [DesarrolloController::class, 'store'])->name('store.aceptado');
     Route::get('/desarrollo/registros', [DesarrolloController::class, 'index_registros'])->name('index.registros.c');
 
-    Route::get('/desarrollo/cursos', [CoursesController::class, 'desarrollo_cursos'])->name('index.desarrollo.cursos');
-    Route::get('/desarrollo/curso/{id}', [CoursesController::class, 'index_curso_inscrito_desarrollo'])->name('index.desarrollo.inscritos');
+//desarrollo academico cursos
+    Route::get('/desarrollo/cursos', [DesarrolloController::class, 'desarrollo_cursos'])->name('index.desarrollo.cursos');
+    Route::get('/desarrollo/curso/{id}', [DesarrolloController::class, 'index_curso_inscrito_desarrollo'])->name('index.desarrollo.inscritos');
 });

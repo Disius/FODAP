@@ -11,7 +11,7 @@
         }
 
         .header {
-            position: fixed;
+            position: absolute;
             top: -0.5cm;
             width: 100%;
             height: 100px;
@@ -20,6 +20,22 @@
         }
 
         .header p {
+            margin: 0;
+            font-size: 10pt;
+            font-family: "Arial", "Helvetica", sans-serif;
+            font-weight: bold;
+        }
+        .header2 {
+            position: absolute;
+            top: -0.5cm;
+            width: 100%;
+            height: 100px;
+            text-align: center;
+            font-weight: bold;
+            margin-left: 95px;
+        }
+
+        .header2 p {
             margin: 0;
             font-size: 10pt;
             font-family: "Arial", "Helvetica", sans-serif;
@@ -55,10 +71,11 @@
         }
 
         .custom_table {
-            /*page-break-inside: auto;*/
-            /*padding-top: 100px;*/
-            /*margin-top: 100px;*/
-            border: 1px solid #000;
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid black;
+            margin-top: 50px;
         }
 
         .custom_table td,th {
@@ -91,10 +108,12 @@
         <p>PROGRAMA INSTITUCIONAL DE FORMACIÓN DOCENTE</p>
         <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIERREZ</p>
         @php
-            $anio = explode('-', $cursos[0]->fecha_F)
+            $anio = explode('-', $FD[0]->fecha_F)
         @endphp
-        @if($cursos[0]->periodo == 1)
+        @if($FD[0]->periodo == 1)
             <p>PERIODO ENERO - JUNIO {{$anio[0]}}</p>
+        @else
+            <p>PERIODO AGOSTO - DICIEMBRE {{$anio[0]}}</p>
         @endif
     </div>
     <div class="logo">
@@ -104,9 +123,191 @@
         <p>ITTG-AC-PO-006-02</p>
         <p style="float:right;margin-top: 23px">Rev.{{0}}</p>
     </div>
-
 {{--    Tabla de formacion docente--}}
+    @if(count($FD) == 0)
+        <table class="custom_table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nombre de los Cursos</th>
+                <th>Objetivo</th>
+                <th>Fecha de realización</th>
+                <th>Lugar (presencial o virtual)</th>
+                <th>Horario</th>
+                <th>No. de horas x curso</th>
+                <th>Facilitador (a)</th>
+                <th>Dirigido a:</th>
+                <th>Observaciones</th>
+            </tr>
+            </thead>
 
+                <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+        </table>
+    @else
+        <table class="custom_table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nombre de los Cursos</th>
+                <th>Objetivo</th>
+                <th>Fecha de realización</th>
+                <th>Lugar (presencial o virtual)</th>
+                <th>Horario</th>
+                <th>No. de horas x curso</th>
+                <th>Facilitador (a)</th>
+                <th>Dirigido a:</th>
+                <th>Observaciones</th>
+            </tr>
+            </thead>
+            @php
+                $count = 1;
+            @endphp
+            @foreach($FD as $curso)
+                <tbody>
+                <tr>
+                    <td>
+                        {{$count++}}
+                    </td>
+                    <td>{{$curso->nombreCurso}}</td>
+                    <td>{{$curso->objetivoEvento}}</td>
+                    <td>{{$curso->fecha_I}} A {{$curso->fecha_F}}</td>
+                    <td>
+                        @if($curso->modalidad == 1)
+                            Virtual
+                        @elseif($curso->modalidad == 2)
+                            Presencial
+                        @else
+                            Híbrido
+                        @endif
+                    </td>
+                    <td>{{$curso->hora_I}} A {{$curso->hora_F}}</td>
+                    <td>{{$curso->total_horas}}</td>
+                    <td>
+                        @foreach($curso->deteccion_facilitador as $facilitador)
+                            {{$facilitador->nombre_completo}}.
+                        @endforeach
+                    </td>
+                    <td>{{$curso->carrera->nameCarrera}}</td>
+                    <td>{{$curso->observaciones}}</td>
+                </tr>
+                </tbody>
+            @endforeach
+        </table>
+    @endif
+
+
+    <div style="page-break-before: always"></div>
+
+    <div class="header2">
+        <p>PROGRAMA INSTITUCIONAL DE ACTUALIZACIÓN PROFESIONAL</p>
+        <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIERREZ</p>
+        @php
+            $anio = explode('-', $AP[0]->fecha_F)
+        @endphp
+        @if($AP[0]->periodo == 1)
+            <p>PERIODO ENERO - JUNIO {{$anio[0]}}</p>
+        @else
+            <p>PERIODO AGOSTO - DICIEMBRE {{$anio[0]}}</p>
+        @endif
+    </div>
+    @if(count($AP) == 0)
+        <table class="custom_table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nombre de los Cursos</th>
+                <th>Objetivo</th>
+                <th>Fecha de realización</th>
+                <th>Lugar (presencial o virtual)</th>
+                <th>Horario</th>
+                <th>No. de horas x curso</th>
+                <th>Facilitador (a)</th>
+                <th>Dirigido a:</th>
+                <th>Observaciones</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    @else
+        <table class="custom_table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Nombre de los Cursos</th>
+                <th>Objetivo</th>
+                <th>Fecha de realización</th>
+                <th>Lugar (presencial o virtual)</th>
+                <th>Horario</th>
+                <th>No. de horas x curso</th>
+                <th>Facilitador (a)</th>
+                <th>Dirigido a:</th>
+                <th>Observaciones</th>
+            </tr>
+            </thead>
+            @php
+                $count = 1;
+            @endphp
+            @foreach($AP as $curso)
+                <tbody>
+                <tr>
+                    <td>
+                        {{$count++}}
+                    </td>
+                    <td>{{$curso->nombreCurso}}</td>
+                    <td>{{$curso->objetivoEvento}}</td>
+                    <td>{{$curso->fecha_I}} A {{$curso->fecha_F}}</td>
+                    <td>
+                        @if($curso->modalidad == 1)
+                            Virtual
+                        @elseif($curso->modalidad == 2)
+                            Presencial
+                        @else
+                            Híbrido
+                        @endif
+                    </td>
+                    <td>{{$curso->hora_I}} A {{$curso->hora_F}}</td>
+                    <td>{{$curso->total_horas}}</td>
+                    <td>
+                        @foreach($curso->deteccion_facilitador as $facilitador)
+                            {{$facilitador->nombre_completo}}.
+                        @endforeach
+                    </td>
+                    <td>{{$curso->carrera->nameCarrera}}</td>
+                    <td>{{$curso->observaciones}}</td>
+                </tr>
+                </tbody>
+            @endforeach
+        </table>
+    @endif
+
+    <div style="page-break-before: always"></div>
 </body>
 
 </html>

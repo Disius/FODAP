@@ -24,6 +24,12 @@ const formatFechaI = computed(() => {
 
 const dialog_inscripcion = ref(false);
 
+
+const submit = () => {
+
+}
+
+
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -180,7 +186,7 @@ onMounted(() => {
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Apellido Paterno</th>
                         <th class="text-center">Apellido Materno</th>
-                        <td class="text-center">Cédula</td>
+                        <td class="text-center">CÉDULA DE INSCRIPCIÓN</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -189,13 +195,13 @@ onMounted(() => {
                         :key="inscrito.id"
 
                     >
-                        <td>{{inscrito.nombre}}</td>
-                        <td>{{inscrito.apellidoPat}}</td>
-                        <td>{{inscrito.apellidoMat}}</td>
+                        <td class="text-center">{{inscrito.nombre}}</td>
+                        <td class="text-center">{{inscrito.apellidoPat}}</td>
+                        <td class="text-center">{{inscrito.apellidoMat}}</td>
                         <td>
                             <div class="flex justify-center items-center">
-                                <v-btn prepend-icon="mdi-file-pdf-box">
-                                    GENERAR CÉDULA DE INSCRIPCIÓN
+                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit">
+                                    GENERAR PDF
                                 </v-btn>
                             </div>
                         </td>

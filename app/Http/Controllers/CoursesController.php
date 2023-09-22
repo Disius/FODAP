@@ -219,36 +219,15 @@ class CoursesController extends Controller
         ]);
     }
 
-    public function index_curso_academicos_inscrito($id){
-        $docente = Docente::all();
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
-            ->find($id);
-        return Inertia::render('Views/cursos/academicos/Show.Inscritos', [
-            'curso' => $curso,
-            'docente' => $docente
-        ]);
-    }
 
-    public function index_curso_inscrito_desarrollo($id){
-        $docente = Docente::all();
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
-            ->find($id);
-        return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
-            'curso' => $curso,
-            'docente' => $docente,
-        ]);
-    }
+
+
     public function inscripcion_docente(Request $request, $id){
         $deteccion = DeteccionNecesidades::find($id);
         $deteccion->docente_inscrito()->sync($request->input('id_docente'));
         return Redirect::route('index.cursos.docentes');
     }
 
-    public function inscripcion_por_desarrollo($id, Request $request){
-        $deteccion = DeteccionNecesidades::find($id);
-        $deteccion->docente_inscrito()->sync($request->input('id_docente', []));
-        return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
-    }
 
     public function misCursos(){
         $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
@@ -258,14 +237,7 @@ class CoursesController extends Controller
         ]);
     }
 
-    public function desarrollo_cursos(){
-        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
-            ->get();
-        $this->state_curso();
-        return Inertia::render('Views/cursos/desarrollo/DesarrolloCursos', [
-            'cursos' => $cursos,
-        ]);
-    }
+
 
     public static function total_horas($fecha_inicio, $fecha_final, $hora_inicio, $hora_final){
         $fechaInicio = Carbon::parse($fecha_inicio);
