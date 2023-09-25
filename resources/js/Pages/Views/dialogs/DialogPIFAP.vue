@@ -59,6 +59,7 @@ function submit(){
         }
     }).catch(error => {
         alert2.value = true
+        console.log(error)
     })
 }
 

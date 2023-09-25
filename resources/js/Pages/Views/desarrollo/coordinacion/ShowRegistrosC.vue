@@ -5,6 +5,7 @@ import TablaDeteccionesRegistrosCoordinacion
     from "@/Pages/Views/desarrollo/tablas/TablaDeteccionesRegistrosCoordinacion.vue";
 import {onMounted} from "vue";
 import NavLink from "@/Components/NavLink.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 
 const props = defineProps({
@@ -35,13 +36,15 @@ onMounted(() => {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Todas las detecciones de necesidades</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Registro de todos los cursos que se llevaron acabo</h2>
         </template>
 
-        <div class="py-12">
+        <div class="">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <TablaDeteccionesRegistrosCoordinacion :detecciones="props.detecciones"></TablaDeteccionesRegistrosCoordinacion>
+                <div class="sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="flex justify-center">
+                        <TablaDeteccionesRegistrosCoordinacion :detecciones="props.detecciones"></TablaDeteccionesRegistrosCoordinacion>
+                    </div>
                 </div>
             </div>
         </div>
@@ -49,5 +52,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
+
 
 </style>

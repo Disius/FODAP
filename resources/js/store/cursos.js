@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import {computed, ref} from "vue";
+import axios from "axios";
 
 
 export const cursoStore = defineStore('cursos', {
@@ -30,6 +31,6 @@ export const cursoStore = defineStore('cursos', {
     actions: {
         getCursos(curso){
             this.cursos = curso
-        }
+        },
     }
 })

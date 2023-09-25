@@ -23,47 +23,55 @@ class CursoRequest extends FormRequest
     {
         return [
 
-                'AsignaturasFA' => 'required',
-                'ContenidoTFA' => 'required',
-                'Numprofesores' => 'required',
-                'periodo' => 'required',
-                'nombreCT' => 'required',
-                'fecha_I' => 'required',
-                'fecha_F' => 'required',
-                'hora_I' => 'required',
-                'hora_F' => 'required',
-                'objetivo' => 'required',
-                'tipo' => 'required',
-                'tipo_act' => 'required',
-                'dirigido' => 'required',
-                'id_jefe' => 'required',
-                'modalidad' => ['required'],
-                'id_departamento' => ['required'],
-                'id_lugar' => ['required'],
-
+            'asignaturaFA' => 'required',
+            'contenidosTM' => 'required',
+            'numeroProfesores' => 'required',
+            'periodo' => 'required',
+            'nombreCurso' => 'required',
+            'fecha_I' => 'required',
+            'fecha_F' => 'required',
+            'hora_I' => 'required',
+            'hora_F' => 'required',
+            'objetivoEvento' => 'required',
+            'tipo_actividad' => 'required',
+            'carrera_dirigido' => 'required',
+            'modalidad' => 'required',
+            'tipo_FDoAP' => 'required',
         ];
     }
 
-    public function messages(): array
+//    public function messages(): array
+//    {
+//        return [
+//            'AsignaturasFA.required' => 'Es requerido',
+//            'ContenidoTFA.required' => 'Es requerido',
+//            'Numprofesores.required' => 'Es requerido',
+//            'periodo.required' => 'Es requerido',
+//            'nombreCT.required' => 'Es requerido',
+//            'fecha_I.required' => 'Es requerido',
+//            'fecha_F.required' => 'Es requerido',
+//            'hora_I.required' => 'Es requerido',
+//            'hora_F.required' => 'Es requerido',
+//            'objetivo.required' => 'Es requerido',
+//            'tipo_act.required' => 'Es requerido',
+//            'dirigido.required' => 'Es requerido',
+//            'modalidad.required' => 'Es requerido',
+//            'tipo.required' => 'Es requerido',
+//            'id_lugar.required' => 'Es requerido',
+//        ];
+//    }
+
+    public function prepareForValidation(): void
     {
-        return [
-            'AsignaturasFA.required' => 'Es requerido',
-            'ContenidoTFA.required' => 'Es requerido',
-            'Numprofesores.required' => 'Es requerido',
-            'periodo.required' => 'Es requerido',
-            'nombreCT.required' => 'Es requerido',
-            'fecha_I.required' => 'Es requerido',
-            'fecha_F.required' => 'Es requerido',
-            'hora_I.required' => 'Es requerido',
-            'hora_F.required' => 'Es requerido',
-            'objetivo.required' => 'Es requerido',
-            'tipo_act.required' => 'Es requerido',
-            'dirigido.required' => 'Es requerido',
-            'id_jefe.required' => 'Es requerido',
-            'modalidad.required' => 'Es requerido',
-            'tipo.required' => 'Es requerido',
-            'id_departamento.required' => 'Es requerido',
-            'id_lugar' => 'Es requerido',
-        ];
+        $this->merge([
+            'asignaturaFA' => $this->AsignaturasFA,
+            'contenidosTM' => $this->ContenidoTFA,
+            'numeroProfesores' => $this->Numprofesores,
+            'nombreCurso' => $this->nombreCT,
+            'objetivoEvento' => $this->objetivo,
+            'tipo_actividad' => $this->tipo_act,
+            'carrera_dirigido' => $this->dirigido,
+            'tipo_FDoAP' => $this->tipo,
+        ]);
     }
 }

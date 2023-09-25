@@ -17,8 +17,6 @@ const props = defineProps({
 
 const pdf_dialog = ref(false);
 
-const detecciones = ref([]);
-
 
 
 onMounted(() => {
@@ -54,30 +52,45 @@ onMounted(() => {
         <DeteccionDialog :carreras="props.carrera" v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DeteccionDialog>
 
         <div class="py-4">
-            <v-container>
-                <v-row>
-                    <v-col>
-                        <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl">
-                            Generar Deteccion de Necesidades
+            <v-container class="mx-auto">
+                <v-row justify="center">
+                    <v-col cols="7" align="center">
+                        <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl" block width="200" height="50">
+                            Generar PDF
                         </v-btn>
                     </v-col>
                 </v-row>
             </v-container>
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-4">
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <TablaDetecciones :detecciones="props.detecciones"></TablaDetecciones>
+            <template v-if="props.detecciones.length === 0">
+                <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
+                    <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <v-alert
+                            color="blue-darken-1"
+                            icon="mdi-alert-circle"
+                            prominent
+                        >
+                            Actualmente no se han capturado deteccion de necesidades.
+                        </v-alert>
+                    </div>
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-4">
+                    <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <TablaDetecciones :detecciones="props.detecciones"></TablaDetecciones>
+                    </div>
+                </div>
+            </template>
         </div>
-        <v-row justify="center" class="mt-2">
-            <v-col cols="2">
-                <NavLink :href="route('index.registros.c')" as="button">
-                    <v-btn rounded="xl" block size="large" color="blue-darken-1">
-                        Ver todos los registros
-                    </v-btn>
-                </NavLink>
-            </v-col>
-        </v-row>
+<!--        <v-row justify="center" class="mt-2">-->
+<!--            <v-col cols="2">-->
+<!--                <NavLink :href="route('index.registros.c')" as="button">-->
+<!--                    <v-btn rounded="xl" block size="large" color="blue-darken-1">-->
+<!--                        Ver todos los registros-->
+<!--                    </v-btn>-->
+<!--                </NavLink>-->
+<!--            </v-col>-->
+<!--        </v-row>-->
     </AuthenticatedLayout>
 </template>
 

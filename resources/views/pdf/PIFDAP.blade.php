@@ -32,7 +32,7 @@
             height: 100px;
             text-align: center;
             font-weight: bold;
-            margin-left: 95px;
+            margin-left: 50px;
         }
 
         .header2 p {
@@ -107,13 +107,10 @@
     <div class="header">
         <p>PROGRAMA INSTITUCIONAL DE FORMACIÓN DOCENTE</p>
         <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIERREZ</p>
-        @php
-            $anio = explode('-', $FD[0]->fecha_F)
-        @endphp
-        @if($FD[0]->periodo == 1)
-            <p>PERIODO ENERO - JUNIO {{$anio[0]}}</p>
+        @if($periodo == 1)
+            <p>PERIODO ENERO-JUNIO {{$anio}}</p>
         @else
-            <p>PERIODO AGOSTO - DICIEMBRE {{$anio[0]}}</p>
+            <p>PERIODO AGOSTO-DICIEMBRE {{$anio}}</p>
         @endif
     </div>
     <div class="logo">
@@ -214,16 +211,13 @@
     <div class="header2">
         <p>PROGRAMA INSTITUCIONAL DE ACTUALIZACIÓN PROFESIONAL</p>
         <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIERREZ</p>
-        @php
-            $anio = explode('-', $AP[0]->fecha_F)
-        @endphp
-        @if($AP[0]->periodo == 1)
-            <p>PERIODO ENERO - JUNIO {{$anio[0]}}</p>
+        @if($periodo == 1)
+            <p>PERIODO ENERO-JUNIO {{$anio}}</p>
         @else
-            <p>PERIODO AGOSTO - DICIEMBRE {{$anio[0]}}</p>
+            <p>PERIODO AGOSTO-DICIEMBRE {{$anio}}</p>
         @endif
     </div>
-    @if(count($AP) == 0)
+    @if(sizeof($AP) == 0)
         <table class="custom_table">
             <thead>
             <tr>

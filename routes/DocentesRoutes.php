@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\DocenteController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ use Inertia\Inertia;
 */
 
 Route::middleware(['auth', 'role:Docentes'])->group(function(){
-    Route::get('/docentes/cursos', [CoursesController::class, 'index_cursos'])->name('index.cursos.docentes');
-    Route::post('/docente/inscrito/{id}', [CoursesController::class, 'inscripcion_docente'])->name('inscripcion.docente');
-    Route::get('/docente/miscursos', [CoursesController::class, 'misCursos'])->name('index.misCursos');
+    Route::get('/docentes/cursos', [DocenteController::class, 'index_cursos'])->name('index.cursos.docentes');
+    Route::post('/docente/inscrito/{id}', [DocenteController::class, 'inscripcion_docente'])->name('inscripcion.docente');
+    Route::get('/docente/miscursos', [DocenteController::class, 'misCursos'])->name('index.misCursos');
 });

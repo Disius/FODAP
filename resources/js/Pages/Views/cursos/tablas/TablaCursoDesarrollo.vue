@@ -97,7 +97,7 @@ const props = defineProps({
                     {{ curso.hora_I }} a {{curso.hora_F}}
                 </td>
                 <td class="v-card--hover">
-
+                    {{curso.total_horas}}
                 </td>
                 <td class="v-card--hover">
                     <template

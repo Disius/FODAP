@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CursoRequest;
 use App\Models\Carrera;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
@@ -10,6 +11,7 @@ use App\Models\Lugar;
 use App\Models\User;
 use App\Notifications\AceptadoNotification;
 use App\Notifications\ObservacionNotification;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -35,9 +37,21 @@ class DesarrolloController extends Controller
     public function index_registros(){
         $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'docente_inscrito')
             ->where('aceptado', '=', 1)
+            ->where('estado', '=', 2)
                         ->get();
         return Inertia::render('Views/desarrollo/coordinacion/ShowRegistrosC', [
             'detecciones' => $detecciones,
+        ]);
+    }
+
+    public function desarrollo_cursos(){
+        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
+            ->where('estado' , '=', 0)
+            ->orWhere('estado' , '=', 1)
+            ->get();
+        CoursesController::state_curso();
+        return Inertia::render('Views/cursos/desarrollo/DesarrolloCursos', [
+            'cursos' => $cursos,
         ]);
     }
 
@@ -57,54 +71,24 @@ class DesarrolloController extends Controller
             'lugar' => $lugar
         ]);
     }
-
-    public function store_cursos(Request $request): \Illuminate\Http\RedirectResponse
+    public function store_cursos(CursoRequest $request)
     {
-        $request->validate([
-            'AsignaturasFA' => 'required',
-            'ContenidoTFA' => 'required',
-            'Numprofesores' => 'required',
-            'periodo' => 'required',
-            'nombreCT' => 'required',
-            'fecha_I' => 'required',
-            'fecha_F' => 'required',
-            'hora_I' => 'required',
-            'hora_F' => 'required',
-            'objetivo' => 'required',
-            'tipo' => 'required',
-            'tipo_act' => 'required',
-            'dirigido' => 'required',
-            'id_jefe' => 'required',
-            'modalidad' => ['required'],
-            'id_departamento' => ['required'],
-            'id_lugar' => ['required'],
-        ]);
 
         $totalHoras = CoursesController::total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
 
-        $deteccion = DeteccionNecesidades::create([
-            'asignaturaFA' => $request->AsignaturasFA,
-            'contenidosTM' => $request->ContenidoTFA,
-            'numeroProfesores' => $request->Numprofesores,
-            'periodo' => $request->periodo,
-            'nombreCurso' => $request->nombreCT,
-            'fecha_I' => $request->fecha_I,
-            'fecha_F' => $request->fecha_F,
-            'hora_I' => $request->hora_I,
-            'hora_F' => $request->hora_F,
-            'objetivoEvento' => $request->objetivo,
-            'tipo_FDoAP' => $request->tipo,
-            'tipo_actividad' => $request->tipo_act,
-            'carrera_dirigido' => $request->dirigido,
-            'id_jefe' => $request->id_jefe,
-            'aceptado' => 1,
-            'obs' => 0,
-            'total_horas' => $totalHoras,
-            'modalidad' => $request->modalidad,
-            'facilitador_externo' =>  $request->facilitador_externo,
-            'id_departamento' => $request->id_departamento,
-            'id_lugar' => $request->id_lugar,
-        ]);
+        $departamento = $this->query_carrera($request->carrera_dirigido);
+
+        $deteccion = DeteccionNecesidades::create($request->validated() + [
+                'id_jefe' => $departamento->departamento->jefe_id,
+                'aceptado' => 1,
+                'obs' => $request->observaciones != null ? 1 : 0,
+                'total_horas' => $totalHoras,
+                'id_departamento' => $departamento->departamento->id,
+                'facilitador_externo' =>  $request->facilitador_externo,
+                'observaciones' => $request->observaciones,
+            ]);
+
+        $deteccion->deteccion_facilitador()->sync($request->input('facilitadores', []));
 
         $deteccion->save();
 
@@ -114,7 +98,7 @@ class DesarrolloController extends Controller
     public function edit_curso($id){
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->find($id);
         $carrera = Carrera::all();
-        $docente = Docente::select('id', 'nombre_completo')->get();
+        $docente = Docente::all();
         $departamento = Departamento::all();
         $lugar = Lugar::with('curso')->get();
         return Inertia::render('Views/cursos/desarrollo/registros/EditCurso', [
@@ -127,33 +111,27 @@ class DesarrolloController extends Controller
 
     }
 
-    public function update_curso(Request $request, $id){
+    public function update_curso(CursoRequest $request, $id){
         $totalHoras = CoursesController::total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
+        $departamento = $this->query_carrera($request->carrera_dirigido);
 
         $curso = DeteccionNecesidades::find($id);
-
-        $curso->asignaturaFA = $request->AsignaturasFA;
-        $curso->contenidosTM = $request->ContenidoTFA;
-        $curso->numeroProfesores = $request->Numprofesores;
-        $curso->periodo = $request->periodo;
-        $curso->nombreCurso = $request->nombreCT;
-        $curso->fecha_I = $request->fecha_I;
-        $curso->fecha_F = $request->fecha_F;
-        $curso->hora_I = $request->hora_I;
-        $curso->hora_F = $request->hora_F;
-        $curso->tipo_FDoAP = $request->tipo;
-        $curso->tipo_actividad = $request->tipo_act;
-        $curso->objetivoEvento = $request->objetivo;
-        $curso->carrera_dirigido = $request->dirigido;
-        $curso->id_jefe = $request->id_jefe;
-        $curso->modalidad = $request->modalidad;
+        $curso->id_jefe = $departamento->jefe_id;
         $curso->total_horas = $totalHoras;
+        $curso->id_departamento = $departamento->departamento->id;
+        $curso->facilitador_externo = $request->facilitador_externo;
+        $curso->observaciones = $request->observaciones;
+        $curso->obs = $request->observaciones != null ? 1 : 0;
         $curso->deteccion_facilitador()->sync($request->input('facilitadores', []));
+        $curso->update($request->validated());
 
         $curso->save();
 
+        return Redirect::route('index.registros.c');
+    }
 
-        return Redirect::route('detecciones.index');
+    public static function query_carrera($query){
+        return Carrera::with('departamento')->where('id', '=', $query)->first();
     }
     /**
      * Store a newly created resource in storage.
@@ -237,13 +215,5 @@ class DesarrolloController extends Controller
         return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
     }
 
-    public function desarrollo_cursos(){
-        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
-            ->get();
-        $this->state_curso();
-        return Inertia::render('Views/cursos/desarrollo/DesarrolloCursos', [
-            'cursos' => $cursos,
-        ]);
-    }
 
 }

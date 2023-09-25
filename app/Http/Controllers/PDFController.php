@@ -69,17 +69,25 @@ class PDFController extends Controller
         $request->validated();
         $FD = $this->FD_request($request);
         $AP = $this->AP_request($request);
+        $anio = $request->anio;
+        $periodo = $request->periodo;
         if (count($FD) == 0 && count($AP) == 0){
             return response()->json([
                 'mensaje' => 'No se encontro ningun dato con ese criterio de busqueda',
             ]);
         }else {
-            $pdf = Pdf::loadView('pdf.PIFDAP', compact('FD', 'AP'))
+            $pdf = Pdf::loadView('pdf.PIFDAP', compact('FD', 'AP', 'anio', 'periodo'))
                 ->setPaper('letter', 'landscape')
                 ->output();
             $path = 'PIFDAP.pdf';
             $this->save_file($pdf, $path);
             return $this->download_file($path);
         }
+    }
+
+    public function cdi_pdf(Request $request){
+        return response()->json([
+           'request' => $request->docente
+        ]);
     }
 }

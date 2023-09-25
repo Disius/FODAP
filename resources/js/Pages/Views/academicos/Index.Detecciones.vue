@@ -51,11 +51,10 @@ onMounted(() => {
         <Head title="Detecciones"/>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Deteccion de Necesidades</h2>
-            <template v-if="props.dates[0] === true">
+
                 <NavLink :href="route('detecciones.create')" :active="route().current('detecciones.create')" as="button">
                     <v-btn prepend-icon="mdi-pen-plus" rounded="xl" color="blue-darken-1">CREAR DETECCION DE NECESIDADES</v-btn>
                 </NavLink>
-            </template>
         </template>
 
         <v-container fluid>
@@ -122,28 +121,31 @@ onMounted(() => {
                                 <td class="v-card--hover">{{deteccion.objetivoEvento}}</td>
                                 <td class="ma-4 pa-4">
                                     <!-- <Estado :estadoDeteccion="props.detecciones"/> -->
-                                    <template v-if="deteccion.obs === 1">
-                                        <v-alert
-                                            type="warning"
+                                    <div class="d-flex justify-center">
+                                        <template v-if="deteccion.obs === 1">
+                                            <v-alert
+                                                type="warning"
 
-                                        >
-                                            <p>Observaciones</p>
-                                        </v-alert>
-                                    </template>
-                                    <template v-else-if="deteccion.obs === 0">
-                                        <v-alert
-                                            type="info"
-                                        >
-                                            <p>Sin revisar</p>
-                                        </v-alert>
-                                    </template>
-                                    <template v-else-if="deteccion.aceptado === 1">
-                                        <v-alert
-                                            type="success"
-                                        >
-                                            <p>Aceptado</p>
-                                        </v-alert>
-                                    </template>
+                                            >
+                                                <p>Observaciones</p>
+                                            </v-alert>
+                                        </template>
+                                        <template v-else-if="deteccion.obs === 0">
+                                            <v-alert
+                                                type="info"
+                                                width="100"
+                                            >
+                                                <p>Pendiente a revisar</p>
+                                            </v-alert>
+                                        </template>
+                                        <template v-else-if="deteccion.aceptado === 1">
+                                            <v-alert
+                                                type="success"
+                                            >
+                                                <p>Aceptado</p>
+                                            </v-alert>
+                                        </template>
+                                    </div>
                                 </td>
                                 <td>
                                     <NavLink :href="route('show.detecciones', deteccion.id)" type="button" as="button">

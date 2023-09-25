@@ -25,8 +25,16 @@ const formatFechaI = computed(() => {
 const dialog_inscripcion = ref(false);
 
 
-const submit = () => {
-
+const submit = (inscripcion) => {
+    axios.get(route('cdi.pdf'), {
+        params: {
+            docente: inscripcion,
+        }
+    }).then(res => {
+        console.log(res.data)
+    }).catch(error => {
+        console.log(error.response.data)
+    })
 }
 
 
@@ -55,7 +63,7 @@ onMounted(() => {
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">{{curso.nombreCurso}}</h2>
             <NavLink href="">
-                <NavLink :href="route('edit.curso', props.curso.id)" as="button" type="button">
+                <NavLink :href="route('curso.editar', props.curso.id)" as="button">
                     <PrimaryButton class="mt-5">Editar</PrimaryButton>
                 </NavLink>
             </NavLink>
@@ -200,7 +208,7 @@ onMounted(() => {
                         <td class="text-center">{{inscrito.apellidoMat}}</td>
                         <td>
                             <div class="flex justify-center items-center">
-                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit">
+                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit(inscrito)">
                                     GENERAR PDF
                                 </v-btn>
                             </div>

@@ -4,8 +4,9 @@ import TablaDetecciones from "@/Pages/Views/desarrollo/tablas/TablaDetecciones.v
 import {computed, onMounted} from "vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
-import {useForm, Head} from "@inertiajs/vue3";
+import {useForm, Head, router} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import NavLink from "@/Components/NavLink.vue";
 
 const props = defineProps({
     deteccion: Object,
@@ -52,7 +53,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head title="Deteccion" />
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{props.deteccion.nombreCurso}}</h2>
@@ -60,6 +60,13 @@ onMounted(() => {
                 <form @submit.prevent="formAceptado.post(route('store.aceptado', props.deteccion.id))">
                     <PrimaryButton class="mt-5">Aceptar Deteccion de Necesidades</PrimaryButton>
                 </form>
+            </template>
+            <template v-if="props.deteccion.aceptado === 1">
+                <div class="flex justify-start align-center mt-3 ml-5">
+                    <NavLink :href="route('curso.editar', props.deteccion.id)">
+                        <primary-button>Editar</primary-button>
+                    </NavLink>
+                </div>
             </template>
         </template>
 

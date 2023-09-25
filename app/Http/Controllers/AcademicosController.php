@@ -39,23 +39,26 @@ class AcademicosController extends Controller
         ]);
     }
 
+
+    private static function consult_view($query){
+        return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])->where('id', $query)->first();
+    }
+
+
     public function show(string $id)
     {
-        $deteccion = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])->where('id', $id)->first();
-
         return Inertia::render('Views/academicos/Show.Detecciones', [
-            'deteccion' => $deteccion,
+            'deteccion' => $this->consult_view($id),
         ]);
     }
 
     public function edit(string $id)
     {
-        $deteccion = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])->where('id', $id)->first();
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->select('nameCarrera', 'id', 'departamento_id')->get();
         $docente = Docente::select('id', 'nombre_completo')->get();
         $lugar = Lugar::with('curso')->get();
         return Inertia::render('Views/academicos/Edit.Detecciones', [
-            'deteccion' => $deteccion,
+            'deteccion' => $this->consult_view($id),
             'carrera' => $carrera,
             'docentes' => $docente,
             'lugar' => $lugar,
@@ -76,7 +79,7 @@ class AcademicosController extends Controller
             ->get();
 
         //Actualiza el estado del curso
-        $this->state_curso();
+        CoursesController::state_curso();
 
         return Inertia::render('Views/cursos/academicos/CursosAcademicos', [
             'cursos' => $cursos,

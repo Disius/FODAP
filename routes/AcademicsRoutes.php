@@ -20,10 +20,10 @@ use Inertia\Inertia;
 Route::middleware(['auth', 'role:Jefes Academicos'])->group(function(){
     Route::get('/detecciones', [AcademicosController::class, 'index'])->name('detecciones.index');
     Route::get('/detecciones/create', [AcademicosController::class, 'create'])->name('detecciones.create');
-    Route::post('/deteccion/guardado', [AcademicosController::class, 'store'])->name('store.detecciones');
+    Route::post('/deteccion/guardado', [CoursesController::class, 'store'])->name('store.detecciones');
     Route::get('/deteccion/{id}', [AcademicosController::class, 'show'])->name('show.detecciones');
     Route::get('/deteccion/editar/{id}', [AcademicosController::class, 'edit'])->name('edit.detecciones');
-    Route::put('/deteccion/actualizado/{id}', [AcademicosController::class, 'update'])->name('update.detecciones');
+    Route::put('/deteccion/actualizado/{id}', [CoursesController::class, 'update'])->name('update.detecciones');
     Route::get('/registros', [AcademicosController::class, 'registros'])->name('index.registros');
 
 
