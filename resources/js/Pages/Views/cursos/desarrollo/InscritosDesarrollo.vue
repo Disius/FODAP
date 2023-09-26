@@ -23,17 +23,25 @@ const formatFechaI = computed(() => {
 });
 
 const dialog_inscripcion = ref(false);
+const snackbar = ref(false);
 
-
-const submit = (inscripcion) => {
+const submit = (inscripcion, id) => {
     axios.get(route('cdi.pdf'), {
         params: {
             docente: inscripcion,
+            id_curso: id
         }
     }).then(res => {
+        const url = '/storage/CDI.pdf';
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'CDI.pdf');
+        document.body.appendChild(link);
+        link.click();
         console.log(res.data)
     }).catch(error => {
         console.log(error.response.data)
+        snackbar.value = true
     })
 }
 
@@ -208,7 +216,7 @@ onMounted(() => {
                         <td class="text-center">{{inscrito.apellidoMat}}</td>
                         <td>
                             <div class="flex justify-center items-center">
-                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit(inscrito)">
+                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit(inscrito, props.curso.id)">
                                     GENERAR PDF
                                 </v-btn>
                             </div>
@@ -218,6 +226,25 @@ onMounted(() => {
                 </v-table>
             </div>
         </div>
+
+        <v-snackbar
+            v-model="snackbar"
+            vertical
+            color="error"
+        >
+            <div class="text-subtitle-1 pb-2">Error</div>
+
+            <p>No se pudo generar correctamente la cédula de inscripción</p>
+
+            <template v-slot:actions>
+                <v-btn
+
+                    @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </template>
+        </v-snackbar>
     </AuthenticatedLayout>
 </template>
 

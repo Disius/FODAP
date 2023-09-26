@@ -86,8 +86,15 @@ class PDFController extends Controller
     }
 
     public function cdi_pdf(Request $request){
+        $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($request->id_curso);
+        $docente = $request->docente;
+        $pdf = Pdf::loadView('pdf.CDI', compact('curso', 'docente'))
+            ->output();
+
+        $path = 'CDI.pdf';
+        $this->save_file($pdf, $path);
         return response()->json([
-           'request' => $request->docente
+            'file' => filesize(public_path('/storage/CDI.pdf'))
         ]);
     }
 }

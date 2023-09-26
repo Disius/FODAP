@@ -5,15 +5,35 @@
     <!-- Styles -->
 
     <style>
-        @page { margin: 3cm 1cm 2cm;}
+        @page { margin: 1cm 2cm 2cm 2cm;}
         body {
             /*border: 1px solid #000;*/
         }
+        .page_break { page-break-after: always; }
+        .footer {
+            width: 100%;
+            position: fixed;
+            bottom: 0.5cm;
+        }
+
+        .footer p {
+            font-size: 9pt;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .uline {
+            border-bottom: 1px solid #000;
+        }
+
+        .tline {
+            border-top: 1px solid #000;
+        }
 
         .header {
-            position: fixed;
             width: 100%;
-            height: 100px;
             text-align: center;
             font-weight: bold;
         }
@@ -21,82 +41,62 @@
         .header p {
             margin: 0;
             font-size: 10pt;
-            font-family: "Arial", "Helvetica", sans-serif;
-            font-weight: bold;
+            font-family: Calibri, sans-serif;
         }
-        /*.header2 {*/
-        /*    position: absolute;*/
-        /*    top: -0.5cm;*/
-        /*    width: 100%;*/
-        /*    height: 100px;*/
-        /*    text-align: center;*/
-        /*    font-weight: bold;*/
-        /*    margin-left: 50px;*/
-        /*}*/
-
-        /*.header2 p {*/
-        /*    margin: 0;*/
-        /*    font-size: 10pt;*/
-        /*    font-family: "Arial", "Helvetica", sans-serif;*/
-        /*    font-weight: bold;*/
-        /*}*/
 
         .logo {
             position: fixed;
-            top: -2.0cm;
-            left: 1.8cm;
+            top: 0;
+            left: 0;
         }
-
         .logo img {
             width: 75px;
             height: 60px;
         }
 
-        .footer {
-            position: fixed;
-            bottom: -1cm;
+        #title {
+            font-size: 14pt;
+            font-weight: bold;
+            font-family: Calibri, sans-serif;
+        }
+
+        .titles {
+            font-size: 10pt;
+            font-weight: 500;
+            white-space: nowrap;
+            font-family: Calibri, sans-serif;
+        }
+
+        .content {
+            font-size: 10pt;
+            font-weight: 700;
+            font-family: Calibri, sans-serif;
+        }
+
+        .infoTitles {
             width: 100%;
-            height: 30px;
-            font-weight: normal;
-            justify-content: center;
-            align-content: center;
+            font-family: Calibri, sans-serif;
+            font-size: 11pt;
+            font-weight: bold;
+            text-align: center;
+            background-color: lightgrey;
+
+        }
+        .justify {
+            margin-bottom: 25px;
         }
 
-        .footer p {
-            display: inline-block;
-            font-size: 9pt;
-            margin-left: 50px;
-            margin-right: 50px;
+        .w100 {
+            width: 100%;
         }
 
-        /*.custom_table {*/
-        /*    table-layout: fixed;*/
-        /*    width: 100%;*/
-        /*    border-collapse: collapse;*/
-        /*    border: 1px solid black;*/
-        /*    margin-top: 50px;*/
-        /*}*/
+        .w90 {
+            width: 90%;
+        }
 
-        /*.custom_table td,th {*/
-        /*    border: 1px solid #000;*/
-        /*}*/
-
-
-        /*.custom_table th {*/
-        /*    text-align: center;*/
-        /*    font-size: 8pt;*/
-        /*    font-weight: bold;*/
-        /*    !*white-space: nowrap;*!*/
-        /*}*/
-
-        /*.custom_table tbody {*/
-        /*    text-align: center;*/
-        /*    font-size: 8pt;*/
-        /*}*/
-
-        /*#firma {*/
-        /*    page-break-inside: avoid;*/
-        /*}*/
+        .w50 {
+            width: 50%;
+        }
 
     </style>
 
@@ -112,6 +112,52 @@
     <div class="logo">
         <img src="{{public_path('/storage/img/logo.jpg')}}" alt="">
     </div>
+    <div class="center">
+        <p id="title">CÉDULA DE INSCRIPCIÓN</p>
+    </div>
+    <div class="justify">
+        <table style="float: right">
+            <tr>
+                <td class="titles">FECHA: </td>
+                <td class="uline content" style="width: 100px">{{date('Y-m-d')}} </td>
+            </tr>
+        </table>
+    </div>
+    <div class="w100">
+        <p class="infoTitles">DATOS DEL EVENTO</p>
+    </div>
+    <table class="w100">
+        <tr>
+            <td class="titles">CLAVE DEL CURSO:</td>
+            <td class="uline content w100"> {{ $curso->id }} </td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">NOMBRE DEL CURSO:</td>
+            <td class="uline content w100"> {{$curso->nombreCurso}} </td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">NOMBRE DE INSTRUCTOR(ES):</td>
+
+            <td class="uline content w100">
+                @if(count($curso->deteccion_facilitador) == 1)
+                    {{$curso->deteccion_facilitador[0]->nombre_completo}}
+                @elseif(count($curso->deteccion_facilitador) == 2)
+                    {{$curso->deteccion_facilitador[0]->nombre_completo}}
+                    {{$curso->deteccion_facilitador[1]->nombre_completo}}
+                @else
+                    {{$curso->deteccion_facilitador[0]->nombre_completo}}
+                    {{$curso->deteccion_facilitador[1]->nombre_completo}}
+                    {{$curso->deteccion_facilitador[2]->nombre_completo}}
+                @endif
+            </td>
+
+
+        </tr>
+    </table>
 </body>
 
 </html>
