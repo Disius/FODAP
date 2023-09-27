@@ -12,13 +12,26 @@ const showingNavigationDropdown = ref(false);
 const docente = computed(() => usePage().props.info[0]);
 const user = computed(() => usePage().props.auth.user);
 
-// let usernotification = computed(() => usePage().props.auth.usernotifications);
 const notificationObject = ref({});
+const if_facilitador = ref(Boolean);
+const facilitadores = () => {
+    axios.get(route('get.facilitador'), {
+        params: {
+            id: user.value.docente_id
+        }
+    })
+        .then(res => {
+            if_facilitador.value = res.data.facilitador
+        }).catch(error => {
+        console.log(error.response.data)
+    })
+}
 onMounted(() => {
     window.Echo.private(`App.Models.User.${user.value.id}`).notification((notification) => {
         notificationObject.value = notification
-    })
+    });
 
+    facilitadores()
 
 });
 </script>
@@ -78,6 +91,11 @@ onMounted(() => {
                                 <template v-if="user.role === 4">
                                     <NavLink :href="route('index.misCursos')" :active="route().current('index.misCursos')">
                                         Mis Cursos
+                                    </NavLink>
+                                </template>
+                                <template v-if="user.role === 4 && if_facilitador === true">
+                                    <NavLink :href="route('show.facilitadores')" :active="route().current('show.facilitadores')">
+                                        Facilitador
                                     </NavLink>
                                 </template>
                             </div>

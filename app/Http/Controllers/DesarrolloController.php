@@ -127,7 +127,7 @@ class DesarrolloController extends Controller
 
         $curso->save();
 
-        return Redirect::route('index.registros.c');
+        return Redirect::route('index.desarrollo.inscritos', ['id' => $curso->id]);
     }
 
     public static function query_carrera($query){

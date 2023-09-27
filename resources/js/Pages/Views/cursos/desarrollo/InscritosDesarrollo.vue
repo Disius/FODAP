@@ -191,7 +191,7 @@ onMounted(() => {
                 <div class="flex justify-end items-end mt-2">
                     <v-btn @click="dialog_inscripcion = true" block size="large" color="blue-darken-1">Inscribir Docentes a Este Curso</v-btn>
                 </div>
-                <Inscripcion :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
+                <Inscripcion :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
             </div>
         </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -216,7 +216,7 @@ onMounted(() => {
                         <td class="text-center">{{inscrito.apellidoMat}}</td>
                         <td>
                             <div class="flex justify-center items-center">
-                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit(inscrito, props.curso.id)">
+                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit(inscrito.id, props.curso.id)">
                                     GENERAR PDF
                                 </v-btn>
                             </div>

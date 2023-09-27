@@ -14,6 +14,13 @@
             width: 100%;
             position: fixed;
             bottom: 0.5cm;
+            /*position: fixed;*/
+            /*bottom: -1cm;*/
+            /*width: 100%;*/
+            /*height: 30px;*/
+            /*font-weight: normal;*/
+            /*justify-content: center;*/
+            /*align-content: center;*/
         }
 
         .footer p {
@@ -69,8 +76,8 @@
 
         .content {
             font-size: 10pt;
-            font-weight: 700;
             font-family: Calibri, sans-serif;
+            font-weight: normal;
         }
 
         .infoTitles {
@@ -154,10 +161,174 @@
                     {{$curso->deteccion_facilitador[2]->nombre_completo}}
                 @endif
             </td>
-
-
         </tr>
     </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">PERIODO DE REALIZACIÓN:</td>
+            <td class="uline content w100">
+                @if($curso->periodo == 1)
+                    ENERO-JUNIO
+                @else
+                    AGOSTO-DICIEMBRE
+                @endif
+            </td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">HORARIO:</td>
+            <td class="uline content w90"> {{$curso->hora_I}} - {{$curso->hora_F}} </td>
+            <td class="titles">DURACIÓN:</td>
+            <td class="uline content w100"> {{$curso->total_horas}} Horas </td>
+        </tr>
+    </table>
+
+    <p class="infoTitles">DATOS PERSONALES</p>
+
+    <table style="float: right;padding-right:1cm;">
+        @if($docente->sexo == 1)
+            <tr>
+                <td class="titles">HOMBRE</td>
+                <td class="content" style="width:50px">( X )</td>
+                <td class="titles">MUJER</td>
+                <td class="content">( )</td>
+            </tr>
+        @elseif($docente->sexo == 2)
+            <tr>
+                <td class="titles">HOMBRE</td>
+                <td class="content" style="width:50px">( )</td>
+                <td class="titles">MUJER</td>
+                <td class="content">( X )</td>
+            </tr>
+        @else
+            <tr>
+                <td class="titles">HOMBRE</td>
+                <td class="content" style="width:50px">( )</td>
+                <td class="titles">MUJER</td>
+                <td class="content">( )</td>
+            </tr>
+        @endif
+    </table>
+
+    <br><br>
+
+    <table class="w100">
+        <tr>
+            <td class="titles">NOMBRE:</td>
+            <td class="uline content center" style="width:30%"> {{$docente->apellidoPat}} </td>
+            <td class="uline content center" style="width:30%"> {{$docente->apellidoMat}} </td>
+            <td class="uline content center" style="width:30%"> {{$docente->nombre}} </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="titles center">APELLIDO PATERNO</td>
+            <td class="titles center">APELLIDO MATERNO</td>
+            <td class="titles center">NOMBRE(S)</td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">R.F.C.:</td>
+            <td class="uline content w50"> {{$docente->rfc}} </td>
+            <td class="titles">CURP:</td>
+            <td class="uline content w50"> {{$docente->curp}} </td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">CORREO ELECTRÓNICO INSTITUCIONAL:</td>
+            <td class="uline content w100"> {{$docente->usuario->email}} </td>
+        </tr>
+    </table>
+
+    <table class="w100">
+        <tr>
+            <td class="titles">NOMBRE DEL ÚLTIMO GRADO DE ESTUDIOS:</td>
+            <td class="uline content w100">{{$docente->posgrado->nombre}}</td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">LICENCIATURA:</td>
+            <td class="uline content w100"> {{$docente->licenciatura}} </td>
+        </tr>
+    </table>
+    <p class="infoTitles">DATOS LABORALES</p>
+
+    <table style="float:right;padding-right:1cm;">
+        <tr>
+            @if($docente->tipo_plaza == 1)
+                <td class="titles">DIRECTIVO</td>
+                <td class="content" style="width:50px">( X )</td>
+                <td class="titles">DOCENTE / INTERINATO</td>
+                <td class="content" style="width:50px">( )</td>
+                <td class="titles">HONORARIOS</td>
+                <td class="content">( )</td>
+            @elseif($docente->tipo_plaza == 2)
+                <td class="titles">DIRECTIVO</td>
+                <td class="content" style="width:50px">( )</td>
+                <td class="titles">DOCENTE / INTERINATO</td>
+                <td class="content" style="width:50px">( X )</td>
+                <td class="titles">HONORARIOS</td>
+                <td class="content">( )</td>
+            @elseif($docente->tipo_plaza == 3)
+                <td class="titles">DIRECTIVO</td>
+                <td class="content" style="width:50px">( )</td>
+                <td class="titles">DOCENTE / INTERINATO</td>
+                <td class="content" style="width:50px">( )</td>
+                <td class="titles">HONORARIOS</td>
+                <td class="content">( X )</td>
+            @endif
+        </tr>
+    </table>
+    <br><br>
+    <table class="w100">
+        <tr>
+            <td class="titles">INSTITUTO TECNOLÓGICO O CENTRO:</td>
+            <td class="uline content w100"> ITTG </td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">ÁREA DE ADSCRIPCIÓN:</td>
+            <td class="uline content w100"> {{ $docente->departamento->nameDepartamento }} </td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">PUESTO QUE DESEMPEÑA:</td>
+            <td class="uline content w100"> {{$docente->puesto->nombre}} </td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">NOMBRE DEL JEFE INMEDIATO:</td>
+            <td class="uline content w100"> {{$docente->departamento->jefe_docente->nombre_completo}} </td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">TELÉFONO DE CONTACTO:</td>
+            <td class="uline content w100"> {{$docente->telefono }} </td>
+        </tr>
+    </table>
+    <table class="w100">
+        <tr>
+            <td class="titles">HORARIO LABORAL:</td>
+            <td class="uline content w100">  </td>
+        </tr>
+    </table>
+    <br><br><br><br><br>
+    <table style="float:right">
+        <tr>
+            <td class="tline titles center" style="width:8cm">FIRMA</td>
+        </tr>
+    </table>
+    <div class="footer">
+        <p style="float:left">ITTG-AD-PO-006-04</p>
+        <p style="display:inline;float:right;">Rev. {{0}}</p>
+    </div>
 </body>
 
 </html>

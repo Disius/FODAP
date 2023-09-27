@@ -35,7 +35,7 @@ class CoursesController extends Controller
         //En DeteccionesForm no es necesario que
         $deteccion = DeteccionNecesidades::create($request->validated() + [
                 'aceptado' => 0,
-                'obs' => $request->observaciones == null ? 0 : 1,
+                'obs' => 0,
                 'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
                 'id_departamento' => auth()->user()->departamento_id,
                 'facilitador_externo' => $request->facilitador_externo,

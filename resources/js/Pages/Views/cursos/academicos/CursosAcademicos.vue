@@ -12,7 +12,6 @@ import DeteccionDialog from "@/Pages/Views/dialogs/DeteccionDialogPDF.vue";
 const props = defineProps({
     cursos: Array,
     auth: Object,
-    curso_estado: Array
 });
 
 const pdf_dialog = ref(false);
@@ -60,7 +59,7 @@ onMounted(() => {
 
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-3 sm:p-8 bg-white shadow sm:rounded-lg">
-                <TablaCursoAcademico :cursos="props.cursos" :user="props.auth" :curso_estado="props.curso_estado"></TablaCursoAcademico>
+                <TablaCursoAcademico :cursos="props.cursos" :user="props.auth"></TablaCursoAcademico>
             </div>
         </div>
 

@@ -30,9 +30,43 @@ class DocenteController extends Controller
 
     public function misCursos(){
         $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
-        $this->state_curso();
+        CoursesController::state_curso();
         return Inertia::render('Views/cursos/docentes/MisCursosDocentes', [
             'docente' => $docente,
         ]);
     }
+
+    public function facilitadores(Request $request){
+        $docente = Docente::with('facilitador_has_deteccion')->find($request->id);
+
+        if (count($docente->facilitador_has_deteccion) == 0){
+            return response()->json([
+                'facilitador' => false,
+            ]);
+        }else {
+            return response()->json([
+                'facilitador' => true,
+            ]);
+        }
+    }
+
+    public function show_facilitadores(){
+        return Inertia::render('Views/cursos/facilitadores/Facilitadores');
+    }
+
+    public function upload_cvu(Request $request){
+
+        $path = '/storage/CVUupload/';
+
+        PDFController::save_file($request->file_name, $path);
+
+
+        return response()->json([
+           'file_name' => $request->file_name,
+            'file_size' => $request->file_size,
+            'id' => $request->id
+        ]);
+    }
+
+
 }

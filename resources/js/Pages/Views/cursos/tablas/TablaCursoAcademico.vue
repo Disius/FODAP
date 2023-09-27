@@ -8,7 +8,6 @@ import {computed, proxyRefs} from "vue";
 const props = defineProps({
     cursos: Array,
     user: Object,
-    curso_estado: Array
 })
 
 
@@ -119,7 +118,7 @@ const props = defineProps({
                     <div v-else-if="curso.estado === 1">
                         <v-alert color="success">En curso</v-alert>
                     </div>
-                    <div v-else>
+                    <div v-else-if="curso.estado === 2">
                         <v-alert color="error">Finalizado</v-alert>
                     </div>
                 </td>

@@ -7,6 +7,7 @@ const props = defineProps({
     modelValue: Boolean,
     docente: Array,
     curso: Object,
+    auth: Object,
 });
 
 const teacherSelected = ref([]);
@@ -33,7 +34,11 @@ const filterData = computed(() => {
 function addTeachers(teacher){
     if(!form.id_docente.includes(teacher)){
         form.id_docente.push(teacher.id)
-        form.post(route('inscribir.docente', props.curso.id))
+        if (props.auth.role === 1 || props.auth.role === 2){
+            form.post(route('inscribir.docente', props.curso.id))
+        }else if (props.auth.role === 3){
+            form.post(route('inscripcion.academico', props.curso.id))
+        }
     }
 }
 

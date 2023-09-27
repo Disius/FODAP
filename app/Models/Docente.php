@@ -42,4 +42,20 @@ class Docente extends Model
     public function academia_presidente(): BelongsTo {
         return $this->belongsTo(Carrera::class, 'presidente_academia', 'id');
     }
+
+    public function posgrado(){
+        return $this->hasOne(Posgrado::class, 'id', 'id_posgrado');
+    }
+
+    public function plaza(){
+        return $this->hasOne(Plaza::class, 'id', 'tipo_plaza');
+    }
+
+    public function departamento(){
+        return $this->hasOne(Departamento::class, 'id', 'departamento_id');
+    }
+
+    public function puesto(){
+        return $this->hasOne(Puesto::class, 'id', 'id_puesto');
+    }
 }

@@ -9,6 +9,15 @@ const props = defineProps({
     auth: Object
 });
 
+const facilitadores = () => {
+    axios.get(route('get.facilitador'))
+        .then(res => {
+            console.log(res.data)
+        }).catch(error => {
+            console.log(error.response.data)
+    })
+}
+
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -25,8 +34,13 @@ onMounted(() => {
                 props.auth.usernotifications++
                 break;
         }
-    })
+    });
+
+
 });
+
+
+
 </script>
 
 <template>

@@ -53,6 +53,10 @@ class Departamento extends Model
         return $this->hasOne(Docente::class, 'id', 'jefe_id');
     }
 
+    public function docente_adscrito(){
+        return $this->belongsTo(Docente::class, 'departamento_id', 'id');
+    }
+
     public $timestamps = false;
 
 }

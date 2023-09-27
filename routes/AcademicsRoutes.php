@@ -26,7 +26,10 @@ Route::middleware(['auth', 'role:Jefes Academicos'])->group(function(){
     Route::put('/deteccion/actualizado/{id}', [CoursesController::class, 'update'])->name('update.detecciones');
     Route::get('/registros', [AcademicosController::class, 'registros'])->name('index.registros');
 
+    //inscripcion
+    Route::post('/inscripcion/docente/{id}', [AcademicosController::class, 'inscripcion_academicos'])->name('inscripcion.academico');
+
 
     Route::get('/academicos/cursos', [AcademicosController::class, 'index_cursos_academico'])->name('index.cursos.academicos');
-    Route::get('/academicos/curso/inscritos/{id}', [AcademicosController::class, 'index_curso_academicos_inscrito'])->name('show.inscritos.academicos');
+    Route::get('/academicos/curso/inscritos/{id}', [AcademicosController::class, 'index_cursos_inscritos'])->name('show.inscritos.academicos');
 });

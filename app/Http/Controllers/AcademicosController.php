@@ -8,6 +8,7 @@ use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use App\Models\Lugar;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class AcademicosController extends Controller
@@ -41,7 +42,7 @@ class AcademicosController extends Controller
 
 
     private static function consult_view($query){
-        return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])->where('id', $query)->first();
+        return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('id', $query)->first();
     }
 
 
@@ -84,5 +85,18 @@ class AcademicosController extends Controller
         return Inertia::render('Views/cursos/academicos/CursosAcademicos', [
             'cursos' => $cursos,
         ]);
+    }
+
+    public function index_cursos_inscritos($id){
+        return Inertia::render('Views/cursos/academicos/ShowInscritos', [
+            'curso' => $this->consult_view($id),
+            'docente' => Docente::all(),
+        ]);
+    }
+
+    public function inscripcion_academicos(Request $request, $id){
+        $deteccion = DeteccionNecesidades::find($id);
+        $deteccion->docente_inscrito()->sync($request->input('id_docente'));
+        return Redirect::route('show.inscritos.academicos', ['id' => $deteccion->id]);
     }
 }
