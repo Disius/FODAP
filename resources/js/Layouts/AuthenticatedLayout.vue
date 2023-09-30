@@ -93,8 +93,8 @@ onMounted(() => {
                                         Mis Cursos
                                     </NavLink>
                                 </template>
-                                <template v-if="user.role === 4 && if_facilitador === true">
-                                    <NavLink :href="route('show.facilitadores')" :active="route().current('show.facilitadores')">
+                                <template v-if="if_facilitador === true">
+                                    <NavLink :href="route('show.facilitadores', user.docente_id)">
                                         Facilitador
                                     </NavLink>
                                 </template>

@@ -58,4 +58,8 @@ class Docente extends Model
     public function puesto(){
         return $this->hasOne(Puesto::class, 'id', 'id_puesto');
     }
+
+    public function cvu(){
+        return $this->hasOne(FilesCVU::class, 'id_docente', 'id');
+    }
 }

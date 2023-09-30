@@ -47,9 +47,9 @@ Route::middleware('auth')->group(function () {
 //    Route::post('/docente/inscrito/{id}', [DocenteController::class, 'inscripcion_docente'])->name('inscripcion.docente');
 //    Facilitador routes
     Route::get('/docente/facilitador', [DocenteController::class, 'facilitadores'])->name('get.facilitador');
-    Route::get('/facilitador', [DocenteController::class, 'show_facilitadores'])->name('show.facilitadores');
-    Route::get('/upload/cvu', [DocenteController::class, 'upload_cvu'])->name('upload.cvu');
-
+    Route::get('/facilitador/{id}', [DocenteController::class, 'show_facilitadores'])->name('show.facilitadores');
+    Route::post('/upload/cvu', [DocenteController::class, 'upload_cvu'])->name('upload.cvu');
+    Route::get('/crear/ficha/{facilitador}/curso/{id}', [DocenteController::class, 'crear_ficha_tecnica'])->name('crear.ficha');
 
 
 

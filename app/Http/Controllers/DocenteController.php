@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
+use App\Models\FilesCVU;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -50,23 +51,43 @@ class DocenteController extends Controller
         }
     }
 
-    public function show_facilitadores(){
-        return Inertia::render('Views/cursos/facilitadores/Facilitadores');
+    public function show_facilitadores($id){
+        $docente = Docente::with('cvu', 'facilitador_has_deteccion')->find($id);
+        return Inertia::render('Views/cursos/facilitadores/Facilitadores', [
+            'docente' => $docente
+        ]);
     }
 
     public function upload_cvu(Request $request){
 
-        $path = '/storage/CVUupload/';
+        if ($request->hasFile('file')){
+            $file_path = $request->file('file')->storeAs('/CVUupload/', 'CVU_'.$request->id.'.pdf', 'public');
 
-        PDFController::save_file($request->file_name, $path);
 
+            $file = FilesCVU::create([
+                'id_docente' => $request->id,
+                'path' => $file_path
+            ]);
+
+
+            $file->save();
+
+            return response()->json([
+                'msg' => 'Su CVU se ha subido con exito'
+            ]);
+        }
 
         return response()->json([
-           'file_name' => $request->file_name,
-            'file_size' => $request->file_size,
-            'id' => $request->id
+            'msg' => 'No se ha podido subir su CVU'
         ]);
     }
 
-
+    public function crear_ficha_tecnica($facilitador, $id){
+        $docente = Docente::find($facilitador);
+        $curso = DeteccionNecesidades::find($id);
+        return Inertia::render('Views/cursos/desarrollo/CreateFicha', [
+            'docente' => $docente,
+            'curso' => $curso
+        ]);
+    }
 }

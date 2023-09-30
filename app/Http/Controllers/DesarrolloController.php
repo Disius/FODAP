@@ -116,7 +116,7 @@ class DesarrolloController extends Controller
         $departamento = $this->query_carrera($request->carrera_dirigido);
 
         $curso = DeteccionNecesidades::find($id);
-        $curso->id_jefe = $departamento->jefe_id;
+        $curso->id_jefe = $departamento->departamento->jefe_id;
         $curso->total_horas = $totalHoras;
         $curso->id_departamento = $departamento->departamento->id;
         $curso->facilitador_externo = $request->facilitador_externo;

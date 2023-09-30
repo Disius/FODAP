@@ -61,7 +61,10 @@ class PDFController extends Controller
             $pdf = Pdf::loadView('pdf.deteccion', compact('cursos'))->output();
             $path = "Deteccion.pdf";
             $this->save_file($pdf, $path);
-            return $this->download_file($path);
+//            return $this->download_file($path);
+            return response()->json([
+               'status' => 'Ok'
+            ]);
         }
 
     }
@@ -82,7 +85,10 @@ class PDFController extends Controller
                 ->output();
             $path = 'PIFDAP.pdf';
             $this->save_file($pdf, $path);
-            return $this->download_file($path);
+//            return $this->download_file($path);
+            return response()->json([
+               'status' => 'OK'
+            ]);
         }
     }
 
