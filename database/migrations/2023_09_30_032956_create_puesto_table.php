@@ -14,7 +14,7 @@ class CreatePuestoTable extends Migration
     public function up()
     {
         Schema::create('puesto', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
+            $table->bigInteger('id', true);
             $table->string('nombre', 45)->nullable();
         });
     }

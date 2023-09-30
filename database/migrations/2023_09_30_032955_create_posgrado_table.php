@@ -14,7 +14,7 @@ class CreatePosgradoTable extends Migration
     public function up()
     {
         Schema::create('posgrado', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
+            $table->bigInteger('id', true);
             $table->string('nombre', 120)->nullable();
         });
     }

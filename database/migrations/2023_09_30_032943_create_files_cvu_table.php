@@ -14,7 +14,7 @@ class CreateFilesCvuTable extends Migration
     public function up()
     {
         Schema::create('files_cvu', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
+            $table->bigInteger('id', true);
             $table->bigInteger('id_docente');
             $table->string('path', 100);
         });

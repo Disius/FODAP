@@ -14,7 +14,7 @@ class CreateFichaTecnicaTable extends Migration
     public function up()
     {
         Schema::create('ficha_tecnica', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
+            $table->bigInteger('id', true);
             $table->bigInteger('id_curso');
             $table->longText('introduccion');
             $table->longText('justificacion');

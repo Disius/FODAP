@@ -14,7 +14,7 @@ class CreateCarrerasTable extends Migration
     public function up()
     {
         Schema::create('carreras', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id', true);
             $table->string('nameCarrera', 60);
             $table->unsignedBigInteger('jefe_departamento')->nullable()->index('carreras_jefe_departamento_foreign');
             $table->unsignedBigInteger('presidente_academia')->nullable()->index('carreras_presidente_academia_foreign');

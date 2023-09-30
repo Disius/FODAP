@@ -14,7 +14,7 @@ class CreateDocenteTable extends Migration
     public function up()
     {
         Schema::create('docente', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->string('rfc', 50)->nullable();
             $table->string('curp', 45)->nullable();
             $table->string('nombre', 60)->nullable();

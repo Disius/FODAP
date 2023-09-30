@@ -14,7 +14,7 @@ class CreateTipoPlazaTable extends Migration
     public function up()
     {
         Schema::create('tipo_plaza', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
+            $table->bigInteger('id', true);
             $table->string('nombre')->nullable();
         });
     }

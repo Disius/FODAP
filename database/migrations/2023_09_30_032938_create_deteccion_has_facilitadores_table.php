@@ -14,7 +14,7 @@ class CreateDeteccionHasFacilitadoresTable extends Migration
     public function up()
     {
         Schema::create('deteccion_has_facilitadores', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->unsignedBigInteger('deteccion_id')->nullable()->index('deteccion_has_facilitadores_deteccion_id_foreign');
             $table->unsignedBigInteger('docente_id')->nullable()->index('deteccion_has_facilitadores_docente_id_foreign');
             $table->timestamps();

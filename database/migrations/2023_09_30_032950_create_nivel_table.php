@@ -14,7 +14,7 @@ class CreateNivelTable extends Migration
     public function up()
     {
         Schema::create('nivel', function (Blueprint $table) {
-            $table->bigInteger('id');
+            $table->bigInteger('id', true);
             $table->string('nombre', 50)->nullable();
         });
     }

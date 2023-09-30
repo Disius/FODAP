@@ -14,7 +14,7 @@ class CreateDepartamentoTable extends Migration
     public function up()
     {
         Schema::create('departamento', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger('id', true);
             $table->string('nameDepartamento', 60);
             $table->unsignedBigInteger('jefe_id')->nullable()->index('departamento_jefe_id_foreign');
             $table->timestamps();

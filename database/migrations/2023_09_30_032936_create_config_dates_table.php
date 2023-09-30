@@ -14,7 +14,7 @@ class CreateConfigDatesTable extends Migration
     public function up()
     {
         Schema::create('config_dates', function (Blueprint $table) {
-            $table->integer('id')->primary();
+            $table->integer('id');
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_final')->nullable();
         });
