@@ -33,7 +33,6 @@ const nameCards = ref([
             v-for="card in nameCards"
             :cols="card.flex"
             class=""
-            md="6"
             lg="4"
             >
                 <Link :href="card.route"
