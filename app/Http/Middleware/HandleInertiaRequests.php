@@ -51,9 +51,9 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
-            'dates' => [
-                GestionParametrosController::if_enable_detecciones()
-            ]
+//            'dates' => [
+////                GestionParametrosController::if_enable_detecciones()
+//            ]
         ]);
     }
 }
