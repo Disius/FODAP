@@ -26,21 +26,21 @@ class CoursesController extends Controller
     public function store(CursoRequest $request)
     {
 
-//        $deteccion = DeteccionNecesidades::create($request->validated() + [
-//                'aceptado' => 0,
-//                'obs' => 0,
-//                'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
-//                'id_departamento' => auth()->user()->departamento_id,
-//        ]);
+        //        $deteccion = DeteccionNecesidades::create($request->validated() + [
+        //                'aceptado' => 0,
+        //                'obs' => 0,
+        //                'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
+        //                'id_departamento' => auth()->user()->departamento_id,
+        //        ]);
         //En DeteccionesForm no es necesario que
         $deteccion = DeteccionNecesidades::create($request->validated() + [
-                'aceptado' => 0,
-                'obs' => 0,
-                'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
-                'id_departamento' => auth()->user()->departamento_id,
-                'facilitador_externo' => $request->facilitador_externo,
-                'id_jefe' => $request->id_jefe
-            ]);
+            'aceptado' => 0,
+            'obs' => 0,
+            'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
+            'id_departamento' => auth()->user()->departamento_id,
+            'facilitador_externo' => $request->facilitador_externo,
+            'id_jefe' => $request->id_jefe
+        ]);
 
         $deteccion->save();
 
@@ -48,12 +48,13 @@ class CoursesController extends Controller
 
         $this->sendNotification($deteccion);
 
-        return Redirect::route('detecciones.index');
+        // return Redirect::route('detecciones.index');
 
     }
 
-    public static function sendNotification($curso){
-        User::role(['Coordinacion de FD y AP', 'Jefe del Departamento de Desarrollo Academico'])->each(function($user) use ($curso){
+    public static function sendNotification($curso)
+    {
+        User::role(['Coordinacion de FD y AP', 'Jefe del Departamento de Desarrollo Academico'])->each(function ($user) use ($curso) {
             $usuario = auth()->user() == null ? $user : auth()->user();
             $user->notify(new NewDeteccionNotification($curso, $usuario));
         });
@@ -71,7 +72,7 @@ class CoursesController extends Controller
 
         $deteccion->save();
 
-        User::role(['Coordinacion de FD y AP'])->each(function(User $user) use ($deteccion){
+        User::role(['Coordinacion de FD y AP'])->each(function (User $user) use ($deteccion) {
             $user->notify(new DeteccionEditadaNotification($deteccion, $user));
         });
 
@@ -80,7 +81,8 @@ class CoursesController extends Controller
 
 
 
-    public static function total_horas($fecha_inicio, $fecha_final, $hora_inicio, $hora_final){
+    public static function total_horas($fecha_inicio, $fecha_final, $hora_inicio, $hora_final)
+    {
         $fechaInicio = Carbon::parse($fecha_inicio);
         $fechaFinal = Carbon::parse($fecha_final);
         $horaInicio = Carbon::parse($hora_inicio);
@@ -90,8 +92,8 @@ class CoursesController extends Controller
         $horasTotales = 0;
 
         //bucle para recorrer la fecha inical hasta la fecha final
-        while($fechaInicio <= $fechaFinal){
-            if ($fechaInicio->isWeekday()){
+        while ($fechaInicio <= $fechaFinal) {
+            if ($fechaInicio->isWeekday()) {
                 $diasHabiles++;
 
                 //aqui calcula las horas del dia en base al horario
@@ -106,17 +108,17 @@ class CoursesController extends Controller
         return $horasTotales;
     }
 
-    public static function state_curso(){
+    public static function state_curso()
+    {
         $cursos = DeteccionNecesidades::where('aceptado', 1)->get();
         $now = Carbon::now();
 
-        foreach ($cursos as $curso){
-            if ($now < $curso->fecha_I){
+        foreach ($cursos as $curso) {
+            if ($now < $curso->fecha_I) {
                 $curso->estado = 0;
-            }
-            elseif ($now >= $curso->fecha_I && $now <= $curso->fecha_F){
+            } elseif ($now >= $curso->fecha_I && $now <= $curso->fecha_F) {
                 $curso->estado = 1;
-            }else {
+            } else {
                 $curso->estado = 2;
             }
             $curso->save();

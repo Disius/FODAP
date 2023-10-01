@@ -23,9 +23,10 @@ class RegisteredUserController extends Controller
      */
     public function create(Request $request): Response
     {
+        $departamento = Departamento::all();
         return Inertia::render('Auth/Register', [
             'role' => $request->role,
-            'departamento' => Departamento::all(),
+            'departamento' => $departamento->except(['12', '13']),
         ]);
     }
 

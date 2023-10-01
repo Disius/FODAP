@@ -17,7 +17,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::middleware(['auth', 'role:Jefes Academicos'])->group(function(){
+Route::middleware(['auth', 'role:Jefes Academicos'])->group(function () {
     Route::get('/detecciones', [AcademicosController::class, 'index'])->name('detecciones.index');
     Route::get('/detecciones/create', [AcademicosController::class, 'create'])->name('detecciones.create');
     Route::post('/deteccion/guardado', [CoursesController::class, 'store'])->name('store.detecciones');

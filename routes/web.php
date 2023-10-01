@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\AcademicosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,27 +45,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/notificaciones', [NotificationController::class, 'notifications'])->name('index.notifications');
     Route::post('/notificacion/leida', [NotificationController::class, 'markNotifications'])->name('markNotification');
 
-//    Route::post('/docente/inscrito/{id}', [DocenteController::class, 'inscripcion_docente'])->name('inscripcion.docente');
-//    Facilitador routes
+    //    Route::post('/docente/inscrito/{id}', [DocenteController::class, 'inscripcion_docente'])->name('inscripcion.docente');
+    //    Facilitador routes
     Route::get('/docente/facilitador', [DocenteController::class, 'facilitadores'])->name('get.facilitador');
     Route::get('/facilitador/{id}', [DocenteController::class, 'show_facilitadores'])->name('show.facilitadores');
     Route::post('/upload/cvu', [DocenteController::class, 'upload_cvu'])->name('upload.cvu');
     Route::get('/crear/ficha/{facilitador}/curso/{id}', [DocenteController::class, 'crear_ficha_tecnica'])->name('crear.ficha');
 
 
+    //required data
+    Route::get('/detecciones/data', [AcademicosController::class, 'detecciones_data'])->name('detecciones.data');
 
+    //pdfs
     Route::prefix('pdf')->group(function () {
-//        Route::post('/datos/deteccion', [PDFController::class, 'requestPDFDeteccion'])->name('data.pdf.deteccion');
+        //        Route::post('/datos/deteccion', [PDFController::class, 'requestPDFDeteccion'])->name('data.pdf.deteccion');
         Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
         Route::get('/PIFDAP', [PDFController::class, 'PIFDAP_pdf'])->name('pdf.pifdap');
         Route::get('/cdi', [PDFController::class, 'cdi_pdf'])->name('cdi.pdf');
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
-require __DIR__.'/AcademicsRoutes.php';
+require __DIR__ . '/AcademicsRoutes.php';
 
-require __DIR__.'/DesarrolloRoutes.php';
+require __DIR__ . '/DesarrolloRoutes.php';
 
-require __DIR__.'/DocentesRoutes.php';
+require __DIR__ . '/DocentesRoutes.php';

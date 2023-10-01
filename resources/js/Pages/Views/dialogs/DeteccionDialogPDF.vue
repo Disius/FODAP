@@ -1,16 +1,16 @@
 <script setup>
-import {computed, onMounted, ref} from "vue";
-import {router, useForm} from "@inertiajs/vue3";
+import { computed, onMounted, ref } from "vue";
+import { router, useForm } from "@inertiajs/vue3";
 import axios from "axios";
-import {cursoStore} from '@/store/cursos.js'
-import {jsPDF} from "jspdf";
-import {storeToRefs} from "pinia";
+import { cursoStore } from '@/store/cursos.js'
+import { jsPDF } from "jspdf";
+import { storeToRefs } from "pinia";
 import autoTable from 'jspdf-autotable'
 
 const store = cursoStore()
 const { cursos } = storeToRefs(store)
 const { getCursos } = store
-const {course} = store
+const { course } = store
 
 
 const errorHandle = ref("");
@@ -26,13 +26,13 @@ const emit = defineEmits([
 ]);
 
 const form = useForm({
-   periodo: null,
-   carrera: null,
-   anio: null
+    periodo: null,
+    carrera: null,
+    anio: null
 });
 const periodos = [
-    {id: 1, name: "ENERO-JUNIO"},
-    {id: 2, name: "AGOSTO-DICIEMBRE"}
+    { id: 1, name: "ENERO-JUNIO" },
+    { id: 2, name: "AGOSTO-DICIEMBRE" }
 ];
 const fullYears = computed(() => {
     const maxYears = new Date().getFullYear();
@@ -47,7 +47,7 @@ const fullYears = computed(() => {
 });
 
 
-function submit(){
+function submit() {
     axios.get('/pdf/deteccion', {
         params: {
             anio: form.anio,
@@ -56,7 +56,7 @@ function submit(){
         }
     }).then(res => {
         // cursos.value = res.data.cursos
-        if (res.data.mensaje){
+        if (res.data.mensaje) {
             alert.value = true
             errorHandle.value = res.data.mensaje
         }
@@ -75,12 +75,23 @@ function submit(){
 
 }
 
-
+const detecciones_data = () => {
+    return new Promise((response, reject) => {
+        axios.get(route('detecciones.data')).then(res => {
+            response(res.data)
+        }).catch(error => {
+            reject(error.response.data)
+        })
+    })
+}
+console.log(store.cursos)
 onMounted(() => {
-    setTimeout(()=>{
+    setTimeout(() => {
         alert.value = false
         alert2.value = false
-    },10000)
+    }, 10000)
+
+    detecciones_data().then(res => store.getCursos(res)).catch(error => console.log(error))
 })
 
 </script>
@@ -92,38 +103,31 @@ onMounted(() => {
                 <v-card-title>Ingresar los datos para generar PDF</v-card-title>
                 <v-card-text>
                     <div class="pb-2">
-                        <v-alert
-                            v-model="alert"
-                            closable
-                            close-label="Cerrar"
-                            color="error"
-                            icon="$error"
-                            title="Error"
-                        >
-                            {{errorHandle}}
+                        <v-alert v-model="alert" closable close-label="Cerrar" color="error" icon="$error" title="Error">
+                            {{ errorHandle }}
                         </v-alert>
                     </div>
                     <div class="pb-2">
-                        <v-alert
-                            v-model="alert2"
-                            closable
-                            close-label="Cerrar"
-                            color="error"
-                            icon="$error"
-                            title="Error"
-                        >
+                        <v-alert v-model="alert2" closable close-label="Cerrar" color="error" icon="$error" title="Error">
                             ¡Debe ingresar los datos para generar el documento!
                         </v-alert>
                     </div>
-                    <label for="carrera" class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Carrera a la que va dirigida: </label>
+                    <label for="carrera"
+                        class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Carrera a
+                        la que va dirigida: </label>
                     <div class="pt-5">
-                        <v-select v-model="form.carrera" :items="props.carreras" item-title="nameCarrera" item-value="id"></v-select>
+                        <v-select v-model="form.carrera" :items="props.carreras" item-title="nameCarrera"
+                            item-value="id"></v-select>
                     </div>
-                    <label for="periodo" class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Periodo: </label>
+                    <label for="periodo"
+                        class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Periodo:
+                    </label>
                     <div class="pt-5">
                         <v-select v-model="form.periodo" :items="periodos" item-title="name" item-value="id"></v-select>
                     </div>
-                    <label for="anio" class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Año: </label>
+                    <label for="anio"
+                        class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Año:
+                    </label>
                     <div class="pt-5">
                         <v-select v-model="form.anio" :items="fullYears" item-title="name" item-value="id"></v-select>
                     </div>
@@ -147,6 +151,4 @@ onMounted(() => {
     </v-dialog>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -42,7 +42,7 @@ class ProfileController extends Controller
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'docente' => $docente,
-            'carrera' => $carrera->except(['11']),
+            'carrera' => $carrera->except(['11', '12', '13']),
             'departamento' => $departamento,
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,
@@ -87,39 +87,39 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function DocenteProfileCreate(Request $request){
+    public function DocenteProfileCreate(Request $request)
+    {
 
-            $docente = Docente::create([
-                'rfc' => $request->rfc,
-                'curp' => $request->curp,
-                'nombre' => $request->nombre,
-                'apellidoPat' => $request->apellidoPat,
-                'apellidoMat' => $request->apellidoMat,
-                'sexo' => $request->sexo,
-                'telefono' => $request->telefono,
-                'carrera_id' => $request->carrera_id,
-                'id_puesto' => $request->id_puesto,
-                'tipo_plaza' => $request->tipo_plaza,
-                'departamento_id' => $request->departamento_id,
-                'user_id' => $request->id,
-                'licenciatura' => $request->licenciatura,
-                'id_posgrado' => $request->id_posgrado,
-                'nombre_completo' => $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat
-            ]);
+        $docente = Docente::create([
+            'rfc' => $request->rfc,
+            'curp' => $request->curp,
+            'nombre' => $request->nombre,
+            'apellidoPat' => $request->apellidoPat,
+            'apellidoMat' => $request->apellidoMat,
+            'sexo' => $request->sexo,
+            'telefono' => $request->telefono,
+            'carrera_id' => $request->carrera_id,
+            'id_puesto' => $request->id_puesto,
+            'tipo_plaza' => $request->tipo_plaza,
+            'departamento_id' => $request->departamento_id,
+            'user_id' => $request->id,
+            'licenciatura' => $request->licenciatura,
+            'id_posgrado' => $request->id_posgrado,
+            'nombre_completo' => $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat
+        ]);
 
-            $docente->save();
-
-
-            User::where('id', $request->id)->update([
-                'docente_id' => $docente->id,
-            ]);
-
-            return Redirect::route('profile.edit');
+        $docente->save();
 
 
+        User::where('id', $request->id)->update([
+            'docente_id' => $docente->id,
+        ]);
+
+        return Redirect::route('profile.edit');
     }
 
-    public function update_docente(Request $request, $id){
+    public function update_docente(Request $request, $id)
+    {
         $docente = Docente::find($id);
 
         $docente->rfc = $request->rfc;

@@ -26,14 +26,10 @@ class DocenteController extends Controller
     }
 
     public function index_registros_docente(){
-        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
-        ->where('id_departamento', '=', auth()->user()->departamento_id)
-        ->where('aceptado', '=', 1)
-        ->where('estado', '=', 2)
-        ->get();
+        $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
 
         return Inertia::render('Views/cursos/docentes/RegistrosIndex', [
-            'cursos' => $cursos
+            'cursos' => $docente
         ]);
     }
 

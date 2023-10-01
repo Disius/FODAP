@@ -13,7 +13,8 @@ use Inertia\Inertia;
 
 class AcademicosController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
             ->where('id_jefe', auth()->user()->docente_id)
@@ -21,13 +22,14 @@ class AcademicosController extends Controller
             ->orderBy('id', 'desc')->get();
 
         $carrera = Carrera::select('id', 'nameCarrera')->get();
-        return Inertia::render('Views/academicos/Index.Detecciones',[
+        return Inertia::render('Views/academicos/Index.Detecciones', [
             'detecciones' => $detecciones,
             'carrera' => $carrera,
         ]);
     }
 
-    public function create(){
+    public function create()
+    {
         $docentes = Docente::select('nombre_completo', 'id')->get();
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->select('nameCarrera', 'id', 'departamento_id')->get();
         $departamento = Departamento::all();
@@ -41,7 +43,8 @@ class AcademicosController extends Controller
     }
 
 
-    private static function consult_view($query){
+    private static function consult_view($query)
+    {
         return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('id', $query)->first();
     }
 
@@ -50,6 +53,18 @@ class AcademicosController extends Controller
     {
         return Inertia::render('Views/academicos/Show.Detecciones', [
             'deteccion' => $this->consult_view($id),
+        ]);
+    }
+
+    public function detecciones_data()
+    {
+        $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
+            ->where('id_jefe', auth()->user()->docente_id)
+            ->where('aceptado', '=', 0)
+            ->orderBy('id', 'desc')->get();
+
+        return response()->json([
+            'detecciones' => $detecciones
         ]);
     }
 
@@ -66,7 +81,8 @@ class AcademicosController extends Controller
         ]);
     }
 
-    public function registros(){
+    public function registros()
+    {
         $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
             ->where('aceptado', '=', 1)->where('id_jefe', auth()->user()->docente_id)->orderBy('id', 'desc')->get();
         return Inertia::render('Views/academicos/IndexRegistros', [
@@ -74,7 +90,8 @@ class AcademicosController extends Controller
         ]);
     }
 
-    public function index_cursos_academico(){
+    public function index_cursos_academico()
+    {
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
             ->where('id_jefe', '=', auth()->user()->docente_id)
             ->get();
@@ -87,14 +104,16 @@ class AcademicosController extends Controller
         ]);
     }
 
-    public function index_cursos_inscritos($id){
+    public function index_cursos_inscritos($id)
+    {
         return Inertia::render('Views/cursos/academicos/ShowInscritos', [
             'curso' => $this->consult_view($id),
             'docente' => Docente::all(),
         ]);
     }
 
-    public function inscripcion_academicos(Request $request, $id){
+    public function inscripcion_academicos(Request $request, $id)
+    {
         $deteccion = DeteccionNecesidades::find($id);
         $deteccion->docente_inscrito()->sync($request->input('id_docente'));
         return Redirect::route('show.inscritos.academicos', ['id' => $deteccion->id]);
