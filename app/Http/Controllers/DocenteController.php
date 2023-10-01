@@ -12,12 +12,27 @@ use Inertia\Inertia;
 class DocenteController extends Controller
 {
     public function index_cursos(){
-        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
-//            ->where('id_jefe', auth()->user()->docente_id)
-            ->get();
+        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
+                ->where('id_departamento', '=', auth()->user()->departamento_id)
+                ->where('aceptado', '=', 1)
+                ->where('estado', '=', 0)
+                ->orWhere('estado', '=', 1)
+                ->get();
         //Actualiza el estado del curso
         CoursesController::state_curso();
         return Inertia::render('Views/cursos/docentes/CursosDocentes', [
+            'cursos' => $cursos
+        ]);
+    }
+
+    public function index_registros_docente(){
+        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
+        ->where('id_departamento', '=', auth()->user()->departamento_id)
+        ->where('aceptado', '=', 1)
+        ->where('estado', '=', 2)
+        ->get();
+
+        return Inertia::render('Views/cursos/docentes/RegistrosIndex', [
             'cursos' => $cursos
         ]);
     }

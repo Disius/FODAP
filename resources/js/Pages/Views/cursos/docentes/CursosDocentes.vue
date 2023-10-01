@@ -27,7 +27,7 @@ onMounted(() => {
         }
     })
 });
-console.log(props.cursos)
+
 </script>
 
 <template>
@@ -44,7 +44,18 @@ console.log(props.cursos)
             </div>
         </template>
         <template v-else>
-            
+            <div class="mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <v-alert
+                    border="start"
+                    color="info"
+                    type="info"
+                    title="Cursos"
+                    >
+                        <strong>Actualmente no hay cursos que visualizar !Pronto deberian ser agregados!</strong>
+                    </v-alert>
+                </div>
+            </div>
         </template>
     </AuthenticatedLayout>
 </template>
