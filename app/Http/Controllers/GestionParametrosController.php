@@ -24,14 +24,14 @@ class   GestionParametrosController extends Controller
             'docente' => $docente,
             'carrera_relacion' => $carrera->pluck('departamento'),
             'departamento' => $departamento,
-            'carrera' => $carrera->except('11'),
+            'carrera' => $carrera->except('13'),
             'lugar' => $lugar,
         ]);
     }
 
     public function create_carrera(Request $request){
         $departamento = Departamento::all();
-        $carrera = Carrera::all()->except(['11']);
+        $carrera = Carrera::all()->except(['13']);
         $docente = Docente::all();
         return Inertia::render('Views/desarrollo/forms/CreateCarrera', [
             'docente' => $docente,
@@ -78,7 +78,7 @@ class   GestionParametrosController extends Controller
 
     public function create_departamento(){
         $departamento = Departamento::with('jefe_docente')->get();
-        $carrera = Carrera::all()->except(['11']);
+        $carrera = Carrera::all()->except(['13']);
         $docente = Docente::all();
         return Inertia::render('Views/desarrollo/forms/CreateDepartamento', [
             'docente' => $docente,

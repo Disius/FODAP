@@ -14,10 +14,10 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         DB::table('roles')->insert([
-            ['name' => 'Jefe del Departamento de Desarrollo Academico'],
-            ['name' => 'Coordinacion de FD y AP'],
-            ['name' => 'Jefes Academicos'],
-            ['name' => 'Docentes'],
+            ['name' => 'Jefe del Departamento de Desarrollo Academico', 'guard_name' => 'web'],
+            ['name' => 'Coordinacion de FD y AP', 'guard_name' => 'web'],
+            ['name' => 'Jefes Academicos', 'guard_name' => 'web'],
+            ['name' => 'Docentes', 'guard_name' => 'web'],
         ]);
     }
 }
