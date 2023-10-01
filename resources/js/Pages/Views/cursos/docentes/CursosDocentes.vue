@@ -27,6 +27,7 @@ onMounted(() => {
         }
     })
 });
+console.log(props.cursos)
 </script>
 
 <template>
@@ -35,11 +36,16 @@ onMounted(() => {
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Cursos</h2>
         </template>
-        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                <TablaCursoDocente :cursos="props.cursos" :user="props.auth"></TablaCursoDocente>
+        <template v-if="props.cursos.length !== 0">
+            <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <TablaCursoDocente :cursos="props.cursos" :user="props.auth"></TablaCursoDocente>
+                </div>
             </div>
-        </div>
+        </template>
+        <template v-else>
+            
+        </template>
     </AuthenticatedLayout>
 </template>
 
