@@ -27,13 +27,17 @@ const nameCards = ref([
 </script>
 
 <template>
-    <v-container class="pt-16 mt-16">
+    <v-container class="pt-5">
         <v-row justify="center" class="pt-9 mt-9">
             <v-col
             v-for="card in nameCards"
             :cols="card.flex"
             class=""
-            lg="4"
+            lg="6"
+            md="7"
+            sm="8"
+            xs="8"
+            xl="4"
             >
                 <Link :href="card.route"
                       as="card"

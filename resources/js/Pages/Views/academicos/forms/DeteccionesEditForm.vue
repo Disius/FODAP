@@ -142,7 +142,7 @@ onMounted(() => {
                                             <v-btn
                                                 icon
                                                 v-bind="props"
-                                                size="small"
+                                                size="normal"
                                             >
                                                 <v-icon color="blue-lighten-1">
                                                     mdi-help
@@ -205,7 +205,7 @@ onMounted(() => {
                                         <v-btn
                                             icon
                                             v-bind="props"
-                                            size="small"
+                                            size="normal"
                                             @click="exist = !exist"
                                         >
                                             <v-icon color="blue-lighten-1">

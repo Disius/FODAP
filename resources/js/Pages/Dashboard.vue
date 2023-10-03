@@ -51,14 +51,14 @@ onMounted(() => {
                             >
                                 <v-banner-text class="text-h5 text-center">
 
-                                    ¡Si es la primera vez que ingresas debes actualizar tus datos !
+                                    ¡Si es la primera vez que ingresas al sistema debes actualizar tus datos!
 
 
                                 </v-banner-text>
 
                                 <template v-slot:actions>
-                                    <NavLink :href="route('profile.edit')">
-                                        <v-btn>Ir</v-btn>
+                                    <NavLink :href="route('profile.edit')" as="button">
+                                        <v-btn color="warning" elevation="2">Ir</v-btn>
                                     </NavLink>
                                 </template>
                             </v-banner>

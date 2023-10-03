@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import DeteccionesForm from "@/Pages/Views/academicos/forms/DeteccionesForm.vue";
 import {onMounted, ref} from "vue";
 import NavLink from "@/Components/NavLink.vue";
+import ResetForm from "@/Pages/Views/dialogs/ResetForm.vue";
 
 const props = defineProps({
     base_docente: {
@@ -20,7 +21,9 @@ const props = defineProps({
     lugar: {
         type: Array
     }
-})
+});
+
+const dialogReset = ref(false);
 // const dialog = ref(true);
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -59,6 +62,7 @@ onMounted(() => {
                     <DeteccionesForm :lugar="props.lugar" :carrera="props.carrera_filtro" :todos_los_departamentos="props.todos_los_departamentos" :docente="props.base_docente"></DeteccionesForm>
                 </div>
             </div>
+<!--            <ResetForm v-model="dialogReset" @update:modelValue="dialogReset = $event"></ResetForm>-->
         </div>
     </AuthenticatedLayout>
 </template>

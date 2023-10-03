@@ -82,7 +82,13 @@ const lugarSinOcupar = computed(() => {
         return e.curso === null
     })
 });
+const maxCount = [
+    value => {
+      if (value.length <= 3) return true
 
+      return "Deben ser maximo tres facilitadores";
+    }
+]
 // const if_not = computed(() => {
 //     return props.carrera.map(c => {
 //         if (c.id === 11 || c.id === 12 || c.id === 13) {
@@ -104,9 +110,8 @@ const submit = () => {
         onSuccess: () => {
             form.reset()
             dialogReset.value = true;
-            if (dialogReset.value = $event) {
-                dialog.value = true;
-            }
+            dialog.value = true;
+
         },
         onError: errors => {
             errores.value = errors
@@ -423,8 +428,8 @@ const submit = () => {
                                         </div>
                                     </v-col>
                                 </v-row>
-                                <v-autocomplete multiple :items="props.docente" item-title="nombre_completo" item-value="id"
-                                    v-model="form.facilitadores" variant="solo">
+                                <v-autocomplete :counter="3" multiple :items="props.docente" item-title="nombre_completo" item-value="id"
+                                    v-model="form.facilitadores" variant="solo" :rules="maxCount">
 
                                 </v-autocomplete>
                             </v-col>

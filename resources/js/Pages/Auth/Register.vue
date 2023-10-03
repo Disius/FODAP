@@ -4,7 +4,9 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import {Head, Link, useForm} from '@inertiajs/vue3';
+import {ref, watch} from "vue";
+
 const props = defineProps({
     role: {type: String},
     departamento: {type: Array}
@@ -22,6 +24,58 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const email_rules = [
+    v => {
+        return /^[A-Za-z0-9._%+-]+@(tuxtla\.tecnm\.mx|tecnm\.mx)$/.test(v) || "Su email debe ser exclusivamente institucional"
+    }
+];
+
+const passwordStrength = ref(0);
+
+const passwordRules = [
+    (v) => !!v || 'La contraseña es requerida',
+    (v) =>  v && v.length >= 8 || 'La contraseña debe tener al menos 8 caracteres',
+    (v) => calculatePasswordStrength(v) >= 50 || 'La contraseña debe ser más fuerte',
+];
+
+const calculatePasswordStrength = (password) => {
+    // Aquí puedes implementar tu lógica para calcular la fortaleza de la contraseña.
+    // Puedes utilizar reglas como longitud, caracteres especiales, letras mayúsculas, etc.
+    // Calcula un valor entre 0 y 100 y asígnalo a this.passwordStrength.
+    // Por ejemplo:
+    passwordStrength.value = Math.min(password.length / 8 * 100, 100);
+}
+
+watch(() => form.password,
+    (newValue) => {
+          calculatePasswordStrength(newValue)
+          startProgress()
+      console.log(passwordStrength.value)
+})
+
+const progressColor = ref("pink");
+
+const startProgress = () => {
+   progressColor.value = 'pink'; // Reinicia el color a 'primary'
+  //this.progress = 0; // Reinicia el progreso a 0
+  if (passwordStrength.value >= 50) {
+    progressColor.value = 'success';
+  }
+  // const interval = setInterval(() => {
+  //   //this.progress += 10; // Incrementa el progreso en 10 unidades
+  //
+  //   // Cambia el color cuando llega al 50% de progreso
+  //   if (passwordStrength.value >= 50) {
+  //     progressColor.value = 'success';
+  //   }
+  //
+  //   // Finaliza el progreso al llegar al 100%
+  //   if (passwordStrength.value  === 100) {
+  //     clearInterval(interval);
+  //   }
+  // }, 100);
+}
 </script>
 
 <template>
@@ -33,29 +87,46 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel for="email" value="Correo institucional" />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+<!--                <TextInput-->
+<!--                    id="email"-->
+<!--                    type="email"-->
+<!--                    class="mt-1 block w-full"-->
+<!--                    v-model="form.email"-->
+<!--                    required-->
+<!--                    autocomplete="username"-->
+<!--                />-->
+                <v-text-field
+                v-model="form.email"
+                :rules="email_rules"
+                >
 
+                </v-text-field>
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
                 <InputLabel for="password" value="Contraseña" />
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
+<!--                <TextInput-->
+<!--                    id="password"-->
+<!--                    type="password"-->
+<!--                    class="mt-1 block w-full"-->
+<!--                    v-model="form.password"-->
+<!--                    required-->
+<!--                    autocomplete="new-password"-->
+<!--                />-->
+                <v-text-field
                     v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+                    type="password"
+                    :rules="passwordRules"
+                ></v-text-field>
+                <v-progress-linear
+                    v-model="passwordStrength"
+                    :value="passwordStrength"
+
+                    height="10"
+                    :color="progressColor"
+                ></v-progress-linear>
 
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>

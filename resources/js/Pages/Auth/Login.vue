@@ -30,6 +30,12 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
+
+const email_rules = [
+    v => {
+        return /^[A-Za-z0-9._%+-]+@(tuxtla\.tecnm\.mx|tecnm\.mx)$/.test(v) || "Su email debe ser exclusivamente institucional"
+    }
+];
 </script>
 
 <template>
@@ -44,16 +50,18 @@ const submit = () => {
             <div>
                 <InputLabel for="email" value="Correo Institucional" />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+<!--                <TextInput-->
+<!--                    id="email"-->
+<!--                    type="email"-->
+<!--                    class="mt-1 block w-full"-->
+<!--                    v-model="form.email"-->
+<!--                    required-->
+<!--                    autofocus-->
+<!--                    autocomplete="username"-->
+<!--                />-->
+                <v-text-field v-model="form.email" :rules="email_rules">
 
+                </v-text-field>
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
