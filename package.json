@@ -25,6 +25,7 @@
         "laravel-echo": "^1.15.2",
         "pinia": "^2.1.6",
         "pusher-js": "^8.3.0",
-        "vuetify": "^3.3.8"
+        "vuetify": "^3.3.8",
+        "zxcvbn": "^4.4.2"
     }
 }

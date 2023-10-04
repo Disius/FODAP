@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             PlazaSeeder::class,
             PuestoSeeder::class,
             RoleSeeder::class,
-            PosgradoSeeder::class, 
+            PosgradoSeeder::class,
+            RolHasModelSeeder::class,
         ]);
     }
 }

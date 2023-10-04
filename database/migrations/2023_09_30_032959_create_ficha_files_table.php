@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateConfigDatesTable extends Migration
+class CreateFichaFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateConfigDatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('config_dates', function (Blueprint $table) {
+        Schema::create('ficha_file', function (Blueprint $table) {
             $table->id();
-            $table->date('fecha_inicio')->nullable();
-            $table->date('fecha_final')->nullable();
+            $table->bigInteger('id_curso');
+            $table->string('path', 100);
+            $table->timestamps();
         });
     }
 
@@ -27,6 +28,6 @@ class CreateConfigDatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('config_dates');
+        Schema::dropIfExists('ficha_file');
     }
 }

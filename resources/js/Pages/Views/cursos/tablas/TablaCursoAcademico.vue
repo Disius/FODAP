@@ -111,9 +111,9 @@ const props = defineProps({
                 <td class="v-card--hover">
                     {{ curso.observaciones }}
                 </td>
-                <td>
+                <td width="200">
                     <div v-if="curso.estado === 0">
-                        <v-alert min-width="100" color="warning">Por realizarse</v-alert>
+                        <v-alert width="200" height="200" color="warning">Por realizarse</v-alert>
                     </div>
                     <div v-else-if="curso.estado === 1">
                         <v-alert color="success">En curso</v-alert>

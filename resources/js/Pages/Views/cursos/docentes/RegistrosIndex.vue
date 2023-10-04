@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '/var/www/html/FODAP/resources/js/Layouts/AuthenticatedLayout.vue';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 const props = defineProps({
     cursos: Object,

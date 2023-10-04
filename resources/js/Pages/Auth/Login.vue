@@ -6,8 +6,9 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import {computed} from "vue";
 
-defineProps({
+const props = defineProps({
     canResetPassword: {
         type: Boolean,
     },
@@ -24,7 +25,9 @@ const form = useForm({
     password: '',
     remember: false,
 });
-
+const rol = computed(() =>{
+    return parseInt(props.role);
+})
 const submit = () => {
     form.post(route('login'), {
         onFinish: () => form.reset('password'),
@@ -101,10 +104,12 @@ const email_rules = [
                 </PrimaryButton>
             </div>
         </form>
-        <div class="flex items-center justify-center mt-4">
-            <Link :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" :data="{role: $props.role}">
-                ¿No te encuentras registrado?
-            </Link>
-        </div>
+        <template v-if="rol === 4">
+            <div class="flex items-center justify-center mt-4">
+                <Link :href="route('register')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" :data="{role: $props.role}">
+                    ¿No te encuentras registrado?
+                </Link>
+            </div>
+        </template>
     </GuestLayout>
 </template>

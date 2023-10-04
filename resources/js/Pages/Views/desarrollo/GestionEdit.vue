@@ -57,6 +57,18 @@ function submit(){
     form.post(route('config.dates'));
     form.reset()
 }
+
+
+const formF = useForm({
+    file: null,
+    id: props.auth.user.docente_id
+});
+
+const upload_file = () => {
+    form.post(route('upload.ft'), {
+        forceFormData: true
+    })
+}
 </script>
 
 <template>
@@ -125,6 +137,26 @@ function submit(){
                         <primary-button>Crear</primary-button>
                     </NavLink>
                 </div>
+            </div>
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <header>
+                    <h2 class="text-lg font-medium text-gray-900">Ficha técnica</h2>
+
+                    <p class="mt-1 text-sm text-gray-600">
+                        Subir ficha técnica para editar.
+                    </p>
+                </header>
+                <div class="grid grid-cols-2">
+                    <div class="flex justify-start mt-12">
+                        <v-file-input label="Ingresar Ficha Técnica" variant="solo" @input="formF.file = $event.target.files[0]"></v-file-input>
+                    </div>
+                    <div class="flex justify-center mt-12">
+                        <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">
+                            Subir
+                        </v-btn>
+                    </div>
+                </div>
+
             </div>
         </div>
     </AuthenticatedLayout>

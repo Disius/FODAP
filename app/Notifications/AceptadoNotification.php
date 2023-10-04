@@ -54,7 +54,7 @@ class AceptadoNotification extends Notification
             'email' => auth()->user()->email,
             'id' => $this->detecciones->id,
             'route' => '/academicos/curso/inscritos',
-            'messegue' => "El curso se ha aceptado"
+            'messegue' => "ha aceptado el curso"
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\DocenteController;
+use App\Http\Controllers\GestionParametrosController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
@@ -55,7 +56,7 @@ Route::middleware('auth')->group(function () {
 
     //required data
     Route::get('/detecciones/data', [AcademicosController::class, 'detecciones_data'])->name('detecciones.data');
-
+//    Route::get('/cursos/call', [GestionParametrosController::class, 'get_cursos'])->name('call.cursos');
     //pdfs
     Route::prefix('pdf')->group(function () {
         //        Route::post('/datos/deteccion', [PDFController::class, 'requestPDFDeteccion'])->name('data.pdf.deteccion');

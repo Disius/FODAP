@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carrera;
 use App\Models\ConfigDates;
 use App\Models\Departamento;
+use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use App\Models\Lugar;
 use Carbon\Carbon;
@@ -165,13 +166,40 @@ class   GestionParametrosController extends Controller
 
     public static function if_enable_detecciones(){
         $dates = ConfigDates::latest('id')->first();
-        $fechaI = Carbon::parse($dates->fecha_I);
-        $fechaF = Carbon::parse($dates->fecha_F);
-        $hoy = Carbon::now();
-        if ($hoy->between($fechaI, $fechaF)){
-            return true;
-        }else{
-            return false;
+
+        if (empty($dates)){
+            return null;
+        }else {
+            $startDate = Carbon::parse($dates->fecha_inicio);
+            $endDate = Carbon::parse($dates->fecha_final);
+            $currentDate = Carbon::now('GMT-6');
+            $tiemporestante = $currentDate->diff($endDate);
+            return [$currentDate->between($startDate, $endDate), $tiemporestante];
         }
     }
+
+    public function upload_ft(Request $request){
+
+            if ($request->hasFile('file')){
+                $file_path = $request->file('file')->storeAs('/CVUupload/', 'CVU_'.$request->id.'.pdf', 'public');
+
+
+                $file = FilesCVU::create([
+                    'id_docente' => $request->id,
+                    'path' => $file_path
+                ]);
+
+
+                $file->save();
+
+                return response()->json([
+                    'msg' => 'Su CVU se ha subido con exito'
+                ]);
+            }
+
+            return response()->json([
+                'msg' => 'No se ha podido subir su CVU'
+            ]);
+    }
+
 }

@@ -65,6 +65,18 @@ const criterio = 3;
                 </div>
                 <div class="flex justify-center">
                     <InputLabel for="Criterios" value="Criterios de Evaluación"/>
+                    <div class="d-flex justify-start mb-5 ml-3">
+                        <v-tooltip location="right">
+                            <template v-slot:activator="{ props }">
+                                <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                    <v-icon>
+                                        mdi-help
+                                    </v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Especificar los criterios de evaluación (minimo 3 criterio), Porcentaje asignado a cada criterio de evaluación.</span>
+                        </v-tooltip>
+                    </div>
                 </div>
 <!--                    <div class="flex justify-center">-->
 <!--                        <InputLabel class="mr-1" for="objetivo" value="Actividades de aprendizaje: "/>-->
@@ -75,30 +87,9 @@ const criterio = 3;
 <!--                        <v-textarea variant="solo" v-model="form.elementos_didacticos"></v-textarea>-->
 <!--                    </div>-->
                     <div class="flex justify-center w-100">
-                        <v-card elevation="0" width="1000">
-                            <v-table>
-                                <thead>
-                                <tr>
-                                    <th>No.</th>
-                                    <th class="text-center">Criterio</th>
-                                    <th>Valor</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="c in criterio">
-                                    <td class="w-20">
-                                        {{c}}
-                                    </td>
-                                    <td class="w-50">
-                                        <v-text-field v-model="form.criterio_evaluacion"></v-text-field>
-                                    </td>
-                                    <td>
-                                        <v-text-field></v-text-field>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </v-table>
-                        </v-card>
+                        <v-textarea>
+
+                        </v-textarea>
                     </div>
 
             </div>

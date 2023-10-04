@@ -72,7 +72,7 @@ class CoursesController extends Controller
 
         $deteccion->save();
 
-        User::role(['Coordinacion de FD y AP'])->each(function (User $user) use ($deteccion) {
+        User::role(['Coordinacion de FD y AP',  'Jefe del Departamento de Desarrollo Academico'])->each(function (User $user) use ($deteccion) {
             $user->notify(new DeteccionEditadaNotification($deteccion, $user));
         });
 

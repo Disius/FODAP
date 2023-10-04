@@ -13,10 +13,10 @@ class DocenteController extends Controller
 {
     public function index_cursos(){
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
-                ->where('id_departamento', '=', auth()->user()->departamento_id)
                 ->where('aceptado', '=', 1)
                 ->where('estado', '=', 0)
-                ->orWhere('estado', '=', 1)
+                ->where('id_departamento', '=', auth()->user()->departamento_id)
+                ->where('estado', '=', 1)
                 ->get();
         //Actualiza el estado del curso
         CoursesController::state_curso();

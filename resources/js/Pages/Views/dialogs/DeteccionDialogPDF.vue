@@ -4,14 +4,9 @@ import { router, useForm } from "@inertiajs/vue3";
 import axios from "axios";
 import { cursoStore } from '@/store/cursos.js'
 import { jsPDF } from "jspdf";
-import { storeToRefs } from "pinia";
 import autoTable from 'jspdf-autotable'
 
 const store = cursoStore()
-const { cursos } = storeToRefs(store)
-const { getCursos } = store
-const { course } = store
-
 
 const errorHandle = ref("");
 const alert = ref(false);
@@ -75,23 +70,14 @@ function submit() {
 
 }
 
-const detecciones_data = () => {
-    return new Promise((response, reject) => {
-        axios.get(route('detecciones.data')).then(res => {
-            response(res.data)
-        }).catch(error => {
-            reject(error.response.data)
-        })
-    })
-}
-console.log(store.cursos)
+
 onMounted(() => {
     setTimeout(() => {
         alert.value = false
         alert2.value = false
     }, 10000)
 
-    detecciones_data().then(res => store.getCursos(res)).catch(error => console.log(error))
+
 })
 
 </script>

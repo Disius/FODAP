@@ -13,10 +13,11 @@ const props = defineProps({
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Registros de deteccion de necesidades</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Registros de cursos</h2>
         </template>
 
-        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6 mt-5">
+        <template v-if="props.detecciones.length !== 0">
+            <div class="mx-auto sm:px-6 lg:px-8 space-y-6 mt-5">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <v-card elevation="0">
                         <v-table
@@ -60,7 +61,7 @@ const props = defineProps({
                                 </template>
                                 <td class="v-card--hover">{{deteccion.objetivoEvento}}</td>
                                 <td>
-                                    <NavLink :href="route('show.detecciones', deteccion.id)" type="button" as="button">
+                                    <NavLink :href="route('show.inscritos.academicos', deteccion.id)" type="button" as="button">
                                         <v-btn icon color="blue">
                                             <v-icon>mdi-eye-arrow-right-outline</v-icon>
                                         </v-btn>
@@ -72,6 +73,20 @@ const props = defineProps({
                     </v-card>
                 </div>
             </div>
+        </template>
+        <template v-else>
+            <div class="mt-10 pt-10 mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <v-alert
+                        color="blue-darken-1"
+                        icon="mdi-alert-circle"
+                        prominent
+                    >
+                        Actualmente no han finalizado cursos.
+                    </v-alert>
+                </div>
+            </div>
+        </template>
     </AuthenticatedLayout>
 </template>
 

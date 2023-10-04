@@ -34,6 +34,7 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
 
 //  Rutas para establecer fechas
     Route::post('/fechas', [GestionParametrosController::class, 'dates_detecciones'])->name('config.dates');
+    Route::get('/fechas/isActive', [GestionParametrosController::class, 'if_enable_detecciones'])->name('dates.get');
 
 //rutas lugar
 
@@ -48,7 +49,6 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::post('/desarrollo/guardar/curso', [DesarrolloController::class, 'store_cursos'])->name('store.curso.add');
     Route::get('/desarrollo/editar/curso/{id}', [DesarrolloController::class, 'edit_curso'])->name('curso.editar');
     Route::put('/desarrollo/actualizado/curso/{id}', [DesarrolloController::class, 'update_curso'])->name('update.curso');
-
 //inscripciones
     Route::post('/docente/inscribir/{id}', [DesarrolloController::class, 'inscripcion_por_desarrollo'])->name('inscribir.docente');
 
@@ -63,4 +63,7 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
 //desarrollo academico cursos
     Route::get('/desarrollo/cursos', [DesarrolloController::class, 'desarrollo_cursos'])->name('index.desarrollo.cursos');
     Route::get('/desarrollo/curso/{id}', [DesarrolloController::class, 'index_curso_inscrito_desarrollo'])->name('index.desarrollo.inscritos');
+
+//    Subir archivos
+    Route::post('/upload/ficha', [GestionParametrosController::class, '']);
 });

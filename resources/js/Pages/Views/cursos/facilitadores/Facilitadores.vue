@@ -61,6 +61,8 @@ const download_ft = () => {
     document.body.appendChild(link);
     link.click();
 }
+
+
 </script>
 
 <template>
@@ -106,6 +108,9 @@ const download_ft = () => {
                 <div class="grid grid-cols-2">
                     <div class="flex justify-center mr-5">
                         <v-btn block height="50" color="blue-darken-1">Descargar PDF</v-btn>
+                    </div>
+                    <div class="flex justify-center mr-5">
+                        <v-btn block height="50" color="blue-darken-1">Descargar Formato</v-btn>
                     </div>
                 </div>
                 <div class="flex justify-start">
@@ -164,6 +169,9 @@ const download_ft = () => {
                                         Crear
                                     </v-btn>
                                 </NavLink>
+<!--                                <v-btn color="blue-darken-1">-->
+<!--                                    Subir Ficha Técnica-->
+<!--                                </v-btn>-->
                             </td>
                         </tr>
                         </tbody>

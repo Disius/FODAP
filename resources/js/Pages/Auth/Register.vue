@@ -6,6 +6,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import {Head, Link, useForm} from '@inertiajs/vue3';
 import {ref, watch} from "vue";
+import zxcvbn from 'zxcvbn';
+
 
 const props = defineProps({
     role: {type: String},
@@ -36,45 +38,42 @@ const passwordStrength = ref(0);
 const passwordRules = [
     (v) => !!v || 'La contraseña es requerida',
     (v) =>  v && v.length >= 8 || 'La contraseña debe tener al menos 8 caracteres',
-    (v) => calculatePasswordStrength(v) >= 50 || 'La contraseña debe ser más fuerte',
+    (v) => {
+        if (calculatePasswordStrength(v) >= 25) return true
+
+        return 'La contraseña debe ser más fuerte'
+    },
+    // (v) => calculatePasswordStrength(v) >= 1 || 'La contraseña es fácil',
+    // (v) => calculatePasswordStrength(v) >= 2 || 'La contraseña es algo adivinable',
+    // (v) => calculatePasswordStrength(v) >= 3 || 'La contraseña es segura',
+    // (v) => calculatePasswordStrength(v) >= 4 || 'La contraseña es muy segura',
+
 ];
 
+// const getStrength = () => {
+//   const result = zxcvbn(form.password);
+//   return result.score;
+// }
 const calculatePasswordStrength = (password) => {
-    // Aquí puedes implementar tu lógica para calcular la fortaleza de la contraseña.
-    // Puedes utilizar reglas como longitud, caracteres especiales, letras mayúsculas, etc.
-    // Calcula un valor entre 0 y 100 y asígnalo a this.passwordStrength.
-    // Por ejemplo:
-    passwordStrength.value = Math.min(password.length / 8 * 100, 100);
+    const result = zxcvbn(password);
+    let score = result.score;
+    return passwordStrength.value = Math.min(score * 25, 100);
 }
 
 watch(() => form.password,
     (newValue) => {
           calculatePasswordStrength(newValue)
           startProgress()
-      console.log(passwordStrength.value)
+      console.log(passwordStrength.value, )
 })
 
 const progressColor = ref("pink");
 
 const startProgress = () => {
-   progressColor.value = 'pink'; // Reinicia el color a 'primary'
-  //this.progress = 0; // Reinicia el progreso a 0
+   progressColor.value = 'pink';
   if (passwordStrength.value >= 50) {
     progressColor.value = 'success';
   }
-  // const interval = setInterval(() => {
-  //   //this.progress += 10; // Incrementa el progreso en 10 unidades
-  //
-  //   // Cambia el color cuando llega al 50% de progreso
-  //   if (passwordStrength.value >= 50) {
-  //     progressColor.value = 'success';
-  //   }
-  //
-  //   // Finaliza el progreso al llegar al 100%
-  //   if (passwordStrength.value  === 100) {
-  //     clearInterval(interval);
-  //   }
-  // }, 100);
 }
 </script>
 
@@ -123,10 +122,25 @@ const startProgress = () => {
                 <v-progress-linear
                     v-model="passwordStrength"
                     :value="passwordStrength"
-
-                    height="10"
+                    height="25"
                     :color="progressColor"
-                ></v-progress-linear>
+                >
+                  <template v-if="passwordStrength === 0">
+                      Fuerza de la contraseña
+                  </template>
+                  <template v-if="passwordStrength === 25">
+                      Fácil
+                  </template>
+                  <template v-if="passwordStrength === 50">
+                      Segura
+                  </template>
+                  <template v-if="passwordStrength === 75">
+                      Muy segura
+                  </template>
+                  <template v-if="passwordStrength === 100">
+                     Indescifrable
+                  </template>
+                </v-progress-linear>
 
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>

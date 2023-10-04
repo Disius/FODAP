@@ -46,22 +46,39 @@ onMounted(() => {
         </template>
 
 
-<!--        <v-container>-->
-<!--            <v-row justify="end">-->
-<!--                <v-col cols="12">-->
-<!--                    <v-btn prepend-icon="mdi-file-pdf-box" size="large" @click="pdf_dialog = true" color="blue-darken-1">-->
-<!--                        Generar PIFDAP-->
-<!--                    </v-btn>-->
-<!--                </v-col>-->
-<!--            </v-row>-->
-<!--        </v-container>-->
-<!--        <DialogPIFAP v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DialogPIFAP>-->
 
-        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 mt-3 sm:p-8 bg-white shadow sm:rounded-lg">
-                <TablaCursoAcademico :cursos="props.cursos" :user="props.auth"></TablaCursoAcademico>
+        <template v-if="props.cursos.length !== 0">
+            <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="p-4 mt-3 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <TablaCursoAcademico :cursos="props.cursos" :user="props.auth"></TablaCursoAcademico>
+                </div>
             </div>
-        </div>
+        </template>
+        <template v-else>
+            <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <v-alert
+                        color="blue-darken-1"
+                        icon="mdi-alert-circle"
+                        prominent
+                    >
+                        Actualmente no se han capturado cursos.
+                    </v-alert>
+                </div>
+            </div>
+        </template>
+
+        <v-container class="mt-3">
+            <v-row justify="center">
+                <v-col cols="12" align="center">
+                    <NavLink :href="route('index.registros')" :active="route().current('index.registros')" as="button">
+                        <v-btn rounded="xl" block size="x-large" color="blue-darken-1" prepend-icon="mdi-archive">
+                            Todos los registros
+                        </v-btn>
+                    </NavLink>
+                </v-col>
+            </v-row>
+        </v-container>
 
     </AuthenticatedLayout>
 </template>
