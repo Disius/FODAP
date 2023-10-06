@@ -6,6 +6,7 @@ use App\Http\Controllers\GestionParametrosController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WordController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -52,11 +53,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/facilitador/{id}', [DocenteController::class, 'show_facilitadores'])->name('show.facilitadores');
     Route::post('/upload/cvu', [DocenteController::class, 'upload_cvu'])->name('upload.cvu');
     Route::get('/crear/ficha/{facilitador}/curso/{id}', [DocenteController::class, 'crear_ficha_tecnica'])->name('crear.ficha');
-
+    Route::post('/upload/ficha', [DocenteController::class, 'upload_ft'])->name('upload.ficha');
 
     //required data
     Route::get('/detecciones/data', [AcademicosController::class, 'detecciones_data'])->name('detecciones.data');
 //    Route::get('/cursos/call', [GestionParametrosController::class, 'get_cursos'])->name('call.cursos');
+    Route::get('/word/ficha', [WordController::class, 'extractDataFromWord'])->name('word.ficha');
+
     //pdfs
     Route::prefix('pdf')->group(function () {
         //        Route::post('/datos/deteccion', [PDFController::class, 'requestPDFDeteccion'])->name('data.pdf.deteccion');

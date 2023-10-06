@@ -44,18 +44,18 @@ onMounted(() => {
                 <div v-for="n in props.notifications">
                     <div class="pa-12 ma-6 sm:p-8 bg-white shadow sm:rounded-lg">
                         <p>{{n.data.email}} {{n.data.messegue}}</p>
-                        <v-row justify="end" class="mt-6 ml-1">
-                            <v-col cols="2" align="center">
-                                <NavLink :href="n.data.route + '/' + n.data.id">
-                                    <v-btn color="blue-darken-1" prepend-icon="mdi-eye">Ver</v-btn>
+                        <div class="grid grid-cols-2">
+                            <div class="flex justify-end">
+                                <NavLink :href="n.data.route + '/' + n.data.id" as="button">
+                                    <v-btn color="blue-darken-1" prepend-icon="mdi-eye" width="400">Ver</v-btn>
                                 </NavLink>
-                            </v-col>
-                            <v-col cols="2" align="center">
+                            </div>
+                            <div class="flex justify-center">
                                 <NavLink :href="route('markNotification')" :data="{ id: n.id }" method="post" as="button">
-                                    <v-btn color="success" prepend-icon="mdi-check-circle-outline">Visto</v-btn>
+                                    <v-btn color="success" prepend-icon="mdi-check-circle-outline" width="400">Marcar como leida</v-btn>
                                 </NavLink>
-                            </v-col>
-                        </v-row>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

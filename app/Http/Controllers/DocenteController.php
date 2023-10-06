@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
+use App\Models\FileFT;
 use App\Models\FilesCVU;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class DocenteController extends Controller
@@ -91,6 +93,31 @@ class DocenteController extends Controller
         return response()->json([
             'msg' => 'No se ha podido subir su CVU'
         ]);
+    }
+    public function upload_ft(Request $request)
+    {
+        if ($request->hasFile('file')){
+            $file_path = $request->file('file')->storeAs('/FTupload/', 'FICHA_TECNICA_curso_'.$request->id.'.docx', 'public');
+
+
+            $file = FileFT::create([
+                'id_curso' => $request->id,
+                'path' => $file_path
+            ]);
+
+
+            $file->save();
+
+            return response()->json([
+                'msg' => "Guardado con exito"
+            ]);
+
+        }else{
+            return response()->json([
+                'msg' => "Error para subir el archivo"
+            ]);
+        }
+
     }
 
     public function crear_ficha_tecnica($facilitador, $id){

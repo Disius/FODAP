@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules\In;
 use Inertia\Inertia;
+use App\Models\FileFT;
 
 class   GestionParametrosController extends Controller
 {
@@ -178,28 +179,5 @@ class   GestionParametrosController extends Controller
         }
     }
 
-    public function upload_ft(Request $request){
-
-            if ($request->hasFile('file')){
-                $file_path = $request->file('file')->storeAs('/CVUupload/', 'CVU_'.$request->id.'.pdf', 'public');
-
-
-                $file = FilesCVU::create([
-                    'id_docente' => $request->id,
-                    'path' => $file_path
-                ]);
-
-
-                $file->save();
-
-                return response()->json([
-                    'msg' => 'Su CVU se ha subido con exito'
-                ]);
-            }
-
-            return response()->json([
-                'msg' => 'No se ha podido subir su CVU'
-            ]);
-    }
 
 }

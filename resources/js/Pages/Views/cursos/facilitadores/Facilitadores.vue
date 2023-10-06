@@ -8,6 +8,11 @@ import {fi} from "vuetify/locale";
 import {router, useForm} from "@inertiajs/vue3";
 import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
+import UploadFicha from "@/Pages/Views/dialogs/UploadFicha.vue";
+
+
+const dialog = ref(false);
+
 
 const props = defineProps({
    auth: Object,
@@ -19,6 +24,7 @@ const form = useForm({
     file: null,
     id: props.auth.user.docente_id
 });
+
 
 const download_cvu = () => {
     const url = '/storage/CVUdownload/CVUEditable.docx';
@@ -35,14 +41,6 @@ const upload_file = () => {
     })
 }
 
-const formFT = useForm({
-    id: props.auth.user.docente_id,
-    file: null
-})
-
-const upload_file_ft = () => {
-
-}
 const download_cvu_editado = () => {
     let url = '/storage' + '/' + props.docente.cvu.path
     const link = document.createElement('a');
@@ -102,20 +100,17 @@ const download_ft = () => {
         <div class="mt-5 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="flex justify-items-center mb-12">
-                    <h2 class="text-xl font-medium text-gray-900 text-center">FICHA TÉCNICA</h2>
+                    <h2 class="text-xl font-medium text-gray-900 text-center">Cursos que imparto</h2>
                 </div>
 
-                <div class="grid grid-cols-2">
-                    <div class="flex justify-center mr-5">
-                        <v-btn block height="50" color="blue-darken-1">Descargar PDF</v-btn>
-                    </div>
-                    <div class="flex justify-center mr-5">
-                        <v-btn block height="50" color="blue-darken-1">Descargar Formato</v-btn>
-                    </div>
-                </div>
-                <div class="flex justify-start">
-                    <h2 class="text-xl font-medium text-gray-900 text-center mt-4">Cursos que imparto</h2>
-                </div>
+<!--                <div class="grid grid-cols-2">-->
+<!--                    <div class="flex justify-center mr-5">-->
+<!--                        <v-btn block height="50" color="blue-darken-1">Descargar PDF</v-btn>-->
+<!--                    </div>-->
+<!--                    <div class="flex justify-center mr-5">-->
+<!--                        <v-btn block height="50" color="blue-darken-1">Descargar Formato</v-btn>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="flex justify-center">
                     <v-table>
                         <thead>
@@ -164,21 +159,23 @@ const download_ft = () => {
                             <td>{{curso.fecha_I}} al {{curso.fecha_F}}</td>
                             <td>{{curso.hora_I}} a {{curso.hora_F}}</td>
                             <td>
-                                <NavLink :href="route('crear.ficha', [props.auth.user.docente_id, curso.id])">
-                                    <v-btn color="blue-darken-1" >
-                                        Crear
-                                    </v-btn>
-                                </NavLink>
-<!--                                <v-btn color="blue-darken-1">-->
-<!--                                    Subir Ficha Técnica-->
-<!--                                </v-btn>-->
+<!--                                <NavLink :href="route('crear.ficha', [props.auth.user.docente_id, curso.id])">-->
+<!--                                    <v-btn color="blue-darken-1" >-->
+<!--                                        Crear-->
+<!--                                    </v-btn>-->
+<!--                                </NavLink>-->
+                                <v-btn color="blue-darken-1" @click="dialog = true">
+                                    Subir Ficha Técnica
+                                </v-btn>
                             </td>
+                            <UploadFicha :curso="curso" :auth="props.auth" :model-value="dialog" @update:modelValue="dialog = $event"></UploadFicha>
                         </tr>
                         </tbody>
                     </v-table>
                 </div>
             </div>
         </div>
+
     </AuthenticatedLayout>
 </template>
 

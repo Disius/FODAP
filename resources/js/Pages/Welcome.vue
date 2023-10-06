@@ -32,7 +32,7 @@ const nameCards = ref([
             <v-col
             v-for="card in nameCards"
             :cols="card.flex"
-            class=""
+            class="mt-16 pt-16"
             lg="6"
             md="7"
             sm="8"

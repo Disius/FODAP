@@ -10,4 +10,8 @@ class FileFT extends Model
     use HasFactory;
 
     protected $table = "ficha_file";
+
+    protected $fillable = [
+      'id_curso', 'path',
+    ];
 }

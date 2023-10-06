@@ -26,6 +26,7 @@ class DesarrolloController extends Controller
         $carrera = Carrera::all();
         $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador')
             ->where('aceptado', '=', 0)
+            ->orderBy('id', 'desc')
             ->get();
 
         return Inertia::render('Views/desarrollo/coordinacion/DeteccionCoordinacion', [

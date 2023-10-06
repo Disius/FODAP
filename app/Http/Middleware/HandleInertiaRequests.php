@@ -53,7 +53,10 @@ class HandleInertiaRequests extends Middleware
             },
             'dates' => [
                 GestionParametrosController::if_enable_detecciones()
-            ]
+            ],
+            'flash' => [
+                'message' => fn () => $request->session()->get('message')
+            ],
         ]);
     }
 }

@@ -77,21 +77,21 @@ onMounted(() => {
                         <div>
                             <div class="p-5">
                                 <div class="flow-root ...">
-                                    <strong>Asignaturas en la que se requiere formación o actualización: </strong>
+                                    <strong class="text-xl">Asignaturas en la que se requiere formación o actualización: </strong>
                                     <v-divider></v-divider>
                                     <span>{{props.deteccion.asignaturaFA}}</span>
                                 </div>
                                 <div class="flow-root ... pt-7">
-                                    <strong>Contenidos temáticos en que se requiere la formación o actualización: </strong>
+                                    <strong class="text-xl">Contenidos temáticos en que se requiere la formación o actualización: </strong>
                                     <v-divider></v-divider>
                                     <span>{{props.deteccion.contenidosTM}}</span>
                                 </div>
                                 <div class="flow-root ... pt-7">
-                                    <strong>Número de profesores(as) que la requieren: </strong>
+                                    <strong class="text-xl">Número de profesores(as) que la requieren: </strong>
                                     <span>{{props.deteccion.numeroProfesores}}</span>
                                 </div>
                                 <div class="flow-root ... pt-5">
-                                    <strong>Modalidad: </strong>
+                                    <strong class="text-xl">Modalidad: </strong>
                                     <template v-if="props.deteccion.modalidad === 1">
                                         <span>Virtual</span>
                                     </template>
@@ -104,7 +104,7 @@ onMounted(() => {
 
                                 </div>
                                 <div class="flow-root ... pt-5">
-                                    <strong>Periodo en el que se requiere la formación o actualización (enero-junio o agosto diciembre): </strong>
+                                    <strong class="text-xl">Periodo en el que se requiere la formación o actualización (enero-junio o agosto diciembre): </strong>
                                     <template v-if="props.deteccion.periodo === 1">
                                         <span>ENERO-JUNIO</span>
                                     </template>
@@ -113,23 +113,23 @@ onMounted(() => {
                                     </template>
                                 </div>
                                 <div class="flow-root ... pt-5">
-                                    <strong>Carrera a la que va dirigido: </strong>
+                                    <strong class="text-xl">Carrera a la que va dirigido: </strong>
                                     <span>{{props.deteccion.carrera.nameCarrera}}</span>
                                 </div>
                                 <div class="flow-root ... pt-5">
-                                    <strong>Facilitador(es): </strong>
+                                    <strong class="text-xl">Facilitador(es): </strong>
                                     <div v-for="facilitador in props.deteccion.deteccion_facilitador">
                                         <span>{{facilitador.nombre}}  {{facilitador.apellidoPat}}  {{facilitador.apellidoMat}}</span>
                                     </div>
                                 </div>
                                 <template v-if="props.deteccion.facilitador_externo != null">
                                     <div class="flow-root ... pt-5">
-                                        <strong>Facilitador externo: </strong>
+                                        <strong class="text-xl">Facilitador externo: </strong>
                                         <span>{{props.deteccion.facilitador_externo}}</span>
                                     </div>
                                 </template>
                                 <div class="flow-root ... pt-5">
-                                    <strong>Tipo de curso, taller, conferencias, etc: </strong>
+                                    <strong class="text-xl">Tipo de curso, taller, conferencias, etc: </strong>
                                     <template v-if="props.deteccion.tipo_actividad === 1">
                                         <span>TALLER</span>
                                     </template>
@@ -147,7 +147,7 @@ onMounted(() => {
                                     </template>
                                 </div>
                                 <div class="flow-root ... pt-5">
-                                    <strong>Tipo de solicitud: </strong>
+                                    <strong class="text-xl">Tipo de solicitud: </strong>
                                     <template v-if="props.deteccion.tipo_FDoAP === 1">
                                         <span>FORMACIÓN DOCENTE</span>
                                     </template>
@@ -156,21 +156,21 @@ onMounted(() => {
                                     </template>
                                 </div>
                                 <div class="flow-root ... pt-5">
-                                    <strong>Fechas en las que se realizara la actividad o evento: </strong>
+                                    <strong class="text-xl">Fechas en las que se realizara la actividad o evento: </strong>
                                     <span>Del {{formatFechaI}} al {{formatFechaF}}</span>
                                 </div>
                                 <div class="flow-root ... pt-5">
-                                    <strong>Horarios en las que se realizara la actividad o evento: </strong>
+                                    <strong class="text-xl">Horarios en las que se realizara la actividad o evento: </strong>
                                     <span>De {{props.deteccion.hora_I}} a {{props.deteccion.hora_F}}</span>
                                 </div>
                                 <div class="flow-root ... pt-5">
-                                    <strong>Objetivo de la actividad o evento: </strong>
+                                    <strong class="text-xl">Objetivo de la actividad o evento: </strong>
                                     <v-divider></v-divider>
                                     <span>{{props.deteccion.objetivoEvento}}</span>
                                 </div>
                                 <template v-if="props.deteccion.obs === 1">
                                     <div class="flow-root ... pt-5">
-                                        <strong>Observaciones: </strong>
+                                        <strong class="text-xl">Observaciones: </strong>
                                         <v-divider></v-divider>
                                         <span>{{props.deteccion.observaciones}}</span>
                                     </div>
@@ -178,7 +178,7 @@ onMounted(() => {
                                 <template v-if="props.deteccion.aceptado === 0">
                                     <form @submit.prevent="form.put(route('update.observaciones', props.deteccion.id))">
                                         <div class="flow-root ... pt-5">
-                                            <strong>Añadir Observaciones: </strong>
+                                            <strong class="text-xl">Añadir Observaciones: </strong>
                                             <!--                                <InputLabel for="observaciones" value="Añadir Observaciones" />-->
                                             <TextInput
                                                 id="observaciones"

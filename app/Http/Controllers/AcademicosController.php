@@ -22,7 +22,7 @@ class AcademicosController extends Controller
             ->orderBy('id', 'desc')->get();
 
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->get();
-        return Inertia::render('Views/academicos/Index.Detecciones', [
+        return Inertia::render('Views/academicos/IndexDetecciones', [
             'detecciones' => $detecciones,
             'carrera' => $carrera,
         ]);
@@ -51,7 +51,7 @@ class AcademicosController extends Controller
 
     public function show(string $id)
     {
-        return Inertia::render('Views/academicos/Show.Detecciones', [
+        return Inertia::render('Views/academicos/ShowDetecciones', [
             'deteccion' => $this->consult_view($id),
         ]);
     }
@@ -71,9 +71,9 @@ class AcademicosController extends Controller
     public function edit(string $id)
     {
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->select('nameCarrera', 'id', 'departamento_id')->get();
-        $docente = Docente::select('id', 'nombre_completo')->get();
+        $docente = Docente::all();
         $lugar = Lugar::with('curso')->get();
-        return Inertia::render('Views/academicos/Edit.Detecciones', [
+        return Inertia::render('Views/academicos/EditDetecciones', [
             'deteccion' => $this->consult_view($id),
             'carrera' => $carrera,
             'docentes' => $docente,

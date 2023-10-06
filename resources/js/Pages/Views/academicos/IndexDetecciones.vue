@@ -59,33 +59,37 @@ onMounted(() => {
                 </template>
         </template>
 
-        <v-container fluid>
-            <v-row justify="center">
-                <v-col cols="4" align="start">
-                    <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl">
-                        Generar PDF
-                    </v-btn>
-                </v-col>
+        <div class="grid grid-cols-2 mt-4 mb-4">
+            <div class="flex justify-center ml-5 pl-5">
+                <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl" width="400">
+                    Generar PDF
+                </v-btn>
+            </div>
+            <div class="flex justify-end mr-4 pr-4">
                 <template v-if="dates[0][0] === true">
-                    <v-col cols="6" align="end">
+                    <template v-if="dates[0][1].d === 1">
                         <v-alert
                             color="warning"
                             icon="$warning"
-                            title="¡Alerta!"
                         >
-                            <strong class="text-center">
-                                <template v-if="dates[0][1].d === 1">
-                                    Queda un {{dates[0][1].d}} dia y {{dates[0][1].h}} h para poder capturar Deteccion de Necesidades
-                                </template>
-                                <template v-else>
-                                    Quedan {{dates[0][1].d}} dias y {{dates[0][1].h}} h para poder capturar Deteccion de Necesidades
-                                </template>
+                            <strong class="text-center text-lg">
+                                Queda un {{dates[0][1].d}} dia y {{dates[0][1].h}} h para poder capturar Deteccion de Necesidades
                             </strong>
                         </v-alert>
-                    </v-col>
+                    </template>
+                    <template v-else>
+                        <v-alert
+                            color="info"
+                            icon="$info"
+                        >
+                            <strong class="text-center text-lg">
+                                Queda un {{dates[0][1].d}} dias y {{dates[0][1].h}} h para poder hacer su captura de Deteccion de Necesidades
+                            </strong>
+                        </v-alert>
+                    </template>
                 </template>
-            </v-row>
-        </v-container>
+            </div>
+        </div>
 
 <!--        dialog-->
         <DeteccionDialog :carreras="props.carrera" v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DeteccionDialog>
@@ -191,7 +195,7 @@ onMounted(() => {
                         icon="mdi-alert-circle"
                         prominent
                     >
-                        Actualmente no se han capturado deteccion de necesidades.
+                        Actualmente no se han capturado cursos.
                     </v-alert>
                 </div>
             </div>
