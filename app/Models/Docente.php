@@ -32,7 +32,7 @@ class Docente extends Model
     }
 
     public function usuario(){
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'docente_id', 'id');
     }
 
     public function jefe_departamento(){
@@ -61,5 +61,8 @@ class Docente extends Model
 
     public function cvu(){
         return $this->hasOne(FilesCVU::class, 'id_docente', 'id');
+    }
+    public function carrera(){
+        return $this->hasOne(Carrera::class, 'id', 'carrera_id');
     }
 }

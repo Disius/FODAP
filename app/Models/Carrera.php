@@ -32,4 +32,7 @@ class Carrera extends Model
     {
         return $this->hasOne(Docente::class, 'id', 'presidente_academia');
     }
+    public function docente_carrera(){
+        return $this->belongsTo(Docente::class, 'carrera_id', 'id');
+    }
 }

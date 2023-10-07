@@ -43,13 +43,29 @@ onMounted(() => {
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Mis Cursos</h2>
         </template>
-        
-        <template v-if="props.docente.inscrito.length !== 0">
-            <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <TablaMisCursoDocente :curso="props.docente" :user="props.auth"></TablaMisCursoDocente>
+
+        <template v-if="props.docente !== null">
+            <template v-if="props.docente.inscrito.length !== 0">
+                <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
+                    <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <TablaMisCursoDocente :curso="props.docente" :user="props.auth"></TablaMisCursoDocente>
+                    </div>
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="mx-auto sm:px-6 lg:px-8 space-y-6">
+                    <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
+                        <v-alert
+                            border="start"
+                            color="info"
+                            type="info"
+                            title="Cursos"
+                        >
+                            <h2>Actualmente no estas inscrito a un curso o no estan disponbles !Pronto deberias verlos disponible!</h2>
+                        </v-alert>
+                    </div>
+                </div>
+            </template>
         </template>
         <template v-else>
             <div class="mx-auto sm:px-6 lg:px-8 space-y-6">

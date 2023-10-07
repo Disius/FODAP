@@ -28,16 +28,8 @@ class ProfileController extends Controller
         $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
-        $auth = Auth::user()->docente_id;
-
-        $docente = Docente::where('docente.id', $auth)
-            ->join('carreras', 'carreras.id', '=', 'docente.carrera_id')
-            ->join('tipo_plaza', 'tipo_plaza.id', '=', 'docente.tipo_plaza')
-            ->join('puesto', 'puesto.id', '=', 'docente.id_puesto')
-            ->join('departamento', 'departamento.id', '=', 'docente.departamento_id')
-            ->join('posgrado', 'posgrado.id', '=', 'docente.id_posgrado')
-            ->select('docente.*', 'tipo_plaza.nombre AS namePlaza', 'carreras.nameCarrera', 'puesto.nombre AS namePuesto', 'departamento.nameDepartamento')
-            ->first();
+        
+        $docente = Docente::with('carrera', 'plaza', 'puesto', 'departamento', 'posgrado')->find(auth()->user()->docente_id);
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),

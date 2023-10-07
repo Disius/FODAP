@@ -60,9 +60,9 @@ onMounted(() => {
                     <v-alert
                         color="blue-darken-1"
                         icon="mdi-alert-circle"
-                        prominent
+                        height="100"
                     >
-                        Actualmente no se han capturado cursos.
+                        Actualmente no se han aceptado cursos.
                     </v-alert>
                 </div>
             </div>

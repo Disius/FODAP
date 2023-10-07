@@ -8,16 +8,21 @@ use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use App\Models\Lugar;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules\In;
 use Inertia\Inertia;
 use App\Models\FileFT;
+use Spatie\Permission\Models\Permission;
+
 
 class   GestionParametrosController extends Controller
 {
     public function edit(Request $request){
+        $users =  User::where('id', '!=', auth()->user()->id)->with('docente')->get();
         $lugar = Lugar::with('curso')->get();
         $departamento = Departamento::with('jefe_docente')->get();
         $carrera = Carrera::with('departamento', 'presidente_academia')->get();
@@ -28,6 +33,7 @@ class   GestionParametrosController extends Controller
             'departamento' => $departamento,
             'carrera' => $carrera->except('13'),
             'lugar' => $lugar,
+            'users' => $users,
         ]);
     }
 
@@ -179,5 +185,22 @@ class   GestionParametrosController extends Controller
         }
     }
 
+    public function destoy_users(Request $request){
+        $request->validate([
+            'id' => ['required'],
+        ]);
+
+        $user = User::find($request->id);
+
+        $user->delete();
+        $user->docente->delete();
+
+    }
+
+    public function set_permission(Request $request){
+        $permission = Permission::create(['name' => 'edit articles']);
+        
+
+    }
 
 }

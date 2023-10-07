@@ -20,11 +20,7 @@ const props = defineProps({
 
 const pdf_dialog = ref(false);
 
-// const menu = [
-//     {
-//         name: "Generar Deteccion de Necesidades"
-//     }
-// ];
+
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -71,6 +67,7 @@ onMounted(() => {
                         <v-alert
                             color="warning"
                             icon="$warning"
+                            prominent
                         >
                             <strong class="text-center text-lg">
                                 Queda un {{dates[0][1].d}} dia y {{dates[0][1].h}} h para poder capturar Deteccion de Necesidades

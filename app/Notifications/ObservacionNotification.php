@@ -54,6 +54,7 @@ class ObservacionNotification extends Notification
             'id' => $this->detecciones->id,
             'email' => auth()->user()->email,
             'route' => '/deteccion',
+            'departamento' => $this->detecciones->departamento,
             'messegue' => 'agrego una observacion'
         ];
     }

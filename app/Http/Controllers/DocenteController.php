@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
+use function MongoDB\BSON\toRelaxedExtendedJSON;
 
 class DocenteController extends Controller
 {
@@ -108,14 +109,10 @@ class DocenteController extends Controller
 
             $file->save();
 
-            return response()->json([
-                'msg' => "Guardado con exito"
-            ]);
+//            throw new \Exception();
 
         }else{
-            return response()->json([
-                'msg' => "Error para subir el archivo"
-            ]);
+            throw new \Exception('Error al subir la ficha técnica');
         }
 
     }

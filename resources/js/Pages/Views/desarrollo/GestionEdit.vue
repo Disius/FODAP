@@ -10,9 +10,13 @@ import CreateCarrera from "@/Pages/Views/desarrollo/forms/CreateCarrera.vue";
 import TablaDepartamento from "@/Pages/Views/desarrollo/tablas/TablaDepartamento.vue";
 import TablaLugares from "@/Pages/Views/desarrollo/tablas/TablaLugares.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import TablaUsuarios from "@/Pages/Views/desarrollo/tablas/TablaUsuariosAcademicos.vue";
+import TablaUsuariosCoordinacion from "@/Pages/Views/desarrollo/tablas/TablaUsuariosCoordinacion.vue";
+import TablaUsuariosDocente from "@/Pages/Views/desarrollo/tablas/TablaUsuariosDocente.vue";
+import TablaUsuariosAcademicos from "@/Pages/Views/desarrollo/tablas/TablaUsuariosAcademicos.vue";
 
 
-
+const search = ref("");
 
 const form = useForm({
     fecha_I: "",
@@ -31,8 +35,25 @@ const props = defineProps({
     },
     auth: Object,
     lugar: Array,
+    users: Array,
 });
 
+function submit(){
+    form.post(route('config.dates'));
+    form.reset()
+}
+
+
+const formF = useForm({
+    file: null,
+    id: props.auth.user.docente_id
+});
+
+const upload_file = () => {
+    form.post(route('upload.ft'), {
+        forceFormData: true
+    })
+}
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -52,29 +73,12 @@ onMounted(() => {
         }
     });
 });
-
-function submit(){
-    form.post(route('config.dates'));
-    form.reset()
-}
-
-
-const formF = useForm({
-    file: null,
-    id: props.auth.user.docente_id
-});
-
-const upload_file = () => {
-    form.post(route('upload.ft'), {
-        forceFormData: true
-    })
-}
 </script>
 
 <template>
     <AuthenticatedLayout>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg mt-4">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-16 pt-16">
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
                     <h2 class="text-lg font-medium text-gray-900">Establecer fechas para la captura de deteccion de necesidades</h2>
                 </header>
@@ -158,6 +162,41 @@ const upload_file = () => {
                 </div>
 
             </div>
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <header>
+                    <h2 class="text-lg font-medium text-gray-900">Usuarios</h2>
+
+                    <strong class="mt-1 text-sm text-gray-600">
+                        Usuarios registados como jefes de departamento.
+                    </strong>
+                </header>
+                <TablaUsuariosAcademicos :users="props.users"></TablaUsuariosAcademicos>
+
+                <div class="mt-9 mb-4">
+                    <strong class="text-sm text-gray-600">
+                        Coordinación de formación docente y actualización profesional.
+                    </strong>
+                </div>
+                <TablaUsuariosCoordinacion :users="props.users"></TablaUsuariosCoordinacion>
+
+                <div class="grid grid-cols-2 mt-3">
+                    <div class="flex justify-start">
+                        <strong class="text-lg text-gray-600">
+                            Docentes.
+                        </strong>
+                    </div>
+                    <div class="flex justify-center">
+                        <v-text-field label="Buscar" variant="solo" v-model="search"></v-text-field>
+                    </div>
+                </div>
+                <TablaUsuariosDocente :users="props.users"></TablaUsuariosDocente>
+                <div class="flex justify-end mt-8 mr-12 items-center">
+<!--                    <NavLink :href="route('create.lugar')" as="button">-->
+                        <primary-button>Crear</primary-button>
+<!--                    </NavLink>-->
+                </div>
+            </div>
+
         </div>
     </AuthenticatedLayout>
 </template>

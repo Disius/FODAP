@@ -64,4 +64,8 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::get('/desarrollo/cursos', [DesarrolloController::class, 'desarrollo_cursos'])->name('index.desarrollo.cursos');
     Route::get('/desarrollo/curso/{id}', [DesarrolloController::class, 'index_curso_inscrito_desarrollo'])->name('index.desarrollo.inscritos');
 
+
+    //gestión usuarios
+    Route::get('/eliminar/usuario', [GestionParametrosController::class, 'destoy_users'])->name('destroy.users');
+
 });

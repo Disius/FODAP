@@ -8,24 +8,27 @@ import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 
+const props = defineProps({
+    user: Object
+});
 const confirmingUserDeletion = ref(false);
-const passwordInput = ref(null);
+const EmailInput = ref(null);
 
 const form = useForm({
-    password: '',
+    id: props.user.id,
 });
 
 const confirmUserDeletion = () => {
     confirmingUserDeletion.value = true;
 
-    nextTick(() => passwordInput.value.focus());
+    nextTick(() => EmailInput.value.focus());
 };
 
 const deleteUser = () => {
-    form.delete(route('profile.destroy'), {
+    form.get(route('destroy.users'), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
-        onError: () => passwordInput.value.focus(),
+        onError: () => "No se logro eliminar al usuario",
         onFinish: () => form.reset(),
     });
 };
@@ -35,18 +38,11 @@ const closeModal = () => {
 
     form.reset();
 };
+
 </script>
 
 <template>
     <section class="space-y-6">
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">Borrar cuenta</h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                La cuenta sera eliminada por completo.
-            </p>
-        </header>
-
         <DangerButton @click="confirmUserDeletion">Borrar cuenta</DangerButton>
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
@@ -55,24 +51,19 @@ const closeModal = () => {
                     ¿Esta seguro que desea borrar la cuenta?
                 </h2>
 
-                <p class="mt-1 text-sm text-gray-600">
-                    Ingresa tu contraseña para confirmar la eliminación de tu cuenta.
-                </p>
-
                 <div class="mt-6">
-                    <InputLabel for="password" value="Contraseña" class="sr-only" />
+                    <InputLabel for="email" value="Correo Institucional" class="sr-only" />
 
                     <TextInput
-                        id="password"
-                        ref="passwordInput"
-                        v-model="form.password"
-                        type="password"
+                        id="email"
+                        ref="EmailInput"
+                        v-model="props.user.email"
                         class="mt-1 block w-3/4"
-                        placeholder="Contraseña"
+                        placeholder="Correo Institucional"
                         @keyup.enter="deleteUser"
                     />
 
-                    <InputError :message="form.errors.password" class="mt-2" />
+                    <InputError :message="form.errors.id" class="mt-2" />
                 </div>
 
                 <div class="mt-6 flex justify-end">

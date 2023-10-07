@@ -17,7 +17,6 @@ defineProps({
 const user = usePage().props.auth.user;
 
 const form = useForm({
-    name: user.name,
     email: user.email,
 });
 </script>
@@ -65,7 +64,7 @@ const form = useForm({
                     v-show="status === 'verification-link-sent'"
                     class="mt-2 font-medium text-sm text-green-600"
                 >
-                    A new verification link has been sent to your email address.
+                    Un nuevo email de verificación fue enviado a tu correo institucional.
                 </div>
             </div>
 

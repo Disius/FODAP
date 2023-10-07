@@ -77,7 +77,7 @@ onMounted(() => {
         form.curp = props.docente.curp
         form.rfc = props.docente.rfc
         form.telefono = props.docente.telefono
-        form.carrera_id = props.docente.carrera_id
+        props.docente.carrera_id !== null ? form.carrera_id = props.docente.carrera_id : form.carrera_id
         form.sexo = props.docente.sexo
         form.departamento_id = props.docente.departamento_id
         form.id_puesto = props.docente.id_puesto

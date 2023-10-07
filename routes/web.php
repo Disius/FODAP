@@ -33,7 +33,9 @@ Route::get('/', function () {
 })->name('main');
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'notifications' => auth()->user()->unreadNotifications,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

@@ -150,7 +150,7 @@ class DesarrolloController extends Controller
 
         $detecciones->save();
 
-        User::role(['Jefes Academicos'])->each(function(User $user) use ($detecciones){
+        User::where('departamento_id', $detecciones->id_departamento)->role(['Jefes Academicos'])->each(function(User $user) use ($detecciones){
             $user->notify(new AceptadoNotification($detecciones, $user));
         });
 
@@ -193,7 +193,7 @@ class DesarrolloController extends Controller
             'obs' => 1
         ]);
 
-        User::role(['Jefes Academicos'])->each(function(User $user) use ($deteccion){
+        User::where('departamento_id', $deteccion->id_departamento)->role(['Jefes Academicos'])->each(function(User $user) use ($deteccion){
             $user->notify(new ObservacionNotification($deteccion, $user));
         });
 
