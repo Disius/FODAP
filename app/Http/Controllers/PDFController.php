@@ -6,6 +6,7 @@ use App\Http\Requests\PIFDAPRequest;
 use App\Http\Requests\RequestPDFDeteccion;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
+use App\Models\Subdireccion;
 use http\Env\Response;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
@@ -53,12 +54,13 @@ class PDFController extends Controller
     {
         $request->validated();
         $cursos = $this->pdf_request_deteccion($request);
+        $subdireccion = Subdireccion::all();
         if (count($cursos) == 0){
             return response()->json([
                 'mensaje' => 'No se encontro ningun dato con ese criterio de busqueda'
             ]);
         }else {
-            $pdf = Pdf::loadView('pdf.deteccion', compact('cursos'))->output();
+            $pdf = Pdf::loadView('pdf.deteccion', compact('cursos', 'subdireccion'))->output();
             $path = "Deteccion.pdf";
             $this->save_file($pdf, $path);
 //            return $this->download_file($path);

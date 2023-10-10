@@ -56,6 +56,9 @@ class Departamento extends Model
     public function docente_adscrito(){
         return $this->belongsTo(Docente::class, 'departamento_id', 'id');
     }
+    public function user_departamento(){
+        return $this->belongsTo(User::class, 'departamento_id', 'id');
+    }
 
     public $timestamps = false;
 

@@ -66,6 +66,15 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
 
 
     //gestión usuarios
-    Route::get('/eliminar/usuario', [GestionParametrosController::class, 'destoy_users'])->name('destroy.users');
+    Route::get('/editar/user/{id}', [GestionParametrosController::class, 'edit_users'])->name('edit.user');
+    Route::put('/password/update/{id}', [GestionParametrosController::class, 'update_password'])->name('update.password');
+    Route::patch('/user/editado/{id}', [GestionParametrosController::class, 'update_user'])->name('update.user');
+    Route::delete('/eliminar/usuario', [GestionParametrosController::class, 'destoy_users'])->name('destroy.users');
+    Route::post('/permiso/{id}', [GestionParametrosController::class, 'set_permission'])->name('permiso.edit');
+    Route::post('/revocar/permiso/{id}', [GestionParametrosController::class, 'revoke_permissions'])->name('permiso.revoke');
 
+
+//    crear o actualizar subdireccion
+    Route::post('/crear/subdireccion', [GestionParametrosController::class, 'create_subdireccion'])->name('create.sub');
+    Route::put('/actualizar/subdireccion/{id}', [GestionParametrosController::class, 'update_subdireccion'])->name('update.sub');
 });

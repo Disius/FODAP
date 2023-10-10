@@ -5,11 +5,16 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import {ref, watch} from 'vue';
+import zxcvbn from 'zxcvbn';
 
+const props = defineProps({
+    user: Object
+})
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
 const snackbarSuccess = ref(false);
 const snackbarError = ref(false);
+const passwordFielType = ref("password");
 
 const form = useForm({
     current_password: '',
@@ -18,7 +23,7 @@ const form = useForm({
 });
 
 const updatePassword = () => {
-    form.put(route('password.update'), {
+    form.put(route('update.password', props.user.id), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset()
@@ -33,6 +38,7 @@ const updatePassword = () => {
                 form.reset('current_password');
                 currentPasswordInput.value.focus();
             }
+            snackbarError.value = true
         },
     });
 };
@@ -58,6 +64,10 @@ const startProgress = () => {
         progressColor.value = 'success';
     }
 }
+
+const show_visibilty = () => {
+    passwordFielType.value = passwordFielType.value === "password" ? "text" : "password";
+}
 </script>
 
 <template>
@@ -74,16 +84,29 @@ const startProgress = () => {
             <div>
                 <InputLabel for="current_password" value="Contraseña actual" />
 
-                <TextInput
-                    id="current_password"
-                    ref="currentPasswordInput"
-                    v-model="form.current_password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="current-password"
-                />
+                <div class="grid grid-cols-2">
+                    <div class="flex justify-center">
+                        <TextInput
+                            id="current_password"
+                            ref="currentPasswordInput"
+                            v-model="form.current_password"
+                            :type="passwordFielType"
+                            class="mt-1 block w-full"
+                            autocomplete="current-password"
+                        />
+                    </div>
+                    <div class="flex justify-center ml-5">
+                        <v-tooltip text="Ver contraseñas">
+                            <template v-slot:activator="{ props }">
+                                <v-btn v-bind="props" icon  @click="show_visibilty">
+                                    <v-icon>mdi-eye</v-icon>
+                                </v-btn>
+                            </template>
+                        </v-tooltip>
+                    </div>
+                </div>
 
-<!--                <InputError :message="form.errors.current_password" class="mt-2" />-->
+                                <InputError :message="form.errors.current_password" class="mt-2" />
             </div>
 
             <div>
@@ -93,14 +116,15 @@ const startProgress = () => {
                     id="password"
                     ref="passwordInput"
                     v-model="form.password"
-                    type="password"
+                    :type="passwordFielType"
                     class="mt-1 block w-full"
                     autocomplete="new-password"
                 />
-<!--                <InputError :message="form.errors.password" class="mt-2" />-->
+
+                                <InputError :message="form.errors.password" class="mt-2" />
             </div>
 
-            <div class="flex justify-center">
+            <div class="flex justify-center w-50">
                 <v-progress-linear
                     v-model="passwordStrength"
                     :value="passwordStrength"
@@ -131,12 +155,12 @@ const startProgress = () => {
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
-                    type="password"
                     class="mt-1 block w-full"
+                    :type="passwordFielType"
                     autocomplete="new-password"
                 />
 
-<!--                <InputError :message="form.errors.password_confirmation" class="mt-2" />-->
+                                <InputError :message="form.errors.password_confirmation" class="mt-2" />
             </div>
 
             <div class="flex items-center gap-4">
@@ -158,7 +182,6 @@ const startProgress = () => {
 
             <template v-slot:actions>
                 <v-btn
-                    color="indigo"
                     variant="text"
                     @click="snackbarSuccess = false"
                 >
@@ -171,18 +194,17 @@ const startProgress = () => {
             vertical
             color="error"
         >
-            <div class="text-subtitle-1 pb-2">!Error¡</div>
+            <div class="text-subtitle-1 pb-2">¡Error!</div>
 
-            <template v-if="$page.props.errors.password">
-                Debe ingresar una contraseña valida
+            <strong class="text-xl">Verificar sus campos</strong>
+            <template v-if="$page.props.errors.hasOwnProperty('required_current_password') && $page.props.errors.hasOwnProperty('required_password')">
+                Debe llenar los campos o verificar que los datos que ingresaste sea correcto
             </template>
-            <template v-if="$page.props.errors.password_confirmation">
-                Las contraseñas no coinciden
-            </template>
+
 
             <template v-slot:actions>
                 <v-btn
-                    color="indigo"
+
                     variant="text"
                     @click="snackbarError = false"
                 >

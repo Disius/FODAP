@@ -34,10 +34,13 @@ const props = defineProps({
     },
     posgrado: {
         type: Array
+    },
+    permiso_to_edit: {
+        type: Boolean
     }
 });
 const user = computed(() => usePage().props.auth.user);
-
+console.log(props.permiso_to_edit)
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -68,7 +71,7 @@ onMounted(() => {
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <template v-if="user.role === 1">
+                <template v-if="user.role === 1 || permiso_to_edit === true">
                     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <UpdateProfileInformationForm
                             :must-verify-email="mustVerifyEmail"
@@ -82,7 +85,7 @@ onMounted(() => {
                     :puesto="puesto" :tipo_plaza="tipo_plaza" :posgrado="posgrado" class="max-w-xl"
                     />
                 </div>
-                <template v-if="user.role === 1">
+                <template v-if="user.role === 1 || permiso_to_edit === true">
                     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                         <UpdatePasswordForm class="max-w-xl" />
                     </div>

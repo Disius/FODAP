@@ -19,5 +19,9 @@ class RoleSeeder extends Seeder
             ['name' => 'Jefes Academicos', 'guard_name' => 'web'],
             ['name' => 'Docentes', 'guard_name' => 'web'],
         ]);
+
+        DB::table('permissions')->insert([
+            ['name' => 'edit profile', 'guard_name' => 'web']
+        ]);
     }
 }

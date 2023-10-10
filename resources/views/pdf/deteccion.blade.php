@@ -614,7 +614,13 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>Aqui nombre de sudirector(a)* </td>
+                    <td>
+                        @if(empty($subdireccion))
+
+                        @else
+                            {{$subdireccion[0]->name}}
+                        @endif
+                    </td>
                     <td></td>
                 </tr>
                 </tbody>

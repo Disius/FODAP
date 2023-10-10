@@ -14,6 +14,7 @@ import TablaUsuarios from "@/Pages/Views/desarrollo/tablas/TablaUsuariosAcademic
 import TablaUsuariosCoordinacion from "@/Pages/Views/desarrollo/tablas/TablaUsuariosCoordinacion.vue";
 import TablaUsuariosDocente from "@/Pages/Views/desarrollo/tablas/TablaUsuariosDocente.vue";
 import TablaUsuariosAcademicos from "@/Pages/Views/desarrollo/tablas/TablaUsuariosAcademicos.vue";
+import FormSubdireccion from "@/Pages/Views/desarrollo/forms/formSubdireccion.vue";
 
 
 const search = ref("");
@@ -36,6 +37,7 @@ const props = defineProps({
     auth: Object,
     lugar: Array,
     users: Array,
+    sub: Array,
 });
 
 function submit(){
@@ -48,6 +50,7 @@ const formF = useForm({
     file: null,
     id: props.auth.user.docente_id
 });
+
 
 const upload_file = () => {
     form.post(route('upload.ft'), {
@@ -164,22 +167,22 @@ onMounted(() => {
             </div>
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
-                    <h2 class="text-lg font-medium text-gray-900">Usuarios</h2>
+                    <h2 class="text-xl font-medium text-gray-900 mb-8">Usuarios</h2>
 
-                    <strong class="mt-1 text-sm text-gray-600">
-                        Usuarios registados como jefes de departamento.
+                    <strong class="mt-1 text-lg text-gray-600">
+                        Jefes de departamento.
                     </strong>
                 </header>
                 <TablaUsuariosAcademicos :users="props.users"></TablaUsuariosAcademicos>
 
-                <div class="mt-9 mb-4">
-                    <strong class="text-sm text-gray-600">
+                <div class="mt-15 mb-4">
+                    <strong class="text-lg text-gray-600">
                         Coordinación de formación docente y actualización profesional.
                     </strong>
                 </div>
                 <TablaUsuariosCoordinacion :users="props.users"></TablaUsuariosCoordinacion>
 
-                <div class="grid grid-cols-2 mt-3">
+                <div class="grid grid-cols-2 mt-9">
                     <div class="flex justify-start">
                         <strong class="text-lg text-gray-600">
                             Docentes.
@@ -189,15 +192,21 @@ onMounted(() => {
                         <v-text-field label="Buscar" variant="solo" v-model="search"></v-text-field>
                     </div>
                 </div>
-                <TablaUsuariosDocente :users="props.users"></TablaUsuariosDocente>
+                <TablaUsuariosDocente :auth="props.auth" :users="props.users"></TablaUsuariosDocente>
                 <div class="flex justify-end mt-8 mr-12 items-center">
 <!--                    <NavLink :href="route('create.lugar')" as="button">-->
-                        <primary-button>Crear</primary-button>
+                    <primary-button>Crear</primary-button>
 <!--                    </NavLink>-->
                 </div>
             </div>
-
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <header>
+                    <h2 class="text-xl font-medium text-gray-900 mb-8">Establecer subdirección</h2>
+                </header>
+                <form-subdireccion :sub="props.sub"></form-subdireccion>
+            </div>
         </div>
+
     </AuthenticatedLayout>
 </template>
 

@@ -28,8 +28,12 @@ class ProfileController extends Controller
         $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
-        
+
         $docente = Docente::with('carrera', 'plaza', 'puesto', 'departamento', 'posgrado')->find(auth()->user()->docente_id);
+        $user = User::find(auth()->user()->id);
+
+
+
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
@@ -38,7 +42,8 @@ class ProfileController extends Controller
             'departamento' => $departamento,
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,
-            'posgrado' => $posgrado
+            'posgrado' => $posgrado,
+            'permiso_to_edit' => $user->hasPermissionTo('edit profile'),
         ]);
     }
 

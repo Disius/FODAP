@@ -48,11 +48,13 @@ onMounted(() => {
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Deteccion de Necesidades</h2>
 
-                <template v-if="dates[0][0] === true">
-                    <NavLink :href="route('detecciones.create')" :active="route().current('detecciones.create')" as="button">
-                        <v-btn prepend-icon="mdi-pen-plus" rounded="xl" color="blue-darken-1">CREAR DETECCION DE NECESIDADES</v-btn>
-                    </NavLink>
-                </template>
+                <div v-if="props.dates[0] !== null">
+                    <template v-if="dates[0][0] === true">
+                        <NavLink :href="route('detecciones.create')" :active="route().current('detecciones.create')" as="button">
+                            <v-btn prepend-icon="mdi-pen-plus" rounded="xl" color="blue-darken-1">CREAR DETECCION DE NECESIDADES</v-btn>
+                        </NavLink>
+                    </template>
+                </div>
         </template>
 
         <div class="grid grid-cols-2 mt-4 mb-4">
@@ -62,29 +64,31 @@ onMounted(() => {
                 </v-btn>
             </div>
             <div class="flex justify-end mr-4 pr-4">
-                <template v-if="dates[0][0] === true">
-                    <template v-if="dates[0][1].d === 1">
-                        <v-alert
-                            color="warning"
-                            icon="$warning"
-                            prominent
-                        >
-                            <strong class="text-center text-lg">
-                                Queda un {{dates[0][1].d}} dia y {{dates[0][1].h}} h para poder capturar Deteccion de Necesidades
-                            </strong>
-                        </v-alert>
+                <div v-if="props.dates[0] !== null">
+                    <template v-if="dates[0][0] === true">
+                        <template v-if="dates[0][1].d === 1">
+                            <v-alert
+                                color="warning"
+                                icon="$warning"
+                                prominent
+                            >
+                                <strong class="text-center text-lg">
+                                    Queda un {{dates[0][1].d}} dia y {{dates[0][1].h}} h para poder capturar Deteccion de Necesidades
+                                </strong>
+                            </v-alert>
+                        </template>
+                        <template v-else>
+                            <v-alert
+                                color="info"
+                                icon="$info"
+                            >
+                                <strong class="text-center text-lg">
+                                    Queda un {{dates[0][1].d}} dias y {{dates[0][1].h}} h para poder hacer su captura de Deteccion de Necesidades
+                                </strong>
+                            </v-alert>
+                        </template>
                     </template>
-                    <template v-else>
-                        <v-alert
-                            color="info"
-                            icon="$info"
-                        >
-                            <strong class="text-center text-lg">
-                                Queda un {{dates[0][1].d}} dias y {{dates[0][1].h}} h para poder hacer su captura de Deteccion de Necesidades
-                            </strong>
-                        </v-alert>
-                    </template>
-                </template>
+                </div>
             </div>
         </div>
 

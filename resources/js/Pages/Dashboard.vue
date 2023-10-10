@@ -51,7 +51,7 @@ onMounted(() => {
                             >
                                 <v-banner-text class="text-h5 text-center">
 
-                                    ¡Es la primera vez que ingresas al sistema y debes actualizar tus datos!
+                                    ¡Debes actualizar tus datos!
 
 
                                 </v-banner-text>

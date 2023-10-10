@@ -1,0 +1,34 @@
+<script setup>
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import UpdateProfileInformationFormSelected
+    from "@/Pages/Views/desarrollo/forms/UpdateProfileInformationFormSelected.vue";
+import UpdatePasswordFormSelected from "@/Pages/Views/desarrollo/forms/UpdatePasswordFormSelected.vue";
+
+const props = defineProps({
+    user: Object,
+    docente: Array,
+    departamento: Array,
+    rol: Array,
+})
+</script>
+
+<template>
+    <AuthenticatedLayout>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-16 pt-10">
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <UpdateProfileInformationFormSelected :rol="props.rol" :departamento="props.departamento" :docente="props.docente" :user="props.user">
+
+                </UpdateProfileInformationFormSelected>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-10">
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <UpdatePasswordFormSelected :user="props.user"></UpdatePasswordFormSelected>
+            </div>
+        </div>
+    </AuthenticatedLayout>
+</template>
+
+<style scoped>
+
+</style>

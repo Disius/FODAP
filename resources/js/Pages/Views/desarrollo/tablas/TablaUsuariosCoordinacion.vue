@@ -41,9 +41,9 @@ const wich_user = (user) => {
         >
             <td class="text-center"> {{u.email}}</td>
             <td class="text-center">
-                <NavLink :href="route('edit.lugar', u.id)" as="button">
-                    <primary-button>Editar</primary-button>
-                </NavLink>
+                    <NavLink :href="route('edit.user', u.id)" as="button">
+                        <primary-button>Editar</primary-button>
+                    </NavLink>
             </td>
             <td class="text-center">
                 <DeleteUserSelectForm :user="wich_user(u)"></DeleteUserSelectForm>

@@ -29,9 +29,11 @@ const wich_user = (user) => {
         <thead>
         <tr>
             <th class="text-center">Correo Institucional</th>
-            <th class="text-center">Editar</th>
+            <th class="text-center">Departamento a su cargo</th>
+            <th class="text-center">Editar usuario</th>
             <th class="text-center">Eliminar usuario</th>
             <th class="text-center">Permitir actualizar email u contraseña</th>
+            <th class="text-center">Revocar permisos</th>
         </tr>
         </thead>
         <tbody>
@@ -39,9 +41,10 @@ const wich_user = (user) => {
             v-for="u in usersA"
             :key="u.id"
         >
-            <td>{{u.email}}</td>
+            <td class="text-center">{{u.email}}</td>
+            <td class="text-center">{{u.departamento.nameDepartamento}}</td>
             <td class="text-center">
-                <NavLink :href="route('edit.lugar', u.id)" as="button">
+                <NavLink :href="route('edit.user', u.id)" as="button">
                     <primary-button>Editar</primary-button>
                 </NavLink>
             </td>
@@ -49,8 +52,17 @@ const wich_user = (user) => {
                 <DeleteUserSelectForm :user="wich_user(u)"></DeleteUserSelectForm>
             </td>
             <td class="text-center">
-                <v-btn width="150" height="35" color="info" prepend-icon="mdi-check">Permiso</v-btn>
+                <NavLink :href="route('permiso.edit', u.id)" as="button" method="post">
+                    <v-btn width="150" height="35" color="info" prepend-icon="mdi-check">Permiso</v-btn>
+                </NavLink>
             </td>
+            <template v-if="u.permissions.length > 0">
+                <td class="text-center">
+                    <NavLink :href="route('permiso.revoke', u.id)" as="button" method="post">
+                        <v-btn width="250" height="35" color="error" prepend-icon="mdi-cancel">Revocar permiso</v-btn>
+                    </NavLink>
+                </td>
+            </template>
         </tr>
         </tbody>
     </v-table>

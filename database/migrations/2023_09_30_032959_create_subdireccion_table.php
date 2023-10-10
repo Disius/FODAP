@@ -15,7 +15,7 @@ class CreateSubdireccionTable extends Migration
     {
         Schema::create('subdireccion', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('name');
+            $table->string('name', 60);
             $table->timestamps();
         });
     }
