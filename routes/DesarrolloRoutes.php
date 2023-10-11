@@ -77,4 +77,8 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
 //    crear o actualizar subdireccion
     Route::post('/crear/subdireccion', [GestionParametrosController::class, 'create_subdireccion'])->name('create.sub');
     Route::put('/actualizar/subdireccion/{id}', [GestionParametrosController::class, 'update_subdireccion'])->name('update.sub');
+
+
+    //Docentes
+    Route::get('/desarrollo/docentes', [DesarrolloController::class, 'docentes'])->name('index.docentes');
 });

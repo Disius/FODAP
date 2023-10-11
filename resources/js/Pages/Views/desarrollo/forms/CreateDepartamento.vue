@@ -15,17 +15,22 @@
                                 </v-col>
                                 <v-col cols="12">
                                     <InputLabel for="jefe_departamento" value="Jefe del departamento"/>
-                                    <v-autocomplete v-model="form.jefe_id" :items="props.docente" item-title="nombre" item-value="id"></v-autocomplete>
+                                    <v-autocomplete v-model="form.jefe_id" :items="props.docente" item-title="nombre" item-value="id" variant="solo"></v-autocomplete>
                                 </v-col>
                                 <v-col cols="12">
                                     <InputLabel for="carrera_adscrita" value="Carrera(s) adscrita(s)"/>
-                                    <v-select multiple v-model="form.carrera_id" :items="props.carrera" item-value="id" item-title="nameCarrera"></v-select>
+                                    <v-select multiple v-model="form.carrera_id" :items="props.carrera" item-value="id" item-title="nameCarrera" variant="solo"></v-select>
                                 </v-col>
                             </v-row>
                         </v-container>
                         <v-divider></v-divider>
                         <v-card-actions>
                             <v-row class="justify-end">
+                                <v-col cols="2">
+                                    <NavLink :href="route('parametros.edit')">
+                                        <DangerButton>Cancelar</DangerButton>
+                                    </NavLink>
+                                </v-col>
                                 <v-col cols="2">
                                     <PrimaryButton>Guardar</PrimaryButton>
                                 </v-col>
@@ -44,6 +49,8 @@ import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import {onMounted} from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import NavLink from "@/Components/NavLink.vue";
 
 
 const form = useForm({

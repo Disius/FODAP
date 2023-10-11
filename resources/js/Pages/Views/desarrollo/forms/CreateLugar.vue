@@ -5,6 +5,8 @@ import InputLabel from "@/Components/InputLabel.vue";
 import {onMounted} from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import TextInput from "@/Components/TextInput.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import NavLink from "@/Components/NavLink.vue";
 
 
 const form = useForm({
@@ -39,6 +41,11 @@ onMounted(() => {
                         <v-divider></v-divider>
                         <v-card-actions>
                             <v-row class="justify-end">
+                                <v-col cols="2">
+                                    <NavLink :href="route('parametros.edit')">
+                                        <DangerButton>Cancelar</DangerButton>
+                                    </NavLink>
+                                </v-col>
                                 <v-col cols="2">
                                     <PrimaryButton>Guardar</PrimaryButton>
                                 </v-col>

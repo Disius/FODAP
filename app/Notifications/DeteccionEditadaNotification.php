@@ -29,7 +29,7 @@ class DeteccionEditadaNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database',  'broadcast'];
+        return ['database',  'broadcast', 'mail'];
     }
 
     /**
@@ -38,9 +38,8 @@ class DeteccionEditadaNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->line($this->user->email.' edito un curso que no ha sido aceptado.')
+                    ->action('Ir', url('/'));
     }
 
     /**
@@ -52,7 +51,7 @@ class DeteccionEditadaNotification extends Notification
     {
         return [
             'id' => $this->detecciones->id,
-            'email' => $this->detecciones->jefe->usuario->email,
+            'email' => $this->user->email,
             'route' => '/desarrollo/detecciones/deteccion',
             'messegue' => 'edito la deteccion de necesidades'
         ];

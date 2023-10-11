@@ -5,7 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import {ref, watch} from 'vue';
-
+import zxcvbn from "zxcvbn";
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
 const snackbarSuccess = ref(false);
@@ -72,16 +72,16 @@ const startProgress = () => {
 
         <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="current_password" value="Contraseña actual" />
+<!--                <InputLabel for="current_password" value="Contraseña actual" />-->
 
-                <TextInput
-                    id="current_password"
-                    ref="currentPasswordInput"
-                    v-model="form.current_password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="current-password"
-                />
+<!--                <TextInput-->
+<!--                    id="current_password"-->
+<!--                    ref="currentPasswordInput"-->
+<!--                    v-model="form.current_password"-->
+<!--                    type="password"-->
+<!--                    class="mt-1 block w-full"-->
+<!--                    autocomplete="current-password"-->
+<!--                />-->
 
 <!--                <InputError :message="form.errors.current_password" class="mt-2" />-->
             </div>

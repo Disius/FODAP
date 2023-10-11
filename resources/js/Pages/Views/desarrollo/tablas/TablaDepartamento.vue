@@ -4,7 +4,7 @@
             <tr>
                 <th>Departamento</th>
                 <th>Jefe del departamento</th>
-                <th></th>
+                <th class="text-center">Editar</th>
             </tr>
         </thead>
         <tbody>
@@ -19,7 +19,9 @@
                 <td>
                     <div class="flex justify-end  h-6 items-center gap-4">
                         <NavLink :href="route('edit.departamento', c.id)">
-                            <PrimaryButton class="bg-blue-accent-4">Editar departamento</PrimaryButton>
+                            <PrimaryButton class="bg-blue-accent-4">
+                                <v-icon>mdi-pencil</v-icon>
+                            </PrimaryButton>
                         </NavLink>
                     </div>
                 </td>

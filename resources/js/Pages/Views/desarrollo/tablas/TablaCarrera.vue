@@ -5,7 +5,7 @@
                 <th>Carrera</th>
                 <th>Departamento a cargo</th>
                 <th>Presidente de la academia</th>
-                <th></th>
+                <th class="text-center">Editar</th>
             </tr>
         </thead>
         <tbody>
@@ -25,7 +25,9 @@
                 <td>
                     <div class="flex justify-end  h-4 items-center gap-4">
                         <NavLink :href="route('edit.carrera', c.id)">
-                            <PrimaryButton class="bg-blue-accent-4">Editar carrera</PrimaryButton>
+                            <PrimaryButton class="bg-blue-accent-4">
+                                <v-icon>mdi-pencil</v-icon>
+                            </PrimaryButton>
                         </NavLink>
                     </div>
                 </td>

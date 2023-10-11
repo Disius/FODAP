@@ -81,21 +81,49 @@ const show_visibilty = () => {
         </header>
 
         <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
+<!--            <div>-->
+<!--                <InputLabel for="current_password" value="Contraseña actual" />-->
+
+<!--                <div class="grid grid-cols-2">-->
+<!--                    <div class="flex justify-center">-->
+<!--                        <TextInput-->
+<!--                            id="current_password"-->
+<!--                            ref="currentPasswordInput"-->
+<!--                            v-model="form.current_password"-->
+<!--                            :type="passwordFielType"-->
+<!--                            class="mt-1 block w-full"-->
+<!--                            autocomplete="current-password"-->
+<!--                        />-->
+<!--                    </div>-->
+<!--                    <div class="flex justify-center ml-5">-->
+<!--                        <v-tooltip text="Ver contraseñas">-->
+<!--                            <template v-slot:activator="{ props }">-->
+<!--                                <v-btn v-bind="props" icon  @click="show_visibilty">-->
+<!--                                    <v-icon>mdi-eye</v-icon>-->
+<!--                                </v-btn>-->
+<!--                            </template>-->
+<!--                        </v-tooltip>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                                <InputError :message="form.errors.current_password" class="mt-2" />-->
+<!--            </div>-->
+
             <div>
-                <InputLabel for="current_password" value="Contraseña actual" />
+                <InputLabel for="password" value="Nueva contraseña" />
 
                 <div class="grid grid-cols-2">
-                    <div class="flex justify-center">
+                    <div class="flex justify-start">
                         <TextInput
-                            id="current_password"
-                            ref="currentPasswordInput"
-                            v-model="form.current_password"
+                            id="password"
+                            ref="passwordInput"
+                            v-model="form.password"
                             :type="passwordFielType"
                             class="mt-1 block w-full"
-                            autocomplete="current-password"
+                            autocomplete="new-password"
                         />
                     </div>
-                    <div class="flex justify-center ml-5">
+                    <div class="flex justify-start ml-2">
                         <v-tooltip text="Ver contraseñas">
                             <template v-slot:activator="{ props }">
                                 <v-btn v-bind="props" icon  @click="show_visibilty">
@@ -106,22 +134,8 @@ const show_visibilty = () => {
                     </div>
                 </div>
 
-                                <InputError :message="form.errors.current_password" class="mt-2" />
-            </div>
-
-            <div>
-                <InputLabel for="password" value="Nueva contraseña" />
-
-                <TextInput
-                    id="password"
-                    ref="passwordInput"
-                    v-model="form.password"
-                    :type="passwordFielType"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
-                />
-
                                 <InputError :message="form.errors.password" class="mt-2" />
+
             </div>
 
             <div class="flex justify-center w-50">
@@ -176,7 +190,7 @@ const show_visibilty = () => {
             vertical
             color="success"
         >
-            <div class="text-subtitle-1 pb-2">!Listo¡</div>
+            <div class="text-subtitle-1 pb-2">¡Listo!</div>
 
             <p>Se actualizado con exito la contraseña</p>
 
@@ -185,7 +199,7 @@ const show_visibilty = () => {
                     variant="text"
                     @click="snackbarSuccess = false"
                 >
-                    Close
+                    Cerrar
                 </v-btn>
             </template>
         </v-snackbar>

@@ -9,8 +9,13 @@ const form = useForm({
 const snackSuccess = ref(false);
 const snackError = ref(false);
 const props = defineProps({
-    sub: Array
-})
+    sub: Array,
+    modelValue: Boolean
+});
+
+const emit = defineEmits([
+    'update:modelValue'
+]);
 const submit = () => {
     if (props.sub.length === 0){
         return form.post(route('create.sub'), {
@@ -43,23 +48,34 @@ onMounted(() => {
 </script>
 
 <template>
-    <form @submit.prevent="submit">
-        <div class="flex justify-start">
-            <input-label for="name" value="Nombre del subdirector(a): "></input-label>
-        </div>
-        <div class="grid grid-cols-2">
-            <div class="flex justify-center mt-4">
-                <v-text-field v-model="form.name">
+    <v-dialog width="auto" v-model="props.modelValue" >
+        <v-card>
+            <v-card-title>Establecer nombre del subdirector(a)</v-card-title>
+            <v-card-text>
+                    <div class="grid grid-cols-1">
+                        <div class="flex justify-center mt-4">
+                            <v-text-field v-model="form.name">
 
-                </v-text-field>
-            </div>
-            <div class="flex justify-start mt-6 ml-6">
-                <v-btn @click="submit">
-                    Guardar
-                </v-btn>
-            </div>
-        </div>
-    </form>
+                            </v-text-field>
+                        </div>
+                    </div>
+            </v-card-text>
+            <v-card-actions>
+                <v-row>
+                    <v-col align="end">
+                        <v-btn color="error" @click="emit('update:modelValue', false)">
+                            Cerrar
+                        </v-btn>
+                    </v-col>
+                    <v-col align="center">
+                        <v-btn @click="submit" color="success">
+                            Guardar
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
     <v-snackbar
         v-model="snackSuccess"
         vertical

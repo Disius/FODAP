@@ -14,19 +14,19 @@ class CarreraSeeder extends Seeder
     public function run(): void
     {
         DB::table('carreras')->insert([
-            ['nameCarrera' => 'Ingeniería Mecánica'],
-            ['nameCarrera' => 'Ingeniería en Sistemas Computacionales'],
-            ['nameCarrera' => 'Ingeniería Industrial'],
-            ['nameCarrera' => 'Ingeniería Electrónica'],
-            ['nameCarrera' => 'Ingeniería Eléctrica'],
-            ['nameCarrera' => 'Ingeniería Bioquímica'],
-            ['nameCarrera' => 'Ingeniería Química'],
-            ['nameCarrera' => 'Ingeniería en Gestión Empresarial'],
-            ['nameCarrera' => 'Ingeniería en Logística'],
-            ['nameCarrera' => 'Ingeniería en Mecatrónica'],
-            ['nameCarrera' => 'Ciencias Basicas'],
-            ['nameCarrera' => 'Ciencias Economico Administrativo'],
-            ['nameCarrera' => 'Todas las carreras'],
+            ['nameCarrera' => 'Ingeniería Mecánica', 'departamento_id' => 5],
+            ['nameCarrera' => 'Ingeniería en Sistemas Computacionales', 'departamento_id' => 7],
+            ['nameCarrera' => 'Ingeniería Industrial', 'departamento_id' => 4],
+            ['nameCarrera' => 'Ingeniería Electrónica', 'departamento_id' => 3],
+            ['nameCarrera' => 'Ingeniería Eléctrica', 'departamento_id' => 3],
+            ['nameCarrera' => 'Ingeniería Bioquímica', 'departamento_id' => 6],
+            ['nameCarrera' => 'Ingeniería Química', 'departamento_id' => 6],
+            ['nameCarrera' => 'Ingeniería en Gestión Empresarial', 'departamento_id' => 9],
+            ['nameCarrera' => 'Ingeniería en Logística', 'departamento_id' => 9],
+            ['nameCarrera' => 'Ingeniería en Mecatrónica', 'departamento_id' => 3],
+            ['nameCarrera' => 'Ciencias Basicas', 'departamento_id' => 1],
+            ['nameCarrera' => 'Ciencias Economico Administrativo' , 'departamento_id' => 8],
+            ['nameCarrera' => 'Todas las carreras', 'departamento_id' => null],
         ]);
     }
 }

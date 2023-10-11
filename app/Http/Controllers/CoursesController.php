@@ -73,7 +73,8 @@ class CoursesController extends Controller
         $deteccion->save();
 
         User::role(['Coordinacion de FD y AP',  'Jefe del Departamento de Desarrollo Academico'])->each(function (User $user) use ($deteccion) {
-            $user->notify(new DeteccionEditadaNotification($deteccion, $user));
+            $usuario = auth()->user() == null ? $user : auth()->user();
+            $user->notify(new DeteccionEditadaNotification($deteccion, $usuario));
         });
 
         return Redirect::route('detecciones.index');

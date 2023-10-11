@@ -18,9 +18,9 @@ const props = defineProps({
     >
         <thead>
         <tr>
-            <th>Nombre del Aula</th>
-            <th></th>
-            <th></th>
+            <th class="text-center">Nombre del Aula</th>
+            <th>Editar</th>
+            <th>Borrar</th>
         </tr>
         </thead>
         <tbody>
@@ -28,12 +28,13 @@ const props = defineProps({
             v-for="l in props.lugar"
             :key="l.id"
         >
-            <td>{{l.nombreAula}}</td>
+            <td class="text-center">{{l.nombreAula}}</td>
             <td>
                 <NavLink :href="route('edit.lugar', l.id)" as="button">
-                    <primary-button>Editar</primary-button>
+                    <primary-button><v-icon>mdi-pencil</v-icon></primary-button>
                 </NavLink>
-            </td><td>
+            </td>
+            <td class="text-center">
                 <NavLink :href="route('delete.lugar', l.id)" method="delete" as="button">
                     <v-btn color="error">
                         Borrar

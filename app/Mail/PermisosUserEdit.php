@@ -18,11 +18,9 @@ class PermisosUserEdit extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(
-        protected User $user
-    )
+    public function __construct($user)
     {
-
+        $this->user = $user;
     }
 
     /**
@@ -41,7 +39,7 @@ class PermisosUserEdit extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.permiso',
+            markdown: 'correo.permiso',
         );
     }
 

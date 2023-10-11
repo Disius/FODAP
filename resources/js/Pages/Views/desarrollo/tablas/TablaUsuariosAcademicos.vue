@@ -45,7 +45,7 @@ const wich_user = (user) => {
             <td class="text-center">{{u.departamento.nameDepartamento}}</td>
             <td class="text-center">
                 <NavLink :href="route('edit.user', u.id)" as="button">
-                    <primary-button>Editar</primary-button>
+                    <primary-button><v-icon>mdi-pencil</v-icon></primary-button>
                 </NavLink>
             </td>
             <td class="text-center">
@@ -53,13 +53,17 @@ const wich_user = (user) => {
             </td>
             <td class="text-center">
                 <NavLink :href="route('permiso.edit', u.id)" as="button" method="post">
-                    <v-btn width="150" height="35" color="info" prepend-icon="mdi-check">Permiso</v-btn>
+                    <v-btn height="35" color="info">
+                        <v-icon>mdi-check</v-icon>
+                    </v-btn>
                 </NavLink>
             </td>
             <template v-if="u.permissions.length > 0">
                 <td class="text-center">
                     <NavLink :href="route('permiso.revoke', u.id)" as="button" method="post">
-                        <v-btn width="250" height="35" color="error" prepend-icon="mdi-cancel">Revocar permiso</v-btn>
+                        <v-btn width="250" height="35" color="error">
+                            <v-icon>mdi-cancel</v-icon>
+                        </v-btn>
                     </NavLink>
                 </td>
             </template>

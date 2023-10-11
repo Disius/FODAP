@@ -63,11 +63,16 @@ onMounted(() => {
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Tablero
                                 </NavLink>
                                 <template v-if="user.role === 1 || user.role === 2">
                                     <NavLink :href="route('parametros.edit')" :active="route().current('parametros.edit')">
                                         Configuración
+                                    </NavLink>
+                                </template>
+                                <template v-if="user.role === 1 || user.role === 2">
+                                    <NavLink :href="route('index.docentes')" :active="route().current('index.docentes')">
+                                        Docentes
                                     </NavLink>
                                 </template>
                                 <template v-if="user.role === 3">

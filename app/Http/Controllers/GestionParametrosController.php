@@ -37,6 +37,9 @@ class   GestionParametrosController extends Controller
         $carrera = Carrera::with('departamento', 'presidente_academia')->get();
         $docente = Docente::all();
         $sub = Subdireccion::all();
+        $fechas = ConfigDates::latest('id')->first();
+
+
         return Inertia::render('Views/desarrollo/GestionEdit', [
             'docente' => $docente,
             'carrera_relacion' => $carrera->pluck('departamento'),
@@ -44,7 +47,8 @@ class   GestionParametrosController extends Controller
             'carrera' => $carrera->except('13'),
             'lugar' => $lugar,
             'users' => $users,
-            'sub' => $sub
+            'sub' => $sub,
+            'fechas' => $fechas
         ]);
     }
 
@@ -224,15 +228,12 @@ class   GestionParametrosController extends Controller
 
     public function update_user(Request $request, $id){
         $request->validate([
-            'email' => ['required', 'email'],
             'docente_id' => ['required'],
             'departamento_id' => ['required'],
-            'role' => ['required'],
         ]);
 
         $user = User::find($id);
         $user->fill([
-            'email' => $request->email,
             'docente_id' => $request->docente_id,
             'departamento_id' => $request->departamento_id
         ]);
@@ -255,21 +256,18 @@ class   GestionParametrosController extends Controller
         ]);
 
         $user = User::find($id);
-        if (Hash::check($request->input('current_password'), $user->password)) {
-            $user->password = Hash::make($request->password);
-            $user->save();
-            if (auth()->user()->role == 3 || auth()->user()->role == 4){
-                auth()->logout();
-            }
-        }else{
-            return redirect()->route('edit.user', ['id' => $user->id])->with('error', 'La contraseña actual no es válida.');
+        $user->password = Hash::make($request->password);
+        $user->save();
+        if (auth()->user()->role == 3 || auth()->user()->role == 4){
+            Auth::guard('web')->logout();
+            return redirect('/');
         }
     }
 //en el instalador preguntar que acepta tener permisos!
     public function set_permission($id){
         $user = User::find($id);
         $user->givePermissionTo('edit profile');
-        return Mail::to($user->email)->send(new PermisosUserEdit(self::admin()));
+        Mail::to($user->email)->send(new PermisosUserEdit(self::admin()));
     }
 
     public function revoke_permissions($id){

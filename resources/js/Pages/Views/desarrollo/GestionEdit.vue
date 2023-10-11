@@ -14,11 +14,12 @@ import TablaUsuarios from "@/Pages/Views/desarrollo/tablas/TablaUsuariosAcademic
 import TablaUsuariosCoordinacion from "@/Pages/Views/desarrollo/tablas/TablaUsuariosCoordinacion.vue";
 import TablaUsuariosDocente from "@/Pages/Views/desarrollo/tablas/TablaUsuariosDocente.vue";
 import TablaUsuariosAcademicos from "@/Pages/Views/desarrollo/tablas/TablaUsuariosAcademicos.vue";
-import FormSubdireccion from "@/Pages/Views/desarrollo/forms/formSubdireccion.vue";
+import FormSubdireccion from "@/Pages/Views/dialogs/DialogSubdireccion.vue";
+import TablaSub from "@/Pages/Views/desarrollo/tablas/TablaSub.vue";
 
 
 const search = ref("");
-
+const dialogSub = ref(false);
 const form = useForm({
     fecha_I: "",
     fecha_F: "",
@@ -38,25 +39,17 @@ const props = defineProps({
     lugar: Array,
     users: Array,
     sub: Array,
+    fechas: Object,
 });
 
 function submit(){
-    form.post(route('config.dates'));
-    form.reset()
+    form.post(route('config.dates'), {
+        onSuccess: () => {
+            form.reset()
+        },
+    });
 }
 
-
-const formF = useForm({
-    file: null,
-    id: props.auth.user.docente_id
-});
-
-
-const upload_file = () => {
-    form.post(route('upload.ft'), {
-        forceFormData: true
-    })
-}
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -84,6 +77,14 @@ onMounted(() => {
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
                     <h2 class="text-lg font-medium text-gray-900">Establecer fechas para la captura de deteccion de necesidades</h2>
+                    <template v-if="props.fechas !== null">
+                        <div class="flex justify-center mt-4">
+                            <strong class="mr-3">Ultima fecha establecida: </strong>
+                            <p>{{props.fechas.fecha_inicio}}</p>
+                            <p class="ml-5">al</p>
+                            <p class="ml-4">{{props.fechas.fecha_final}}</p>
+                        </div>
+                    </template>
                 </header>
 
                 <form @submit.prevent="submit">
@@ -102,10 +103,10 @@ onMounted(() => {
             </div>
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
-                    <h2 class="text-lg font-medium text-gray-900">Carreras</h2>
+                    <h2 class="text-lg font-medium text-gray-900">Areas academicas</h2>
 
                     <p class="mt-1 text-sm text-gray-600">
-                        Actualizar o añadir carreras
+                        Actualizar o añadir
                     </p>
                 </header>
                 <TablaCarrera :carrera="props.carrera"></TablaCarrera>
@@ -145,26 +146,7 @@ onMounted(() => {
                     </NavLink>
                 </div>
             </div>
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <header>
-                    <h2 class="text-lg font-medium text-gray-900">Ficha técnica</h2>
 
-                    <p class="mt-1 text-sm text-gray-600">
-                        Subir ficha técnica para editar.
-                    </p>
-                </header>
-                <div class="grid grid-cols-2">
-                    <div class="flex justify-start mt-12">
-                        <v-file-input label="Ingresar Ficha Técnica" variant="solo" @input="formF.file = $event.target.files[0]"></v-file-input>
-                    </div>
-                    <div class="flex justify-center mt-12">
-                        <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">
-                            Subir
-                        </v-btn>
-                    </div>
-                </div>
-
-            </div>
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
                     <h2 class="text-xl font-medium text-gray-900 mb-8">Usuarios</h2>
@@ -184,26 +166,33 @@ onMounted(() => {
 
                 <div class="grid grid-cols-2 mt-9">
                     <div class="flex justify-start">
-                        <strong class="text-lg text-gray-600">
+                        <strong class="text-lg text-gray-600 mb-3">
                             Docentes.
                         </strong>
                     </div>
-                    <div class="flex justify-center">
-                        <v-text-field label="Buscar" variant="solo" v-model="search"></v-text-field>
-                    </div>
+<!--                    <div class="flex justify-center">-->
+<!--                        <v-text-field label="Buscar" variant="solo" v-model="search"></v-text-field>-->
+<!--                    </div>-->
                 </div>
                 <TablaUsuariosDocente :auth="props.auth" :users="props.users"></TablaUsuariosDocente>
                 <div class="flex justify-end mt-8 mr-12 items-center">
-<!--                    <NavLink :href="route('create.lugar')" as="button">-->
-                    <primary-button>Crear</primary-button>
-<!--                    </NavLink>-->
+<!--&lt;!&ndash;                    <NavLink :href="route('create.lugar')" as="button">&ndash;&gt;-->
+<!--                    <primary-button>Crear</primary-button>-->
+<!--&lt;!&ndash;                    </NavLink>&ndash;&gt;-->
                 </div>
             </div>
+
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
-                    <h2 class="text-xl font-medium text-gray-900 mb-8">Establecer subdirección</h2>
+                    <h2 class="text-xl font-medium text-gray-900 mb-8">Subdirección Académica</h2>
                 </header>
-                <form-subdireccion :sub="props.sub"></form-subdireccion>
+                <tabla-sub :sub="props.sub" :modelValue="dialogSub" @update:modelValue="dialogSub = $event"></tabla-sub>
+                <form-subdireccion :sub="props.sub" v-model="dialogSub" @update:modelValue="dialogSub = $event"></form-subdireccion>
+                <template v-if="props.sub.length < 0">
+                    <div class="flex justify-end mt-8 mr-12 items-center">
+                        <primary-button @click="dialogSub = true">Crear</primary-button>
+                    </div>
+                </template>
             </div>
         </div>
 

@@ -70,20 +70,20 @@ onMounted(() => {
     if (!props.docente) {
         return form
     } else {
-        form.departamento_id = user.value.departamento_id
-        form.nombre = props.docente.nombre
-        form.apellidoPat = props.docente.apellidoPat
-        form.apellidoMat = props.docente.apellidoMat
-        form.curp = props.docente.curp
-        form.rfc = props.docente.rfc
-        form.telefono = props.docente.telefono
+        props.docente.departamento_id !== null ? form.departamento_id = user.value.departamento_id : form.departamento_id
+        props.docente.nombre !== null ? form.nombre = props.docente.nombre : form.nombre
+        props.docente.apellidoPat !== null ? form.apellidoPat = props.docente.apellidoPat : form.apellidoPat
+        props.docente.apellidoMat !== null ? form.apellidoMat = props.docente.apellidoMat : form.apellidoMat
+        props.docente.curp !== null ? form.curp = props.docente.curp : form.curp
+        props.docente.rfc !== null ? form.rfc = props.docente.rfc : form.rfc
+        props.docente.telefono !== null ? form.telefono = props.docente.telefono : form.telefono
         props.docente.carrera_id !== null ? form.carrera_id = props.docente.carrera_id : form.carrera_id
-        form.sexo = props.docente.sexo
-        form.departamento_id = props.docente.departamento_id
-        form.id_puesto = props.docente.id_puesto
-        form.tipo_plaza = props.docente.tipo_plaza
-        form.licenciatura = props.docente.licenciatura
-        form.id_posgrado = props.docente.id_posgrado
+        props.docente.sexo !== null ? form.sexo = props.docente.sexo : form.sexo
+        props.docente.departamento_id !== null ? form.departamento_id = props.docente.departamento_id : form.departamento_id
+        props.docente.id_puesto !== null ? form.id_puesto = props.docente.id_puesto : form.id_puesto
+        props.docente.tipo_plaza !== null ? form.tipo_plaza = props.docente.tipo_plaza : form.tipo_plaza
+        props.docente.licenciatura !== null ? form.licenciatura = props.docente.licenciatura : form.licenciatura
+        props.docente.id_posgrado !== null ? form.id_posgrado = props.docente.id_posgrado : form.id_posgrado
     }
 
 

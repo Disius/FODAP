@@ -38,7 +38,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.patch(route('update.user', user.id), {
+    form.patch(route('update.user', props.user.id), {
         onSuccess: () => snackbarSuccess.value = true,
         onError: () => snackbarError.value = true,
     })
@@ -64,6 +64,7 @@ const submit = () => {
                     type="email"
                     class="mt-1 block w-full"
                     v-model="form.email"
+                    disabled
                     required
                     autocomplete="username"
                 />
@@ -144,7 +145,6 @@ const submit = () => {
 
             <template v-slot:actions>
                 <v-btn
-                    color="indigo"
                     variant="text"
                     @click="snackbarSuccess = false"
                 >

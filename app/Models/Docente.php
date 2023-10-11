@@ -32,7 +32,7 @@ class Docente extends Model
     }
 
     public function usuario(){
-        return $this->belongsTo(User::class, 'docente_id', 'id');
+        return $this->belongsTo(User::class, '', 'user_id');
     }
 
     public function jefe_departamento(){

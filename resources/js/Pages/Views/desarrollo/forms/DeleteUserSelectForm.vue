@@ -43,7 +43,11 @@ const closeModal = () => {
 
 <template>
     <section class="space-y-6">
-        <DangerButton @click="confirmUserDeletion">Borrar cuenta</DangerButton>
+        <DangerButton @click="confirmUserDeletion">
+            <v-icon>
+                mdi-delete-forever
+            </v-icon>
+        </DangerButton>
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">

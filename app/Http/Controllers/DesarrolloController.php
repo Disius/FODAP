@@ -8,6 +8,7 @@ use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use App\Models\Lugar;
+use App\Models\Posgrado;
 use App\Models\User;
 use App\Notifications\AceptadoNotification;
 use App\Notifications\ObservacionNotification;
@@ -24,7 +25,7 @@ class DesarrolloController extends Controller
     public function index()
     {
         $carrera = Carrera::all();
-        $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador')
+        $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe')
             ->where('aceptado', '=', 0)
             ->orderBy('id', 'desc')
             ->get();
@@ -162,7 +163,7 @@ class DesarrolloController extends Controller
      */
     public function show(string $id)
     {
-        $deteccion = DeteccionNecesidades::with('carrera', 'deteccion_facilitador')->find($id);
+        $deteccion = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe')->find($id);
 
         return Inertia::render('Views/desarrollo/coordinacion/ShowDeteccionCoordinacion', [
             'deteccion' => $deteccion
@@ -216,5 +217,13 @@ class DesarrolloController extends Controller
         return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
     }
 
+    public function docentes(){
+        $docentes = Docente::with('usuario')->get();
+        $user = User::with('docente')->get();
+        return Inertia::render('Views/desarrollo/Docentes', [
+            'docentes' => $docentes,
+            'user' => $user,
+        ]);
+    }
 
 }

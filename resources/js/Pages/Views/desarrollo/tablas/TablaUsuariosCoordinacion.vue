@@ -42,7 +42,11 @@ const wich_user = (user) => {
             <td class="text-center"> {{u.email}}</td>
             <td class="text-center">
                     <NavLink :href="route('edit.user', u.id)" as="button">
-                        <primary-button>Editar</primary-button>
+                        <primary-button>
+                            <v-icon>
+                                mdi-pencil
+                            </v-icon>
+                        </primary-button>
                     </NavLink>
             </td>
             <td class="text-center">

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             PosgradoSeeder::class,
             RolHasModelSeeder::class,
+            DocenteSeeder::class,
         ]);
     }
 }

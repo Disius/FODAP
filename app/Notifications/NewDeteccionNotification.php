@@ -29,7 +29,7 @@ class NewDeteccionNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'broadcast'];
+        return ['database', 'broadcast', 'mail'];
     }
 
     /**
@@ -38,9 +38,9 @@ class NewDeteccionNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->line($this->user->email.' añadio un nuevo curso' )
+                    ->action('Ir', url('/'))
+                    ->line('Por favor inica sesión para verlos');
     }
 
     /**
