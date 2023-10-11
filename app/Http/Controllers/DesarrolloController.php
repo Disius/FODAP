@@ -40,6 +40,7 @@ class DesarrolloController extends Controller
         $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'docente_inscrito')
             ->where('aceptado', '=', 1)
             ->where('estado', '=', 2)
+            ->orderBy('id', 'desc')
                         ->get();
         return Inertia::render('Views/desarrollo/coordinacion/ShowRegistrosC', [
             'detecciones' => $detecciones,
@@ -47,10 +48,13 @@ class DesarrolloController extends Controller
     }
 
     public function desarrollo_cursos(){
-        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
-            ->where('estado' , '=', 0)
-            ->orWhere('estado' , '=', 1)
+        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
+            ->where('aceptado', '=', 1)
+            ->orWhere('estado' , '=', 0)
+            ->Where('estado' , '=', 1)
+            ->orderBy('id', 'desc')
             ->get();
+
         CoursesController::state_curso();
         return Inertia::render('Views/cursos/desarrollo/DesarrolloCursos', [
             'cursos' => $cursos,

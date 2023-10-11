@@ -11,7 +11,7 @@ const store = cursoStore()
 const errorHandle = ref("");
 const alert = ref(false);
 const alert2 = ref(false);
-
+const snackSuccess = ref(false);
 const props = defineProps({
     modelValue: Boolean,
     carreras: Array,
@@ -62,6 +62,7 @@ function submit() {
             link.setAttribute('download', 'deteccion.pdf');
             document.body.appendChild(link);
             link.click();
+            snackSuccess.value = true
         }
 
     }).catch(error => {
@@ -135,6 +136,24 @@ onMounted(() => {
             </v-card>
         </form>
     </v-dialog>
+    <v-snackbar
+        v-model="snackSuccess"
+        color="success"
+        vertical
+    >
+        <div class="text-subtitle-1 pb-2">¡Exito!</div>
+
+        <p>El documento PDF se ha generado con exito</p>
+
+        <template v-slot:actions>
+            <v-btn
+                variant="text"
+                @click="snackSuccess = false"
+            >
+                Cerrar
+            </v-btn>
+        </template>
+    </v-snackbar>
 </template>
 
 <style scoped></style>

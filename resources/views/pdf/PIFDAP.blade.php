@@ -301,7 +301,38 @@
         </table>
     @endif
 
-    <div style="page-break-before: always"></div>
+    <br>
+    <div style="page-break-before: always;"></div>
+    <table class="custom_table" id="firma" cellspacing="0" width="50%" style="text-align:center;margin-left:auto;margin-right:auto">
+        <tr>
+            <td style="font-weight: bold;">Elaboró</td>
+            <td style="font-weight: bold;">Aprobó</td>
+        </tr>
+        <tr>
+            <td style="height:60px; position: relative"> {{ $departamento->jefe_docente->nombre_completo }}
+{{--                <div style="position: absolute; left: 0; margin-top: 8px; font-size: 13px;font-weight: bold;"> Jefe de Desarrollo Académico </div>--}}
+            </td>
+            <td style="position: relative;"> {{ $subdireccion[0]->name }}
+{{--                <div style="position: absolute; left: 0; margin-top: 8px; font-size: 13px;font-weight: bold;"> Subdirector Académico</div>--}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+{{--                <div style="position: absolute; left: 0; margin-top: 8px; font-size: 13px;font-weight: bold;">--}}
+                    Nombre y Firma
+{{--                </div>--}}
+                <div style="font-weight: bold;">
+                    Jefa(e) de Departamento de Desarrollo
+                    Académico
+                </div>
+            </td>
+            <td>Nombre y Firma</td>
+        </tr>
+        <tr>
+            <td style="text-align:left">Fecha: {{  date('Y-m-d') }}</td>
+            <td style="text-align:left">  {{  date('Y-m-d') }} </td>
+        </tr>
+    </table>
 </body>
 
 </html>

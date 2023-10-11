@@ -363,6 +363,9 @@
                                 @foreach($curso->deteccion_facilitador as $facilitador)
                                     {{$facilitador->nombre_completo }}
                                 @endforeach
+                                @if($curso->facilitador_externo)
+                                    {{$curso->facilitador_externo}}
+                                @endif
                             </td>
                             <td>
                                 @if($curso->modalidad == 1)
@@ -642,8 +645,8 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td>{{$departamento->jefe_docente->nombre_completo}}</td>
+                    <td>{{$departamento->nameDepartamento}}</td>
                     <td></td>
                 </tr>
                 </tbody>
