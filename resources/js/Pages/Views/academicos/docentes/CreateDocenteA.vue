@@ -54,7 +54,7 @@ const sex = [{ value: 1, text: "M" }, { value: 2, text: "F" }];
 const snackSuccess = ref(false);
 
 const submit = () => {
-    form.post(route('store.docentes'), {
+    form.post(route('store.docentes.academicos'), {
         onSuccess: () => {
           snackSuccess.value = true
         },
@@ -66,7 +66,7 @@ const submit = () => {
 <AuthenticatedLayout>
     <template #header>
         <div class="flex justify-start mb-5">
-            <NavLink :href="route('index.docentes')" as="button">
+            <NavLink :href="route('index.docentes.academicos')" as="button">
                 <div class="flex justify-start">
                     <v-btn icon>
                         <v-icon>mdi-arrow-left</v-icon>

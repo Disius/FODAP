@@ -7,7 +7,9 @@ use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use App\Models\Lugar;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -137,6 +139,94 @@ class AcademicosController extends Controller
         }else{
             return Redirect::route('show.inscritos.academicos', ['id' => $deteccion->id])->withErrors('Llego al maximo de docentes que el curso permite inscribir');
         }
-        
+
+    }
+
+    public function index_docentes_academicos(){
+        $docentes = Docente::with('usuario')
+            ->where('departamento_id', '=', auth()->user()->departamento_id)
+            ->orderBy('nombre')
+            ->get();
+        $user = User::with('docente')->get();
+        return Inertia::render('Views/academicos/docentes/DocentesA', [
+            'docentes' => $docentes,
+            'user' => $user,
+        ]);
+    }
+    public function create_docentes_academicos(){
+        $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->get();
+        $departamento = Departamento::where('id', auth()->user()->departamento_id)->get();
+        $tipoPlaza = DB::table('tipo_plaza')->get();
+        $puesto = DB::table('puesto')->select('id', 'nombre')->get();
+        $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
+        return Inertia::render('Views/academicos/docentes/CreateDocenteA', [
+            'carrera' => $carrera,
+            'departamento' => $departamento,
+            'tipo_plaza' => $tipoPlaza,
+            'puesto' => $puesto,
+            'posgrado' => $posgrado,
+        ]);
+    }
+    public function created_docentes_academicos(Request $request){
+        $docente = Docente::create([
+            'rfc' => $request->rfc,
+            'curp' => $request->curp,
+            'nombre' => $request->nombre,
+            'apellidoPat' => $request->apellidoPat,
+            'apellidoMat' => $request->apellidoMat,
+            'sexo' => $request->sexo,
+            'telefono' => $request->telefono,
+            'carrera_id' => $request->carrera_id,
+            'id_puesto' => $request->id_puesto,
+            'tipo_plaza' => $request->tipo_plaza,
+            'departamento_id' => $request->departamento_id,
+            'user_id' => $request->id,
+            'licenciatura' => $request->licenciatura,
+            'id_posgrado' => $request->id_posgrado,
+            'nombre_completo' => $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat
+        ]);
+
+        $docente->save();
+        return Redirect::route('index.docentes.academicos');
+    }
+
+    public function edit_docente_academico($id){
+        $carrera = Carrera::all();
+        $departamento = Departamento::select('nameDepartamento', 'id')->get();
+        $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
+        $puesto = DB::table('puesto')->select('id', 'nombre')->get();
+        $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
+        $docente = Docente::with('carrera', 'plaza', 'puesto', 'departamento', 'posgrado')->find($id);
+        return Inertia::render('Views/academicos/docentes/EditDocenteA', [
+            'carrera' => $carrera,
+            'departamento' => $departamento,
+            'tipo_plaza' => $tipoPlaza,
+            'puesto' => $puesto,
+            'posgrado' => $posgrado,
+            'docente' => $docente
+        ]);
+    }
+    public function update_docente_academico(Request $request, $id){
+        $docente = Docente::find($id);
+
+        $docente->rfc = $request->rfc;
+        $docente->curp = $request->curp;
+        $docente->nombre = $request->nombre;
+        $docente->apellidoPat = $request->apellidoPat;
+        $docente->apellidoMat = $request->apellidoMat;
+        $docente->sexo = $request->sexo;
+        $docente->telefono = $request->telefono;
+        $docente->carrera_id = $request->carrera_id;
+        $docente->id_puesto = $request->id_puesto;
+        $docente->tipo_plaza = $request->tipo_plaza;
+        $docente->departamento_id = $request->departamento_id;
+        $docente->user_id = $request->id;
+        $docente->licenciatura = $request->licenciatura;
+        $docente->id_posgrado = $request->id_posgrado;
+        $docente->nombre_completo = $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat;
+
+        $docente->save();
+
+        return Redirect::route('edit.docentes.academicos', ['id' => $docente->id]);
     }
 }

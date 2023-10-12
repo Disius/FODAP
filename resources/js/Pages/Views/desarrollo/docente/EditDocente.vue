@@ -65,7 +65,7 @@ onMounted(() => {
     if (!props.docente) {
         return form
     } else {
-        props.docente.departamento_id !== null ? form.departamento_id = user.value.departamento_id : form.departamento_id
+        props.docente.departamento_id !== null ? form.departamento_id = props.docente.departamento_id : form.departamento_id
         props.docente.nombre !== null ? form.nombre = props.docente.nombre : form.nombre
         props.docente.apellidoPat !== null ? form.apellidoPat = props.docente.apellidoPat : form.apellidoPat
         props.docente.apellidoMat !== null ? form.apellidoMat = props.docente.apellidoMat : form.apellidoMat

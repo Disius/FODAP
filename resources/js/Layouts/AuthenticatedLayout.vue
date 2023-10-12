@@ -85,6 +85,11 @@ onMounted(() => {
                                         Cursos
                                     </NavLink>
                                 </template>
+                                <template v-if="user.role === 3">
+                                    <NavLink :href="route('index.docentes.academicos')" :active="route().current('index.docentes.academicos')">
+                                        Docentes
+                                    </NavLink>
+                                </template>
                                 <template v-if="user.role === 1 || user.role === 2">
                                     <NavLink :href="route('index.detecciones')" :active="route().current('index.detecciones')">
                                         Deteccion de Necesidades

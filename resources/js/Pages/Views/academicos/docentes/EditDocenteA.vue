@@ -1,12 +1,11 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import DocenteInfo from "@/Pages/Profile/Partials/DocenteInfo.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import {useForm} from "@inertiajs/vue3";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import NavLink from "@/Components/NavLink.vue";
 
 const props = defineProps({
@@ -54,19 +53,41 @@ const sex = [{ value: 1, text: "M" }, { value: 2, text: "F" }];
 const snackSuccess = ref(false);
 
 const submit = () => {
-    form.post(route('store.docentes'), {
+    form.put(route('update.docentes.academicos', props.docente.id), {
         onSuccess: () => {
           snackSuccess.value = true
         },
     })
 }
+
+
+onMounted(() => {
+    if (!props.docente) {
+        return form
+    } else {
+        props.docente.departamento_id !== null ? form.departamento_id = props.docente.departamento_id : form.departamento_id
+        props.docente.nombre !== null ? form.nombre = props.docente.nombre : form.nombre
+        props.docente.apellidoPat !== null ? form.apellidoPat = props.docente.apellidoPat : form.apellidoPat
+        props.docente.apellidoMat !== null ? form.apellidoMat = props.docente.apellidoMat : form.apellidoMat
+        props.docente.curp !== null ? form.curp = props.docente.curp : form.curp
+        props.docente.rfc !== null ? form.rfc = props.docente.rfc : form.rfc
+        props.docente.telefono !== null ? form.telefono = props.docente.telefono : form.telefono
+        props.docente.carrera_id !== null ? form.carrera_id = props.docente.carrera_id : form.carrera_id
+        props.docente.sexo !== null ? form.sexo = props.docente.sexo : form.sexo
+        props.docente.departamento_id !== null ? form.departamento_id = props.docente.departamento_id : form.departamento_id
+        props.docente.id_puesto !== null ? form.id_puesto = props.docente.id_puesto : form.id_puesto
+        props.docente.tipo_plaza !== null ? form.tipo_plaza = props.docente.tipo_plaza : form.tipo_plaza
+        props.docente.licenciatura !== null ? form.licenciatura = props.docente.licenciatura : form.licenciatura
+        props.docente.id_posgrado !== null ? form.id_posgrado = props.docente.id_posgrado : form.id_posgrado
+    }
+})
 </script>
 
 <template>
 <AuthenticatedLayout>
     <template #header>
         <div class="flex justify-start mb-5">
-            <NavLink :href="route('index.docentes')" as="button">
+            <NavLink :href="route('index.docentes.academicos')" as="button">
                 <div class="flex justify-start">
                     <v-btn icon>
                         <v-icon>mdi-arrow-left</v-icon>
@@ -257,7 +278,7 @@ const submit = () => {
     >
         <div class="text-subtitle-1 pb-2">¡Exito!</div>
 
-        <p>Se agrego el docente con exito</p>
+        <p>Se edito el docente con exito</p>
 
         <template v-slot:actions>
             <v-btn
