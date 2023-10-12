@@ -38,6 +38,7 @@ class DeteccionEditadaNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+                    ->from($this->user->email)
                     ->line($this->user->email.' edito un curso que no ha sido aceptado.')
                     ->action('Ir', url('/'));
     }

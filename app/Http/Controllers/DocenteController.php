@@ -15,9 +15,11 @@ use function MongoDB\BSON\toRelaxedExtendedJSON;
 class DocenteController extends Controller
 {
     public function index_cursos(){
+
+        $user_docente = auth()->user()->docente;
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
                 ->where('aceptado', '=', 1)
-                ->where('estado', '=', 0)
+                ->orWhere('estado', '=', 0)
                 ->where('id_departamento', '=', auth()->user()->departamento_id)
                 ->where('estado', '=', 1)
                 ->get();

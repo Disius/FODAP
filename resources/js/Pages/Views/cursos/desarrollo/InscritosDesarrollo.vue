@@ -11,7 +11,7 @@ const props = defineProps({
     auth: Object,
     docente: Array,
 });
-
+const timeout = ref(2000);
 const formatFechaF = computed(() => {
     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
 })
@@ -191,7 +191,7 @@ onMounted(() => {
                 <div class="flex justify-end items-end mt-2">
                     <v-btn @click="dialog_inscripcion = true" block size="large" color="blue-darken-1">Inscribir Docentes a Este Curso</v-btn>
                 </div>
-                <Inscripcion :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
+                <Inscripcion :errors="$page.props.errors" :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
             </div>
         </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -231,6 +231,7 @@ onMounted(() => {
             v-model="snackbar"
             vertical
             color="error"
+            :timeout="timeout"
         >
             <div class="text-subtitle-1 pb-2">Error</div>
 

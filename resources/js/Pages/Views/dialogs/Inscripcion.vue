@@ -8,10 +8,13 @@ const props = defineProps({
     docente: Array,
     curso: Object,
     auth: Object,
+    errors: Object,
 });
 
 const teacherSelected = ref([]);
 const search = ref("");
+const snackbar = ref(false);
+const timeout = ref(4000);
 const emit = defineEmits([
     'update:modelValue'
 ]);
@@ -35,7 +38,11 @@ function addTeachers(teacher){
     if(!form.id_docente.includes(teacher)){
         form.id_docente.push(teacher.id)
         if (props.auth.role === 1 || props.auth.role === 2){
-            form.post(route('inscribir.docente', props.curso.id))
+            form.post(route('inscribir.docente', props.curso.id), {
+                onError: () => {
+                    snackbar.value = true;
+                },
+            })
         }else if (props.auth.role === 3){
             form.post(route('inscripcion.academico', props.curso.id))
         }
@@ -48,7 +55,7 @@ function addTeachers(teacher){
 
 <template>
 <v-dialog width="auto" v-model="props.modelValue" persistent>
-    <v-card width="600" height="500">
+    <v-card width="700" height="700">
         <v-card-title class="text-center">Inscribir Docentes</v-card-title>
         <v-card-text>
             <v-text-field variant="solo" label="Buscar" v-model="search" class="mt-4"></v-text-field>
@@ -93,4 +100,24 @@ function addTeachers(teacher){
         </v-card-actions>
     </v-card>
 </v-dialog>
+    <v-snackbar
+        v-model="snackbar"
+        vertical
+        color="info"
+        :timeout="timeout"
+    >
+        <div class="text-subtitle-1 pb-2">Alerta</div>
+
+        <template v-if="props.errors">
+            <p class="text-center text-lg">{{props.errors[0]}}</p>
+        </template>
+
+        <template v-slot:actions>
+            <v-btn
+                @click="snackbar = false"
+            >
+                Cerrar
+            </v-btn>
+        </template>
+    </v-snackbar>
 </template>

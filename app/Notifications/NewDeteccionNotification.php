@@ -38,6 +38,7 @@ class NewDeteccionNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+                    ->from($this->user->email)
                     ->line($this->user->email.' añadio un nuevo curso' )
                     ->action('Ir', url('/'))
                     ->line('Por favor inica sesión para verlos');

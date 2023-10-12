@@ -58,7 +58,7 @@ onMounted(() => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{props.deteccion.nombreCurso}}</h2>
             <template v-if="props.deteccion.aceptado === 0">
                 <form @submit.prevent="formAceptado.post(route('store.aceptado', props.deteccion.id))">
-                    <PrimaryButton class="mt-5">Aceptar Deteccion de Necesidades</PrimaryButton>
+                    <PrimaryButton class="mt-5">Aceptar curso</PrimaryButton>
                 </form>
             </template>
             <template v-if="props.deteccion.aceptado === 1">

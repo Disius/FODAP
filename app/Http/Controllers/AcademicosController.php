@@ -9,6 +9,7 @@ use App\Models\Docente;
 use App\Models\Lugar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class AcademicosController extends Controller
@@ -98,9 +99,9 @@ class AcademicosController extends Controller
     {
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
             ->where('aceptado', '=', 1)
-            ->where('id_jefe', '=', auth()->user()->docente_id)
             ->where('estado', '=', 0)
-            ->orWhere('estado', '=', 1)
+            ->where('estado', '=', 1)
+            ->orWhere('id_jefe', '=', auth()->user()->docente_id)
             ->get();
 
         //Actualiza el estado del curso
@@ -121,8 +122,21 @@ class AcademicosController extends Controller
 
     public function inscripcion_academicos(Request $request, $id)
     {
+        $request->validate([
+            Rule::unique('inscripcion')->where(function ($query) use ($request) {
+                return $query->where('curso_id', $request->id);
+            }),
+        ]);
         $deteccion = DeteccionNecesidades::find($id);
-        $deteccion->docente_inscrito()->sync($request->input('id_docente'));
-        return Redirect::route('show.inscritos.academicos', ['id' => $deteccion->id]);
+        $num = count($deteccion->docente_inscrito) + 1;
+
+        if ($num <= $deteccion->numeroProfesores){
+            $deteccion->docente_inscrito()->toggle($request->input('id_docente', []));
+
+            return Redirect::route('show.inscritos.academicos', ['id' => $deteccion->id]);
+        }else{
+            return Redirect::route('show.inscritos.academicos', ['id' => $deteccion->id])->withErrors('Llego al maximo de docentes que el curso permite inscribir');
+        }
+        
     }
 }

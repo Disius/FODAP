@@ -107,11 +107,9 @@ class ProfileController extends Controller
 
         $docente->save();
 
-
         User::where('id', $request->id)->update([
             'docente_id' => $docente->id,
         ]);
-
         return Redirect::route('profile.edit');
     }
 

@@ -38,6 +38,7 @@ class AceptadoNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+                    ->from(auth()->user()->email)
                     ->line(auth()->user()->email.' ha aceptado un curso')
                     ->action('Ir', url('/'));
     }

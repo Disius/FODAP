@@ -44,7 +44,7 @@ class CoursesController extends Controller
 
         $deteccion->save();
 
-        $deteccion->deteccion_facilitador()->sync($request->input('facilitadores', []));
+        $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
 
         $this->sendNotification($deteccion);
 
@@ -66,7 +66,7 @@ class CoursesController extends Controller
 
         $deteccion->total_horas = $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
 
-        $deteccion->deteccion_facilitador()->sync($request->input('facilitadores', []));
+        $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
 
         $deteccion->update($request->validated());
 

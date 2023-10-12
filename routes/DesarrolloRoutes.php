@@ -81,4 +81,8 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
 
     //Docentes
     Route::get('/desarrollo/docentes', [DesarrolloController::class, 'docentes'])->name('index.docentes');
+    Route::get('/desarrollo/docentes/create', [DesarrolloController::class, 'create_docentes'])->name('create.docentes');
+    Route::post('/desarrollo/docentes/store', [DesarrolloController::class, 'store_docentes'])->name('store.docentes');
+    Route::get('/desarrollo/docentes/edit/{id}', [DesarrolloController::class, 'edit_docente'])->name('edit.docentes');
+    Route::put('/desarrollo/docentes/update/{id}', [DesarrolloController::class, 'update_docente'])->name('update.docentes');
 });

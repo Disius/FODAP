@@ -302,7 +302,7 @@
     @endif
 
     <br>
-    <div style="page-break-before: always;"></div>
+{{--    <div style="page-break-before: always;"></div>--}}
     <table class="custom_table" id="firma" cellspacing="0" width="50%" style="text-align:center;margin-left:auto;margin-right:auto">
         <tr>
             <td style="font-weight: bold;">Elaboró</td>
@@ -319,18 +319,27 @@
         <tr>
             <td>
 {{--                <div style="position: absolute; left: 0; margin-top: 8px; font-size: 13px;font-weight: bold;">--}}
-                    Nombre y Firma
+                    <div style="font-weight: bold;">
+                        Nombre y Firma
+                    </div>
 {{--                </div>--}}
                 <div style="font-weight: bold;">
                     Jefa(e) de Departamento de Desarrollo
                     Académico
                 </div>
             </td>
-            <td>Nombre y Firma</td>
+            <td>
+                <div style="font-weight: bold">
+                    Nombre y Firma
+                </div>
+                <div style="font-weight: bold">
+                    Subdirector(a) Académico(a)
+                </div>
+            </td>
         </tr>
         <tr>
-            <td style="text-align:left">Fecha: {{  date('Y-m-d') }}</td>
-            <td style="text-align:left">  {{  date('Y-m-d') }} </td>
+            <td style="text-align:left">Fecha de elaboración: {{ $AP[0]->created_at->format('Y-m-d') }}</td>
+            <td style="text-align:left">Fecha de aprobación: {{ $AP[0]->updated_at->format('Y-m-d')}}</td>
         </tr>
     </table>
 </body>

@@ -30,6 +30,7 @@ const props = defineProps({
 const user = usePage().props.auth.user;
 const snackbarSuccess = ref(false);
 const snackbarError = ref(false);
+const timeout = ref(2000);
 const form = useForm({
     email: props.user.email,
     docente_id: props.user.docente_id,
@@ -138,6 +139,7 @@ const submit = () => {
             v-model="snackbarSuccess"
             vertical
             color="success"
+            :timeout="timeout"
         >
             <div class="text-subtitle-1 pb-2">!Listo¡</div>
 
@@ -156,6 +158,7 @@ const submit = () => {
             v-model="snackbarError"
             vertical
             color="error"
+            :timeout="timeout"
         >
             <div class="text-subtitle-1 pb-2">!Error¡</div>
 

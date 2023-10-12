@@ -14,7 +14,7 @@ class DocenteSeeder extends Seeder
     public function run(): void
     {
         DB::table('docente')->insert([
-            ['nombre' => 'Salvador', 'apellidoPat' => 'Hernández', 'apellidoMat' => 'Garduza', 'user_id' => 1, 'nombre_completo' => 'Salvador Hernández Garduza'],
+            ['nombre' => 'Salvador', 'apellidoPat' => 'Hernández', 'apellidoMat' => 'Garduza', 'user_id' => 1, 'nombre_completo' => 'Salvador Hernández Garduza', 'carrera_id'],
             ['nombre' => 'Karlos', 'apellidoPat' => 'Velázquez', 'apellidoMat' => 'Moreno', 'user_id' => 2, 'nombre_completo' => 'Karlos Velázquez Moreno'],
             ['nombre' => 'Carlos Venturino', 'apellidoPat' => 'de Coss', 'apellidoMat' => 'Pérez', 'user_id' => 3, 'nombre_completo' => 'Carlos Venturino de Coss Pérez'],
             ['nombre' => 'José Manuel', 'apellidoPat' => 'Rasgado', 'apellidoMat' => 'Bezares', 'user_id' => 4, 'nombre_completo' => 'José Manuel Rasgado Bezares'],

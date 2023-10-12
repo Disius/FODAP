@@ -38,7 +38,7 @@ onMounted(() => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Notificaciones</h2>
             <template v-if="props.notifications.length !== 0">
                 <NavLink :href="route('markNotification')" method="post" as="button">
-                    <v-btn color="success" prepend-icon="mdi-check-circle-outline" width="400">Marcar como leida</v-btn>
+                    <v-btn color="success" prepend-icon="mdi-check-circle-outline" width="400">Marcar como leidas</v-btn>
                 </NavLink>
             </template>
         </template>

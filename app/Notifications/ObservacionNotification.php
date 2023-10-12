@@ -38,6 +38,7 @@ class ObservacionNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+                    ->from(auth()->user()->email)
                     ->line(auth()->user()->email.' ha agregado una observación')
                     ->action('Ir', url('/'));
     }
