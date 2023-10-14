@@ -251,7 +251,7 @@ class DesarrolloController extends Controller
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
         return Inertia::render('Views/desarrollo/docente/CreateDocente', [
-            'carrera' => $carrera->except(['11', '12', '13']),
+            'carrera' => $carrera->except(['13']),
             'departamento' => $departamento,
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,
@@ -289,7 +289,7 @@ class DesarrolloController extends Controller
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
         $docente = Docente::with('carrera', 'plaza', 'puesto', 'departamento', 'posgrado')->find($id);
         return Inertia::render('Views/desarrollo/docente/EditDocente', [
-            'carrera' => $carrera->except(['11', '12', '13']),
+            'carrera' => $carrera->except(['13']),
             'departamento' => $departamento,
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,

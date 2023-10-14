@@ -38,7 +38,7 @@ class ProfileController extends Controller
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'docente' => $docente,
-            'carrera' => $carrera->except(['11', '12', '13']),
+            'carrera' => $carrera->except(['13']),
             'departamento' => $departamento,
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,
