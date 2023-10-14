@@ -28,9 +28,15 @@ class DocenteSeeder extends Seeder
             ['nombre' => 'Oscar Emmanuel', 'apellidoPat' => 'Aguilar', 'apellidoMat' => 'Vera', 'nombre_completo' => 'Oscar Emmanuel Aguilar Vera', 'departamento_id' => 1],
             ['nombre' => 'Ildeberto', 'apellidoPat' => 'De Los Santos', 'apellidoMat' => 'Ruiz', 'nombre_completo' => 'Ildeberto De Los Santos Ruiz', 'departamento_id' => 1],
             ['nombre' => 'Julio Antonio', 'apellidoPat' => 'Moreno', 'apellidoMat' => 'Gordillo', 'nombre_completo' => 'Julio Antonio Moreno Gordillo', 'departamento_id' => 1],
-            ['nombre' => 'José Del Carmen', 'apellidoPat' => 'Vázquez', 'apellidoMat' => 'Hernández', 'nombre_completo' => 'José Del Carmen Vázquez Hernández', 'departamento_id' => 3],
+            ['nombre' => 'José del Carmen', 'apellidoPat' => 'Vázquez', 'apellidoMat' => 'Hernández', 'nombre_completo' => 'José del Carmen Vázquez Hernández', 'departamento_id' => 3],
             ['nombre' => 'Luis Alberto', 'apellidoPat' => 'Morales', 'apellidoMat' => 'Alias', 'nombre_completo' => 'Luis Alberto Morales Alias', 'departamento_id' => 5],
             ['nombre' => 'Jaime Eduardo', 'apellidoPat' => 'Gálvez', 'apellidoMat' => 'Reyes', 'nombre_completo' => 'Jaime Eduardo Gálvez Reyes', 'departamento_id' => 5],
+            ['nombre' => 'Patricia del Pilar', 'apellidoPat' => 'Gómez', 'apellidoMat' => 'Galdámez', 'nombre_completo' => 'Patricia del Pilar Gómez Galdámez', 'departamento_id' => 9],
+            ['nombre' => 'Sabino', 'apellidoPat' => 'Vélazquez', 'apellidoMat' => 'Trujillo', 'nombre_completo' => 'Sabino Vélazquez Trujillo', 'departamento_id' => 9],
+            ['nombre' => 'Elfer Isaías', 'apellidoPat' => 'Clemente', 'apellidoMat' => 'Camacho', 'nombre_completo' => 'Elfer Isaías Clemente Camacho', 'departamento_id' => 7],
+            ['nombre' => 'Néstor Antonio', 'apellidoPat' => 'Morales', 'apellidoMat' => 'Navarro', 'nombre_completo' => 'Néstor Antonio Morales Navarro', 'departamento_id' => 7],
+            ['nombre' => 'Jesús Carlos', 'apellidoPat' => 'Sánchez', 'apellidoMat' => 'Guzmán', 'nombre_completo' => 'Jesús Carlos Sánchez Guzmán', 'departamento_id' => 7],
+            ['nombre' => 'Rosy Ilda', 'apellidoPat' => 'Basave', 'apellidoMat' => 'Torres', 'nombre_completo' => 'Rosy Ilda Basave Torres', 'departamento_id' => 7],
         ]);
     }
 }
