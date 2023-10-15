@@ -37,6 +37,16 @@ class DocenteSeeder extends Seeder
             ['nombre' => 'Néstor Antonio', 'apellidoPat' => 'Morales', 'apellidoMat' => 'Navarro', 'nombre_completo' => 'Néstor Antonio Morales Navarro', 'departamento_id' => 7],
             ['nombre' => 'Jesús Carlos', 'apellidoPat' => 'Sánchez', 'apellidoMat' => 'Guzmán', 'nombre_completo' => 'Jesús Carlos Sánchez Guzmán', 'departamento_id' => 7],
             ['nombre' => 'Rosy Ilda', 'apellidoPat' => 'Basave', 'apellidoMat' => 'Torres', 'nombre_completo' => 'Rosy Ilda Basave Torres', 'departamento_id' => 7],
+            ['nombre' => 'Jorge Arturo', 'apellidoPat' => 'Sarmiento', 'apellidoMat' => 'Torres', 'nombre_completo' => 'Jorge Arturo Sarmiento Torres', 'departamento_id' => 9],
+            ['nombre' => 'Itzel Elvira', 'apellidoPat' => 'Juárez', 'apellidoMat' => 'Martinez', 'nombre_completo' => 'Itzel Elvira Juárez Martinez', 'departamento_id' => 9],
+            ['nombre' => 'Jorge Antonio', 'apellidoPat' => 'Mijangos', 'apellidoMat' => 'López', 'nombre_completo' => 'Jorge Antonio Mijangos López', 'departamento_id' => 4],
+            ['nombre' => 'Jorge Antonio', 'apellidoPat' => 'Orozco', 'apellidoMat' => 'Torres', 'nombre_completo' => 'Jorge Antonio Orozco Torres', 'departamento_id' => 4],
+            ['nombre' => 'Amado', 'apellidoPat' => 'Castillejos', 'apellidoMat' => 'Brindis', 'nombre_completo' => 'Amado Castillejos Brindis', 'departamento_id' => 4],
+            ['nombre' => 'Linda Viviana', 'apellidoPat' => 'Lopez', 'apellidoMat' => 'Pablo', 'nombre_completo' => 'Linda Viviana Lopéz Pablo', 'departamento_id' => 6],
+            ['nombre' => 'Marco Antonio', 'apellidoPat' => 'Aguilar', 'apellidoMat' => 'Suárez', 'nombre_completo' => 'Marco Antonio Aguilar Suárez', 'departamento_id' => 6],
+            ['nombre' => 'Ricardo', 'apellidoPat' => 'Suárez', 'apellidoMat' => 'Castillejos', 'nombre_completo' => 'Ricardo Suárez Castillejos', 'departamento_id' => 6],
+            ['nombre' => 'Raul', 'apellidoPat' => 'Moreno', 'apellidoMat' => 'Rincón', 'nombre_completo' => 'Raul Moreno Rincón', 'departamento_id' => 3],
+
         ]);
     }
 }
