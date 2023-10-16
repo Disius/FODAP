@@ -56,15 +56,12 @@ class PDFController extends Controller
         $request->validated();
         $cursos = $this->pdf_request_deteccion($request);
         $subdireccion = Subdireccion::all();
-        $departamento = Departamento::with('jefe_docente')
-            ->where('nameDepartamento', '=', 'Departamento de Desarrollo Académico')
-            ->first();
         if (count($cursos) == 0){
             return response()->json([
                 'mensaje' => 'No se encontro ningun dato con ese criterio de busqueda'
             ]);
         }else {
-            $pdf = Pdf::loadView('pdf.deteccion', compact('cursos', 'subdireccion', 'departamento'))->output();
+            $pdf = Pdf::loadView('pdf.deteccion', compact('cursos', 'subdireccion'))->output();
             $path = "Deteccion.pdf";
             $this->save_file($pdf, $path);
 //            return $this->download_file($path);

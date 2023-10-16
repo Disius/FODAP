@@ -23,7 +23,7 @@ class AcademicosController extends Controller
             ->where('id_jefe', auth()->user()->docente_id)
             ->where('aceptado', '=', 0)
             ->orderBy('id', 'desc')->get();
-
+        CoursesController::state_curso();
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->get();
         return Inertia::render('Views/academicos/IndexDetecciones', [
             'detecciones' => $detecciones,
@@ -101,9 +101,9 @@ class AcademicosController extends Controller
     {
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
             ->where('aceptado', '=', 1)
-            ->where('estado', '=', 0)
+            ->where('id_jefe', '=', auth()->user()->docente_id)
+            ->orWhere('estado', '=', 0)
             ->where('estado', '=', 1)
-            ->orWhere('id_jefe', '=', auth()->user()->docente_id)
             ->get();
 
         //Actualiza el estado del curso
@@ -116,6 +116,7 @@ class AcademicosController extends Controller
 
     public function index_cursos_inscritos($id)
     {
+        CoursesController::state_curso();
         return Inertia::render('Views/cursos/academicos/ShowInscritos', [
             'curso' => $this->consult_view($id),
             'docente' => Docente::all(),
@@ -147,6 +148,7 @@ class AcademicosController extends Controller
             ->where('departamento_id', '=', auth()->user()->departamento_id)
             ->orderBy('nombre')
             ->get();
+        CoursesController::state_curso();
         $user = User::with('docente')->get();
         return Inertia::render('Views/academicos/docentes/DocentesA', [
             'docentes' => $docentes,

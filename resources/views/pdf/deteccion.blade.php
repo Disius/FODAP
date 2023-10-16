@@ -645,8 +645,8 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>{{$departamento->jefe_docente->nombre_completo}}</td>
-                    <td>{{$departamento->nameDepartamento}}</td>
+                    <td>{{$cursos[0]->jefe->nombre_completo}}</td>
+                    <td>{{$cursos[0]->departamento->nameDepartamento}}</td>
                     <td></td>
                 </tr>
                 </tbody>

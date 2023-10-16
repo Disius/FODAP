@@ -59,6 +59,7 @@ class DesarrolloController extends Controller
             ->get();
 
         CoursesController::state_curso();
+
         return Inertia::render('Views/cursos/desarrollo/DesarrolloCursos', [
             'cursos' => $cursos,
         ]);
@@ -97,7 +98,7 @@ class DesarrolloController extends Controller
                 'observaciones' => $request->observaciones,
             ]);
 
-        $deteccion->deteccion_facilitador()->sync($request->input('facilitadores', []));
+        $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
 
         $deteccion->save();
 

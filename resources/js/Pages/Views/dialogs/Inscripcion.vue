@@ -56,7 +56,14 @@ function addTeachers(teacher){
 <template>
 <v-dialog width="auto" v-model="props.modelValue" persistent>
     <v-card width="700" height="700">
-        <v-card-title class="text-center">Inscribir Docentes</v-card-title>
+        <div class="grid grid-cols-2">
+            <div class="flex justify-start ml-5 w-50">
+                <v-btn elevation="0" size="large" icon @click="emit('update:modelValue', false)">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
+            </div>
+            <div class="flex justify-start mr-16"><v-card-title class="text-center">Inscribir Docentes</v-card-title></div>
+        </div>
         <v-card-text>
             <v-text-field variant="solo" label="Buscar" v-model="search" class="mt-4"></v-text-field>
             <!-- <v-autocomplete multiple variant="solo" :items="props.docente" item-title="nombre_completo" item-value="id" v-model="teacherSelected"></v-autocomplete> -->
@@ -87,9 +94,9 @@ function addTeachers(teacher){
         <v-card-actions>
             <v-row justify="end">
                 <v-col cols="12">
-                    <v-btn color="error" block @click="emit('update:modelValue', false)">
-                        Cancelar
-                    </v-btn>
+<!--                    <v-btn color="error" block @click="emit('update:modelValue', false)">-->
+<!--                        Cancelar-->
+<!--                    </v-btn>-->
                 </v-col>
                 <!-- <v-col cols="3">
                     <v-btn color="success" flat @click="addTeachers">
