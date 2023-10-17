@@ -11,13 +11,15 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PermisosUserEdit extends Mailable
+class PermisosUserEdit extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
+
+    public $user;
     public function __construct($user)
     {
         $this->user = $user;

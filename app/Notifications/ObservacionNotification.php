@@ -9,13 +9,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ObservacionNotification extends Notification
+class ObservacionNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
      * Create a new notification instance.
      */
+
+    public $detecciones;
+    public $user;
+
     public function __construct(DeteccionNecesidades $detecciones, User $user)
     {
         $this->detecciones = $detecciones;
