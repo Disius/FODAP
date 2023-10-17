@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFichaFilesTable extends Migration
+class CreateSubdireccionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateFichaFilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('ficha_file', function (Blueprint $table) {
+        Schema::create('calificaciones', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('id_curso');
-            $table->string('path', 100);
+            $table->unsignedBigInteger('curso_id')->nullable()->index('calificaciones_curso_id_foreign');
+            $table->unsignedBigInteger('docente_id')->nullable()->index('calificaciones_docente_id_foreign');
+            $table->bigInteger('calificacion');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateFichaFilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ficha_file');
+        Schema::dropIfExists('calificaciones');
     }
 }

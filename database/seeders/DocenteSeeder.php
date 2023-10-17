@@ -49,7 +49,7 @@ class DocenteSeeder extends Seeder
             ['nombre' => 'Alvaro', 'apellidoPat' => 'Hernández', 'apellidoMat' => 'Sol', 'user_id' => null, 'nombre_completo' => 'Alvaro Hernández Sol', 'carrera_id' => null, 'departamento_id' => 3],
             ['nombre' => 'Francisco Ramón', 'apellidoPat' => 'Sánchez', 'apellidoMat' => 'Rodriguez', 'user_id' => null, 'nombre_completo' => 'Francisco Ramón Sánchez Rodriguez', 'carrera_id' => null, 'departamento_id' => 3],
             ['nombre' => 'Osbaldo Ysaac', 'apellidoPat' => 'García', 'apellidoMat' => 'Ramos', 'user_id' => null, 'nombre_completo' => 'Osbaldo Ysaac García Ramos', 'carrera_id' => null, 'departamento_id' => 3],
-
+            ['nombre' => 'Daniel Eduardo', 'apellidoPat' => 'Fernández', 'apellidoMat' => 'Pérez', 'user_id' => 11, 'nombre_completo' => 'Daniel Eduardo Fernández Pérez', 'carrera_id' => 2, 'departamento_id' => 7]
         ]);
     }
 }

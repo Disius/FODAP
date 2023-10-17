@@ -25,6 +25,7 @@ class UsersSeeder extends Seeder
             ['email' => 'ing_tgutierrez@tecnm.mx', 'password' => Hash::make('ingeni123'), 'departamento_id' => 9, 'role' => 3,  'docente_id' => 8],
             ['email' => 'cbas_tgutierrez@tecnm.mx', 'password' => Hash::make('cbas123'), 'departamento_id' => 1,'role' => 3,  'docente_id' => 9],
             ['email' => 'cformacion@tuxtla.tecnm.mx', 'password' => Hash::make('cformacion123'), 'departamento_id' => 2,'role' => 2,  'docente_id' => 10],
+            ['email' => 'l17270705@tuxtla.tecnm.mx', 'password' => Hash::make('exalumnotecnm123'), 'departamento_id' => 7,'role' => 4,  'docente_id' => 36],
         ]);
     }
 }

@@ -34,5 +34,8 @@ class RolHasModelSeeder extends Seeder
         $jefe6->assignRole('Jefes Academicos');
 
         $desarrollo->givePermissionTo('edit profile');
+
+        $docente_facilitador = User::find(11);
+        $docente_facilitador->assignRole('Docentes');
     }
 }

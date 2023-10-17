@@ -328,5 +328,31 @@ class CursoSeeder extends Seeder
 
         $deteccion9->save();
 
+        $deteccion10 = DeteccionNecesidades::create([
+            'asignaturaFA' => "Fundamentos de programación, POO, Estructura de datos, base de datos, redes, programacion de dispositivos móviles",
+            'contenidosTM' => "Todos",
+            'numeroProfesores' => 20,
+            'periodo' => 2,
+            'nombreCurso' => "Aplicaciones móviles para el internet de las cosas",
+            'fecha_I' => "2023-10-23",
+            'fecha_F' => "2023-10-27",
+            'hora_I' => "09:00",
+            'hora_F' => "15:00",
+            'objetivoEvento' => "Proporcionar a los participantes los conocimientos teórico-prácticos para el desarrollo de aplicaciones móviles orientadas al internet de las cosas.",
+            'tipo_FDoAP' => 2,
+            'tipo_actividad' => 2,
+            'carrera_dirigido' => 2,
+            'id_jefe' => 6,
+            'aceptado' => 1,
+            'obs' => 0,
+            'total_horas' => CoursesController::total_horas("2023-10-23", "2023-10-27", "09:00", "15:00"),
+            'modalidad' => 2,
+            'facilitador_externo' =>  null,
+            'id_departamento' => 7
+        ]);
+        $deteccion10->deteccion_facilitador()->toggle([36]);
+
+        $deteccion10->save();
+
     }
 }
