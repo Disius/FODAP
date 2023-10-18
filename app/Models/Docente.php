@@ -14,7 +14,7 @@ class Docente extends Model
     protected $fillable = [ 'rfc', 'curp', 'nombre', 'apellidoPat', 'apellidoMat',
         'sexo', 'email', 'departamento_id', 'telefono', 'interno', 'carrera_id', 'user_id', 'id_puesto', 'tipo_plaza', 'licenciatura', 'id_posgrado', 'nombre_completo'
     ];
-
+    protected $primaryKey = 'id';
     public function facilitador_has_deteccion(){
         return $this->belongsToMany(DeteccionNecesidades::class, 'deteccion_has_facilitadores', 'docente_id', 'deteccion_id');
     }
@@ -32,7 +32,7 @@ class Docente extends Model
     }
 
     public function usuario(){
-        return $this->belongsTo(User::class, '', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function jefe_departamento(){

@@ -20,7 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password', 'departamento_id', 'role', 'docente_id'
     ];
-
+    protected $primaryKey = 'id';
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -42,7 +42,7 @@ class User extends Authenticatable
     ];
 
     public function docente(){
-        return $this->hasOne(Docente::class);
+        return $this->hasOne(Docente::class, 'id', 'docente_id');
     }
 
     public function departamento(){

@@ -14,7 +14,7 @@ class CreateDeteccionNecesidadesTable extends Migration
     public function up()
     {
         Schema::create('deteccion_necesidades', function (Blueprint $table) {
-            $table->id()->autoIncrement();
+            $table->id()->autoIncrement()->unique();
             $table->unsignedBigInteger('id_jefe')->nullable()->index('jefe_id_foreign');
             $table->string('asignaturaFA', 500);
             $table->string('contenidosTM', 500);

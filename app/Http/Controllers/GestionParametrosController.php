@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\In;
 use Illuminate\Validation\Rules\Password;
@@ -176,13 +177,15 @@ class   GestionParametrosController extends Controller
     }
 
     public function dates_detecciones(Request $request){
+        $validator = Validator::make($request->all(), [
+
+        ]);
         $dates = ConfigDates::create([
             'fecha_inicio' => $request->fecha_I,
             'fecha_final' => $request->fecha_F,
         ]);
 
         $dates->save();
-
         return Redirect::route('parametros.edit');
     }
 
@@ -237,11 +240,17 @@ class   GestionParametrosController extends Controller
             'docente_id' => $request->docente_id,
             'departamento_id' => $request->departamento_id
         ]);
-        if ($user->role != $request->role){
+
+        Docente::where('id', $request->docente_id)->update([
+            'user_id' => $user->id
+        ]);
+
+        if ($request->role != $user->role){
             $rol = Role::where('id', $request->role)->first();
             $user->syncRoles([]);
             $user->assignRole($rol->name);
-        }elseif ($user->isDirty('email')) {
+        }
+        if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
         $user->save();

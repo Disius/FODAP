@@ -16,7 +16,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use PhpParser\Node\Stmt\Return_;
 
 class CoursesController extends Controller
 {
@@ -25,31 +24,29 @@ class CoursesController extends Controller
      */
     public function store(CursoRequest $request)
     {
+        try {
+            DB::beginTransaction();
 
-        //        $deteccion = DeteccionNecesidades::create($request->validated() + [
-        //                'aceptado' => 0,
-        //                'obs' => 0,
-        //                'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
-        //                'id_departamento' => auth()->user()->departamento_id,
-        //        ]);
-        //En DeteccionesForm no es necesario que
-        $deteccion = DeteccionNecesidades::create($request->validated() + [
-            'aceptado' => 0,
-            'obs' => 0,
-            'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
-            'id_departamento' => auth()->user()->departamento_id,
-            'facilitador_externo' => $request->facilitador_externo,
-            'id_jefe' => $request->id_jefe
-        ]);
+            $deteccion = DeteccionNecesidades::create($request->validated() + [
+                    'aceptado' => 0,
+                    'obs' => 0,
+                    'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
+                    'id_departamento' => auth()->user()->departamento_id,
+                    'facilitador_externo' => $request->facilitador_externo,
+                    'id_jefe' => $request->id_jefe
+                ]);
 
-        $deteccion->save();
+            $deteccion->save();
 
-        $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
+            $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
 
-        $this->sendNotification($deteccion);
+            $this->sendNotification($deteccion);
 
-        // return Redirect::route('detecciones.index');
-
+            DB::commit();
+        }catch (\Exception $exception){
+            DB::rollBack();
+            return back()->with('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
+        }
     }
 
     public static function sendNotification($curso)

@@ -273,7 +273,6 @@ class DesarrolloController extends Controller
             'id_puesto' => $request->id_puesto,
             'tipo_plaza' => $request->tipo_plaza,
             'departamento_id' => $request->departamento_id,
-            'user_id' => $request->id,
             'licenciatura' => $request->licenciatura,
             'id_posgrado' => $request->id_posgrado,
             'nombre_completo' => $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat
@@ -313,7 +312,6 @@ class DesarrolloController extends Controller
         $docente->id_puesto = $request->id_puesto;
         $docente->tipo_plaza = $request->tipo_plaza;
         $docente->departamento_id = $request->departamento_id;
-        $docente->user_id = $request->id;
         $docente->licenciatura = $request->licenciatura;
         $docente->id_posgrado = $request->id_posgrado;
         $docente->nombre_completo = $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat;

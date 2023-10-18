@@ -16,22 +16,36 @@
             page-break-after: always;
         }
         .footer {
-            width: 100%;
             position: fixed;
-            bottom: 0.1cm;
+            bottom: -1cm;
+            width: 100%;
+            height: 30px;
+            font-weight: normal;
+            justify-content: center;
+            align-content: center;
         }
 
         .footer p {
+            display: inline-block;
             font-size: 9pt;
+            margin-left: 50px;
+            margin-right: 50px;
         }
         .preFooter{
-            width: 100%;
             position: fixed;
-            bottom: 1.1cm
+            bottom: 0.5cm;
+            width: 100%;
+            height: 30px;
+            font-weight: normal;
+            justify-content: center;
+            align-content: center;
         }
         .preFooter p {
             font-size: 9pt;
-            font-family: "Tahoma", Geneva, sans-serif
+            font-family: "Tahoma", Geneva, sans-serif;
+            display: inline-block;
+            margin-left: 50px;
+            margin-right: 50px;
         }
         .preFooter p a{
             font-weight: bold
@@ -196,6 +210,7 @@
             text-align: center;
             border-collapse: collapse;
             font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+            margin-bottom: 20px;
         }
         table.customA td, table.customA th {
             border: 1px solid #000000;
@@ -226,116 +241,207 @@
 </head>
 
 <body>
-    <!--primera seccion-->
-    <div class="w100">
-        <div class="header">
-            <p>
-                INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ
-            </p>
-        </div>
-        <div class="logo">
-            <img src="{{public_path('/storage/img/ITTG.png')}}" alt="">
-        </div>
-        <div class="titleCentered espacio">
-            <p>Subdirección Académica</p>
-            <p>Departamento Académico: {{$cursos[0]->departamento->nameDepartamento}}</p>
-        </div>
-        <div class="titleCentered mb-3">
-            <p>DIAGNÓSTICO DE NECESIDADES DE</p>
-            <p>FORMACIÓN Y ACTUALIZACIÓN PROFESIONAL DOCENTE </p>
-        </div>
-        <div class="leftAlinement m-0 mb-2">
-            <p  id="title">PARA LOS(AS) PROFESORES(AS) DE LA ACADEMIA DE  {{ $cursos[0]->carrera->nameCarrera }} </p>
-            <p>Fecha de realización del diagnóstico: {{ $cursos[0]->created_at->format('Y-m-d') }} </p>
-        </div>
+<!--primera seccion-->
+<div class="w100">
+    <div class="header">
+        <p>
+            INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ
+        </p>
+    </div>
+    <div class="logo">
+        <img src="{{public_path('/storage/img/ITTG.png')}}" alt="">
+    </div>
+    <div class="titleCentered espacio">
+        <p>Subdirección Académica</p>
+        <p>Departamento Académico: {{$cursos[0]->departamento->nameDepartamento}}</p>
+    </div>
+    <div class="titleCentered mb-3">
+        <p>DIAGNÓSTICO DE NECESIDADES DE</p>
+        <p>FORMACIÓN Y ACTUALIZACIÓN PROFESIONAL DOCENTE </p>
+    </div>
+    <div class="leftAlinement m-0 mb-2">
+        <p  id="title">PARA LOS(AS) PROFESORES(AS) DE LA ACADEMIA DE  {{ $cursos[0]->carrera->nameCarrera }} </p>
+        <p>Fecha de realización del diagnóstico: {{ $cursos[0]->created_at->format('Y-m-d') }} </p>
+    </div>
 
-        <div class="mb-l">
-            <div class="leftAlinement m-0">
-                <p>Jefe (a)  del Departamento Académico</p>
-            </div>
-            <table class="custom">
-                <thead>
-                <tr>
-                    <th >Nombre</th>
-                    <th >Firma</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td> {{ $cursos[0]->jefe->nombre_completo }}</td>
-                    <td> </td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="mb-l">
+        <div class="leftAlinement m-0">
+            <p>Jefe (a)  del Departamento Académico</p>
         </div>
-        <div class="mb-l">
-            <div class="leftAlinement m-8">
-                <p>Presidente (s) de Academia</p>
-            </div>
-            {{--            Aca va el presidente de la academia--}}
-            <table class="custom">
-                <thead>
-                <tr>
-                    <th >Nombre</th>
-                    <th >Firma</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>  </td>
-                    <td>  </td>
-                </tr>
-                </tbody>
-            </table>
+        <table class="custom">
+            <thead>
+            <tr>
+                <th >Nombre</th>
+                <th >Firma</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td> {{ $cursos[0]->jefe->nombre_completo }}</td>
+                <td> </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mb-l">
+        <div class="leftAlinement m-8">
+            <p>Presidente (s) de Academia</p>
         </div>
-        <div class="titulo">
-            <p>a) PRIORIZAR LAS DIMENSIONES DE LA EVALUACIÓN DOCENTE EN LAS QUE
-                REQUIERE LA FORMACIÓN DOCENTE DE EL/LA PROFESOR(A), AVALADOS
-                POR LA ACADEMIA.
-            </p>
-        </div>
+        {{--            Aca va el presidente de la academia--}}
+        <table class="custom">
+            <thead>
+            <tr>
+                <th >Nombre</th>
+                <th >Firma</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>  </td>
+                <td>  </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="titulo">
+        <p>a) PRIORIZAR LAS DIMENSIONES DE LA EVALUACIÓN DOCENTE EN LAS QUE
+            REQUIERE LA FORMACIÓN DOCENTE DE EL/LA PROFESOR(A), AVALADOS
+            POR LA ACADEMIA.
+        </p>
+    </div>
+    <table class="customA">
+        <thead>
+        <tr>
+            <th>Dimensión(es)
+                en la(s) que
+                se requiere
+                Formación
+                Docente
+            </th>
+            <th>
+                Competencia(s) en
+                la(s) que se requiere
+                la Formación
+                Docente
+            </th>
+            <th>
+                Número de
+                profesores(as)
+                que requieren
+                Formación
+                Docente
+            </th>
+            <th>
+                Periodo en el
+                que se requiere
+                la Formación
+                Docente (enero-junio o agosto-
+                diciembre)
+            </th>
+            <th>
+                Facilitador
+                (a) que
+                impartirá el
+                curso/taller
+            </th>
+            <th>
+                Modalidad
+            </th>
+        </tr>
+        </thead>
+        @foreach($cursos as $curso)
+            @if($curso->tipo_FDoAP == 1)
+                @if(count($cursos) == 0)
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                @else
+                    <tbody>
+                    <tr>
+                        <td class="text-sm-h6">{{$curso->asignaturaFA}}</td>
+                        <td>{{$curso->contenidosTM}}</td>
+                        <td>{{$curso->numeroProfesores}}</td>
+                        <td>
+                            @if($curso->periodo === 1)
+                                ENERO-JUNIO
+                            @else
+                                AGOSTO-DICIEMBRE
+                            @endif
+                        </td>
+                        <td>
+                            @foreach($curso->deteccion_facilitador as $facilitador)
+                                {{$facilitador->nombre_completo }}
+                            @endforeach
+                            @if($curso->facilitador_externo)
+                                {{$curso->facilitador_externo}}
+                            @endif
+                        </td>
+                        <td>
+                            @if($curso->modalidad == 1)
+                                Virtual
+                            @elseif($curso->modalidad == 2)
+                                Presencial
+                            @elseif($curso->modalidad == 3)
+                                Híbrido
+                            @endif
+                        </td>
+                    </tr>
+                    </tbody>
+                @endif
+            @endif
+        @endforeach
+    </table>
+    <div class="titulo">
+        <p>b) PRIORIZAR LAS ASIGNATURAS EN LAS QUE REQUIERE ACTUALIZACIÓN
+            PROFESIONAL DE EL/LA PROFESOR(A), AVALADOS POR LA ACADEMIA.</p>
+    </div>
+    <div class="w100">
         <table class="customA">
             <thead>
             <tr>
-                <th>Dimensión(es)
+                <th>Asignatura(s)
                     en la(s) que
                     se requiere
-                    Formación
-                    Docente
+                    Actualización
+                    profesional
                 </th>
-                <th>
-                    Competencia(s) en
-                    la(s) que se requiere
-                    la Formación
-                    Docente
+                <th>Contenidos
+                    temáticos en que se
+                    requiere
+                    Actualización
+                    Profesional</th>
+                <th>Número de
+                    profesores
+                    (as) que
+                    requieren
+                    Actualización
+                    Profesional
                 </th>
-                <th>
-                    Número de
-                    profesores(as)
-                    que requieren
-                    Formación
-                    Docente
-                </th>
-                <th>
-                    Periodo en el
+                <th>Periodo en el
                     que se requiere
-                    la Formación
-                    Docente (enero-junio o agosto-
+                    la Actualización
+                    Profesional
+                    (enero-junio o
+                    agosto
                     diciembre)
                 </th>
-                <th>
-                    Facilitador
+                <th>Facilitador
                     (a) que
                     impartirá el
-                    curso/taller
-                </th>
+                    curso/taller</th>
                 <th>
                     Modalidad
                 </th>
             </tr>
             </thead>
             @foreach($cursos as $curso)
-                @if($curso->tipo_FDoAP == 1)
+                @if($curso->tipo_FDoAP == 2)
                     @if(count($cursos) == 0)
                         <tbody>
                         <tr>
@@ -363,9 +469,6 @@
                                 @foreach($curso->deteccion_facilitador as $facilitador)
                                     {{$facilitador->nombre_completo }}
                                 @endforeach
-                                @if($curso->facilitador_externo)
-                                    {{$curso->facilitador_externo}}
-                                @endif
                             </td>
                             <td>
                                 @if($curso->modalidad == 1)
@@ -382,285 +485,197 @@
                 @endif
             @endforeach
         </table>
-        <div class="titulo">
-            <p>b) PRIORIZAR LAS ASIGNATURAS EN LAS QUE REQUIERE ACTUALIZACIÓN
-                PROFESIONAL DE EL/LA PROFESOR(A), AVALADOS POR LA ACADEMIA.</p>
-        </div>
-        <div class="w100">
-            <table class="customA">
-                <thead>
-                <tr>
-                    <th>Asignatura(s)
-                        en la(s) que
-                        se requiere
-                        Actualización
-                        profesional
-                    </th>
-                    <th>Contenidos
-                        temáticos en que se
-                        requiere
-                        Actualización
-                        Profesional</th>
-                    <th>Número de
-                        profesores
-                        (as) que
-                        requieren
-                        Actualización
-                        Profesional
-                    </th>
-                    <th>Periodo en el
-                        que se requiere
-                        la Actualización
-                        Profesional
-                        (enero-junio o
-                        agosto
-                        diciembre)
-                    </th>
-                    <th>Facilitador
-                        (a) que
-                        impartirá el
-                        curso/taller</th>
-                    <th>
-                        Modalidad
-                    </th>
-                </tr>
-                </thead>
-                @foreach($cursos as $curso)
-                    @if($curso->tipo_FDoAP == 2)
-                        @if(count($cursos) == 0)
-                            <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        @else
-                            <tbody>
-                            <tr>
-                                <td class="text-sm-h6">{{$curso->asignaturaFA}}</td>
-                                <td>{{$curso->contenidosTM}}</td>
-                                <td>{{$curso->numeroProfesores}}</td>
-                                <td>
-                                    @if($curso->periodo === 1)
-                                        ENERO-JUNIO
-                                    @else
-                                        AGOSTO-DICIEMBRE
-                                    @endif
-                                </td>
-                                <td>
-                                    @foreach($curso->deteccion_facilitador as $facilitador)
-                                        {{$facilitador->nombre_completo }}
-                                    @endforeach
-                                </td>
-                                <td>
-                                    @if($curso->modalidad == 1)
-                                        Virtual
-                                    @elseif($curso->modalidad == 2)
-                                        Presencial
-                                    @elseif($curso->modalidad == 3)
-                                        Híbrido
-                                    @endif
-                                </td>
-                            </tr>
-                            </tbody>
-                        @endif
-                    @endif
-                @endforeach
-            </table>
-            <div class="preFooter">
-                <p>
-                    <a>Nota: </a> La formación docente estará atendida prioritariamente con el Programa Nacional de Formación Docente Centrado en el Aprendizaje (Formación DOCA)
-                </p>
-            </div>
-            <div class="footer" style="padding-top:10px">
-                <!--  i will make this dinamic for sure -->
-                <p style="display:inline;float:left">ITTG-AC-PO-006-01  </p>
-                <p style="display:inline;float:right"> Rev.{{0}} </p>
-            </div>
-        </div>
-    </div>
-    <div class="page_break"></div>
-    <div class="w100">
-        <div class="logo">
-            <img src="{{public_path('/storage/img/ITTG.png')}}" alt="">
-        </div>
-        <div class="header">
-            <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ</p>
-        </div>
-        <div class="titleCentered mb-3">
-            <p>CONCENTRADO DEL DIAGNÓSTICO DE NECESIDADES DE</p>
-            <p>FORMACIÓN DOCENTE Y ACTUALIZACIÓN PROFESIONAL</p>
-        </div>
-        <div class="titulo">
-            <p>c) ACTIVIDADES O EVENTOS QUE SE LLEVARÁN A CABO PARA LA FORMACIÓN
-                DOCENTE DE EL/LA PROFESOR(A) EN LAS DIMENSIONES DE LA EVALUACIÓN
-                DOCENTE</p>
-        </div>
-        <table class="customA">
-            <thead>
-            <tr>
-                <th>Nombre del curso, taller,
-                    conferencias, etc.</th>
-                <th>
-                    Fecha en que se
-                    realizará la actividad
-                    o evento
-                </th>
-                <th>
-                    Horario en que
-                    se realizará la
-                    actividad o
-                    evento
-                </th>
-                <th>
-                    Objetivo de la
-                    actividad o
-                    evento
-                </th>
-            </tr>
-            </thead>
-            @foreach($cursos as $curso)
-                @if($curso->tipo_FDoAP == 1)
-                    @if(count($cursos) == 0)
-                        <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    @else
-                        <tbody>
-                        <tr>
-                            <td class="text-sm-h6">{{$curso->nombreCurso}}</td>
-                            <td>{{$curso->fecha_I}} al {{$curso->fecha_F}}</td>
-                            <td>{{$curso->hora_I}} - {{$curso->hora_F}}</td>
-                            <td>
-                                {{$curso->objetivoEvento}}
-                            </td>
-                        </tr>
-                        </tbody>
-                    @endif
-                @endif
-            @endforeach
-        </table>
-        <div class="titulo">
-            <p>d) ACTIVIDADES O EVENTOS QUE SE LLEVARÁN A CABO PARA LA
-                ACTUALIZACIÓN PROFESIONAL DE EL/LA PROFESOR(A) EN ASIGNATURAS
-                QUE SE REQUIEREN.</p>
-        </div>
-        <table class="customA">
-            <thead>
-            <tr>
-                <th>Nombre del curso, taller,
-                    conferencias, etc.</th>
-                <th>
-                    Fecha en que se
-                    realizará la actividad
-                    o evento
-                </th>
-                <th>
-                    Horario en que
-                    se realizará la
-                    actividad o
-                    evento
-                </th>
-                <th>
-                    Objetivo de la
-                    actividad o
-                    evento
-                </th>
-            </tr>
-            </thead>
-            @foreach($cursos as $curso)
-                @if($curso->tipo_FDoAP == 2)
-                    @if(count($cursos) == 0)
-                        <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </tbody>
-                    @else
-                        <tbody>
-                        <tr>
-                            <td class="text-sm-h6">{{$curso->nombreCurso}}</td>
-                            <td>{{$curso->fecha_I}} al {{$curso->fecha_F}}</td>
-                            <td>{{$curso->hora_I}} - {{$curso->hora_F}}</td>
-                            <td>
-                                {{$curso->objetivoEvento}}
-                            </td>
-                        </tr>
-                        </tbody>
-                    @endif
-                @endif
-            @endforeach
-        </table>
-        <div class="mb-l mt-5">
-            <div class="leftAlinement m-0">
-                <p>Subdirección Académica</p>
-            </div>
-            <table class="custom">
-                <thead>
-                <tr>
-                    <th>Nombre </th>
-                    <th>Firma </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        @if(empty($subdireccion))
-
-                        @else
-                            {{$subdireccion[0]->name}}
-                        @endif
-                    </td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="mb-l">
-            <div class="leftAlinement m-0">
-                <p>
-                    Jefa(e) de Departamento Académico
-                </p>
-            </div>
-            <table class="custom">
-                <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Departamento</th>
-                    <th>Firma</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>{{$cursos[0]->jefe->nombre_completo}}</td>
-                    <td>{{$cursos[0]->departamento->nameDepartamento}}</td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
         <div class="preFooter">
-            <p><a>Nota: </a> La formación docente estará atendida prioritariamente con el Programa Nacional de Formación Docente Centrado en el Aprendizaje (Formación DOCA)</p>
+            <p>
+                <a>Nota: </a> La formación docente estará atendida prioritariamente con el Programa Nacional de Formación Docente Centrado en el Aprendizaje (Formación DOCA)
+            </p>
         </div>
         <div class="footer" style="padding-top:10px">
             <!--  i will make this dinamic for sure -->
-            <p style="display:inline;float:left"> ITTG-AC-PO-006-01  </p>
+            <p style="display:inline;float:left">ITTG-AC-PO-006-01  </p>
             <p style="display:inline;float:right"> Rev.{{0}} </p>
         </div>
     </div>
+</div>
+<div class="page_break"></div>
+<div class="w100">
+    <div class="logo">
+        <img src="{{public_path('/storage/img/ITTG.png')}}" alt="">
+    </div>
+    <div class="header">
+        <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ</p>
+    </div>
+    <div class="titleCentered mb-3">
+        <p>CONCENTRADO DEL DIAGNÓSTICO DE NECESIDADES DE</p>
+        <p>FORMACIÓN DOCENTE Y ACTUALIZACIÓN PROFESIONAL</p>
+    </div>
+    <div class="titulo">
+        <p>c) ACTIVIDADES O EVENTOS QUE SE LLEVARÁN A CABO PARA LA FORMACIÓN
+            DOCENTE DE EL/LA PROFESOR(A) EN LAS DIMENSIONES DE LA EVALUACIÓN
+            DOCENTE</p>
+    </div>
+    <table class="customA">
+        <thead>
+        <tr>
+            <th>Nombre del curso, taller,
+                conferencias, etc.</th>
+            <th>
+                Fecha en que se
+                realizará la actividad
+                o evento
+            </th>
+            <th>
+                Horario en que
+                se realizará la
+                actividad o
+                evento
+            </th>
+            <th>
+                Objetivo de la
+                actividad o
+                evento
+            </th>
+        </tr>
+        </thead>
+        @foreach($cursos as $curso)
+            @if($curso->tipo_FDoAP == 1)
+                @if(count($cursos) == 0)
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                @else
+                    <tbody>
+                    <tr>
+                        <td class="text-sm-h6">{{$curso->nombreCurso}}</td>
+                        <td>{{$curso->fecha_I}} al {{$curso->fecha_F}}</td>
+                        <td>{{$curso->hora_I}} - {{$curso->hora_F}}</td>
+                        <td>
+                            {{$curso->objetivoEvento}}
+                        </td>
+                    </tr>
+                    </tbody>
+                @endif
+            @endif
+        @endforeach
+    </table>
+    <div class="titulo">
+        <p>d) ACTIVIDADES O EVENTOS QUE SE LLEVARÁN A CABO PARA LA
+            ACTUALIZACIÓN PROFESIONAL DE EL/LA PROFESOR(A) EN ASIGNATURAS
+            QUE SE REQUIEREN.</p>
+    </div>
+    <table class="customA">
+        <thead>
+        <tr>
+            <th>Nombre del curso, taller,
+                conferencias, etc.</th>
+            <th>
+                Fecha en que se
+                realizará la actividad
+                o evento
+            </th>
+            <th>
+                Horario en que
+                se realizará la
+                actividad o
+                evento
+            </th>
+            <th>
+                Objetivo de la
+                actividad o
+                evento
+            </th>
+        </tr>
+        </thead>
+        @foreach($cursos as $curso)
+            @if($curso->tipo_FDoAP == 2)
+                @if(count($cursos) == 0)
+                    <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                @else
+                    <tbody>
+                    <tr>
+                        <td class="text-sm-h6">{{$curso->nombreCurso}}</td>
+                        <td>{{$curso->fecha_I}} al {{$curso->fecha_F}}</td>
+                        <td>{{$curso->hora_I}} - {{$curso->hora_F}}</td>
+                        <td>
+                            {{$curso->objetivoEvento}}
+                        </td>
+                    </tr>
+                    </tbody>
+                @endif
+            @endif
+        @endforeach
+    </table>
+    <div class="mb-l mt-5">
+        <div class="leftAlinement m-0">
+            <p>Subdirección Académica</p>
+        </div>
+        <table class="custom">
+            <thead>
+            <tr>
+                <th>Nombre </th>
+                <th>Firma </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    @if(empty($subdireccion))
+
+                    @else
+                        {{$subdireccion[0]->name}}
+                    @endif
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="mb-l">
+        <div class="leftAlinement m-0">
+            <p>
+                Jefa(e) de Departamento Académico
+            </p>
+        </div>
+        <table class="custom">
+            <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Departamento</th>
+                <th>Firma</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{$cursos[0]->jefe->nombre_completo}}</td>
+                <td>{{$cursos[0]->departamento->nameDepartamento}}</td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="preFooter">
+        <p><a>Nota: </a> La formación docente estará atendida prioritariamente con el Programa Nacional de Formación Docente Centrado en el Aprendizaje (Formación DOCA)</p>
+    </div>
+    <div class="footer" style="padding-top:10px">
+        <!--  i will make this dinamic for sure -->
+        <p style="display:inline;float:left"> ITTG-AC-PO-006-01  </p>
+        <p style="display:inline;float:right"> Rev.{{0}} </p>
+    </div>
+</div>
 </body>
 
 </html>

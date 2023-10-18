@@ -38,7 +38,6 @@ const submit = (inscripcion, id) => {
         link.setAttribute('download', 'CDI.pdf');
         document.body.appendChild(link);
         link.click();
-        console.log(res.data)
     }).catch(error => {
         console.log(error.response.data)
         snackbar.value = true

@@ -8,7 +8,7 @@ use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use App\Models\Subdireccion;
-use http\Env\Response;
+use App\Models\User;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -106,9 +106,10 @@ class PDFController extends Controller
             ->output();
 
         $path = 'CDI.pdf';
-        $this->save_file($pdf, $path);
-        return response()->json([
-            'docente' => $docente
-        ]);
+        return $this->save_file($pdf, $path);
+//        return response()->json([
+//            'docente' => $docente,
+//            'curso' => $curso,
+//        ]);
     }
 }
