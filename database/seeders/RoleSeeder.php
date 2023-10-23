@@ -18,6 +18,7 @@ class RoleSeeder extends Seeder
             ['name' => 'Coordinacion de FD y AP', 'guard_name' => 'web'],
             ['name' => 'Jefes Academicos', 'guard_name' => 'web'],
             ['name' => 'Docentes', 'guard_name' => 'web'],
+            ['name' => 'Super Admin', 'guard_name' => 'web'],
         ]);
 
         DB::table('permissions')->insert([

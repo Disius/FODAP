@@ -30,9 +30,13 @@ class UsersSeeder extends Seeder
         ]);
 
         $user = User::create([
-            'email' => 'admin@ittg.com',
+            'email' => 'admin@tuxtla.tecnm.mx',
             'password' => Hash::make('admin123'),
         ]);
+
+        $user->save();
+
+        $user->assignRole('Super Admin');
 
 
     }
