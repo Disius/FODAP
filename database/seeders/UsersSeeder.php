@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -27,5 +28,12 @@ class UsersSeeder extends Seeder
             ['email' => 'cformacion@tuxtla.tecnm.mx', 'password' => Hash::make('cformacion123'), 'departamento_id' => 2,'role' => 2,  'docente_id' => 10],
             ['email' => 'l17270705@tuxtla.tecnm.mx', 'password' => Hash::make('exalumnotecnm123'), 'departamento_id' => 7,'role' => 4,  'docente_id' => 36],
         ]);
+
+        $user = User::create([
+            'email' => 'admin@ittg.com',
+            'password' => Hash::make('admin123'),
+        ]);
+
+
     }
 }

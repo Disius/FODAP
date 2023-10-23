@@ -3,10 +3,10 @@
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GestionParametrosController;
+use App\Http\Controllers\Installer;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\WordController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,12 +23,14 @@ use App\Http\Controllers\AcademicosController;
 |
 */
 
+
+Route::get('/instalar', [Installer::class, 'index'])->name('index.installer');
+
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 })->name('main');
 
@@ -49,7 +51,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/notificaciones', [NotificationController::class, 'notifications'])->name('index.notifications');
     Route::post('/notificacion/leida', [NotificationController::class, 'markNotifications'])->name('markNotification');
 
-    //    Route::post('/docente/inscrito/{id}', [DocenteController::class, 'inscripcion_docente'])->name('inscripcion.docente');
     //    Facilitador routes
     Route::get('/docente/facilitador', [DocenteController::class, 'facilitadores'])->name('get.facilitador');
     Route::get('/facilitador/{id}', [DocenteController::class, 'show_facilitadores'])->name('show.facilitadores');
@@ -59,8 +60,6 @@ Route::middleware('auth')->group(function () {
 
     //required data
     Route::get('/detecciones/data', [AcademicosController::class, 'detecciones_data'])->name('detecciones.data');
-//    Route::get('/cursos/call', [GestionParametrosController::class, 'get_cursos'])->name('call.cursos');
-
 
     //pdfs
     Route::prefix('pdf')->group(function () {

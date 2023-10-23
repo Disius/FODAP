@@ -24,6 +24,16 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
     require $maintenance;
 }
 
+
+///*
+// * Test para crear el instalador , por el momento algo sencillo y que permita subir los logos
+// * */
+//
+//if (!file_exists(__DIR__.'/../.installed')) {
+//    header('Request URL: /instalar'); // Redirige a una ruta de instalación
+//    exit();
+//}
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
