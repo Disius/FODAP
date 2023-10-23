@@ -1,9 +1,6 @@
 <script setup>
-
 import {computed, onMounted, ref} from "vue";
-import {cursoStore} from "@/store/cursos.js";
 
-const store = cursoStore();
 const errorHandle = ref("");
 const alert = ref(false);
 const alert2 = ref(false);

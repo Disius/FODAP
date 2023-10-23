@@ -97,27 +97,8 @@ class DocenteController extends Controller
             'msg' => 'No se ha podido subir su CVU'
         ]);
     }
-    public function upload_ft(Request $request)
-    {
-        if ($request->hasFile('file')){
-            $file_path = $request->file('file')->storeAs('/FTupload/', 'FICHA_TECNICA_curso_'.$request->id.'.docx', 'public');
 
 
-            $file = FileFT::create([
-                'id_curso' => $request->id,
-                'path' => $file_path
-            ]);
-
-
-            $file->save();
-
-//            throw new \Exception();
-
-        }else{
-            throw new \Exception('Error al subir la ficha técnica');
-        }
-
-    }
 
     public function crear_ficha_tecnica($facilitador, $id){
         $docente = Docente::find($facilitador);

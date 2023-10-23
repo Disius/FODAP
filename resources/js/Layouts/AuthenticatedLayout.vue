@@ -7,13 +7,12 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import {Link, usePage} from '@inertiajs/vue3';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import {cursoStore} from "@/store/cursos.js";
 
 
 const showingNavigationDropdown = ref(false);
 const docente = computed(() => usePage().props.info[0]);
 const user = computed(() => usePage().props.auth.user);
-const store = cursoStore()
+
 const notificationObject = ref({});
 const if_facilitador = ref(Boolean);
 const facilitadores = () => {

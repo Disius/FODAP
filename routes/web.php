@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
     //required data
     Route::get('/detecciones/data', [AcademicosController::class, 'detecciones_data'])->name('detecciones.data');
 //    Route::get('/cursos/call', [GestionParametrosController::class, 'get_cursos'])->name('call.cursos');
-    Route::get('/word/ficha', [WordController::class, 'extractDataFromWord'])->name('word.ficha');
+
 
     //pdfs
     Route::prefix('pdf')->group(function () {

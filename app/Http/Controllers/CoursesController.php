@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DeteccionEvent;
 use App\Http\Requests\CursoRequest;
 use App\Models\Carrera;
 use App\Models\Departamento;
@@ -43,6 +44,9 @@ class CoursesController extends Controller
             $this->sendNotification($deteccion);
 
             DB::commit();
+
+            event(new DeteccionEvent($deteccion));
+
         }catch (\Exception $exception){
             DB::rollBack();
             return back()->with('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());

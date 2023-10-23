@@ -177,16 +177,29 @@ class   GestionParametrosController extends Controller
     }
 
     public function dates_detecciones(Request $request){
-        $validator = Validator::make($request->all(), [
+        $fecha_Inical = Carbon::parse($request->fecha_I);
+        $fecha_final = Carbon::parse($request->fecha_F);
 
-        ]);
-        $dates = ConfigDates::create([
-            'fecha_inicio' => $request->fecha_I,
-            'fecha_final' => $request->fecha_F,
-        ]);
+        if ($fecha_Inical <= $fecha_final){
+
+            $dates = ConfigDates::create([
+                'fecha_inicio' => $request->fecha_I,
+                'fecha_final' => $request->fecha_F,
+            ]);
 
         $dates->save();
         return Redirect::route('parametros.edit');
+
+        }else{
+            return back()->withErrors('La fecha final no puede ser menor que la fecha inicial');
+        }
+//        $dates = ConfigDates::create([
+//            'fecha_inicio' => $request->fecha_I,
+//            'fecha_final' => $request->fecha_F,
+//        ]);
+//
+//        $dates->save();
+//        return Redirect::route('parametros.edit');
     }
 
     public static function if_enable_detecciones(){

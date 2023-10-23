@@ -20,6 +20,7 @@ import TablaSub from "@/Pages/Views/desarrollo/tablas/TablaSub.vue";
 
 const search = ref("");
 const dialogSub = ref(false);
+const snackbar = ref(false);
 const form = useForm({
     fecha_I: "",
     fecha_F: "",
@@ -40,6 +41,7 @@ const props = defineProps({
     users: Array,
     sub: Array,
     fechas: Object,
+    errors: Object,
 });
 
 function submit(){
@@ -47,6 +49,9 @@ function submit(){
         onSuccess: () => {
             form.reset()
         },
+        onError: () => {
+            snackbar.value = true
+        }
     });
 }
 
@@ -69,6 +74,7 @@ onMounted(() => {
         }
     });
 });
+console.log(props.errors)
 </script>
 
 <template>
@@ -100,6 +106,24 @@ onMounted(() => {
                         <primary-button>Guardar</primary-button>
                     </div>
                 </form>
+                <v-snackbar
+                    v-model="snackbar"
+                    vertical
+                    color="error"
+                >
+                    <div class="text-subtitle-1 pb-2">Error</div>
+
+                    <p>{{$page.props.errors[0]}}</p>
+
+                    <template v-slot:actions>
+                        <v-btn
+                            variant="text"
+                            @click="snackbar = false"
+                        >
+                            Cerrar
+                        </v-btn>
+                    </template>
+                </v-snackbar>
             </div>
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>

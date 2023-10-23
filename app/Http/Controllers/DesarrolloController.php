@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CursosAceptados;
 use App\Http\Requests\CursoRequest;
 use App\Models\Carrera;
 use App\Models\Departamento;
@@ -163,6 +164,7 @@ class DesarrolloController extends Controller
             $user->notify(new AceptadoNotification($detecciones, $user));
         });
 
+
         return Redirect::route('index.detecciones');
     }
 
@@ -319,5 +321,11 @@ class DesarrolloController extends Controller
         $docente->save();
 
         return Redirect::route('edit.docentes', ['id' => $docente->id]);
+    }
+
+    public static function event_cursos(){
+        $cursos = DeteccionNecesidades::where('aceptado', 1)->get();
+
+        event(new CursosAceptados($cursos));
     }
 }

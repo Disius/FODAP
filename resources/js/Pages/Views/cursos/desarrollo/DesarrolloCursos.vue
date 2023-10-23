@@ -1,15 +1,16 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import TablaCursoDesarrollo from "@/Pages/Views/cursos/tablas/TablaCursoDesarrollo.vue";
 import {computed, onMounted, ref} from "vue";
 import DialogPIFAP from "@/Pages/Views/dialogs/DialogPIFAP.vue";
 import NavLink from "@/Components/NavLink.vue";
+import {FODAPStore} from "@/store/server.js";
 
 const props = defineProps({
   cursos: Array,
   auth: Object,
 });
 
+const store = FODAPStore()
 const pdf_dialog = ref(false);
 
 const estado = computed(() => {
@@ -19,6 +20,7 @@ const estado = computed(() => {
        return 0
    }
 });
+console.log(store.course)
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -37,7 +39,11 @@ onMounted(() => {
                 break;
         }
     })
+    store.getCursos()
+
+
 });
+
 </script>
 
 <template>
@@ -97,7 +103,7 @@ onMounted(() => {
                           </thead>
                           <tbody>
                           <tr
-                              v-for="curso in props.cursos"
+                              v-for="curso in store.state_inicio_curso"
                               :key="curso.id"
 
                           >

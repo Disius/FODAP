@@ -2,11 +2,9 @@
 import { computed, onMounted, ref } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
 import axios from "axios";
-import { cursoStore } from '@/store/cursos.js'
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable'
 
-const store = cursoStore()
 
 const errorHandle = ref("");
 const alert = ref(false);

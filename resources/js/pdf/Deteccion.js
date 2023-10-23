@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {computed, reactive, ref} from 'vue';
 import { jsPDF } from "jspdf";
-import {cursoStore} from '@/store/cursos.js'
+import {cursoStore} from '@/store/server.js'
 import {storeToRefs} from 'pinia'
 
 // const store = cursoStore()
