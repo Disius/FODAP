@@ -1,5 +1,16 @@
 import axios from "axios";
 
+
+export const administrador = () => {
+    return new Promise((response, reject) => {
+        axios.get('/api/admin').then(res => {
+            response(res.data.config)
+        }).catch(error => {
+            console.log(error)
+        })
+    })
+}
+
 export const detecciones = () => {
     return new Promise((response, reject) => {
         axios.get('/api/v1/detecciones').then(res => {

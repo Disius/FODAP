@@ -33,13 +33,7 @@ onMounted(() => {
     });
 
     facilitadores();
-
-    // store.getTime()
-    // store.getCursos()
-
-
 });
-// console.log(store.course)
 </script>
 
 <template>

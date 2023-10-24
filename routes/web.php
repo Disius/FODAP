@@ -11,6 +11,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AcademicosController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,6 @@ use App\Http\Controllers\AcademicosController;
 */
 
 
-Route::get('/instalar', [Installer::class, 'index'])->name('index.installer');
 
 
 Route::get('/', function () {
@@ -39,6 +39,9 @@ Route::get('/dashboard', function () {
         'notifications' => auth()->user()->unreadNotifications,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::middleware(['auth', 'role:Super Admin'])->get('/instalar', [Installer::class, 'index'])->name('index.installer');
 
 Route::middleware('auth')->group(function () {
 

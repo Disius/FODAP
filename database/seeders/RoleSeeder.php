@@ -22,7 +22,8 @@ class RoleSeeder extends Seeder
         ]);
 
         DB::table('permissions')->insert([
-            ['name' => 'edit profile', 'guard_name' => 'web']
+            ['name' => 'edit profile', 'guard_name' => 'web'],
+            ['name' => 'config app', 'guard_name' => 'web']
         ]);
     }
 }

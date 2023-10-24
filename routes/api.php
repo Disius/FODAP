@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\v1\DataResponseController;
 use App\Http\Controllers\DesarrolloController;
+use App\Http\Controllers\Installer;
 use App\Http\Controllers\PDFController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/admin', [Installer::class, 'can_install']);
+
+
 Route::middleware('auth')->prefix('v1')->group(function () {
+
+
+
+
     Route::get('/cursos', [DataResponseController::class, 'Cursos_Desarrollo'])->name('v1.cursos');
     Route::get('/detecciones', [DataResponseController::class, 'Deteccion_Desarrollo'])->name('v1.detecciones');
 });

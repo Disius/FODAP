@@ -1,7 +1,10 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
-import {ref} from "vue";
+import { Link } from '@inertiajs/vue3';
+import {onMounted, ref} from "vue";
+import {FODAPStore} from "@/store/server.js";
+import NavLink from "@/Components/NavLink.vue";
 
+const store = FODAPStore()
 defineProps({
     canLogin: {
         type: Boolean,
@@ -17,6 +20,10 @@ const nameCards = ref([
     { flex: 4, name: "Jefes Academicos", user_rol: 3, route: "/login" },
     { flex: 4, name: "Docentes", user_rol: 4, route: "/login" },
 ]);
+
+onMounted(() => {
+    store.admin_get()
+})
 </script>
 
 <template>
@@ -56,6 +63,25 @@ const nameCards = ref([
             </v-col>
         </v-row>
     </v-container>
+    <template v-if="store.if_admin">
+        <div class="grid grid-cols-2">
+            <div class="flex justify-center mt-10 ml-16">
+                <v-alert
+                    color="info"
+                    icon="$info"
+                >
+                    <p class="text-xl">Presiona instalar antes de iniciar sesión o usar el sistema</p>
+                </v-alert>
+            </div>
+            <div class="flex justify-start ml-10 mt-10">
+                <NavLink href="/login" as="button" :data="{ administrator: true }">
+                    <v-btn size="x-large" color="info">
+                        Instalar
+                    </v-btn>
+                </NavLink>
+            </div>
+        </div>
+    </template>
 </template>
 
 <style>

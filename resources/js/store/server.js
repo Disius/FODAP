@@ -4,12 +4,14 @@ import axios from "axios";
 import {router} from "@inertiajs/vue3";
 import {cursos} from "@/services/API.js";
 import {detecciones} from "@/services/API.js";
+import { administrador } from "@/services/API.js";
 
 export const FODAPStore = defineStore('FODAP', {
     state: () => {
         return {
             cursos: [],
             detecciones: [],
+            admin_user: null,
         }
     },
     getters: {
@@ -34,6 +36,9 @@ export const FODAPStore = defineStore('FODAP', {
                 return curso.estado === 2
             })
         },
+        if_admin(state){
+            return state.admin_user
+        },
         // APCourse(state){
         //   return state.cursos.filter(c => {
         //       return c.tipo_FDoAP === 2
@@ -51,6 +56,13 @@ export const FODAPStore = defineStore('FODAP', {
         // }
     },
     actions: {
+        admin_get(){
+            administrador().then(res => {
+                this.admin_user = res
+            }).catch(err => {
+                console.log(err)
+            })
+        },
         getDetecciones(){
             detecciones().then(res => {
                 this.detecciones = res

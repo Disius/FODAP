@@ -193,13 +193,6 @@ class   GestionParametrosController extends Controller
         }else{
             return back()->withErrors('La fecha final no puede ser menor que la fecha inicial');
         }
-//        $dates = ConfigDates::create([
-//            'fecha_inicio' => $request->fecha_I,
-//            'fecha_final' => $request->fecha_F,
-//        ]);
-//
-//        $dates->save();
-//        return Redirect::route('parametros.edit');
     }
 
     public static function if_enable_detecciones(){

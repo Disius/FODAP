@@ -7,6 +7,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import {computed} from "vue";
+import {administrador} from "@/services/API.js";
 
 const props = defineProps({
     canResetPassword: {
@@ -17,8 +18,13 @@ const props = defineProps({
     },
     role: {
         type: String
+    },
+    administrator: {
+        type: String
     }
 });
+
+const ad = Boolean(props.administrator)
 
 const form = useForm({
     email: '',
