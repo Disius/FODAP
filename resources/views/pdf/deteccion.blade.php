@@ -249,7 +249,7 @@
         </p>
     </div>
     <div class="logo">
-        <img src="{{public_path('/storage/img/ITTG.png')}}" alt="">
+        <img src="{{public_path('/storage/img/logo.jpg')}}" alt="">
     </div>
     <div class="titleCentered espacio">
         <p>Subdirección Académica</p>

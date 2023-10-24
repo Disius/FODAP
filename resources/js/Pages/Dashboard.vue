@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import {Head, Link} from '@inertiajs/vue3';
+import {Head, Link, useForm} from '@inertiajs/vue3';
 import {onMounted} from "vue";
 import NavLink from "@/Components/NavLink.vue";
 import {FODAPStore} from "@/store/server.js";
@@ -18,7 +18,16 @@ const props = defineProps({
 });
 
 
+const form = useForm({
+    file: null,
+});
 
+
+const upload_file = () => {
+    form.post(route('store.installer'), {
+        forceFormData: true
+    })
+}
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -48,7 +57,12 @@ onMounted(() => {
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-16 pt-16">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex justify-center">
-                    <v-file-input></v-file-input>
+                    <v-file-input label="Ingresar logo del instituto" variant="solo" @input="form.file = $event.target.files[0]"></v-file-input>
+                </div>
+                <div class="flex justify-start">
+                    <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">
+                        Subir
+                    </v-btn>
                 </div>
             </div>
         </div>

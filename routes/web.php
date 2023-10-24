@@ -41,7 +41,10 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::middleware(['auth', 'role:Super Admin'])->get('/instalar', [Installer::class, 'index'])->name('index.installer');
+Route::middleware(['auth', 'role:Super Admin'])->group(function () {
+   Route::get('/instalar', [Installer::class, 'index'])->name('index.installer');
+   Route::post('/guardar', [Installer::class, 'store'])->name('store.installer');
+});
 
 Route::middleware('auth')->group(function () {
 
