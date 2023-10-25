@@ -10,13 +10,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
-use function MongoDB\BSON\toRelaxedExtendedJSON;
 
 class DocenteController extends Controller
 {
     public function index_cursos(){
 
-        $user_docente = auth()->user()->docente;
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
                 ->where('aceptado', '=', 1)
                 ->orWhere('estado', '=', 0)
@@ -32,7 +30,7 @@ class DocenteController extends Controller
 
     public function index_registros_docente(){
         $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
-
+        CoursesController::state_curso();
         return Inertia::render('Views/cursos/docentes/RegistrosIndex', [
             'cursos' => $docente
         ]);
@@ -88,14 +86,10 @@ class DocenteController extends Controller
 
             $file->save();
 
-            return response()->json([
-                'msg' => 'Su CVU se ha subido con exito'
-            ]);
+            return redirect()->route('show.facilitadores', [$request->id]);
         }
 
-        return response()->json([
-            'msg' => 'No se ha podido subir su CVU'
-        ]);
+        return back()->withErrors('No se subio correctamente el CVU');
     }
 
 

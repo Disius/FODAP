@@ -48,7 +48,7 @@ onMounted(() => {
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
                                     <ApplicationLogo
-                                        class="block h-14 w-14 fill-current"
+                                        class="block h-16 w-20 fill-current"
                                     />
                                 </Link>
                             </div>

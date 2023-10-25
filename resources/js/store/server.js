@@ -1,8 +1,5 @@
 import {defineStore} from "pinia";
-import {computed, ref} from "vue";
-import axios from "axios";
-import {router} from "@inertiajs/vue3";
-import {cursos} from "@/services/API.js";
+import {cursos, cursos_docente} from "@/services/API.js";
 import {detecciones} from "@/services/API.js";
 import { administrador } from "@/services/API.js";
 
@@ -12,6 +9,7 @@ export const FODAPStore = defineStore('FODAP', {
             cursos: [],
             detecciones: [],
             admin_user: null,
+            docente_cursos: [],
         }
     },
     getters: {
@@ -39,21 +37,11 @@ export const FODAPStore = defineStore('FODAP', {
         if_admin(state){
             return state.admin_user
         },
-        // APCourse(state){
-        //   return state.cursos.filter(c => {
-        //       return c.tipo_FDoAP === 2
-        //   })
-        // },
-        // anio_realizacion(state){
-        //     let date = new Date(state.cursos[0].created_at);
-        //     return date.getFullYear()
-        // },
-        // isActive(state) {
-        //     let hoy = new Date();
-        //     let startDay = new Date(state.fecha_inicio);
-        //     let endDay = new Date(state.fecha_final)
-        //     return hoy >= startDay && hoy <= endDay;
-        // }
+        cursosDocentes(state){
+            return state.docente_cursos.filter(curso => {
+                return curso.estado === 0 || curso.estado === 1
+            })
+        },
     },
     actions: {
         admin_get(){
@@ -77,5 +65,13 @@ export const FODAPStore = defineStore('FODAP', {
                 console.log(err)
             })
         },
+        get_curso_docente(){
+            cursos_docente().then(res => {
+                this.docente_cursos = res
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+
     }
 })

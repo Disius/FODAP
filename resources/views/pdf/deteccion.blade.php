@@ -500,7 +500,7 @@
 <div class="page_break"></div>
 <div class="w100">
     <div class="logo">
-        <img src="{{public_path('/storage/img/ITTG.png')}}" alt="">
+        <img src="{{public_path('/storage/img/logo.jpg')}}" alt="">
     </div>
     <div class="header">
         <p>INSTITUTO TECNOLÓGICO DE TUXTLA GUTIÉRREZ</p>

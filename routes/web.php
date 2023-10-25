@@ -62,14 +62,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/facilitador/{id}', [DocenteController::class, 'show_facilitadores'])->name('show.facilitadores');
     Route::post('/upload/cvu', [DocenteController::class, 'upload_cvu'])->name('upload.cvu');
     Route::get('/crear/ficha/{facilitador}/curso/{id}', [DocenteController::class, 'crear_ficha_tecnica'])->name('crear.ficha');
-    Route::post('/upload/ficha', [DocenteController::class, 'upload_ft'])->name('upload.ficha');
 
     //required data
     Route::get('/detecciones/data', [AcademicosController::class, 'detecciones_data'])->name('detecciones.data');
 
     //pdfs
     Route::prefix('pdf')->group(function () {
-        //        Route::post('/datos/deteccion', [PDFController::class, 'requestPDFDeteccion'])->name('data.pdf.deteccion');
         Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
         Route::get('/PIFDAP', [PDFController::class, 'PIFDAP_pdf'])->name('pdf.pifdap');
         Route::get('/cdi', [PDFController::class, 'cdi_pdf'])->name('cdi.pdf');

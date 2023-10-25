@@ -14,18 +14,8 @@ const form = useForm({
     introduccion: "",
     justificacion: "",
     objetivo_general: "",
-    temas: "",
-    actividades_aprendizaje: "",
-    elementos_didacticos: "",
-    criterio_evaluacion: "",
-    competencias: "",
-    bibliografia: "",
+    descripcion_servicio: "",
 });
-
-
-const criterio = 3;
-
-
 </script>
 
 <template>
@@ -36,31 +26,27 @@ const criterio = 3;
         <div class="mt-5 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="grid grid-cols-1">
-                    <div class="flex justify-center">
-                        <InputLabel class="mr-5" for="introduccion" value="Introducción: "/>
+                    <strong class="text-xl">Introducción: </strong>
+                    <div class="flex justify-center mt-2">
                         <v-textarea variant="solo" v-model="form.introduccion"></v-textarea>
                     </div>
                 </div>
                 <div class="grid grid-cols-1">
-                    <div class="flex justify-center ">
-                        <InputLabel class="mr-4" for="justificacion" value="Justificación: "/>
+                    <strong class="text-xl">Justificación: </strong>
+                    <div class="flex justify-center mt-2">
                         <v-textarea variant="solo" v-model="form.justificacion"></v-textarea>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 justify-center">
-                    <div class="flex justify-center">
-                        <InputLabel class="mr-1" for="objetivo" value="Objetivo General: "/>
+                    <strong class="text-xl">Objetivo General: </strong>
+                    <div class="flex justify-center mt-2">
                         <v-textarea variant="solo" v-model="form.objetivo_general"></v-textarea>
                     </div>
                 </div>
-                <div class="grid grid-cols-2">
-                    <div class="flex justify-center">
-                        <InputLabel class="mr-1" for="objetivo" value="Actividades de aprendizaje: "/>
-                        <v-textarea variant="solo" v-model="form.actividades_aprendizaje"></v-textarea>
-                    </div>
-                    <div class="flex justify-center ml-5">
-                        <InputLabel class="mr-3" for="justificacion" value="Elementos didacticos: "/>
-                        <v-textarea variant="solo" v-model="form.elementos_didacticos"></v-textarea>
+                <div class="grid grid-cols-1 justify-center">
+                    <strong class="text-xl">Descripción del servicio: </strong>
+                    <div class="flex justify-center mt-2">
+                        <v-textarea variant="solo" v-model="form.descripcion_servicio"></v-textarea>
                     </div>
                 </div>
                 <div class="flex justify-center">

@@ -20,7 +20,6 @@ const estado = computed(() => {
        return 0
    }
 });
-console.log(store.course)
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -107,16 +106,16 @@ onMounted(() => {
                               :key="curso.id"
 
                           >
-                              <td class="v-card--hover">
+                              <td class="">
                                   {{ curso.nombreCurso }}
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   {{ curso.objetivoEvento }}
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   {{ curso.fecha_I }} al {{curso.fecha_F}}
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   <template v-if="curso.modalidad === 1">
                                       <span>Virtual</span>
                                   </template>
@@ -127,13 +126,13 @@ onMounted(() => {
                                       <span>Hibrído</span>
                                   </template>
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   {{ curso.hora_I }} a {{curso.hora_F}}
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   {{curso.total_horas}}
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   <template
                                       v-for="facilitador in curso.deteccion_facilitador"
                                   >
@@ -145,13 +144,13 @@ onMounted(() => {
                                       {{curso.facilitador_externo}}
                                   </template>
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   {{ curso.carrera.nameCarrera }}
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   {{ curso.observaciones }}
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   <div v-if="curso.estado === 0">
                                       <v-alert min-width="100" color="warning">Por realizarse</v-alert>
                                   </div>
@@ -162,7 +161,7 @@ onMounted(() => {
                                       <v-alert min-width="150" color="error">Finalizado</v-alert>
                                   </div>
                               </td>
-                              <td class="v-card--hover">
+                              <td class="">
                                   <NavLink :href="route('index.desarrollo.inscritos', curso.id)" type="button" as="button">
                                       <v-btn icon color="blue">
                                           <v-icon>mdi-eye-arrow-right-outline</v-icon>

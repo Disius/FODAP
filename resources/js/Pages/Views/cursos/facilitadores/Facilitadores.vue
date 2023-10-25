@@ -2,13 +2,9 @@
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref} from "vue";
 import {fi} from "vuetify/locale";
 import {router, useForm} from "@inertiajs/vue3";
-import axios from "axios";
-import InputLabel from "@/Components/InputLabel.vue";
-import UploadFicha from "@/Pages/Views/dialogs/UploadFicha.vue";
 
 
 const dialog = ref(false);
@@ -27,7 +23,7 @@ const form = useForm({
 
 
 const download_cvu = () => {
-    const url = '/storage/CVUdownload/CVUEditable.docx';
+    const url = '/storage/CVUdownload/CVU_editable.docx';
     const link = document.createElement('a');
     link.href = url;
     link.setAttribute('download', 'CVUEditable.docx');
@@ -37,7 +33,8 @@ const download_cvu = () => {
 
 const upload_file = () => {
     form.post(route('upload.cvu'), {
-        forceFormData: true
+        forceFormData: true,
+
     })
 }
 
@@ -45,20 +42,11 @@ const download_cvu_editado = () => {
     let url = '/storage' + '/' + props.docente.cvu.path
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'CVU.pdf');
+    link.setAttribute('download', 'CVU_'+ props.docente.id+ '.pdf');
     document.body.appendChild(link);
     link.click();
 }
 
-
-const download_ft = () => {
-    const url = '/storage/FTDownload/fichatécnica.docx';
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'FichaTécnicaEditable.docx');
-    document.body.appendChild(link);
-    link.click();
-}
 
 
 </script>
@@ -75,21 +63,22 @@ const download_ft = () => {
                 <div class="flex justify-items-center mb-12">
                     <h2 class="text-xl font-medium text-gray-900 text-center">CVU</h2>
                 </div>
-                <div class="flex justify-center w-50">
-                    <v-btn block height="50" color="blue-darken-1" @click="download_cvu">Descargar para editar</v-btn>
-                </div>
-                <div class="grid grid-cols-2">
-                    <div class="flex justify-start mt-12">
-<!--                        <input name="file" type="file" @input="form.file = $event.target.files[0]">-->
-<!--                        <input-label for="cvu" value="Ingresar CVU"></input-label>-->
-                        <v-file-input label="Ingresar CVU" variant="solo" @input="form.file = $event.target.files[0]"></v-file-input>
+                <template v-if="props.docente.cvu === null">
+                    <div class="flex justify-center w-50">
+                        <v-btn block height="50" color="blue-darken-1" @click="download_cvu">Descargar para editar</v-btn>
                     </div>
-                    <div class="flex justify-center mt-12">
-                        <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">
-                            Subir
-                        </v-btn>
+
+                    <div class="grid grid-cols-2">
+                        <div class="flex justify-start mt-12">
+                            <v-file-input label="Ingresar CVU" variant="solo" @input="form.file = $event.target.files[0]"></v-file-input>
+                        </div>
+                        <div class="flex justify-center mt-12">
+                            <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">
+                                Subir
+                            </v-btn>
+                        </div>
                     </div>
-                </div>
+                </template>
                 <template v-if="props.docente.cvu != null">
                     <div class="flex justify-start mt-5">
                         <v-btn color="blue-darken-1" width="500" @click="download_cvu_editado">DESCARGAR MI CVU</v-btn>
@@ -159,16 +148,16 @@ const download_ft = () => {
                             <td>{{curso.fecha_I}} al {{curso.fecha_F}}</td>
                             <td>{{curso.hora_I}} a {{curso.hora_F}}</td>
                             <td>
-<!--                                <NavLink :href="route('crear.ficha', [props.auth.user.docente_id, curso.id])">-->
-<!--                                    <v-btn color="blue-darken-1" >-->
-<!--                                        Crear-->
-<!--                                    </v-btn>-->
-<!--                                </NavLink>-->
-                                <v-btn color="blue-darken-1" @click="dialog = true">
-                                    Subir Ficha Técnica
-                                </v-btn>
+                                <NavLink :href="route('crear.ficha', [props.auth.user.docente_id, curso.id])">
+                                    <v-btn color="blue-darken-1" >
+                                        Crear
+                                    </v-btn>
+                                </NavLink>
+<!--                                <v-btn color="blue-darken-1" @click="dialog = true">-->
+<!--                                    Subir Ficha Técnica-->
+<!--                                </v-btn>-->
                             </td>
-                            <UploadFicha :curso="curso" :auth="props.auth" :model-value="dialog" @update:modelValue="dialog = $event"></UploadFicha>
+<!--                            <UploadFicha :curso="curso" :auth="props.auth" :model-value="dialog" @update:modelValue="dialog = $event"></UploadFicha>-->
                         </tr>
                         </tbody>
                     </v-table>

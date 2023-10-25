@@ -95,7 +95,7 @@ onMounted(() => {
                                         <td>ACTUALIZACIÓN PROFESIONAL</td>
                                     </template>
                                     <td>
-                                        <NavLink :href="route('show.Cdetecciones', deteccion.id)" type="button" as="button">
+                                        <NavLink :href="route('index.desarrollo.inscritos', deteccion.id)" type="button" as="button">
                                             <v-btn icon color="blue">
                                                 <v-icon>mdi-eye-arrow-right-outline</v-icon>
                                             </v-btn>

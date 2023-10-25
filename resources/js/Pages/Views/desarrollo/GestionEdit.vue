@@ -21,9 +21,14 @@ import TablaSub from "@/Pages/Views/desarrollo/tablas/TablaSub.vue";
 const search = ref("");
 const dialogSub = ref(false);
 const snackbar = ref(false);
+const snack_success_cvu = ref(false);
 const form = useForm({
     fecha_I: "",
     fecha_F: "",
+});
+
+const form_file = useForm({
+    file: null,
 });
 
 const props = defineProps({
@@ -55,7 +60,15 @@ function submit(){
     });
 }
 
-
+const upload_cvu = () => {
+    form_file.post(route('subir.cvu'), {
+        forceFormData: true,
+        onSuccess: () => {
+            form_file.reset()
+            snack_success_cvu.value = true
+        }
+    })
+}
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -74,7 +87,6 @@ onMounted(() => {
         }
     });
 });
-console.log(props.errors)
 </script>
 
 <template>
@@ -217,6 +229,44 @@ console.log(props.errors)
                         <primary-button @click="dialogSub = true">Crear</primary-button>
                     </div>
                 </template>
+            </div>
+
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <header>
+                    <h2 class="text-xl font-medium text-gray-900 mb-8">Documentos</h2>
+                </header>
+
+                <div class="mt-15 mt-16">
+                    <strong class="text-lg text-gray-600">
+                        Subir CVU editable.
+                    </strong>
+                </div>
+                <div class="flex justify-center">
+                    <v-file-input label="" variant="solo" @input="form_file.file = $event.target.files[0]"></v-file-input>
+                </div>
+                <div class="flex justify-start">
+                    <div class="flex justify-start mt-5">
+                        <v-btn color="blue-darken-1" width="500" @click="upload_cvu">Subir</v-btn>
+                    </div>
+                    <v-snackbar
+                        v-model="snackbar"
+                        vertical
+                        color="success"
+                    >
+                        <div class="text-subtitle-1 pb-2"></div>
+
+                        <p>CVU subido con exito</p>
+
+                        <template v-slot:actions>
+                            <v-btn
+                                variant="text"
+                                @click="snack_success_cvu = false"
+                            >
+                                Cerrar
+                            </v-btn>
+                        </template>
+                    </v-snackbar>
+                </div>
             </div>
         </div>
 

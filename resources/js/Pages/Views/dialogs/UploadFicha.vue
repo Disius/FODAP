@@ -28,17 +28,6 @@ const upload_file_ft = () => {
     });
 }
 
-onMounted(() => {
-   axios.get(route('word.ficha'), {
-       params: {
-           id: props.curso.id
-       }
-   }).then(res => {
-       console.log(res.data)
-   }).catch(error => {
-       console.log(error.response.data)
-   })
-});
 
 </script>
 

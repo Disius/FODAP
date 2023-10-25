@@ -315,4 +315,9 @@ class   GestionParametrosController extends Controller
         $subdireccion->save();
     }
 
+    public function subir_cvu(Request $request){
+        $request->file('file')->storeAs('/CVUdownload/', 'CVU_editable.docx', 'public');
+        return redirect()->route('parametros.edit');
+    }
+
 }

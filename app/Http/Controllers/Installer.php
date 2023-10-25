@@ -28,7 +28,7 @@ class Installer extends Controller
         $admin = User::where('email', 'admin@tuxtla.tecnm.mx')->first();
         $admin->removeRole('Super Admin');
         auth()->logout();
-        return redirect()->route('/')->with('Instalado con exito');
+        return redirect()->route('main')->with('Instalado con exito');
         // $user->revokePermissionTo('edit profile');
     }
 }

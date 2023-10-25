@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 
 class DataResponseController extends Controller
 {
-
     public function Deteccion_Desarrollo(){
         $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe')
             ->where('aceptado', '=', 0)
@@ -28,6 +27,18 @@ class DataResponseController extends Controller
 
         return response()->json([
             'cursos' => $cursos
+        ]);
+    }
+
+    public function Curso_docente(){
+        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
+            ->where('aceptado', '=', 1)
+            ->where('id_departamento', '=', auth()->user()->departamento_id)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json([
+            'cursos_docentes' => $cursos
         ]);
     }
 }

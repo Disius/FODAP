@@ -1,7 +1,4 @@
 <script setup>
-
-import {computed} from "vue";
-
 const bgimage = {
     backgroundImage:'url(/storage/img/logo.jpg)',
     backgroundSize: 'cover'
@@ -9,7 +6,7 @@ const bgimage = {
 
 </script>
 <template>
-    <div class="rounded-full mx-auto"
+    <div class="rounded-full"
          :style="bgimage">
 
     </div>
