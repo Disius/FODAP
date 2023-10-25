@@ -2,12 +2,17 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
+import {onMounted, ref} from "vue";
 
 const props = defineProps({
     auth: Object,
     docente: Object,
     curso: Object,
 })
+
+
+const number_temas = ref(3);
+const textFields = ref([]);
 
 const form = useForm({
     id_curso: props.curso.id,
@@ -16,6 +21,12 @@ const form = useForm({
     objetivo_general: "",
     descripcion_servicio: "",
 });
+
+onMounted(() => {
+    for (let i = 0; i < number_temas.value; i++) {
+        textFields.value.push({ value: '' });
+    }
+})
 </script>
 
 <template>
@@ -49,8 +60,8 @@ const form = useForm({
                         <v-textarea variant="solo" v-model="form.descripcion_servicio"></v-textarea>
                     </div>
                 </div>
-                <div class="flex justify-center">
-                    <InputLabel for="Criterios" value="Criterios de Evaluación"/>
+                <div class="flex justify-start">
+                    <strong class="text-xl">Temas: </strong>
                     <div class="d-flex justify-start mb-5 ml-3">
                         <v-tooltip location="right">
                             <template v-slot:activator="{ props }">
@@ -60,24 +71,24 @@ const form = useForm({
                                     </v-icon>
                                 </v-btn>
                             </template>
-                            <span>Especificar los criterios de evaluación (minimo 3 criterio), Porcentaje asignado a cada criterio de evaluación.</span>
+                            <span>Debe indicar el número de temas que contendra la ficha técnica.</span>
                         </v-tooltip>
                     </div>
                 </div>
-<!--                    <div class="flex justify-center">-->
-<!--                        <InputLabel class="mr-1" for="objetivo" value="Actividades de aprendizaje: "/>-->
-<!--                        <v-textarea variant="solo" v-model="form.actividades_aprendizaje"></v-textarea>-->
-<!--                    </div>-->
-<!--                    <div class="flex justify-center ml-5">-->
-<!--                        <InputLabel class="mr-3" for="justificacion" value="Elementos didacticos: "/>-->
-<!--                        <v-textarea variant="solo" v-model="form.elementos_didacticos"></v-textarea>-->
-<!--                    </div>-->
-                    <div class="flex justify-center w-100">
-                        <v-textarea>
-
-                        </v-textarea>
+                <div class="grid grid-cols-1">
+                    <div class="flex justify-start w-25">
+                        <v-text-field variant="solo" v-model="number_temas"></v-text-field>
                     </div>
-
+                </div>
+                <div class="grid grid-flow-row auto-cols-max gap-x-8 gap-y-4">
+                    <div class="flex justify-center m-5">
+                        <v-text-field variant="solo"
+                                      v-for="(field, index) in number_temas"
+                                      :key="index"
+                                      v-model="field.value"
+                        ></v-text-field>
+                    </div>
+                </div>
             </div>
         </div>
     </AuthenticatedLayout>
