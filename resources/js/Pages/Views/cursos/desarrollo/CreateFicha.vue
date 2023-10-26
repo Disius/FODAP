@@ -10,11 +10,7 @@ const props = defineProps({
     curso: Object,
 })
 
-
-let field_values = reactive({
-    0: '',
-});
-const fields = ref([1]);
+const snackbar = ref(false);
 
 const rules = [
     v => v.length <= 250 || 'Maximo 250 caracteres'
@@ -28,18 +24,14 @@ const form = useForm({
     justificacion: "",
     objetivo_general: "",
     descripcion_servicio: "",
-    temas: matrix.value,
+    temas: [ ['', '', ''], ['', '', ''], ['', '', ''] ],
     elementos_didacticos: "",
-    criterio_eval: c_eval.value,
+    criterio_eval: [ ['', '', ''], ['', '', ''], ['', '', ''] ],
     competencias_desarrollar: "",
     fuentes_informacion: "",
+    tipo_servicio: props.curso.tipo_actividad,
+    duracion: props.curso.total_horas
 });
-const addTema = () => {
-    const newIndex = fields.value.length;
-    fields.value.push(newIndex);
-    return field_values[newIndex]
-}
-
 
 const addCol = () => {
     matrix.value.forEach(row => {
@@ -48,7 +40,7 @@ const addCol = () => {
 }
 
 const addRow = () => {
-    matrix.value.push(['', '', '']);
+    return form.temas.length === 18 ? snackbar.value = true : form.temas.push(['', '', ''])
 }
 
 const submit = () => {
@@ -119,7 +111,7 @@ const submit = () => {
                        </div>
                    </div>
                    <div class="grid grid-cols-1 justify-center">
-                       <strong class="text-xl">Descripción del servicio: </strong>
+                       <strong class="text-xl">Descripción del curso: </strong>
                        <div class="d-flex justify-start mb-5 ml-3">
                            <v-tooltip location="right">
                                <template v-slot:activator="{ props }">
@@ -129,7 +121,7 @@ const submit = () => {
                                        </v-icon>
                                    </v-btn>
                                </template>
-                               <span>Describir brevemente el servicio.</span>
+                               <span>Describir brevemente el curso.</span>
                            </v-tooltip>
                        </div>
                        <div class="flex justify-center mt-2">
@@ -145,10 +137,9 @@ const submit = () => {
                            color="info"
                        >Debe indicar unicamente el tema</v-alert>
                    </div>
-                   <v-container fluid>
-                       <v-row justify="center">
-                           <v-col cols="3" align="start">
-                               <div class="d-flex justify-start mb-5 ml-3">
+                       <v-row justify="center" class="mt-2">
+                           <v-col cols="3" align="center" class="mr-10">
+                               <div class="d-flex justify-center">
                                    <v-tooltip location="right">
                                        <template v-slot:activator="{ props }">
                                            <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
@@ -177,8 +168,8 @@ const submit = () => {
                                </div>
                                <strong class="text-lg">Tiempo Programado (Hrs) </strong>
                            </v-col>
-                           <v-col cols="3" align="end">
-                               <div class="mr-16">
+                           <v-col cols="3" align="center">
+                               <div class="">
                                    <v-tooltip location="right">
                                        <template v-slot:activator="{ props }">
                                            <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
@@ -193,11 +184,10 @@ const submit = () => {
                                <strong class="text-lg">Actividades de aprendizaje </strong>
                            </v-col>
                        </v-row>
-                   </v-container>
                    <v-container>
-                       <v-row v-for="(row, rowIndex) in matrix" :key="rowIndex" class="matrix-row">
+                       <v-row v-for="(row, rowIndex) in form.temas" :key="rowIndex" class="matrix-row">
                            <v-col v-for="(field, colIndex) in row" :key="colIndex" class="matrix-col">
-                               <v-textarea v-model="matrix[rowIndex][colIndex]" label="" dense></v-textarea>
+                               <v-textarea v-model="form.temas[rowIndex][colIndex]" label="" dense></v-textarea>
                            </v-col>
                        </v-row>
                    </v-container>
@@ -289,9 +279,9 @@ const submit = () => {
                            </v-row>
                        </v-container>
                        <v-container>
-                           <v-row v-for="(row, rowIndex) in c_eval" :key="rowIndex" class="matrix-row">
+                           <v-row v-for="(row, rowIndex) in form.criterio_eval" :key="rowIndex" class="matrix-row">
                                <v-col cols="2" v-for="(field, colIndex) in row" :key="colIndex" class="matrix-col">
-                                   <v-textarea v-model="c_eval[rowIndex][colIndex]" label="" dense></v-textarea>
+                                   <v-textarea v-model="form.criterio_eval[rowIndex][colIndex]" label="" dense></v-textarea>
                                </v-col>
                            </v-row>
                        </v-container>
@@ -342,6 +332,25 @@ const submit = () => {
                </form>
             </div>
         </div>
+        <v-snackbar
+            v-model="snackbar"
+            vertical
+            color="error"
+        >
+            <div class="text-subtitle-1 pb-2">Error</div>
+
+            <p>Se llego al maximo de filas</p>
+
+            <template v-slot:actions>
+                <v-btn
+                    color=""
+                    variant="text"
+                    @click="snackbar = false"
+                >
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
     </AuthenticatedLayout>
 </template>
 

@@ -29,11 +29,6 @@ Route::middleware('auth')->prefix('v1')->group(function () {
     Route::get('/cursos', [DataResponseController::class, 'Cursos_Desarrollo'])->name('v1.cursos');
     Route::get('/detecciones', [DataResponseController::class, 'Deteccion_Desarrollo'])->name('v1.detecciones');
     Route::get('/cursos-docentes', [DataResponseController::class, 'Curso_docente'])->name('v1.curso.docente');
+    Route::get('/facilitadores-check', [DataResponseController::class, 'facilitador_check'])->name('v1.facilitadores');
 });
 
-
-//Route::get('/deteccion', [DesarrolloController::class, 'index'])->name('index.C');
-//Route::prefix('pdf')->group(function () {
-//        Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
-//        Route::get('/PIFDAP', [PDFController::class, 'PIFDAP_pdf'])->name('pdf.pifdap');
-//    });

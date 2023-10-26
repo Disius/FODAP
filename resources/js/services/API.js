@@ -38,3 +38,18 @@ export const cursos_docente = () => {
         })
     })
 }
+
+export const facilitador_check = (id) => {
+    return new Promise((response, reject) => {
+        axios.get('/api/v1/facilitadores-check', {
+            params: {
+                id: id
+            }
+        })
+            .then(res => {
+                response(res.data.facilitador)
+            }).catch(error => {
+                reject(error)
+        })
+    });
+}

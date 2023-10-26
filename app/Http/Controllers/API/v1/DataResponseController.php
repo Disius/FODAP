@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\DeteccionNecesidades;
+use App\Models\Docente;
 use Illuminate\Http\Request;
 
 class DataResponseController extends Controller
@@ -40,5 +41,19 @@ class DataResponseController extends Controller
         return response()->json([
             'cursos_docentes' => $cursos
         ]);
+    }
+
+    public function facilitador_check(Request $request){
+        $docente = Docente::with('facilitador_has_deteccion')->find($request->id);
+
+        if (empty($docente->facilitador_has_deteccion)){
+            return response()->json([
+                'facilitador' => false,
+            ]);
+        }else {
+            return response()->json([
+                'facilitador' => true,
+            ]);
+        }
     }
 }

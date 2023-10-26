@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FileFT extends Model
+class Temas extends Model
 {
     use HasFactory;
 
-    protected $table = "ficha_file";
+    protected $table = 'temas';
 
     protected $fillable = [
-      'id_curso', 'path',
+        'ficha_id', 'name_tema', 'tiempo_programado', 'act_aprendizaje'
     ];
 }

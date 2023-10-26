@@ -91,15 +91,6 @@ const download_cvu_editado = () => {
                 <div class="flex justify-items-center mb-12">
                     <h2 class="text-xl font-medium text-gray-900 text-center">Cursos que imparto</h2>
                 </div>
-
-<!--                <div class="grid grid-cols-2">-->
-<!--                    <div class="flex justify-center mr-5">-->
-<!--                        <v-btn block height="50" color="blue-darken-1">Descargar PDF</v-btn>-->
-<!--                    </div>-->
-<!--                    <div class="flex justify-center mr-5">-->
-<!--                        <v-btn block height="50" color="blue-darken-1">Descargar Formato</v-btn>-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div class="flex justify-center">
                     <v-table>
                         <thead>
@@ -148,16 +139,12 @@ const download_cvu_editado = () => {
                             <td>{{curso.fecha_I}} al {{curso.fecha_F}}</td>
                             <td>{{curso.hora_I}} a {{curso.hora_F}}</td>
                             <td>
-                                <NavLink :href="route('crear.ficha', [props.auth.user.docente_id, curso.id])">
-                                    <v-btn color="blue-darken-1" >
-                                        Crear
+                                <NavLink :href="route('show.curso.facilitador', [props.auth.user.docente_id, curso.id])" as="button">
+                                    <v-btn icon="mdi-eye" color="blue-darken-1" >
+
                                     </v-btn>
                                 </NavLink>
-<!--                                <v-btn color="blue-darken-1" @click="dialog = true">-->
-<!--                                    Subir Ficha Técnica-->
-<!--                                </v-btn>-->
                             </td>
-<!--                            <UploadFicha :curso="curso" :auth="props.auth" :model-value="dialog" @update:modelValue="dialog = $event"></UploadFicha>-->
                         </tr>
                         </tbody>
                     </v-table>

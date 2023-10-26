@@ -58,12 +58,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/notificacion/leida', [NotificationController::class, 'markNotifications'])->name('markNotification');
 
     //    Facilitador routes
-    Route::get('/docente/facilitador', [DocenteController::class, 'facilitadores'])->name('get.facilitador');
-
     Route::get('/facilitador/{id}', [DocenteController::class, 'show_facilitadores'])->name('show.facilitadores');
-
+    Route::get('/facilitador/{facilitador}/curso/{id}', [DocenteController::class, 'facilitador_curso'])->name('show.curso.facilitador');
     Route::post('/upload/cvu', [DocenteController::class, 'upload_cvu'])->name('upload.cvu');
-
     Route::get('/crear/ficha/{facilitador}/curso/{id}', [DocenteController::class, 'crear_ficha_tecnica'])->name('crear.ficha');
     Route::post('/guardar/ficha-tecnica', [DocenteController::class, 'store_ficha_tecnica'])->name('store.ficha');
 

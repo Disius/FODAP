@@ -6,33 +6,20 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import {Link, usePage} from '@inertiajs/vue3';
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import {FODAPStore} from "@/store/server.js";
 
 
 const showingNavigationDropdown = ref(false);
 const docente = computed(() => usePage().props.info[0]);
 const user = computed(() => usePage().props.auth.user);
-
+const store = FODAPStore()
 const notificationObject = ref({});
-const if_facilitador = ref(Boolean);
-const facilitadores = () => {
-    axios.get(route('get.facilitador'), {
-        params: {
-            id: user.value.docente_id
-        }
-    })
-        .then(res => {
-            if_facilitador.value = res.data.facilitador
-        }).catch(error => {
-        console.log(error.response.data)
-    })
-}
+
 onMounted(() => {
     window.Echo.private(`App.Models.User.${user.value.id}`).notification((notification) => {
         notificationObject.value = notification
     });
-
-    facilitadores();
+    store.get_is_facilitador(user.value.docente_id)
 });
 </script>
 
@@ -103,8 +90,8 @@ onMounted(() => {
                                         Mis Cursos
                                     </NavLink>
                                 </template>
-                                <template v-if="if_facilitador === true">
-                                    <NavLink :href="route('show.facilitadores', user.docente_id)">
+                                <template v-if="store.this_facilitador === true">
+                                    <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">
                                         Facilitador
                                     </NavLink>
                                 </template>

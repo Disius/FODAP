@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {cursos, cursos_docente} from "@/services/API.js";
+import {cursos, cursos_docente, facilitador_check} from "@/services/API.js";
 import {detecciones} from "@/services/API.js";
 import { administrador } from "@/services/API.js";
 
@@ -10,6 +10,7 @@ export const FODAPStore = defineStore('FODAP', {
             detecciones: [],
             admin_user: null,
             docente_cursos: [],
+            if_facilitador: null,
         }
     },
     getters: {
@@ -42,6 +43,9 @@ export const FODAPStore = defineStore('FODAP', {
                 return curso.estado === 0 || curso.estado === 1
             })
         },
+        this_facilitador(state) {
+          return state.if_facilitador;
+        },
     },
     actions: {
         admin_get(){
@@ -71,7 +75,13 @@ export const FODAPStore = defineStore('FODAP', {
             }).catch(err => {
                 console.log(err)
             })
+        },
+        get_is_facilitador(docente_id){
+            facilitador_check(docente_id).then(res => {
+                this.if_facilitador = res
+            }).catch(err => {
+                console.log(err)
+            })
         }
-
     }
 })

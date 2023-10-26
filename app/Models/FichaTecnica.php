@@ -14,7 +14,8 @@ class FichaTecnica extends Model
 
     protected $fillable = [
         'id_curso', 'introduccion', 'justificacion', 'objetivo_general',
-        'descripcion_servicio', 'elementos_didacticos', 'competencias_desarrollar', 'fuentes_informacion'
+        'descripcion_servicio', 'elementos_didacticos', 'competencias_desarrollar', 'fuentes_informacion', 'tipo_servicio',
+        'duracion'
     ];
 
 }

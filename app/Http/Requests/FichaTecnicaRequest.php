@@ -30,6 +30,8 @@ class FichaTecnicaRequest extends FormRequest
             'elementos_didacticos' => 'required',
             'competencias_desarrollar' => 'required',
             'fuentes_informacion' => 'required',
+            'duracion' => 'required',
+            'tipo_servicio' => 'required',
         ];
     }
 }

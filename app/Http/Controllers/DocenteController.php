@@ -74,6 +74,15 @@ class DocenteController extends Controller
         ]);
     }
 
+    public function facilitador_curso($facilitador, $id){
+        $docente = Docente::find($facilitador);
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->find($id);
+        return Inertia::render('Views/cursos/facilitadores/MiCursoFacilitador', [
+            'curso' => $curso,
+            'facilitador' => $docente,
+        ]);
+    }
+
     public function upload_cvu(Request $request){
 
         if ($request->hasFile('file')){
@@ -106,10 +115,11 @@ class DocenteController extends Controller
     }
 
     public function store_ficha_tecnica(FichaTecnicaRequest $request){
-//        $ficha_tecnica = FichaTecnica::create($request->validated());
-//
-//        $ficha_tecnica->save();
-        return $request->all();
+        $ficha_tecnica = FichaTecnica::create($request->validated());
 
+        $ficha_tecnica->save();
+
+        
+        return [$request->input('temas'), $request->input('criterio_eval'), $ficha_tecnica->id];
     }
 }
