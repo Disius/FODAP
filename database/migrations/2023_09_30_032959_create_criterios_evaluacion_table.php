@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSubTemaTable extends Migration
+class CreateCriteriosEvaluacionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,10 @@ class CreateSubTemaTable extends Migration
     {
         Schema::create('sub_tema', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tema_id');
-            $table->string('name_sub_tema');
+            $table->unsignedBigInteger('ficha_id');
+            $table->string('criterio');
+            $table->bigInteger('valor');
+            $table->string('instrumento_evaluacion');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ class CreateSubTemaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_tema');
+        Schema::dropIfExists('criterios_evaluacion');
     }
 }

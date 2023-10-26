@@ -241,32 +241,35 @@ onMounted(() => {
                         Subir CVU editable.
                     </strong>
                 </div>
-                <div class="flex justify-center">
-                    <v-file-input label="" variant="solo" @input="form_file.file = $event.target.files[0]"></v-file-input>
-                </div>
-                <div class="flex justify-start">
-                    <div class="flex justify-start mt-5">
-                        <v-btn color="blue-darken-1" width="500" @click="upload_cvu">Subir</v-btn>
+
+                <form @submit.prevent="upload_cvu">
+                    <div class="flex justify-center">
+                        <v-file-input label="" variant="solo" @input="form_file.file = $event.target.files[0]"></v-file-input>
                     </div>
-                    <v-snackbar
-                        v-model="snackbar"
-                        vertical
-                        color="success"
-                    >
-                        <div class="text-subtitle-1 pb-2"></div>
+                    <div class="flex justify-start">
+                        <div class="flex justify-start mt-5">
+                            <v-btn color="blue-darken-1" width="500">Subir</v-btn>
+                        </div>
+                    </div>
+                </form>
+                <v-snackbar
+                    v-model="snackbar"
+                    vertical
+                    color="success"
+                >
+                    <div class="text-subtitle-1 pb-2"></div>
 
-                        <p>CVU subido con exito</p>
+                    <p>CVU subido con exito</p>
 
-                        <template v-slot:actions>
-                            <v-btn
-                                variant="text"
-                                @click="snack_success_cvu = false"
-                            >
-                                Cerrar
-                            </v-btn>
-                        </template>
-                    </v-snackbar>
-                </div>
+                    <template v-slot:actions>
+                        <v-btn
+                            variant="text"
+                            @click="snack_success_cvu = false"
+                        >
+                            Cerrar
+                        </v-btn>
+                    </template>
+                </v-snackbar>
             </div>
         </div>
 

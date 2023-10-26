@@ -2,7 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 
 const props = defineProps({
     auth: Object,
@@ -11,8 +11,16 @@ const props = defineProps({
 })
 
 
-const number_temas = ref(3);
-const textFields = ref([]);
+let field_values = reactive({
+    0: '',
+});
+const fields = ref([1]);
+
+const rules = [
+    v => v.length <= 250 || 'Maximo 250 caracteres'
+]
+const matrix = ref( [ ['', '', ''], ['', '', ''], ['', '', ''] ]);
+const c_eval = ref( [ ['', '', ''], ['', '', ''], ['', '', ''] ]);
 
 const form = useForm({
     id_curso: props.curso.id,
@@ -20,13 +28,32 @@ const form = useForm({
     justificacion: "",
     objetivo_general: "",
     descripcion_servicio: "",
+    temas: matrix.value,
+    elementos_didacticos: "",
+    criterio_eval: c_eval.value,
+    competencias_desarrollar: "",
+    fuentes_informacion: "",
 });
+const addTema = () => {
+    const newIndex = fields.value.length;
+    fields.value.push(newIndex);
+    return field_values[newIndex]
+}
 
-onMounted(() => {
-    for (let i = 0; i < number_temas.value; i++) {
-        textFields.value.push({ value: '' });
-    }
-})
+
+const addCol = () => {
+    matrix.value.forEach(row => {
+        row.push('');
+    });
+}
+
+const addRow = () => {
+    matrix.value.push(['', '', '']);
+}
+
+const submit = () => {
+    return form.post(route('store.ficha'))
+}
 </script>
 
 <template>
@@ -36,64 +63,309 @@ onMounted(() => {
         </template>
         <div class="mt-5 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="grid grid-cols-1">
-                    <strong class="text-xl">Introducción: </strong>
-                    <div class="flex justify-center mt-2">
-                        <v-textarea variant="solo" v-model="form.introduccion"></v-textarea>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1">
-                    <strong class="text-xl">Justificación: </strong>
-                    <div class="flex justify-center mt-2">
-                        <v-textarea variant="solo" v-model="form.justificacion"></v-textarea>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 justify-center">
-                    <strong class="text-xl">Objetivo General: </strong>
-                    <div class="flex justify-center mt-2">
-                        <v-textarea variant="solo" v-model="form.objetivo_general"></v-textarea>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 justify-center">
-                    <strong class="text-xl">Descripción del servicio: </strong>
-                    <div class="flex justify-center mt-2">
-                        <v-textarea variant="solo" v-model="form.descripcion_servicio"></v-textarea>
-                    </div>
-                </div>
-                <div class="flex justify-start">
-                    <strong class="text-xl">Temas: </strong>
-                    <div class="d-flex justify-start mb-5 ml-3">
-                        <v-tooltip location="right">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
-                                    <v-icon>
-                                        mdi-help
-                                    </v-icon>
-                                </v-btn>
-                            </template>
-                            <span>Debe indicar el número de temas que contendra la ficha técnica.</span>
-                        </v-tooltip>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1">
-                    <div class="flex justify-start w-25">
-                        <v-text-field variant="solo" v-model="number_temas"></v-text-field>
-                    </div>
-                </div>
-                <div class="grid grid-flow-row auto-cols-max gap-x-8 gap-y-4">
-                    <div class="flex justify-center m-5">
-                        <v-text-field variant="solo"
-                                      v-for="(field, index) in number_temas"
-                                      :key="index"
-                                      v-model="field.value"
-                        ></v-text-field>
-                    </div>
-                </div>
+               <form @submit.prevent="submit">
+                   <div class="grid grid-cols-1">
+                       <strong class="text-xl">Introducción: </strong>
+                       <div class="d-flex justify-start mb-5 ml-3">
+                           <v-tooltip location="right">
+                               <template v-slot:activator="{ props }">
+                                   <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                       <v-icon>
+                                           mdi-help
+                                       </v-icon>
+                                   </v-btn>
+                               </template>
+                               <span>En un máximo de 250 palabras de una breve introducción del curso.</span>
+                           </v-tooltip>
+                       </div>
+                       <div class="flex justify-center mt-2">
+                           <v-textarea clearable variant="solo" v-model="form.introduccion" :counter="250" :rules="rules"></v-textarea>
+                       </div>
+                   </div>
+                   <div class="grid grid-cols-1">
+                       <strong class="text-xl">Justificación: </strong>
+                       <div class="d-flex justify-start mb-5 ml-3">
+                           <v-tooltip location="right">
+                               <template v-slot:activator="{ props }">
+                                   <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                       <v-icon>
+                                           mdi-help
+                                       </v-icon>
+                                   </v-btn>
+                               </template>
+                               <span>Se debe describir las razones que sustentan la realización de la capacitación</span>
+                           </v-tooltip>
+                       </div>
+                       <div class="flex justify-center mt-2">
+                           <v-textarea clearable variant="solo" v-model="form.justificacion"></v-textarea>
+                       </div>
+                   </div>
+                   <div class="grid grid-cols-1 justify-center">
+                       <strong class="text-xl">Objetivo General: </strong>
+                       <div class="d-flex justify-start mb-5 ml-3">
+                           <v-tooltip location="right">
+                               <template v-slot:activator="{ props }">
+                                   <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                       <v-icon>
+                                           mdi-help
+                                       </v-icon>
+                                   </v-btn>
+                               </template>
+                               <span>Describir la finalidad del servicio.</span>
+                           </v-tooltip>
+                       </div>
+                       <div class="flex justify-center mt-2">
+                           <v-textarea clearable variant="solo" v-model="form.objetivo_general" :counter="250" :rules="rules"></v-textarea>
+                       </div>
+                   </div>
+                   <div class="grid grid-cols-1 justify-center">
+                       <strong class="text-xl">Descripción del servicio: </strong>
+                       <div class="d-flex justify-start mb-5 ml-3">
+                           <v-tooltip location="right">
+                               <template v-slot:activator="{ props }">
+                                   <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                       <v-icon>
+                                           mdi-help
+                                       </v-icon>
+                                   </v-btn>
+                               </template>
+                               <span>Describir brevemente el servicio.</span>
+                           </v-tooltip>
+                       </div>
+                       <div class="flex justify-center mt-2">
+                           <v-textarea clearable variant="solo" v-model="form.descripcion_servicio" :counter="250" :rules="rules"></v-textarea>
+                       </div>
+                   </div>
+                   <div class="flex justify-start">
+                       <strong class="text-xl">Contenido temático del curso: </strong>
+                   </div>
+                   <div class="flex justify-center">
+                       <v-alert
+                           icon="$info"
+                           color="info"
+                       >Debe indicar unicamente el tema</v-alert>
+                   </div>
+                   <v-container fluid>
+                       <v-row justify="center">
+                           <v-col cols="3" align="start">
+                               <div class="d-flex justify-start mb-5 ml-3">
+                                   <v-tooltip location="right">
+                                       <template v-slot:activator="{ props }">
+                                           <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                               <v-icon>
+                                                   mdi-help
+                                               </v-icon>
+                                           </v-btn>
+                                       </template>
+                                       <span>Temas que se abordaran en el servicio de capacitación.</span>
+                                   </v-tooltip>
+                               </div>
+                               <strong class="text-lg">Tema</strong>
+                           </v-col>
+                           <v-col cols="3" align="center">
+                               <div class="">
+                                   <v-tooltip location="right">
+                                       <template v-slot:activator="{ props }">
+                                           <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                               <v-icon>
+                                                   mdi-help
+                                               </v-icon>
+                                           </v-btn>
+                                       </template>
+                                       <span>Colocar el tiempo destinado para cada tema en horas.</span>
+                                   </v-tooltip>
+                               </div>
+                               <strong class="text-lg">Tiempo Programado (Hrs) </strong>
+                           </v-col>
+                           <v-col cols="3" align="end">
+                               <div class="mr-16">
+                                   <v-tooltip location="right">
+                                       <template v-slot:activator="{ props }">
+                                           <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                               <v-icon>
+                                                   mdi-help
+                                               </v-icon>
+                                           </v-btn>
+                                       </template>
+                                       <span>Describir las actividades de aprendizaje que se desarrollaran por tema.</span>
+                                   </v-tooltip>
+                               </div>
+                               <strong class="text-lg">Actividades de aprendizaje </strong>
+                           </v-col>
+                       </v-row>
+                   </v-container>
+                   <v-container>
+                       <v-row v-for="(row, rowIndex) in matrix" :key="rowIndex" class="matrix-row">
+                           <v-col v-for="(field, colIndex) in row" :key="colIndex" class="matrix-col">
+                               <v-textarea v-model="matrix[rowIndex][colIndex]" label="" dense></v-textarea>
+                           </v-col>
+                       </v-row>
+                   </v-container>
+                   <v-row justify="center">
+                       <v-col cols="6" align="center">
+                           <v-btn @click="addRow" color="blue-darken-1">Agregar Fila</v-btn>
+                       </v-col>
+                   </v-row>
+
+                   <div class="grid grid-cols-1">
+                       <strong class="text-xl">Elementos didácticos para el desarrollo del curso: </strong>
+                       <div class="d-flex justify-start mb-5 ml-3">
+                           <v-tooltip location="right">
+                               <template v-slot:activator="{ props }">
+                                   <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                       <v-icon>
+                                           mdi-help
+                                       </v-icon>
+                                   </v-btn>
+                               </template>
+                               <span>Describir los elementos de apoyo que requerirá el instructor para la realización del servicio (Computadora, Software, proyector, entre otros)</span>
+                           </v-tooltip>
+                       </div>
+                       <div class="flex justify-center mt-2">
+                           <v-textarea clearable variant="solo" v-model="form.elementos_didacticos" :counter="250" :rules="rules"></v-textarea>
+                       </div>
+                   </div>
+                   <div class="grid grid-cols-1">
+                       <strong class="text-xl">Criterio de evaluación: </strong>
+                       <div class="d-flex justify-start mb-5 ml-3">
+                           <v-tooltip location="right">
+                               <template v-slot:activator="{ props }">
+                                   <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                       <v-icon>
+                                           mdi-help
+                                       </v-icon>
+                                   </v-btn>
+                               </template>
+                               <span>minimo 3 criterios</span>
+                           </v-tooltip>
+                       </div>
+                       <v-container fluid>
+                           <v-row justify="center">
+                               <v-col cols="2" align="center">
+                                   <div class="mb-2">
+                                       <v-tooltip location="right">
+                                           <template v-slot:activator="{ props }">
+                                               <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                                   <v-icon>
+                                                       mdi-help
+                                                   </v-icon>
+                                               </v-btn>
+                                           </template>
+                                           <span>Criterios de evaluación.</span>
+                                       </v-tooltip>
+                                   </div>
+                                   <strong class="text-lg">Criterio.</strong>
+                               </v-col>
+                               <v-col cols="2" align="center">
+                                   <div class="mb-2">
+                                       <v-tooltip location="top">
+                                           <template v-slot:activator="{ props }">
+                                               <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                                   <v-icon>
+                                                       mdi-help
+                                                   </v-icon>
+                                               </v-btn>
+                                           </template>
+                                           <span>Porcentaje asignado a cada criterio de evaluación.</span>
+                                       </v-tooltip>
+                                   </div>
+                                   <strong class="text-lg">Valor</strong>
+                               </v-col>
+                               <v-col cols="2" align="center">
+                                   <div class="mb-2">
+                                       <v-tooltip location="right">
+                                           <template v-slot:activator="{ props }">
+                                               <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                                   <v-icon>
+                                                       mdi-help
+                                                   </v-icon>
+                                               </v-btn>
+                                           </template>
+                                           <span>Especificar el instrumento de evaluacion que se utilizará y adjuntar a la ficha tecnica, evidencia de un participante del servicio.</span>
+                                       </v-tooltip>
+                                   </div>
+                                   <strong class="text-lg">Instrumento de evaluación </strong>
+                               </v-col>
+                           </v-row>
+                       </v-container>
+                       <v-container>
+                           <v-row v-for="(row, rowIndex) in c_eval" :key="rowIndex" class="matrix-row">
+                               <v-col cols="2" v-for="(field, colIndex) in row" :key="colIndex" class="matrix-col">
+                                   <v-textarea v-model="c_eval[rowIndex][colIndex]" label="" dense></v-textarea>
+                               </v-col>
+                           </v-row>
+                       </v-container>
+                   </div>
+                   <div class="grid grid-cols-1">
+                       <strong class="text-xl">Competencias a desarrollar: </strong>
+                       <div class="d-flex justify-start mb-5 ml-3">
+                           <v-tooltip location="right">
+                               <template v-slot:activator="{ props }">
+                                   <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                       <v-icon>
+                                           mdi-help
+                                       </v-icon>
+                                   </v-btn>
+                               </template>
+                               <span>Describir los elementos de apoyo que requerirá el instructor para la realización del servicio (Computadora, Software, proyector, entre otros)</span>
+                           </v-tooltip>
+                       </div>
+                       <div class="flex justify-center mt-2">
+                           <v-textarea clearable variant="solo" v-model="form.competencias_desarrollar"></v-textarea>
+                       </div>
+                   </div>
+                   <div class="grid grid-cols-1">
+                       <strong class="text-xl">Fuentes de Información: </strong>
+                       <div class="d-flex justify-start mb-5 ml-3">
+                           <v-tooltip location="right">
+                               <template v-slot:activator="{ props }">
+                                   <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                       <v-icon>
+                                           mdi-help
+                                       </v-icon>
+                                   </v-btn>
+                               </template>
+                               <span>Colocar la bibliografía en formato APA para la elaboración y desarrollo del servicio.</span>
+                           </v-tooltip>
+                       </div>
+                       <div class="flex justify-center mt-2">
+                           <v-textarea clearable variant="solo" v-model="form.fuentes_informacion"></v-textarea>
+                       </div>
+                   </div>
+                   <v-container>
+                       <v-row justify="center">
+                           <v-btn type="submit" color="blue-darken-1" icon="mdi-content-save-all" size="x-large" class="floating-btn">
+
+                           </v-btn>
+                       </v-row>
+                   </v-container>
+               </form>
             </div>
         </div>
     </AuthenticatedLayout>
 </template>
 
 <style scoped>
+.matrix {
+    display: flex;
+    flex-direction: column;
+}
 
+.matrix-row {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.matrix-col {
+    margin: 8px;
+}
+.floating-btn {
+    position: fixed;
+    bottom: 50px; /* Ajusta la posición vertical como desees */
+    right: 200px; /* Ajusta la posición horizontal como desees */
+    z-index: 1000; /* Ajusta el z-index según tus necesidades para asegurarte de que esté por encima de otros elementos. */
+    width: 80px;
+    height: 80px;
+}
 </style>

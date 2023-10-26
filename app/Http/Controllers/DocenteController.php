@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FichaTecnicaRequest;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
+use App\Models\FichaTecnica;
 use App\Models\FileFT;
 use App\Models\FilesCVU;
 use Illuminate\Http\Request;
@@ -96,10 +98,18 @@ class DocenteController extends Controller
 
     public function crear_ficha_tecnica($facilitador, $id){
         $docente = Docente::find($facilitador);
-        $curso = DeteccionNecesidades::find($id);
+        $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($id);
         return Inertia::render('Views/cursos/desarrollo/CreateFicha', [
             'docente' => $docente,
             'curso' => $curso
         ]);
+    }
+
+    public function store_ficha_tecnica(FichaTecnicaRequest $request){
+//        $ficha_tecnica = FichaTecnica::create($request->validated());
+//
+//        $ficha_tecnica->save();
+        return $request->all();
+
     }
 }
