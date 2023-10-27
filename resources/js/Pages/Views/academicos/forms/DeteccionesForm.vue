@@ -5,6 +5,10 @@ import { useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import ResetForm from '@/Pages/Views/dialogs/ResetForm.vue';
+import { FODAPStore } from "@/store/server";
+
+const store = FODAPStore();
+
 const props = defineProps({
     carrera: {
         type: Array,
@@ -105,13 +109,14 @@ onMounted(() => {
 });
 
 const errores = ref("");
+
 const submit = () => {
     form.post(route('store.detecciones'), {
         onSuccess: () => {
             form.reset()
             dialogReset.value = true;
             dialog.value = true;
-
+            
         },
         onError: errors => {
             errores.value = errors

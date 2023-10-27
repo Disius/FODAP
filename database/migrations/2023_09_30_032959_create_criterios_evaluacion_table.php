@@ -13,7 +13,7 @@ class CreateCriteriosEvaluacionTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_tema', function (Blueprint $table) {
+        Schema::create('criterios_evaluacion', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('ficha_id');
             $table->string('criterio');

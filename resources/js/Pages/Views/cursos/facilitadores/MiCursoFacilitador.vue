@@ -8,6 +8,7 @@ const props = defineProps({
     curso: Object,
     auth: Object,
     facilitador: Object,
+    ficha_tecnica: Object,
 });
 const timeout = ref(2000);
 
@@ -40,6 +41,24 @@ const submit = (inscripcion, id) => {
     })
 }
 
+const generar_ficha = () => {
+    axios.get(route('pdf.ficha.tecnica'), {
+        params: {
+            id_ficha: props.ficha_tecnica.id
+        }
+    }).then(res => {
+        // const url = '/storage/ficha.pdf';
+        // const link = document.createElement('a');
+        // link.href = url;
+        // link.setAttribute('download', 'ficha.pdf');
+        // document.body.appendChild(link);
+        // link.click();
+        console.log(res.data)
+    }).catch(error => {
+        console.log(error.response.data)
+        snackbar.value = true
+    })
+}
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -185,12 +204,10 @@ onMounted(() => {
                                 </v-btn>
                             </NavLink>
                         </v-col>
-                        <v-col cols="6" align="center">
-                            <NavLink :href="route('crear.ficha', [props.facilitador.id, props.curso.id])">
-                                <v-btn color="blue-darken-1">
-
+                        <v-col cols="6" align="center" class="mt-2">
+                                <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box" @click="generar_ficha">
+                                    Descargar Ficha Técnica
                                 </v-btn>
-                            </NavLink>
                         </v-col>
                     </v-row>
             </div>

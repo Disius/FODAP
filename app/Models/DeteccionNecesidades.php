@@ -16,6 +16,7 @@ class DeteccionNecesidades extends Model
 {
     use HasFactory, Notifiable;
     protected $table = 'deteccion_necesidades';
+    protected $primaryKey = 'id';
     /**
      * The attributes that are mass assignable.
      *
@@ -79,5 +80,9 @@ class DeteccionNecesidades extends Model
 
     public function lugar(): BelongsTo {
         return $this->belongsTo(Lugar::class, 'id', 'id_lugar');
+    }
+
+    public function ficha_tecnica(): HasOne {
+        return $this->hasOne(FichaTecnica::class, 'id_curso');
     }
 }

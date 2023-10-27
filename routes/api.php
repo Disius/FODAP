@@ -22,10 +22,6 @@ Route::get('/admin', [Installer::class, 'can_install']);
 
 
 Route::middleware('auth')->prefix('v1')->group(function () {
-
-
-
-
     Route::get('/cursos', [DataResponseController::class, 'Cursos_Desarrollo'])->name('v1.cursos');
     Route::get('/detecciones', [DataResponseController::class, 'Deteccion_Desarrollo'])->name('v1.detecciones');
     Route::get('/cursos-docentes', [DataResponseController::class, 'Curso_docente'])->name('v1.curso.docente');

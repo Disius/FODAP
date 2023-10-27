@@ -7,6 +7,8 @@ use App\Http\Requests\RequestPDFDeteccion;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
+use App\Models\FichaTecnica;
+use App\Models\NombreInstituto;
 use App\Models\Subdireccion;
 use App\Models\User;
 use Illuminate\Database\Query\JoinClause;
@@ -111,5 +113,16 @@ class PDFController extends Controller
 //            'docente' => $docente,
 //            'curso' => $curso,
 //        ]);
+    }
+
+    public function ficha_tecnica_pdf(Request $request){
+        $ficha = FichaTecnica::with(['temas', 'evaluacion_criterio', 'curso_ficha'])->find($request->id_ficha);
+        $name_instituto = NombreInstituto::all();
+        $pdf = Pdf::loadView('pdf.fichatecnica', compact('ficha', 'name_instituto'))
+            ->output();
+
+        $path = 'ficha.pdf';
+
+        return $this->save_file($pdf, $path);
     }
 }

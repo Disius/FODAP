@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/deteccion', [PDFController::class, 'deteccion_pdf'])->name('pdf.deteccion');
         Route::get('/PIFDAP', [PDFController::class, 'PIFDAP_pdf'])->name('pdf.pifdap');
         Route::get('/cdi', [PDFController::class, 'cdi_pdf'])->name('cdi.pdf');
+        Route::get('/ficha-tecnica', [PDFController::class, 'ficha_tecnica_pdf'])->name('pdf.ficha.tecnica');
     });
 });
 

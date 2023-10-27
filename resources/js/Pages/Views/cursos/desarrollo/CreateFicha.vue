@@ -20,6 +20,7 @@ const c_eval = ref( [ ['', '', ''], ['', '', ''], ['', '', ''] ]);
 
 const form = useForm({
     id_curso: props.curso.id,
+    id_docente: props.docente.id,
     introduccion: "",
     justificacion: "",
     objetivo_general: "",
