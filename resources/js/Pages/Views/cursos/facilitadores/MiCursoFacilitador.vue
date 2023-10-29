@@ -21,7 +21,7 @@ const formatFechaI = computed(() => {
 });
 
 const snackbar = ref(false);
-
+const snackbarCDI = ref(false);
 const submit = (inscripcion, id) => {
     axios.get(route('cdi.pdf'), {
         params: {
@@ -37,7 +37,7 @@ const submit = (inscripcion, id) => {
         link.click();
     }).catch(error => {
         console.log(error.response.data)
-        snackbar.value = true
+        snackbarCDI.value = true
     })
 }
 
@@ -47,13 +47,12 @@ const generar_ficha = () => {
             id_ficha: props.ficha_tecnica.id
         }
     }).then(res => {
-        // const url = '/storage/ficha.pdf';
-        // const link = document.createElement('a');
-        // link.href = url;
-        // link.setAttribute('download', 'ficha.pdf');
-        // document.body.appendChild(link);
-        // link.click();
-        console.log(res.data)
+        const url = '/storage/ficha.pdf';
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'ficha.pdf');
+        document.body.appendChild(link);
+        link.click();
     }).catch(error => {
         console.log(error.response.data)
         snackbar.value = true
@@ -260,14 +259,33 @@ onMounted(() => {
         >
             <div class="text-subtitle-1 pb-2">Error</div>
 
-            <p>No se pudo generar correctamente la cédula de inscripción</p>
+            <p>No se pudo generar correctamente la ficha técnica</p>
 
             <template v-slot:actions>
                 <v-btn
 
                     @click="snackbar = false"
                 >
-                    Close
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar
+            v-model="snackbarCDI"
+            vertical
+            color="error"
+            :timeout="timeout"
+        >
+            <div class="text-subtitle-1 pb-2">Error</div>
+
+            <p>No se pudo generar correctamente la cédula de inscipción</p>
+
+            <template v-slot:actions>
+                <v-btn
+
+                    @click="snackbarCDI = false"
+                >
+                    Cerrar
                 </v-btn>
             </template>
         </v-snackbar>

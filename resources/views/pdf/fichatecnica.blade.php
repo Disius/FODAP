@@ -6,8 +6,9 @@
 
     <style>
         .header {
-            position: absolute;
-            top: 1cm;
+            display: flex;
+            /* top: -0.5cm; */
+            margin-top: 50px;
             width: 100%;
             height: 100px;
             text-align: center;
@@ -20,18 +21,34 @@
             font-family: "Arial", "Helvetica", sans-serif;
             font-weight: bold;
         }
-        . name_instituto {
+        . text_init {
             justify-content: start;
             align-content: start;
             width: 100%;
             position: absolute;
-            margin-top: 50px;
         }
-        .name_instituto p {
+        .text_init p {
             margin: 0;
-            font-size: 8pt;
+            font-size: 1pt;
             font-family: "Soberana Sans";
             font-weight: normal;
+        }
+        .text-middle {
+            display: flex;
+            width: 100px;
+            height: 100px;
+            margin-left: 60px;
+            margin-top: 50px;
+        }
+        .viñeta {
+            list-style-type: disc;
+        }
+        .text-middle p {
+            margin: 0;
+            font-size: 12pt;
+            font-family: "Soberana Sans";
+            font-weight: normal;
+
         }
     </style>
 </head>
@@ -42,8 +59,17 @@
         <p>M00-SC-029-A02</p>
     </div>
 
-    <div class="name_instituto">
-        <p>Instituto Tecnológico o Centro o Unidad: {{$name_instituto[0]->name}}</p>
+    <div class="text-init">
+        <p><b>Instituto Tecnológico o Centro o Unidad:</b> {{$name_instituto[0]->name}}</p>
+        <p><b>Nombre del Curso:</b> {{$ficha->curso_ficha->nombreCurso}}</p>
+        <p><b>Instructor(a):</b> {{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>
     </div>
+    <div class="text-middle">
+        <p>• Introducción</p>
+    </div>
+    <div class="tex-middle">
+        <p>{{$ficha->introduccion}}</p>
+    </div>
+
 </body>
 </html>
