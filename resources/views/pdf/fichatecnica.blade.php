@@ -35,20 +35,59 @@
         }
         .text-middle {
             display: flex;
+
+        }
+        . title {
+            display: flex;
             width: 100px;
             height: 100px;
             margin-left: 60px;
             margin-top: 50px;
         }
-        .viñeta {
-            list-style-type: disc;
-        }
-        .text-middle p {
+        . title  p {
             margin: 0;
             font-size: 12pt;
             font-family: "Soberana Sans";
             font-weight: normal;
+            width: 100%;
+        }
+        . words_minus {
+            display: flex;
+        }
+        . words_minus p {
+            display: flex;
+            margin-left: 100px;
+        }
+        .custom_table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
 
+        .custom_table td,th {
+            border: 1px solid #000;
+        }
+
+
+        .custom_table th {
+            text-align: center;
+            font-size: 8pt;
+            font-weight: bold;
+            /*white-space: nowrap;*/
+        }
+
+        .custom_table tbody {
+            text-align: center;
+            font-size: 8pt;
+        }
+
+        .firmas {
+            display: flex;
+            grid: auto;
+        }
+        .uline {
+            border-bottom: 1px solid #000;
         }
     </style>
 </head>
@@ -65,11 +104,109 @@
         <p><b>Instructor(a):</b> {{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>
     </div>
     <div class="text-middle">
-        <p>• Introducción</p>
+        <p class="title">• Introducción</p>
+        <p class="text-middle">{{$ficha->introduccion}}</p>
     </div>
-    <div class="tex-middle">
-        <p>{{$ficha->introduccion}}</p>
+    <div class="text-middle">
+        <p class="title">• Justificación</p>
+        <p class="text-middle">{{$ficha->justificacion}}</p>
     </div>
+    <div class="text-middle">
+        <p class="title">• 	Objetivo General</p>
+        <p class="text-middle">{{$ficha->objetivo_general}}</p>
+    </div>
+    <div class="text-middle">
+        <p class="title">• 	Descripción del curso</p>
+        <p class="text-middle">{{$ficha->descripcion_servicio}}</p>
+    </div>
+    <div class="words_minus">
+        <p>
+            <b>a.</b>	Especificar tipo de curso:
+            @if($ficha->tipo_servicio == 1)
+                TALLER
+            @elseif($ficha->tipo_servicio == 2)
+                CURSO
+            @elseif($ficha->tipo_servicio == 3)
+                CURSO-TALLER
+            @elseif($ficha->tipo_servicio == 4)
+                FORO
+            @elseif($ficha->tipo_servicio == 5)
+                SEMINARIO
+            @endif
+        </p>
+        <p>
+            <b>b.</b>	Duración en horas del curso: {{$ficha->duracion}} hrs
+        </p>
+        <p>
+            <b>c.</b>	Contenido temático del curso
+        </p>
+    </div>
+    <div>
+        <table class="custom_table">
+            <thead>
+            <tr>
+                <th>Temas</th>
+                <th>Tiempo Programado (HRS)</th>
+                <th>Actividades de aprendizaje</th>
+            </tr>
+            </thead>
+
+            @foreach($ficha->temas as $tema)
+                <tbody>
+                <tr>
+                    <td>{{$tema->name_tema}}</td>
+                    <td>{{$tema->tiempo_programado}} hrs</td>
+                    <td>{{$tema->act_aprendizaje}}</td>
+                </tr>
+                </tbody>
+            @endforeach
+        </table>
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div class="words_minus">
+        <p>
+            <b>d.</b>	Elementos didácticos para el desarrollo del curso:  {{$ficha->elementos_didacticos}}
+        </p>
+        <p>
+            <b>e.</b>	Criterio de evaluación:
+        </p>
+    </div>
+    <div>
+        <table class="custom_table">
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th>Criterio</th>
+                <th>Valor</th>
+                <th>Instrumento de evaluación</th>
+            </tr>
+            </thead>
+            @php
+                $count = 1;
+            @endphp
+            @foreach($ficha->evaluacion_criterio as $eval)
+                <tbody>
+                <tr>
+                    <td>{{$count++}}</td>
+                    <td>{{$eval->criterio}}</td>
+                    <td>{{$eval->valor}} %</td>
+                    <td>{{$eval->instrumento_evaluacion}}</td>
+                </tr>
+                </tbody>
+            @endforeach
+        </table>
+    </div>
+    <div class="text-middle">
+        <p class="title">•	Competencias a desarrollar: </p>
+        <p class="text-middle">
+            {{$ficha->competencias_desarrollar}}
+        </p>
+    </div>
+    <div class="text-middle">
+        <p class="title">•	Fuentes de Información:  </p>
+        <p class="text-middle">{{$ficha->fuentes_informacion}}</p>
+    </div>
+
 
 </body>
 </html>
