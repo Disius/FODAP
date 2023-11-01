@@ -118,7 +118,8 @@ class PDFController extends Controller
     public function ficha_tecnica_pdf(Request $request){
         $ficha = FichaTecnica::with(['temas', 'evaluacion_criterio', 'curso_ficha'])->find($request->id_ficha);
         $name_instituto = NombreInstituto::all();
-        $pdf = Pdf::loadView('pdf.fichatecnica', compact('ficha', 'name_instituto'))
+        $departamento = Departamento::with( 'jefe_docente')->where('nameDepartamento', '=','Departamento de Desarrollo Académico')->first();
+        $pdf = Pdf::loadView('pdf.fichatecnica', compact('ficha', 'name_instituto', 'departamento'))
             ->output();
 
         $path = 'ficha.pdf';

@@ -83,11 +83,21 @@
         }
 
         .firmas {
-            display: flex;
-            grid: auto;
+            margin-left: 80px;
         }
         .uline {
             border-bottom: 1px solid #000;
+        }
+        .final_part {
+            display: flex;
+        }
+        .words_strong {
+            font-weight: bold;
+            font-size: 8pt;
+        }
+        .margen-izquierdo {
+            margin-right: 100px;
+            margin-top: 1px;
         }
     </style>
 </head>
@@ -207,6 +217,15 @@
         <p class="text-middle">{{$ficha->fuentes_informacion}}</p>
     </div>
 
-
+    <div class="final_part">
+        <div style="float: left;">
+            <p class="uline firmas">{{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>
+            <p class="firmas words_strong">Nombre y Firma del Facilitador(a)</p>
+        </div>
+        <div style="float: right;" class="margen-izquierdo">
+            <p class="uline firmas">{{$departamento->jefe_docente->nombre_completo}}</p>
+            <p class="firmas words_strong">Nombre y Firma del Jefe(a) de Desarrollo Académico.</p>
+        </div>
+    </div>
 </body>
 </html>
