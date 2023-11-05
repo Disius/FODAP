@@ -1,13 +1,19 @@
 <script setup>
 import InputLabel from "@/Components/InputLabel.vue";
 import {useForm} from "@inertiajs/vue3";
-import {ref} from "vue";
+import {computed, onMounted, ref} from "vue";
+import {Curso} from "@/store/curso.js";
+
+const store = Curso()
 
 const props = defineProps({
     modelValue: Boolean,
     curso: Number,
     docente: Number,
 });
+
+
+
 
 const form = useForm({
     calificacion: "",
@@ -27,13 +33,22 @@ const submit = () => {
         onSuccess: () => {
             loading.value = false
             form.reset();
-        }
+            store.inscritos_curso(props.curso)
+        },
+        onError: () => {
+          loading.value = false
+          console.log("Error")
+        },
     })
 }
+
+onMounted(() => {
+    console.log(form.docente_id)
+})
 </script>
 
 <template>
-    <v-dialog width="auto" v-model="props.modelValue">
+    <v-dialog width="auto" v-model="props.modelValue" persistent>
         <v-card width="500" height="500">
             <v-card-title>Añadir calificación</v-card-title>
             <v-card-text>

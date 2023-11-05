@@ -8,12 +8,11 @@ use App\Models\CriteriosEvaluacion;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use App\Models\FichaTecnica;
-use App\Models\FileFT;
 use App\Models\FilesCVU;
 use App\Models\Temas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 class DocenteController extends Controller
@@ -87,11 +86,11 @@ class DocenteController extends Controller
         $docente = Docente::find($facilitador);
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso'])->find($id);
         $ficha = FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id);
+
         return Inertia::render('Views/cursos/facilitadores/MiCursoFacilitador', [
             'curso' => $curso,
             'facilitador' => $docente,
             'ficha_tecnica' => $ficha,
-
         ]);
     }
 
@@ -133,6 +132,9 @@ class DocenteController extends Controller
     }
 
     public function calificaciones(Request $request){
+        $request->validate([
+            'docente_id' => 'required'
+        ]);
         $calificacion = Calificaciones::create($request->all());
         $calificacion->save();
         return Redirect::route('show.curso.facilitador', [$request->docente_id, $request->curso_id]);

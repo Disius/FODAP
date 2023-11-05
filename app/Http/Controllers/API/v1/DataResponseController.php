@@ -7,6 +7,7 @@ use App\Models\Calificaciones;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DataResponseController extends Controller
 {
@@ -22,8 +23,6 @@ class DataResponseController extends Controller
     public function Cursos_Desarrollo(Request $request){
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
             ->where('aceptado', '=', 1)
-//            ->orWhere('estado' , '=', 0)
-//            ->Where('estado' , '=', 1)
             ->orderBy('id', 'desc')
             ->get();
 
@@ -45,9 +44,9 @@ class DataResponseController extends Controller
     }
 
     public function facilitador_check(Request $request){
-        $docente = Docente::with('facilitador_has_deteccion')->find($request->id);
+        $docente = Docente::find($request->id)->facilitador_has_deteccion;
 
-        if (count($docente->facilitador_has_deteccion) == 0){
+        if (count($docente) == 0){
             return response()->json([
                 'facilitador' => false,
             ]);
@@ -65,11 +64,16 @@ class DataResponseController extends Controller
         ]);
     }
 
-    public function curso_show(Request $request){
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso'])->find($request->id);
+    public function inscritos_show(Request $request){
+        $inscritos = DB::table('docente')
+            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+            ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
+            ->where('inscripcion.curso_id', '=', $request->id)
+            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
+            ->get();
 
         return response()->json([
-            'curso' => $curso
+            'inscritos_docente' => $inscritos,
         ]);
 
     }

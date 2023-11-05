@@ -55,14 +55,14 @@ export const facilitador_check = (id) => {
 }
 
 
-export const curso_get = (id_curso) => {
+export const inscritos_get = (id_curso) => {
     return new Promise((response, reject) => {
-        axios.get('/api/v1/curso', {
+        axios.get('/api/v1/inscritos', {
             params: {
                 id: id_curso
             }
         }).then(res => {
-            response(res.data.curso)
+            response(res.data.inscritos_docente)
         }).catch(error => {
             reject(error)
         })

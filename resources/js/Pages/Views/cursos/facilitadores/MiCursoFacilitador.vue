@@ -3,9 +3,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {computed, onMounted} from "vue";
 import {ref} from 'vue';
 import NavLink from "@/Components/NavLink.vue";
-import Calificacion from "@/Pages/Views/dialogs/Calificacion.vue";
 import {FODAPStore} from "@/store/server.js";
 import {Curso} from "@/store/curso.js";
+import InputLabel from "@/Components/InputLabel.vue";
+import {router, useForm} from "@inertiajs/vue3";
 
 const my_curso_store = Curso()
 const store = FODAPStore()
@@ -17,7 +18,11 @@ const props = defineProps({
     ficha_tecnica: Object,
 });
 const timeout = ref(2000);
-
+const id_teacher = ref(null);
+const snackbar = ref(false);
+const snackbarCDI = ref(false);
+const dialog = ref(false);
+const loading = ref(false);
 
 const formatFechaF = computed(() => {
     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
@@ -26,9 +31,7 @@ const formatFechaI = computed(() => {
     return new Date(props.curso.fecha_I).toLocaleDateString('es-MX');
 });
 
-const snackbar = ref(false);
-const snackbarCDI = ref(false);
-const dialog = ref(false);
+
 const submit = (inscripcion, id) => {
     axios.get(route('cdi.pdf'), {
         params: {
@@ -64,6 +67,31 @@ const generar_ficha = () => {
         console.log(error.response.data)
         snackbar.value = true
     })
+};
+
+const form = useForm({
+    calificacion: "",
+    docente_id: null,
+    curso_id: props.curso.id
+})
+const fila_seleccionada = (id) => {
+    form.docente_id = id
+    dialog.value = true
+}
+
+const submitCalificacion = () => {
+    loading.value = true;
+    form.post(route('calificaciones.post'), {
+        onSuccess: () => {
+            loading.value = false
+            form.reset();
+            my_curso_store.inscritos_curso(props.curso.id)
+        },
+        onError: () => {
+            loading.value = false
+            console.log("Error")
+        },
+    })
 }
 
 
@@ -88,8 +116,7 @@ onMounted(() => {
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
         my_curso_store.update_inscritos(event.inscritos)
     })
-
-    my_curso_store.get_curso(props.curso.id)
+    my_curso_store.inscritos_curso(props.curso.id)
 
 });
 </script>
@@ -244,7 +271,7 @@ onMounted(() => {
                     <tbody>
                     <tr
                         v-for="inscrito in my_curso_store.my_inscritos"
-                        :key="inscrito.id"
+                        :key="inscrito.id" :class="{ id_teacher: inscrito.id === id_teacher }"
 
                     >
                         <td class="text-center">{{inscrito.nombre}}</td>
@@ -258,18 +285,78 @@ onMounted(() => {
                             </div>
                         </td>
                         <td class="text-center">
-
-                            <div class="flex justify-center items-center">
-
-
-                            </div>
+                            <template v-if="inscrito.calificacion === null">
+                                <v-btn icon @click="fila_seleccionada(inscrito.id)">
+                                    <v-icon>mdi-pencil-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'NA'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="red"
+                                    text-color="white"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="success"
+                                    text-color="white"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
                         </td>
-                        <Calificacion v-model="dialog" :curso="props.curso.id" :docente="inscrito.id" @update:modelValue="dialog = $event"/>
                     </tr>
                     </tbody>
                 </v-table>
             </div>
         </div>
+        <v-dialog width="auto" v-model="dialog" persistent>
+            <v-card width="500" height="500">
+                <v-card-title>Añadir calificación</v-card-title>
+                <v-card-text>
+                    <v-row justify="center">
+                        <v-col cols="12">
+                            <InputLabel for="calificacion"
+                                        value="Indicar si es APROBATORIO o NA (No acreditado)" />
+                        </v-col>
+                        <v-col cols="10" class="mt-16">
+                            <v-text-field variant="solo-filled" v-model="form.calificacion"></v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-dialog width="auto" v-model="loading">
+                    <v-fade-transition leave-absolute>
+                        <v-progress-circular
+                            v-if="loading"
+                            color="info"
+                            :size="64"
+                            :width="7"
+                            indeterminate
+                        ></v-progress-circular>
+
+
+                    </v-fade-transition>
+                </v-dialog>
+                <v-card-actions>
+                    <v-row justify="center">
+                        <v-col cols="6" align="end" class="mr-16">
+                            <v-btn elevation="5" color="error" @click="dialog = false">
+                                Cerrar
+                            </v-btn>
+                        </v-col>
+                        <v-col cols="2" align="end" class="mr-16">
+                            <v-btn elevation="5" color="success" @click="submitCalificacion">
+                                Subir
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <v-snackbar
             v-model="snackbar"
             vertical

@@ -242,9 +242,14 @@ class DesarrolloController extends Controller
 
 
 
-            $syncDeteccion = DeteccionNecesidades::find($id);
+            $syncDeteccion = DB::table('docente')
+                ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+                ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
+                ->where('inscripcion.curso_id', '=', $id)
+                ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
+                ->get();
 
-            event(new InscripcionEvent($syncDeteccion->docente_inscrito));
+            event(new InscripcionEvent($syncDeteccion));
 
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
         }else{
