@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\CursosAceptados;
+use App\Events\InscripcionEvent;
 use App\Http\Requests\CursoRequest;
 use App\Models\Carrera;
 use App\Models\Departamento;
@@ -222,16 +223,28 @@ class DesarrolloController extends Controller
     }
 
     public function inscripcion_por_desarrollo($id, Request $request){
-        $request->validate([
-            Rule::unique('inscripcion')->where(function ($query) use ($request) {
-                return $query->where('curso_id', $request->id);
-            }),
-        ]);
+
         $deteccion = DeteccionNecesidades::find($id);
         $num = count($deteccion->docente_inscrito) + 1;
 
+
         if ($num <= $deteccion->numeroProfesores){
-            $deteccion->docente_inscrito()->toggle($request->input('id_docente', []));
+
+
+
+            foreach ($request->id_docente as $docente){
+                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
+                    $deteccion->docente_inscrito()->attach($docente);
+                }else{
+                    return back()->withErrors('Este docente ya esta inscrito');
+                }
+            }
+
+
+
+            $syncDeteccion = DeteccionNecesidades::find($id);
+
+            event(new InscripcionEvent($syncDeteccion->docente_inscrito));
 
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
         }else{

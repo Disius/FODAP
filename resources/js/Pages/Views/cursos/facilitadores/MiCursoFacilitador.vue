@@ -3,6 +3,12 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {computed, onMounted} from "vue";
 import {ref} from 'vue';
 import NavLink from "@/Components/NavLink.vue";
+import Calificacion from "@/Pages/Views/dialogs/Calificacion.vue";
+import {FODAPStore} from "@/store/server.js";
+import {Curso} from "@/store/curso.js";
+
+const my_curso_store = Curso()
+const store = FODAPStore()
 
 const props = defineProps({
     curso: Object,
@@ -22,6 +28,7 @@ const formatFechaI = computed(() => {
 
 const snackbar = ref(false);
 const snackbarCDI = ref(false);
+const dialog = ref(false);
 const submit = (inscripcion, id) => {
     axios.get(route('cdi.pdf'), {
         params: {
@@ -59,6 +66,7 @@ const generar_ficha = () => {
     })
 }
 
+
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -75,7 +83,14 @@ onMounted(() => {
                 props.auth.usernotifications++
                 break;
         }
+    });
+
+    window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
+        my_curso_store.update_inscritos(event.inscritos)
     })
+
+    my_curso_store.get_curso(props.curso.id)
+
 });
 </script>
 
@@ -195,20 +210,23 @@ onMounted(() => {
         </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <v-row justify="center">
-                        <v-col cols="6" align="center">
-                            <NavLink :href="route('crear.ficha', [props.facilitador.id, props.curso.id])">
-                                <v-btn color="blue-darken-1">
-                                    Crear ficha técnica
-                                </v-btn>
-                            </NavLink>
-                        </v-col>
-                        <v-col cols="6" align="center" class="mt-2">
+                    <v-card elevation="0">
+                        <v-card-title class="text-center">Ficha Técnica</v-card-title>
+                        <v-row justify="center">
+                            <v-col cols="6" align="center">
+                                <NavLink :href="route('crear.ficha', [props.facilitador.id, props.curso.id])">
+                                    <v-btn color="blue-darken-1">
+                                        Crear ficha técnica
+                                    </v-btn>
+                                </NavLink>
+                            </v-col>
+                            <v-col cols="6" align="center" class="mt-2">
                                 <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box" @click="generar_ficha">
-                                    Descargar Ficha Técnica
+                                    Descargar PDF
                                 </v-btn>
-                        </v-col>
-                    </v-row>
+                            </v-col>
+                        </v-row>
+                    </v-card>
             </div>
         </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -225,7 +243,7 @@ onMounted(() => {
                     </thead>
                     <tbody>
                     <tr
-                        v-for="inscrito in props.curso.docente_inscrito"
+                        v-for="inscrito in my_curso_store.my_inscritos"
                         :key="inscrito.id"
 
                     >
@@ -239,13 +257,14 @@ onMounted(() => {
                                 </v-btn>
                             </div>
                         </td>
-                        <td>
-                            <div class="flex justify-center items-center">
-                                <v-btn icon="mdi-pencil-plus" color="blue-darken-1" >
+                        <td class="text-center">
 
-                                </v-btn>
+                            <div class="flex justify-center items-center">
+
+
                             </div>
                         </td>
+                        <Calificacion v-model="dialog" :curso="props.curso.id" :docente="inscrito.id" @update:modelValue="dialog = $event"/>
                     </tr>
                     </tbody>
                 </v-table>

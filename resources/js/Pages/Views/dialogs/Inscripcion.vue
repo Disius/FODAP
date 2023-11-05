@@ -3,6 +3,13 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref, computed, watch } from 'vue';
+import {FODAPStore} from "@/store/server.js";
+import {Curso} from "@/store/curso.js";
+
+const my_curso_store = Curso()
+const store = FODAPStore()
+
+
 const props = defineProps({
     modelValue: Boolean,
     docente: Array,
@@ -39,8 +46,13 @@ function addTeachers(teacher){
         form.id_docente.push(teacher.id)
         if (props.auth.role === 1 || props.auth.role === 2){
             form.post(route('inscribir.docente', props.curso.id), {
+                onSuccess: () => {
+                    my_curso_store.get_curso(props.curso.id)
+                    form.reset()
+                },
                 onError: () => {
                     snackbar.value = true;
+                    form.reset()
                 },
             })
         }else if (props.auth.role === 3){
@@ -54,7 +66,7 @@ function addTeachers(teacher){
 </script>
 
 <template>
-<v-dialog width="auto" v-model="props.modelValue" persistent>
+<v-dialog width="auto" v-model="props.modelValue">
     <v-card width="700" height="700">
         <v-row justify="center">
             <v-col cols="2" align="start">

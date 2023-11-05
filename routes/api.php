@@ -26,5 +26,8 @@ Route::middleware('auth')->prefix('v1')->group(function () {
     Route::get('/detecciones', [DataResponseController::class, 'Deteccion_Desarrollo'])->name('v1.detecciones');
     Route::get('/cursos-docentes', [DataResponseController::class, 'Curso_docente'])->name('v1.curso.docente');
     Route::get('/facilitadores-check', [DataResponseController::class, 'facilitador_check'])->name('v1.facilitadores');
+    Route::get('/calificaciones', [DataResponseController::class, 'califications'])->name('v1.calificaciones');
+    Route::get('/curso', [DataResponseController::class, 'curso_show'])->name('v1.curso');
+
 });
 

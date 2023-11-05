@@ -65,4 +65,9 @@ class Docente extends Model
     public function carrera(){
         return $this->hasOne(Carrera::class, 'id', 'carrera_id');
     }
+
+    public function calificacion_docente(){
+        return $this->hasOne(Calificaciones::class, 'docente_id', 'id');
+    }
+
 }

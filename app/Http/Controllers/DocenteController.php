@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FichaTecnicaRequest;
+use App\Models\Calificaciones;
 use App\Models\CriteriosEvaluacion;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
@@ -55,20 +56,6 @@ class DocenteController extends Controller
         ]);
     }
 
-    public function facilitadores(Request $request){
-        $docente = Docente::with('facilitador_has_deteccion')->find($request->id);
-
-        if (count($docente->facilitador_has_deteccion) == 0){
-            return response()->json([
-                'facilitador' => false,
-            ]);
-        }else {
-            return response()->json([
-                'facilitador' => true,
-            ]);
-        }
-    }
-
     public function upload_cvu(Request $request){
 
         if ($request->hasFile('file')){
@@ -98,12 +85,13 @@ class DocenteController extends Controller
 
     public function facilitador_curso($facilitador, $id){
         $docente = Docente::find($facilitador);
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica'])->find($id);
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso'])->find($id);
         $ficha = FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id);
         return Inertia::render('Views/cursos/facilitadores/MiCursoFacilitador', [
             'curso' => $curso,
             'facilitador' => $docente,
             'ficha_tecnica' => $ficha,
+
         ]);
     }
 
@@ -142,5 +130,11 @@ class DocenteController extends Controller
         }
 
         return redirect()->route('show.curso.facilitador', [$request->id_docente, $request->id_curso]);
+    }
+
+    public function calificaciones(Request $request){
+        $calificacion = Calificaciones::create($request->all());
+        $calificacion->save();
+        return Redirect::route('show.curso.facilitador', [$request->docente_id, $request->curso_id]);
     }
 }

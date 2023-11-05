@@ -17,7 +17,7 @@ class CreateCalificacionesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('curso_id')->nullable()->index('calificaciones_curso_id_foreign');
             $table->unsignedBigInteger('docente_id')->nullable()->index('calificaciones_docente_id_foreign');
-            $table->bigInteger('calificacion');
+            $table->string('calificacion');
             $table->timestamps();
         });
     }

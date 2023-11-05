@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Calificaciones;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use Illuminate\Http\Request;
@@ -46,7 +47,7 @@ class DataResponseController extends Controller
     public function facilitador_check(Request $request){
         $docente = Docente::with('facilitador_has_deteccion')->find($request->id);
 
-        if (empty($docente->facilitador_has_deteccion)){
+        if (count($docente->facilitador_has_deteccion) == 0){
             return response()->json([
                 'facilitador' => false,
             ]);
@@ -55,5 +56,21 @@ class DataResponseController extends Controller
                 'facilitador' => true,
             ]);
         }
+    }
+
+    public function califications(Request $request){
+        $calificacion = Docente::with('calificacion_docente')->where('id', $request->id)->first();
+        return response()->json([
+            'calificaciones' => $calificacion->calificacion_docente
+        ]);
+    }
+
+    public function curso_show(Request $request){
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso'])->find($request->id);
+
+        return response()->json([
+            'curso' => $curso
+        ]);
+
     }
 }

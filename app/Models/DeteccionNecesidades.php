@@ -85,4 +85,8 @@ class DeteccionNecesidades extends Model
     public function ficha_tecnica(): HasOne {
         return $this->hasOne(FichaTecnica::class, 'id_curso');
     }
+
+    public function calificaciones_curso(){
+        return $this->hasMany(Calificaciones::class, 'curso_id', 'id');
+    }
 }

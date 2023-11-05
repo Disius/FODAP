@@ -18,3 +18,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 
+Broadcast::channel('inscritos-chanel', function ($user){
+    return true;
+});

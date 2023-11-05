@@ -45,7 +45,7 @@ export const FODAPStore = defineStore('FODAP', {
         },
         this_facilitador(state) {
           return state.if_facilitador;
-        },
+        }
     },
     actions: {
         admin_get(){
@@ -76,12 +76,12 @@ export const FODAPStore = defineStore('FODAP', {
                 console.log(err)
             })
         },
-        get_is_facilitador(docente_id){
-            facilitador_check(docente_id).then(res => {
+        get_is_facilitador(id){
+            facilitador_check(id).then(res => {
                 this.if_facilitador = res
             }).catch(err => {
                 console.log(err)
             })
-        }
+        },
     }
 })

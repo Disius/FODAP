@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/upload/cvu', [DocenteController::class, 'upload_cvu'])->name('upload.cvu');
     Route::get('/crear/ficha/{facilitador}/curso/{id}', [DocenteController::class, 'crear_ficha_tecnica'])->name('crear.ficha');
     Route::post('/guardar/ficha-tecnica', [DocenteController::class, 'store_ficha_tecnica'])->name('store.ficha');
+    Route::post('/facilitador/calificaciones', [DocenteController::class, 'calificaciones'])->name('calificaciones.post');
 
     //required data
     Route::get('/detecciones/data', [AcademicosController::class, 'detecciones_data'])->name('detecciones.data');

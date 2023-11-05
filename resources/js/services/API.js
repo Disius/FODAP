@@ -53,3 +53,18 @@ export const facilitador_check = (id) => {
         })
     });
 }
+
+
+export const curso_get = (id_curso) => {
+    return new Promise((response, reject) => {
+        axios.get('/api/v1/curso', {
+            params: {
+                id: id_curso
+            }
+        }).then(res => {
+            response(res.data.curso)
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}
