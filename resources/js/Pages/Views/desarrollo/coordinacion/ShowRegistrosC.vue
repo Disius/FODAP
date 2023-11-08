@@ -2,10 +2,10 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {onMounted} from "vue";
 import NavLink from "@/Components/NavLink.vue";
-import {FODAPStore} from "@/store/server.js";
+import {Curso} from "@/store/curso.js";
 
 
-const store = FODAPStore()
+const store = Curso()
 const props = defineProps({
    detecciones: Array,
     auth: Object
@@ -29,7 +29,7 @@ onMounted(() => {
         }
     });
 
-    store.getCursos()
+    store.get_curso_desarrollo()
 });
 </script>
 
@@ -39,7 +39,7 @@ onMounted(() => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Registro de todos los cursos que se llevaron acabo</h2>
         </template>
 
-        <template v-if="props.detecciones.length !== 0">
+        <template v-if="store.set_cursos_desarrollo_end !== null">
             <div class="pt-3">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div class="sm:p-8 bg-white shadow sm:rounded-lg">
@@ -75,7 +75,7 @@ onMounted(() => {
                                 </thead>
                                 <tbody>
                                 <tr
-                                    v-for="deteccion in store.state_final_curso"
+                                    v-for="deteccion in store.set_cursos_desarrollo_end"
                                     :key="deteccion.id"
                                 >
                                     <td>{{deteccion.nombreCurso}}</td>

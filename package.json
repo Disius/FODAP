@@ -23,6 +23,7 @@
         "jspdf": "^2.5.1",
         "jspdf-autotable": "^3.6.0",
         "laravel-echo": "^1.15.2",
+        "laravel-vue-pagination": "^4.1.1",
         "pinia": "^2.1.6",
         "pusher-js": "^8.3.0",
         "vuetify": "^3.3.8",

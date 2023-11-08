@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\DeteccionNecesidades;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,17 +10,17 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class DeteccionEvent implements ShouldBroadcast
+class DatesEnableEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $deteccion;
+    public $dates;
     /**
      * Create a new event instance.
      */
-    public function __construct(DeteccionNecesidades $deteccion)
+    public function __construct($dates)
     {
-        $this->deteccion = $deteccion;
+        $this->dates = $dates;
     }
 
     /**
@@ -32,7 +31,7 @@ class DeteccionEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('deteccion_necesidades'),
+            new PrivateChannel('dates-enable'),
         ];
     }
 }

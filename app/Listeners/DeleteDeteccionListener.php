@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\DeteccionEvent;
+use App\Events\DeleteDeteccionEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class DeteccionListener
+class DeleteDeteccionListener
 {
     /**
      * Create the event listener.
@@ -19,7 +19,7 @@ class DeteccionListener
     /**
      * Handle the event.
      */
-    public function handle(DeteccionEvent $event)
+    public function handle(DeleteDeteccionEvent $event)
     {
         return $event->deteccion;
     }

@@ -23,8 +23,8 @@ const dialogSub = ref(false);
 const snackbar = ref(false);
 const snack_success_cvu = ref(false);
 const form = useForm({
-    fecha_I: "",
-    fecha_F: "",
+    fecha_Inicio: "",
+    fecha_Final: "",
 });
 
 const form_file = useForm({
@@ -87,6 +87,7 @@ onMounted(() => {
         }
     });
 });
+console.log(props.errors)
 </script>
 
 <template>
@@ -108,11 +109,11 @@ onMounted(() => {
                 <form @submit.prevent="submit">
                     <div class="flex justify-center mr-5 items-center">
                         <InputLabel for="inicio" value="Inicia: "></InputLabel>
-                        <v-text-field type="date" v-model="form.fecha_I"></v-text-field>
+                        <v-text-field type="date" v-model="form.fecha_Inicio"></v-text-field>
                     </div>
                     <div class="flex justify-center items-center">
                         <InputLabel class="text-lg" for="termino" value="Termina: "></InputLabel>
-                        <v-text-field type="date" v-model="form.fecha_F"></v-text-field>
+                        <v-text-field type="date" v-model="form.fecha_Final"></v-text-field>
                     </div>
                     <div class="flex justify-center items-end mr-8">
                         <primary-button>Guardar</primary-button>
@@ -125,7 +126,7 @@ onMounted(() => {
                 >
                     <div class="text-subtitle-1 pb-2">Error</div>
 
-                    <p>{{$page.props.errors[0]}}</p>
+                    <p>{{$page.props.errors.fecha_Inicio}} y {{$page.props.errors.fecha_Final}}</p>
 
                     <template v-slot:actions>
                         <v-btn
@@ -253,7 +254,7 @@ onMounted(() => {
                     </div>
                 </form>
                 <v-snackbar
-                    v-model="snackbar"
+                    v-model="snack_success_cvu"
                     vertical
                     color="success"
                 >

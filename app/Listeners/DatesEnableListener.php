@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\DeteccionEvent;
+use App\Events\DatesEnableEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class DeteccionListener
+class DatesEnableListener
 {
     /**
      * Create the event listener.
@@ -19,8 +19,8 @@ class DeteccionListener
     /**
      * Handle the event.
      */
-    public function handle(DeteccionEvent $event)
+    public function handle(DatesEnableEvent $event)
     {
-        return $event->deteccion;
+        return $event->dates;
     }
 }

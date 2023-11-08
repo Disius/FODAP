@@ -3,14 +3,14 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {computed, onMounted, ref} from "vue";
 import DialogPIFAP from "@/Pages/Views/dialogs/DialogPIFAP.vue";
 import NavLink from "@/Components/NavLink.vue";
-import {FODAPStore} from "@/store/server.js";
+import {Curso} from "@/store/curso.js";
+
+const curso_store = Curso()
 
 const props = defineProps({
   cursos: Array,
   auth: Object,
 });
-
-const store = FODAPStore()
 const pdf_dialog = ref(false);
 
 const estado = computed(() => {
@@ -38,8 +38,8 @@ onMounted(() => {
                 break;
         }
     })
-    store.getCursos()
 
+    curso_store.get_curso_desarrollo()
 
 });
 
@@ -63,7 +63,7 @@ onMounted(() => {
     <DialogPIFAP v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DialogPIFAP>
 
 
-          <template v-if="estado === 0">
+          <template v-if="curso_store.set_cursos_desarrollo_begin !== null">
               <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
                   <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
 <!--                      <TablaCursoDesarrollo :cursos="props.cursos" :user="props.auth"></TablaCursoDesarrollo>-->
@@ -102,7 +102,7 @@ onMounted(() => {
                           </thead>
                           <tbody>
                           <tr
-                              v-for="curso in store.state_inicio_curso"
+                              v-for="curso in curso_store.set_cursos_desarrollo_begin"
                               :key="curso.id"
 
                           >

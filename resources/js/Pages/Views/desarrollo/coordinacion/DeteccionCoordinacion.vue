@@ -3,9 +3,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
 import {computed, onMounted, ref} from "vue";
 import DeteccionDialog from '/resources/js/Pages/Views/dialogs/DeteccionDialogPDF.vue'
-import {FODAPStore} from "@/store/server.js";
+import {Deteccion} from "@/store/Deteccion.js";
+import { TailwindPagination } from 'laravel-vue-pagination';
 
-const store = FODAPStore()
+const store = Deteccion()
 const props = defineProps({
     detecciones: Array,
     auth: Object,
@@ -35,16 +36,11 @@ onMounted(() => {
         }
     });
 
-    store.getDetecciones()
+    store.getDeteccionesDesarrollo();
 
-
-    Echo.channel('deteccion_necesidades')
-        .listen('DeteccionEvent', e => {
-            console.log('Evento? ', e)
-        });
-
-    store.$subscribe((mutation, state) => {
-        console.log(mutation.events)
+    window.Echo.private('deteccion_necesidades').listen('DeteccionEvent', (event) => {
+        store.update_detecciones_desarrollo(event.deteccion)
+        console.log(event.deteccion)
     })
 });
 </script>
@@ -115,7 +111,7 @@ onMounted(() => {
                             </thead>
                             <tbody>
                             <tr
-                                v-for="deteccion in store.get_detecciones"
+                                v-for="deteccion in store.detecciones_desarrollo"
                                 :key="deteccion.id"
                             >
                                 <td>{{deteccion.nombreCurso}}</td>
@@ -148,15 +144,6 @@ onMounted(() => {
                 </div>
             </template>
         </div>
-<!--        <v-row justify="center" class="mt-2">-->
-<!--            <v-col cols="2">-->
-<!--                <NavLink :href="route('index.registros.c')" as="button">-->
-<!--                    <v-btn rounded="xl" block size="large" color="blue-darken-1">-->
-<!--                        Ver todos los registros-->
-<!--                    </v-btn>-->
-<!--                </NavLink>-->
-<!--            </v-col>-->
-<!--        </v-row>-->
     </AuthenticatedLayout>
 </template>
 

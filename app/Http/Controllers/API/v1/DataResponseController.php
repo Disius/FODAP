@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API\v1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Calificaciones;
+use App\Models\ConfigDates;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,6 +20,16 @@ class DataResponseController extends Controller
             ->get();
         return response()->json([
             'detecciones' => $detecciones
+        ]);
+    }
+
+    public function deteccion_academicos(){
+        $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
+            ->where('id_jefe', auth()->user()->docente_id)
+            ->where('aceptado', '=', 0)
+            ->orderBy('id', 'desc')->get();
+        return response()->json([
+            'detecciones' => $detecciones,
         ]);
     }
     public function Cursos_Desarrollo(Request $request){
@@ -76,5 +88,23 @@ class DataResponseController extends Controller
             'inscritos_docente' => $inscritos,
         ]);
 
+    }
+    public static function if_enable_detecciones(){
+        $dates = ConfigDates::latest('id')->first();
+
+        if (empty($dates)){
+            return response()->json([
+                'fechas' => null
+            ]);
+        }else {
+            $startDate = Carbon::parse($dates->fecha_inicio);
+            $endDate = Carbon::parse($dates->fecha_final);
+            $currentDate = Carbon::now('GMT-6');
+            $tiemporestante = $currentDate->diff($endDate);
+            $fechas = [$currentDate->between($startDate, $endDate), $tiemporestante];
+            return response()->json([
+                'fechas' => $fechas
+            ]);
+        }
     }
 }

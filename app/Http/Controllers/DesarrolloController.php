@@ -3,23 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Events\CursosAceptados;
+use App\Events\DeleteDeteccionEvent;
 use App\Events\InscripcionEvent;
+use App\Events\ObservacionEvent;
 use App\Http\Requests\CursoRequest;
 use App\Models\Carrera;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use App\Models\Lugar;
-use App\Models\Posgrado;
 use App\Models\User;
 use App\Notifications\AceptadoNotification;
 use App\Notifications\ObservacionNotification;
-use http\Env\Response;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class DesarrolloController extends Controller
@@ -209,7 +207,9 @@ class DesarrolloController extends Controller
             $user->notify(new ObservacionNotification($deteccion, $user));
         });
 
-        return Redirect::route('index.detecciones');
+        event(new ObservacionEvent($deteccion));
+
+        return Redirect::route('show.Cdetecciones', ['id' => $id]);
     }
 
     public function index_curso_inscrito_desarrollo($id){
@@ -220,6 +220,18 @@ class DesarrolloController extends Controller
             'curso' => $curso,
             'docente' => $docente,
         ]);
+    }
+
+    public function delete($id){
+        $deteccion = DeteccionNecesidades::find($id);
+        $deteccion->delete();
+
+        event(new DeleteDeteccionEvent($deteccion));
+        if ($deteccion->aceptado = 0){
+            return Redirect::route('index.detecciones');
+        }else {
+            return Redirect::route('index.desarrollo.cursos');
+        }
     }
 
     public function inscripcion_por_desarrollo($id, Request $request){

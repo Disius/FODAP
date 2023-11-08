@@ -54,15 +54,9 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
-            'dates' => [
-                GestionParametrosController::if_enable_detecciones()
-            ],
             'flash' => [
                 'message' => fn () => $request->session()->get('message')
             ],
-            // 'admin' => [
-            //     Installer::can_install()
-            // ],
 
         ]);
     }

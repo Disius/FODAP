@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DatesEnableEvent;
+use App\Http\Controllers\API\v1\DataResponseController;
 use App\Mail\PermisosUserEdit;
 use App\Models\Carrera;
 use App\Models\ConfigDates;
@@ -177,35 +179,37 @@ class   GestionParametrosController extends Controller
     }
 
     public function dates_detecciones(Request $request){
-        $fecha_Inical = Carbon::parse($request->fecha_I);
-        $fecha_final = Carbon::parse($request->fecha_F);
+        $request->validate([
+            'fecha_Inicio' => 'required',
+            'fecha_Final' => 'required'
+        ]);
+
+        $fecha_Inical = Carbon::parse($request->fecha_Inicio);
+        $fecha_final = Carbon::parse($request->fecha_Final);
+
+        $dates = ConfigDates::latest('id')->first();
+
+        if ($dates != null){
+            $dates->delete();
+        }
 
         if ($fecha_Inical <= $fecha_final){
 
             $dates = ConfigDates::create([
-                'fecha_inicio' => $request->fecha_I,
-                'fecha_final' => $request->fecha_F,
+                'fecha_inicio' => $request->fecha_Inicio,
+                'fecha_final' => $request->fecha_Final,
             ]);
 
         $dates->save();
+
+        $fechas = DataResponseController::if_enable_detecciones();
+
+        event(new DatesEnableEvent($fechas->original));
+
         return Redirect::route('parametros.edit');
 
         }else{
             return back()->withErrors('La fecha final no puede ser menor que la fecha inicial');
-        }
-    }
-
-    public static function if_enable_detecciones(){
-        $dates = ConfigDates::latest('id')->first();
-
-        if (empty($dates)){
-            return null;
-        }else {
-            $startDate = Carbon::parse($dates->fecha_inicio);
-            $endDate = Carbon::parse($dates->fecha_final);
-            $currentDate = Carbon::now('GMT-6');
-            $tiemporestante = $currentDate->diff($endDate);
-            return [$currentDate->between($startDate, $endDate), $tiemporestante];
         }
     }
 

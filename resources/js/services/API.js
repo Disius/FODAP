@@ -9,8 +9,7 @@ export const administrador = () => {
         })
     })
 }
-
-export const detecciones = () => {
+export const detecciones_desarrollo = () => {
     return new Promise((response, reject) => {
         axios.get('/api/v1/detecciones').then(res => {
             response(res.data.detecciones)
@@ -19,26 +18,25 @@ export const detecciones = () => {
         })
     })
 }
-export const cursos = () => {
-    return new Promise((response, reject) => {
-        axios.get('/api/v1/cursos').then(res => {
-            response(res.data.cursos)
+
+export const cursos_desarrollo = () => {
+    return new Promise((resolve, reject) => {
+        axios.get('/api/v1/cursos-desarrollo').then(res => {
+            resolve(res.data.cursos)
         }).catch(error => {
             reject(error)
         })
     })
 }
-
-export const cursos_docente = () => {
+export const detecciones_academicos = () => {
     return new Promise((response, reject) => {
-        axios.get('/api/v1/cursos-docentes').then(res => {
-            response(res.data.cursos_docentes)
+        axios.get('/api/v1/detecciones-academicos').then(res => {
+            response(res.data.detecciones)
         }).catch(error => {
-            console.log(error)
+            reject(error)
         })
     })
 }
-
 export const facilitador_check = (id) => {
     return new Promise((response, reject) => {
         axios.get('/api/v1/facilitadores-check', {
@@ -53,8 +51,6 @@ export const facilitador_check = (id) => {
         })
     });
 }
-
-
 export const inscritos_get = (id_curso) => {
     return new Promise((response, reject) => {
         axios.get('/api/v1/inscritos', {
@@ -63,6 +59,15 @@ export const inscritos_get = (id_curso) => {
             }
         }).then(res => {
             response(res.data.inscritos_docente)
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}
+export const get_dates = () => {
+    return new Promise((response, reject) => {
+        axios.get('/api/v1/fechas-enable').then(res => {
+            response(res.data.fechas)
         }).catch(error => {
             reject(error)
         })

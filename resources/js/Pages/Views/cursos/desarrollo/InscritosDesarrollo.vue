@@ -6,6 +6,8 @@ import NavLink from "@/Components/NavLink.vue";
 import Inscripcion from "../../dialogs/Inscripcion.vue";
 import {ref} from 'vue';
 import {Curso} from "@/store/curso.js";
+import DangerButton from "@/Components/DangerButton.vue";
+import EliminarDeteccionConfirmation from "@/Pages/Views/dialogs/EliminarDeteccionConfirmation.vue";
 
 const store = Curso();
 
@@ -15,17 +17,17 @@ const props = defineProps({
     docente: Array,
 });
 const timeout = ref(2000);
+
+
 const formatFechaF = computed(() => {
     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
 })
-// Computed propierties
-
-
 const formatFechaI = computed(() => {
     return new Date(props.curso.fecha_I).toLocaleDateString('es-MX');
 });
 
 const dialog_inscripcion = ref(false);
+const dialog = ref(false);
 const snackbar = ref(false);
 
 const submit = (inscripcion, id) => {
@@ -73,11 +75,17 @@ onMounted(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">{{curso.nombreCurso}}</h2>
-            <NavLink href="">
-                <NavLink :href="route('curso.editar', props.curso.id)" as="button">
-                    <PrimaryButton class="mt-5">Editar</PrimaryButton>
-                </NavLink>
-            </NavLink>
+            <div class="grid grid-cols-2">
+                <div class="flex justify-center">
+                    <NavLink :href="route('curso.editar', props.curso.id)" as="button">
+                        <PrimaryButton class="mt-5">Editar</PrimaryButton>
+                    </NavLink>
+                </div>
+                <div class="flex justify-start">
+                    <DangerButton @click="dialog = true" class="mt-5">Eliminar curso</DangerButton>
+                    <EliminarDeteccionConfirmation v-model="dialog" :curso="props.curso.id" @update:modelValue="dialog = $event"></EliminarDeteccionConfirmation>
+                </div>
+            </div>
         </template>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">

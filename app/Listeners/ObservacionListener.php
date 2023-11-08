@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\DeteccionEvent;
+use App\Events\ObservacionEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class DeteccionListener
+class ObservacionListener
 {
     /**
      * Create the event listener.
@@ -19,7 +19,7 @@ class DeteccionListener
     /**
      * Handle the event.
      */
-    public function handle(DeteccionEvent $event)
+    public function handle(ObservacionEvent $event)
     {
         return $event->deteccion;
     }

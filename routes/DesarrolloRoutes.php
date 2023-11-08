@@ -57,6 +57,7 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::get('/desarrollo/detecciones', [DesarrolloController::class, 'index'])->name('index.detecciones');
     Route::get('/desarrollo/detecciones/deteccion/{id}', [DesarrolloController::class, 'show'])->name('show.Cdetecciones');
     Route::put('/desarrollo/detecciones/deteccion/observacion/{id}', [DesarrolloController::class, 'update'])->name('update.observaciones');
+    Route::delete('/desarrollo/detecciones/deteccion/eliminar/{id}', [DesarrolloController::class, 'delete'])->name('delete.deteccion');
     Route::post('/desarrollo/detecciones/aceptado/{id}', [DesarrolloController::class, 'store'])->name('store.aceptado');
     Route::get('/desarrollo/registros', [DesarrolloController::class, 'index_registros'])->name('index.registros.c');
 

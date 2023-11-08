@@ -1,12 +1,14 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head} from "@inertiajs/vue3";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
 import {onMounted, ref} from "vue";
 import DeteccionDialog from "@/Pages/Views/dialogs/DeteccionDialogPDF.vue";
+import {FODAPStore} from "@/store/server.js";
+import {Deteccion} from "@/store/Deteccion.js";
 
-
+const store = FODAPStore()
+const detecciones_store = Deteccion()
 const props = defineProps({
     detecciones: {
         type: Array
@@ -15,13 +17,8 @@ const props = defineProps({
         type: Array
     },
     auth: Object,
-    dates: Array,
 });
-
 const pdf_dialog = ref(false);
-
-
-
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -39,6 +36,17 @@ onMounted(() => {
                 break;
         }
     })
+    store.if_enable_fechas()
+    detecciones_store.deteccionesAcademico();
+    window.Echo.private('dates-enable').listen('DatesEnableEvent', (event) => {
+        store.update_enable_dates(event.dates.fechas)
+    });
+    window.Echo.private('deteccion-observacion').listen('ObservacionEvent', (event) => {
+        detecciones_store.update_detecciones_academicos(event.deteccion)
+    });
+    window.Echo.private('delete-deteccion').listen('DeleteDeteccionEvent', (event) => {
+        detecciones_store.delete_deteccion_academicos(event.deteccion.id)
+    });
 });
 </script>
 
@@ -48,8 +56,8 @@ onMounted(() => {
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Deteccion de Necesidades</h2>
 
-                <div v-if="props.dates[0] !== null">
-                    <template v-if="dates[0][0] === true">
+                <div v-if="store.si_dates !== null">
+                    <template v-if="store.si_dates[0] === true">
                         <NavLink :href="route('detecciones.create')" :active="route().current('detecciones.create')" as="button">
                             <v-btn prepend-icon="mdi-pen-plus" rounded="xl" color="blue-darken-1">CREAR DETECCION DE NECESIDADES</v-btn>
                         </NavLink>
@@ -64,16 +72,16 @@ onMounted(() => {
                 </v-btn>
             </div>
             <div class="flex justify-end mr-4 pr-4">
-                <div v-if="props.dates[0] !== null">
-                    <template v-if="dates[0][0] === true">
-                        <template v-if="dates[0][1].d === 1">
+                <div v-if="store.si_dates !== null">
+                    <template v-if="store.si_dates[0]  === true">
+                        <template v-if="store.si_dates[1].d === 1">
                             <v-alert
                                 color="warning"
                                 icon="$warning"
                                 prominent
                             >
                                 <strong class="text-center text-lg">
-                                    Queda un {{dates[0][1].d}} dia y {{dates[0][1].h}} h para poder capturar Deteccion de Necesidades
+                                    Queda un {{store.si_dates[1].d}} dia y {{store.si_dates[1].h}} h para poder capturar Deteccion de Necesidades
                                 </strong>
                             </v-alert>
                         </template>
@@ -83,7 +91,7 @@ onMounted(() => {
                                 icon="$info"
                             >
                                 <strong class="text-center text-lg">
-                                    Queda un {{dates[0][1].d}} dias y {{dates[0][1].h}} h para poder hacer su captura de Deteccion de Necesidades
+                                    Quedan {{store.si_dates[1].d}} dias y {{store.si_dates[1].h}} h para poder hacer su captura de Deteccion de Necesidades
                                 </strong>
                             </v-alert>
                         </template>
@@ -127,20 +135,20 @@ onMounted(() => {
                             </thead>
                             <tbody>
                             <tr
-                                v-for="deteccion in props.detecciones"
+                                v-for="deteccion in detecciones_store.detecciones_academico"
                                 :key="deteccion.id"
 
                             >
 
-                                <td class="v-card--hover">{{deteccion.nombreCurso}}</td>
-                                <td class="v-card--hover">{{deteccion.contenidosTM}}</td>
+                                <td class="">{{deteccion.nombreCurso}}</td>
+                                <td class="">{{deteccion.contenidosTM}}</td>
                                 <template v-if="deteccion.periodo === 1">
-                                    <td class="v-card--hover">ENERO-JUNIO</td>
+                                    <td class="">ENERO-JUNIO</td>
                                 </template>
                                 <template v-if="deteccion.periodo === 2">
-                                    <td class="v-card--hover">AGOSTO-DICIEMBRE</td>
+                                    <td class="">AGOSTO-DICIEMBRE</td>
                                 </template>
-                                <td class="v-card--hover">{{deteccion.objetivoEvento}}</td>
+                                <td class="">{{deteccion.objetivoEvento}}</td>
                                 <td class="ma-4 pa-4">
                                     <!-- <Estado :estadoDeteccion="props.detecciones"/> -->
                                     <div class="d-flex justify-center">
