@@ -39,3 +39,6 @@ Broadcast::channel('cursos-aceptados', function ($user){
 Broadcast::channel('deteccion-editada', function ($user){
     return true;
 });
+Broadcast::channel('calificacion-update', function ($user){
+    return true;
+});

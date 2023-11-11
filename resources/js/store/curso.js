@@ -1,5 +1,9 @@
 import {defineStore} from "pinia";
-import {cursos_academicos, cursos_desarrollo, inscritos_get} from "@/services/API.js";
+import {
+    cursos_academicos,
+    cursos_desarrollo,
+    inscritos_get,
+} from "@/services/API.js";
 
 
 export const Curso = defineStore('Curso', {
@@ -8,6 +12,8 @@ export const Curso = defineStore('Curso', {
             desarrollo_cursos: [],
             academicos_cursos: [],
             inscritos: [],
+            inscritos_desarrollo: [],
+            inscritos_academicos: [],
         }
     },
     getters: {
@@ -34,6 +40,11 @@ export const Curso = defineStore('Curso', {
         my_inscritos(state){
             return state.inscritos
         },
+        my_inscritos_desarrollo(state){
+            return state.inscritos_desarrollo
+        },my_inscritos_academicos(state){
+            return state.inscritos_academicos
+        },
     },
     actions: {
         get_curso_desarrollo(){
@@ -57,8 +68,46 @@ export const Curso = defineStore('Curso', {
               console.log(err)
           })
         },
+        inscritos_curso_desarrollo(id_curso){
+          inscritos_get(id_curso).then(res => {
+              this.inscritos_desarrollo = res
+          }).catch(err => {
+              console.log(err)
+          })
+        },
+        inscritos_curso_academicos(id_curso){
+          inscritos_get(id_curso).then(res => {
+              this.inscritos_academicos = res
+          }).catch(err => {
+              console.log(err)
+          })
+        },
         update_inscritos(inscritos){
             this.inscritos = inscritos
+        },
+        update_inscritos_desarrollo(inscritos){
+            this.inscritos_desarrollo = inscritos
+        },
+        update_inscritos_academicos(inscritos){
+            this.inscritos_academicos = inscritos
+        },
+        update_calificacion(inscrito){
+            const indice =  this.inscritos.findIndex((cal) => cal.id === inscrito.id);
+            if (indice !== -1) {
+                this.inscritos[indice] = inscrito;
+            }
+        },
+        update_calificacion_desarrollo(inscrito){
+            const indice =  this.inscritos_desarrollo.findIndex((cal) => cal.id === inscrito.id);
+            if (indice !== -1) {
+                this.inscritos_desarrollo[indice] = inscrito;
+            }
+        },
+        update_calificacion_academicos(inscrito){
+            const indice =  this.inscritos_academicos.findIndex((cal) => cal.id === inscrito.id);
+            if (indice !== -1) {
+                this.inscritos_academicos[indice] = inscrito;
+            }
         },
         curso_aceptado_update(curso){
             this.academicos_cursos.unshift(curso)

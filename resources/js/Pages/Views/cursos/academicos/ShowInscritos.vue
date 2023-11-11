@@ -16,6 +16,8 @@ const props = defineProps({
 
 
 const dialog_inscripcion = ref(false);
+const snackbarInscritos = ref(false);
+const calificacion = ref(false);
 
 const formatFechaF = computed(() => {
     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
@@ -41,9 +43,14 @@ onMounted(() => {
         }
     });
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
-        store.update_inscritos(event.inscritos)
+        store.update_inscritos_academicos(event.inscritos)
+        snackbarInscritos.value = true
     })
-    store.inscritos_curso(props.curso.id)
+    window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
+        store.update_calificacion_academicos(event.calificacion[0])
+        calificacion.value = true
+    })
+    store.inscritos_curso_academicos(props.curso.id)
 });
 </script>
 
@@ -174,9 +181,67 @@ onMounted(() => {
         </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                <TablaCursoAcademicoInscritos :curso="props.curso" :user="props.auth"></TablaCursoAcademicoInscritos>
+                <v-table fixed-header height="500px" hover>
+                    <thead>
+                    <tr>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Apellido Paterno</th>
+                        <th class="text-center">Apellido Materno</th>
+                        <!--                <th class="text-center">Cédula de Inscripcion</th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr
+                        v-for="inscrito in store.my_inscritos_academicos"
+                        :key="inscrito.id"
+
+                    >
+                        <td class="text-center">{{inscrito.nombre}}</td>
+                        <td class="text-center">{{inscrito.apellidoPat}}</td>
+                        <td class="text-center">{{inscrito.apellidoMat}}</td>
+                    </tr>
+                    </tbody>
+                </v-table>
             </div>
         </div>
+        <v-snackbar
+            v-model="snackbarInscritos"
+            vertical
+            color="info"
+            :timeout="10000"
+        >
+            <div class="text-subtitle-1 pb-2"></div>
+
+            <p>Se inscribio un nuevo docente a este curso</p>
+
+            <template v-slot:actions>
+                <v-btn
+
+                    @click="snackbarInscritos = false"
+                >
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar
+            v-model="calificacion"
+            vertical
+            color="success"
+            :timeout="10000"
+        >
+            <div class="text-subtitle-1 pb-2"></div>
+
+            <p>Se añadio una calificacion</p>
+
+            <template v-slot:actions>
+                <v-btn
+
+                    @click="calificacion = false"
+                >
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
     </AuthenticatedLayout>
 </template>
 

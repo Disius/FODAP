@@ -8,6 +8,8 @@ import {ref} from 'vue';
 import {Curso} from "@/store/curso.js";
 import DangerButton from "@/Components/DangerButton.vue";
 import EliminarDeteccionConfirmation from "@/Pages/Views/dialogs/EliminarDeteccionConfirmation.vue";
+import {useForm} from "@inertiajs/vue3";
+import InputLabel from "@/Components/InputLabel.vue";
 
 const store = Curso();
 
@@ -28,8 +30,23 @@ const formatFechaI = computed(() => {
 
 const dialog_inscripcion = ref(false);
 const dialog = ref(false);
+const dialogCalificacion = ref(false);
 const snackbar = ref(false);
+const loading = ref(false);
+const snackbarInscritos = ref(false);
+const snackbarError = ref(false);
+const snackbarBien = ref(false);
+const calificacion = ref(false);
 
+const formCalificacion = useForm({
+    calificacion: "",
+    docente_id: null,
+    curso_id: props.curso.id
+})
+const fila_seleccionada = (id) => {
+    formCalificacion.docente_id = id
+    dialogCalificacion.value = true
+}
 const submit = (inscripcion, id) => {
     axios.get(route('cdi.pdf'), {
         params: {
@@ -46,6 +63,20 @@ const submit = (inscripcion, id) => {
     }).catch(error => {
         console.log(error.response.data)
         snackbar.value = true
+    })
+}
+const submitCalificacion = () => {
+    loading.value = true;
+    formCalificacion.post(route('add.calificacion.desarrollo'), {
+        onSuccess: () => {
+            loading.value = false
+            formCalificacion.reset();
+            snackbarBien.value = true
+        },
+        onError: () => {
+            loading.value = false
+            snackbarError.value = true
+        },
     })
 }
 
@@ -67,9 +98,14 @@ onMounted(() => {
         }
     });
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
-        store.update_inscritos(event.inscritos)
+        store.update_inscritos_desarrollo(event.inscritos)
+        snackbarInscritos.value = true
     })
-    store.inscritos_curso(props.curso.id)
+    window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
+        store.update_calificacion_desarrollo(event.calificacion[0])
+        calificacion.value = true
+    })
+    store.inscritos_curso_desarrollo(props.curso.id)
 });
 </script>
 
@@ -175,7 +211,7 @@ onMounted(() => {
                             </div>
                             <div class="flow-root ... pt-5">
                                 <strong>Fechas en las que se realizara la actividad o evento: </strong>
-                                <span>Del {{formatFechaI}} al {{formatFechaF}}</span>
+                                <span>Del {{curso.fecha_I}} al {{curso.fecha_F}}</span>
                             </div>
                             <div class="flow-root ... pt-5">
                                 <strong>Horarios en las que se realizara la actividad o evento: </strong>
@@ -215,12 +251,13 @@ onMounted(() => {
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Apellido Paterno</th>
                         <th class="text-center">Apellido Materno</th>
-                        <td class="text-center">CÉDULA DE INSCRIPCIÓN</td>
+                        <th class="text-center">CÉDULA DE INSCRIPCIÓN</th>
+                        <th class="text-center">CALIFICACIÓN</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr
-                        v-for="inscrito in props.curso.docente_inscrito"
+                        v-for="inscrito in store.my_inscritos_desarrollo"
                         :key="inscrito.id"
 
                     >
@@ -234,12 +271,79 @@ onMounted(() => {
                                 </v-btn>
                             </div>
                         </td>
+                        <td class="text-center">
+                            <template v-if="inscrito.calificacion === null">
+                                <v-btn icon @click="fila_seleccionada(inscrito.id)">
+                                    <v-icon>mdi-pencil-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'NA'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="red"
+                                    text-color="white"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="success"
+                                    text-color="white"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
+                        </td>
                     </tr>
                     </tbody>
                 </v-table>
             </div>
         </div>
+        <v-dialog width="auto" v-model="dialogCalificacion" persistent>
+            <v-card width="500" height="500">
+                <v-card-title>Añadir calificación</v-card-title>
+                <v-card-text>
+                    <v-row justify="center">
+                        <v-col cols="12">
+                            <InputLabel for="calificacion"
+                                        value="Unicamente ESCRIBIR si es APROBATORIO o NA (No acreditado)" />
+                        </v-col>
+                        <v-col cols="10" class="mt-16">
+                            <v-text-field variant="solo-filled" v-model="formCalificacion.calificacion"></v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-dialog width="auto" v-model="loading">
+                    <v-fade-transition leave-absolute>
+                        <v-progress-circular
+                            v-if="loading"
+                            color="info"
+                            :size="64"
+                            :width="7"
+                            indeterminate
+                        ></v-progress-circular>
 
+
+                    </v-fade-transition>
+                </v-dialog>
+                <v-card-actions>
+                    <v-row justify="center">
+                        <v-col cols="6" align="end" class="mr-16">
+                            <danger-button @click="dialogCalificacion = false">
+                                Cerrar
+                            </danger-button>
+                        </v-col>
+                        <v-col cols="2" align="end" class="mr-16">
+                            <primary-button elevation="5" color="success" @click="submitCalificacion">
+                                Subir
+                            </primary-button>
+                        </v-col>
+                    </v-row>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <v-snackbar
             v-model="snackbar"
             vertical
@@ -255,7 +359,83 @@ onMounted(() => {
 
                     @click="snackbar = false"
                 >
-                    Close
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar
+            v-model="snackbarInscritos"
+            vertical
+            color="info"
+            :timeout="10000"
+        >
+            <div class="text-subtitle-1 pb-2"></div>
+
+            <p>Se inscribio un nuevo docente a este curso</p>
+
+            <template v-slot:actions>
+                <v-btn
+
+                    @click="snackbarInscritos = false"
+                >
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar
+            v-model="snackbarError"
+            vertical
+            color="error"
+            :timeout="10000"
+        >
+            <div class="text-subtitle-1 pb-2"></div>
+
+            <p>Se produjo un error</p>
+
+            <template v-slot:actions>
+                <v-btn
+
+                    @click="snackbarError = false"
+                >
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar
+            v-model="snackbarBien"
+            vertical
+            color="success"
+            :timeout="10000"
+        >
+            <div class="text-subtitle-1 pb-2"></div>
+
+            <p>Se añadio la calificacion con exito</p>
+
+            <template v-slot:actions>
+                <v-btn
+
+                    @click="snackbarBien = false"
+                >
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar
+            v-model="calificacion"
+            vertical
+            color="success"
+            :timeout="10000"
+        >
+            <div class="text-subtitle-1 pb-2"></div>
+
+            <p>Se añadio una calificacion</p>
+
+            <template v-slot:actions>
+                <v-btn
+
+                    @click="calificacion = false"
+                >
+                    Cerrar
                 </v-btn>
             </template>
         </v-snackbar>

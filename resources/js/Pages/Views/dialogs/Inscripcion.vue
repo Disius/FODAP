@@ -55,7 +55,15 @@ function addTeachers(teacher){
                 },
             })
         }else if (props.auth.role === 3){
-            form.post(route('inscripcion.academico', props.curso.id))
+            form.post(route('inscripcion.academico', props.curso.id), {
+                onSuccess: () => {
+                    form.reset()
+                },
+                onError: () => {
+                    snackbar.value = true;
+                    form.reset()
+                }
+            })
         }
     }
 }
@@ -123,7 +131,7 @@ function addTeachers(teacher){
     <v-snackbar
         v-model="snackbar"
         vertical
-        color="info"
+        color="warning"
         :timeout="timeout"
     >
         <div class="text-subtitle-1 pb-2">Alerta</div>

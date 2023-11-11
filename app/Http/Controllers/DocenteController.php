@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CalificacionEvent;
 use App\Http\Requests\FichaTecnicaRequest;
 use App\Models\Calificaciones;
 use App\Models\CriteriosEvaluacion;
@@ -135,8 +136,28 @@ class DocenteController extends Controller
         $request->validate([
             'docente_id' => 'required'
         ]);
-        $calificacion = Calificaciones::create($request->all());
-        $calificacion->save();
+        $this->add_calificacion($request);
+
+        $syncCalificacion = DB::table('docente')
+            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+            ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
+            ->where('inscripcion.curso_id', '=', $request->curso_id)
+            ->where('docente.id', '=', $request->docente_id)
+            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
+            ->get();
+
+        event(new CalificacionEvent($syncCalificacion));
+
         return Redirect::route('show.curso.facilitador', [$request->docente_id, $request->curso_id]);
+    }
+
+    public static function add_calificacion($payload){
+        $calificacion = Calificaciones::create([
+            'calificacion' => $payload->calificacion,
+            'docente_id' => $payload->docente_id,
+            'curso_id' => $payload->curso_id
+        ]);
+        $calificacion->save();
+        return $calificacion;
     }
 }

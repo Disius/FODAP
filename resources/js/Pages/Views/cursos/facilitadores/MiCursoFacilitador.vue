@@ -7,6 +7,8 @@ import {FODAPStore} from "@/store/server.js";
 import {Curso} from "@/store/curso.js";
 import InputLabel from "@/Components/InputLabel.vue";
 import {router, useForm} from "@inertiajs/vue3";
+import DangerButton from "@/Components/DangerButton.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const my_curso_store = Curso()
 const store = FODAPStore()
@@ -23,6 +25,7 @@ const snackbar = ref(false);
 const snackbarCDI = ref(false);
 const dialog = ref(false);
 const loading = ref(false);
+const calificacion = ref(false);
 
 const formatFechaF = computed(() => {
     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
@@ -115,6 +118,10 @@ onMounted(() => {
 
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
         my_curso_store.update_inscritos(event.inscritos)
+    })
+    window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
+        my_curso_store.update_calificacion(event.calificacion[0])
+        calificacion.value = true
     })
     my_curso_store.inscritos_curso(props.curso.id)
 
@@ -326,7 +333,7 @@ onMounted(() => {
                     <v-row justify="center">
                         <v-col cols="12">
                             <InputLabel for="calificacion"
-                                        value="Indicar si es APROBATORIO o NA (No acreditado)" />
+                                        value="Unicamente ESCRIBIR si es APROBATORIO o NA (No acreditado)" />
                         </v-col>
                         <v-col cols="10" class="mt-16">
                             <v-text-field variant="solo-filled" v-model="form.calificacion"></v-text-field>
@@ -349,14 +356,14 @@ onMounted(() => {
                 <v-card-actions>
                     <v-row justify="center">
                         <v-col cols="6" align="end" class="mr-16">
-                            <v-btn elevation="5" color="error" @click="dialog = false">
+                            <danger-button @click="dialog = false">
                                 Cerrar
-                            </v-btn>
+                            </danger-button>
                         </v-col>
                         <v-col cols="2" align="end" class="mr-16">
-                            <v-btn elevation="5" color="success" @click="submitCalificacion">
+                            <primary-button @click="submitCalificacion">
                                 Subir
-                            </v-btn>
+                            </primary-button>
                         </v-col>
                     </v-row>
                 </v-card-actions>
@@ -395,6 +402,25 @@ onMounted(() => {
                 <v-btn
 
                     @click="snackbarCDI = false"
+                >
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <v-snackbar
+            v-model="calificacion"
+            vertical
+            color="success"
+            :timeout="10000"
+        >
+            <div class="text-subtitle-1 pb-2"></div>
+
+            <p>Se añadio una calificacion</p>
+
+            <template v-slot:actions>
+                <v-btn
+
+                    @click="calificacion = false"
                 >
                     Cerrar
                 </v-btn>

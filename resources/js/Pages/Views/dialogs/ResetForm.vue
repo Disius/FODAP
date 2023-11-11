@@ -4,6 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref, computed, watch } from 'vue';
+import DangerButton from "@/Components/DangerButton.vue";
 const props = defineProps({
     modelValue: Boolean,
     auth: Object,
@@ -30,12 +31,12 @@ const emit = defineEmits([
                 <v-row justify="center">
                     <v-col cols="6" align="end">
                         <nav-link :href="route('detecciones.index')" as="button">
-                            <v-btn color="error" size="normal" block>No</v-btn>
+                            <danger-button color="error" size="normal" block>No</danger-button>
                         </nav-link>
                     </v-col>
 
                     <v-col cols="6" align="end">
-                        <v-btn color="success" size="normal" block @click="emit('update:modelValue', false)">Si</v-btn>
+                        <primary-button color="success" size="normal" block @click="emit('update:modelValue', false)">Si</primary-button>
                     </v-col>
                 </v-row>
             </v-card-actions>

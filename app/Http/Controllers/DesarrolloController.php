@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CalificacionEvent;
 use App\Events\CursosAceptados;
 use App\Events\DeleteDeteccionEvent;
 use App\Events\InscripcionEvent;
@@ -183,14 +184,6 @@ class DesarrolloController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
@@ -298,25 +291,7 @@ class DesarrolloController extends Controller
         ]);
     }
     public function store_docentes(Request $request){
-
-        $docente = Docente::create([
-            'rfc' => $request->rfc,
-            'curp' => $request->curp,
-            'nombre' => $request->nombre,
-            'apellidoPat' => $request->apellidoPat,
-            'apellidoMat' => $request->apellidoMat,
-            'sexo' => $request->sexo,
-            'telefono' => $request->telefono,
-            'carrera_id' => $request->carrera_id,
-            'id_puesto' => $request->id_puesto,
-            'tipo_plaza' => $request->tipo_plaza,
-            'departamento_id' => $request->departamento_id,
-            'licenciatura' => $request->licenciatura,
-            'id_posgrado' => $request->id_posgrado,
-            'nombre_completo' => $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat
-        ]);
-
-        $docente->save();
+        AcademicosController::create_instance_docente($request);
         return Redirect::route('index.docentes');
     }
     public function edit_docente($id){
@@ -337,31 +312,26 @@ class DesarrolloController extends Controller
     }
 
     public function update_docente(Request $request, $id){
-        $docente = Docente::find($id);
-
-        $docente->rfc = $request->rfc;
-        $docente->curp = $request->curp;
-        $docente->nombre = $request->nombre;
-        $docente->apellidoPat = $request->apellidoPat;
-        $docente->apellidoMat = $request->apellidoMat;
-        $docente->sexo = $request->sexo;
-        $docente->telefono = $request->telefono;
-        $docente->carrera_id = $request->carrera_id;
-        $docente->id_puesto = $request->id_puesto;
-        $docente->tipo_plaza = $request->tipo_plaza;
-        $docente->departamento_id = $request->departamento_id;
-        $docente->licenciatura = $request->licenciatura;
-        $docente->id_posgrado = $request->id_posgrado;
-        $docente->nombre_completo = $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat;
-
-        $docente->save();
-
+        $docente = AcademicosController::updated_instance_docente($request, $id);
         return Redirect::route('edit.docentes', ['id' => $docente->id]);
     }
 
-    public static function event_cursos(){
-        $cursos = DeteccionNecesidades::where('aceptado', 1)->get();
+    public function calificaciones_desarrollo(Request $request){
+        $request->validate([
+            'docente_id' => 'required'
+        ]);
+        DocenteController::add_calificacion($request);
 
-        event(new CursosAceptados($cursos));
+        $syncCalificacion = DB::table('docente')
+            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+            ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
+            ->where('inscripcion.curso_id', '=', $request->curso_id)
+            ->where('docente.id', '=', $request->docente_id)
+            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
+            ->get();
+
+        event(new CalificacionEvent($syncCalificacion));
+
+        return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
     }
 }
