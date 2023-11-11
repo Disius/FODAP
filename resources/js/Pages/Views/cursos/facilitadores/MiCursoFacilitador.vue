@@ -125,6 +125,11 @@ onMounted(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">{{curso.nombreCurso}}</h2>
+            <NavLink :href="route('show.facilitadores', props.facilitador.id)" as="button">
+                <v-btn icon="mdi-arrow-left">
+
+                </v-btn>
+            </NavLink>
         </template>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">

@@ -7,7 +7,7 @@ import {ref, computed} from 'vue'
 
 const props = defineProps({
     auth: Object,
-    docentes: Array
+    docentes: Object
 });
 
 const search = ref("");
@@ -15,7 +15,7 @@ const search = ref("");
 const filterData = computed(() => {
     const busqueda = search.value.toLowerCase().trim();
 
-    return props.docentes.filter(item => {
+    return props.docentes.data.filter(item => {
         return item.nombre.toLowerCase().includes(busqueda) ||
             item.apellidoPat.toLowerCase().includes(busqueda) ||
             item.apellidoMat.toLowerCase().includes(busqueda) ||
@@ -49,11 +49,23 @@ onMounted(() => {
     <template #header>
         <h2 class="text-lg font-medium text-gray-900">Docentes</h2>
     </template>
-    <div class="grid grid-cols-2 mt-5 ml-16">
-        <div class="flex justify-center w-50 ml-16">
+    <div class="grid grid-cols-3 mt-5 ml-16">
+        <div class="flex justify-center w-90 ml-16">
             <v-text-field label="Buscar" variant="solo" v-model="search" prepend-icon="mdi-magnify">
 
             </v-text-field>
+        </div>
+        <div class="flex justify-start ml-4">
+            <v-tooltip location="right" class="ml-16">
+                <template v-slot:activator="{ props }">
+                    <v-btn icon color="blue-darken-1" v-bind="props">
+                        <v-icon>
+                            mdi-help
+                        </v-icon>
+                    </v-btn>
+                </template>
+                <span>Tenga en cuenta que filtrara solo los datos que aparecen paginados.</span>
+            </v-tooltip>
         </div>
         <div class="flex justify-center">
             <NavLink :href="route('create.docentes.academicos')" as="button">
@@ -89,6 +101,18 @@ onMounted(() => {
                 </tr>
                 </tbody>
             </v-table>
+            <div class="grid grid-cols-2 mt-5">
+                <div class="flex justify-end">
+                    <NavLink v-if="props.docentes.prev_page_url" :href="props.docentes.prev_page_url" as="button">
+                        <primary-button>Anterior</primary-button>
+                    </NavLink>
+                </div>
+                <div class="flex justify-start">
+                    <NavLink v-if="props.docentes.next_page_url" :href="props.docentes.next_page_url" as="button">
+                        <primary-button>Siguiente</primary-button>
+                    </NavLink>
+                </div>
+            </div>
         </div>
     </div>
 </AuthenticatedLayout>

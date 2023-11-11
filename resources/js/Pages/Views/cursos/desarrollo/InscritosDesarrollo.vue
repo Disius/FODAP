@@ -49,7 +49,6 @@ const submit = (inscripcion, id) => {
     })
 }
 
-
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -67,7 +66,10 @@ onMounted(() => {
                 break;
         }
     });
-
+    window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
+        store.update_inscritos(event.inscritos)
+    })
+    store.inscritos_curso(props.curso.id)
 });
 </script>
 

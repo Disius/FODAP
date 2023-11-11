@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import ResetForm from '@/Pages/Views/dialogs/ResetForm.vue';
 import { FODAPStore } from "@/store/server";
+import NavLink from "@/Components/NavLink.vue";
 
 const store = FODAPStore();
 
@@ -21,13 +22,18 @@ const props = defineProps({
     },
     lugar: {
         type: Array
+    },
+    errores: {
+        type: Object
     }
 });
 const emit = defineEmits([
     'update:modelValue'
 ]);
 const user = computed(() => usePage().props.auth.user);
-let dialogReset = ref(false)
+let dialogReset = ref(false);
+const snackCursoNoStored = ref(false);
+const snackCursoStored = ref(false);
 const dialog = ref(true);
 
 const form = useForm({
@@ -93,33 +99,22 @@ const maxCount = [
       return "Deben ser maximo tres facilitadores";
     }
 ]
-// const if_not = computed(() => {
-//     return props.carrera.map(c => {
-//         if (c.id === 11 || c.id === 12 || c.id === 13) {
-//             c.id = form.dirigido
-//             console.log("Parece que si")
-//         } else {
-//             return null
-//         }
-//     });
-// });
 
 onMounted(() => {
-    // if_not.value
+
 });
 
-const errores = ref("");
 
 const submit = () => {
     form.post(route('store.detecciones'), {
         onSuccess: () => {
-            form.reset()
+            form.reset();
+            snackCursoStored.value = true;
             dialogReset.value = true;
             dialog.value = true;
-            
         },
-        onError: errors => {
-            errores.value = errors
+        onError: () => {
+            snackCursoNoStored.value = true
         },
     })
 }
@@ -188,7 +183,7 @@ const submit = () => {
 
                                     </v-text-field>
                                 </v-col>
-                                <v-col cols="6">
+                                <v-col cols="12">
                                     <v-row justify="center">
                                         <v-col align="start" cols="5">
                                             <InputLabel for="contenido"
@@ -242,7 +237,7 @@ const submit = () => {
 
                                     </v-text-field>
                                 </v-col>
-                                <v-col cols="6">
+                                <v-col cols="12">
                                     <v-row justify="center">
                                         <v-col align="start" cols="10">
                                             <InputLabel for="contenidosTM"
@@ -271,7 +266,7 @@ const submit = () => {
                             </template>
                         </v-row>
                         <v-row justify="center">
-                            <v-col cols="6" class="mt-1">
+                            <v-col cols="12" class="mt-1">
                                 <v-row justify="center">
                                     <v-col align="start" cols="10" class="">
                                         <template v-if="form.tipo === 1">
@@ -303,7 +298,7 @@ const submit = () => {
 
                                 </v-text-field>
                             </v-col>
-                            <v-col cols="6">
+                            <v-col cols="12" class="">
                                 <v-row justify="center">
                                     <v-col align="start" cols="11">
                                         <template v-if="form.tipo === 1">
@@ -315,8 +310,8 @@ const submit = () => {
                                                 value="Periodo en el que se requiere la Actualización Profesional (enero-junio o agosto-diciembre)" />
                                         </template>
                                     </v-col>
-                                    <v-col align="start" cols="1" class="mb-0 pa-0">
-                                        <div class="d-flex justify-start mb-5">
+                                    <v-col align="start" cols="1" class="mb-4">
+                                        <div class="d-flex justify-start ">
                                             <v-tooltip location="left">
                                                 <template v-slot:activator="{ props }">
                                                     <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
@@ -411,13 +406,13 @@ const submit = () => {
 
                                 </v-select>
                             </v-col>
-                            <v-col>
+                            <v-col cols="12">
                                 <v-row justify="center">
-                                    <v-col align="start" cols="5">
+                                    <v-col align="start" cols="4">
                                         <InputLabel for="facilitador"
                                             value="Facilitador(a) que impartirá el curso/taller" />
                                     </v-col>
-                                    <v-col align="start" cols="7" class="mb-0 pa-0">
+                                    <v-col align="start" cols="4" class="mb-0 pa-0">
                                         <div class="d-flex justify-start mb-5">
                                             <v-tooltip location="right">
                                                 <template v-slot:activator="{ props }">
@@ -431,6 +426,13 @@ const submit = () => {
                                                     curso/taller.</span>
                                             </v-tooltip>
                                         </div>
+                                    </v-col>
+                                    <v-col cols="4">
+                                        <NavLink :href="route('create.docentes.academicos')" as="button" :data="{ from_form: true }" preserve-state>
+                                            <v-btn prepend-icon="mdi-plus" color="blue-darken-1">
+                                                Dar de alta a un docente
+                                            </v-btn>
+                                        </NavLink>
                                     </v-col>
                                 </v-row>
                                 <v-autocomplete :counter="3" multiple :items="props.docente" item-title="nombre_completo" item-value="id"
@@ -454,7 +456,7 @@ const submit = () => {
                                                         </v-icon>
                                                     </v-btn>
                                                 </template>
-                                                <span>En caso de que el facilitador sea externo</span>
+                                                <span>En caso de que el facilitador sea externo. Poner el nombre completo de la empresa, en caso de ser una persona externa anotar el nombre completo</span>
                                             </v-tooltip>
                                         </div>
                                     </v-col>
@@ -610,6 +612,28 @@ const submit = () => {
             </v-row>
         </form>
         <ResetForm v-model="dialogReset" @update:modelValue="dialogReset = $event"></ResetForm>
+        <v-snackbar
+            :timeout="3000"
+            color="error"
+            rounded="pill"
+            v-model="snackCursoNoStored"
+            vertical
+        >
+
+
+            <strong>{{props.errores}}</strong>.
+        </v-snackbar>
+        <v-snackbar
+            :timeout="3000"
+            color="success"
+            rounded="pill"
+            v-model="snackCursoStored"
+            vertical
+        >
+
+
+            <strong>Curso creado con exito</strong>.
+        </v-snackbar>
     </section>
 </template>
 

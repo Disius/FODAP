@@ -31,6 +31,9 @@ const props = defineProps({
     posgrado: {
         type: Array
     },
+    from_form: {
+        type: String
+    }
 });
 const alert = ref(true)
 const form = useForm({
@@ -54,11 +57,19 @@ const sex = [{ value: 1, text: "M" }, { value: 2, text: "F" }];
 const snackSuccess = ref(false);
 
 const submit = () => {
-    form.post(route('store.docentes.academicos'), {
-        onSuccess: () => {
-          snackSuccess.value = true
-        },
-    })
+    if (props.from_form === null){
+        form.post(route('store.docentes.academicos'), {
+            onSuccess: () => {
+                snackSuccess.value = true
+            },
+        })
+    }else if (props.from_form === "true"){
+        form.post(route('create.docentes.academicos.up'), {
+            onSuccess: () => {
+                snackSuccess.value = true
+            },
+        })
+    }
 }
 </script>
 
@@ -66,13 +77,24 @@ const submit = () => {
 <AuthenticatedLayout>
     <template #header>
         <div class="flex justify-start mb-5">
-            <NavLink :href="route('index.docentes.academicos')" as="button">
-                <div class="flex justify-start">
-                    <v-btn icon>
-                        <v-icon>mdi-arrow-left</v-icon>
-                    </v-btn>
-                </div>
-            </NavLink>
+            <template v-if="props.from_form === null">
+                <NavLink :href="route('index.docentes.academicos')" as="button">
+                    <div class="flex justify-start">
+                        <v-btn icon>
+                            <v-icon>mdi-arrow-left</v-icon>
+                        </v-btn>
+                    </div>
+                </NavLink>
+            </template>
+            <template v-if="props.from_form === 'true'">
+                <NavLink :href="route('detecciones.create')" as="button">
+                    <div class="flex justify-start">
+                        <v-btn icon>
+                            <v-icon>mdi-arrow-left</v-icon>
+                        </v-btn>
+                    </div>
+                </NavLink>
+            </template>
         </div>
         <h2 class="text-lg font-medium text-gray-900">Crear Docente</h2>
     </template>
@@ -90,7 +112,7 @@ const submit = () => {
                                     </v-icon>
                                 </v-btn>
                             </template>
-                            <span>No es necesario en este momento rellenar todos los campos</span>
+                            <span>No es necesario rellenar todos los campos</span>
                         </v-tooltip>
                 </p>
             </header>

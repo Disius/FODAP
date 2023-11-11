@@ -6,12 +6,13 @@ import {onMounted, ref} from "vue";
 import DeteccionDialog from "@/Pages/Views/dialogs/DeteccionDialogPDF.vue";
 import {FODAPStore} from "@/store/server.js";
 import {Deteccion} from "@/store/Deteccion.js";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const store = FODAPStore()
 const detecciones_store = Deteccion()
 const props = defineProps({
     detecciones: {
-        type: Array
+        type: Object
     },
     carrera: {
         type: Array
@@ -19,6 +20,8 @@ const props = defineProps({
     auth: Object,
 });
 const pdf_dialog = ref(false);
+const snackCursoDelete = ref(false)
+const snackCursoObs = ref(false)
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -43,9 +46,11 @@ onMounted(() => {
     });
     window.Echo.private('deteccion-observacion').listen('ObservacionEvent', (event) => {
         detecciones_store.update_detecciones_academicos(event.deteccion)
+        snackCursoObs.value = true
     });
     window.Echo.private('delete-deteccion').listen('DeleteDeteccionEvent', (event) => {
         detecciones_store.delete_deteccion_academicos(event.deteccion.id)
+        snackCursoDelete.value = true
     });
 });
 </script>
@@ -103,11 +108,10 @@ onMounted(() => {
 <!--        dialog-->
         <DeteccionDialog :carreras="props.carrera" v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DeteccionDialog>
 
-        <template v-if="props.detecciones.length !== 0">
+        <template v-if="props.detecciones.data.length !== 0">
             <!--Tabla-->
             <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <v-card elevation="0">
                         <v-table
                             fixed-header
                             height="300px"
@@ -115,6 +119,7 @@ onMounted(() => {
                         >
                             <thead>
                             <tr>
+                                <th>ID</th>
                                 <th class="text-left">
                                     Nombre del curso
                                 </th>
@@ -135,10 +140,11 @@ onMounted(() => {
                             </thead>
                             <tbody>
                             <tr
-                                v-for="deteccion in detecciones_store.detecciones_academico"
+                                v-for="deteccion in props.detecciones.data"
                                 :key="deteccion.id"
 
                             >
+                                <td>{{deteccion.id}}</td>
 
                                 <td class="">{{deteccion.nombreCurso}}</td>
                                 <td class="">{{deteccion.contenidosTM}}</td>
@@ -192,7 +198,18 @@ onMounted(() => {
                             </tr>
                             </tbody>
                         </v-table>
-                    </v-card>
+                </div>
+                <div class="grid grid-cols-2 mt-5">
+                    <div class="flex justify-end">
+                        <NavLink v-if="props.detecciones.prev_page_url" :href="props.detecciones.prev_page_url" as="button">
+                            <primary-button>Anterior</primary-button>
+                        </NavLink>
+                    </div>
+                    <div class="flex justify-start">
+                        <NavLink v-if="props.detecciones.next_page_url" :href="props.detecciones.next_page_url" as="button">
+                            <primary-button>Siguiente</primary-button>
+                        </NavLink>
+                    </div>
                 </div>
             </div>
         </template>
@@ -209,5 +226,27 @@ onMounted(() => {
                 </div>
             </div>
         </template>
+        <v-snackbar
+            :timeout="8000"
+            color="error"
+            rounded="pill"
+            v-model="snackCursoDelete"
+            vertical
+        >
+
+
+            <strong>Se ha eliminado un curso, por favor recarga la pagina para visualizarlo</strong>.
+        </v-snackbar>
+        <v-snackbar
+            :timeout="8000"
+            color="warning"
+            rounded="pill"
+            v-model="snackCursoObs"
+            vertical
+        >
+
+
+            <strong>Se ha añadido una observacion a un curso, por favor recarga la pagina para visualizarlo</strong>.
+        </v-snackbar>
     </AuthenticatedLayout>
 </template>

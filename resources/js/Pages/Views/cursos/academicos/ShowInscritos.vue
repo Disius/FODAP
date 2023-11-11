@@ -1,10 +1,13 @@
 <script setup>
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import TablaCursoAcademicoInscritos from "@/Pages/Views/cursos/tablas/TablaCursoAcademicoInscritos.vue";
 import {Head} from "@inertiajs/vue3";
 import {computed, onMounted, ref} from "vue";
 import Inscripcion from "../../dialogs/Inscripcion.vue";
+import {Curso} from "@/store/curso.js";
+
+const store = Curso()
+
 const props = defineProps({
     curso: Object,
     auth: Object,
@@ -36,7 +39,11 @@ onMounted(() => {
                 props.auth.usernotifications++
                 break;
         }
+    });
+    window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
+        store.update_inscritos(event.inscritos)
     })
+    store.inscritos_curso(props.curso.id)
 });
 </script>
 

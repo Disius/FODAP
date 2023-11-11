@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\Models\DeteccionNecesidades;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -11,17 +10,17 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CursosAceptados implements ShouldBroadcast
+class DeteccionEditadaEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $curso;
+    public $deteccion;
     /**
      * Create a new event instance.
      */
-    public function __construct($cursos)
+    public function __construct($deteccion)
     {
-        $this->curso = $cursos;
+        $this->deteccion = $deteccion;
     }
 
     /**
@@ -32,7 +31,7 @@ class CursosAceptados implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('cursos-aceptados'),
+            new PrivateChannel('deteccion-editada'),
         ];
     }
 }

@@ -31,7 +31,7 @@ class DesarrolloController extends Controller
         $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe')
             ->where('aceptado', '=', 0)
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate(5);
 
         return Inertia::render('Views/desarrollo/coordinacion/DeteccionCoordinacion', [
             'detecciones' => $detecciones,
@@ -44,19 +44,21 @@ class DesarrolloController extends Controller
             ->where('aceptado', '=', 1)
             ->where('estado', '=', 2)
             ->orderBy('id', 'desc')
-                        ->get();
+            ->paginate(5);
         return Inertia::render('Views/desarrollo/coordinacion/ShowRegistrosC', [
-            'detecciones' => $detecciones,
+            'cursos' => $detecciones,
         ]);
     }
 
     public function desarrollo_cursos(){
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
             ->where('aceptado', '=', 1)
-            ->orWhere('estado' , '=', 0)
-            ->Where('estado' , '=', 1)
+            ->where(function($query) {
+                $query->where('estado', '=', 0)
+                    ->orWhere('estado', '=', 1);
+            })
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate(5);
 
         CoursesController::state_curso();
 
@@ -159,10 +161,11 @@ class DesarrolloController extends Controller
 
         $detecciones->save();
 
+        event(new CursosAceptados($detecciones));
+
         User::where('departamento_id', $detecciones->id_departamento)->role(['Jefes Academicos'])->each(function(User $user) use ($detecciones){
             $user->notify(new AceptadoNotification($detecciones, $user));
         });
-
 
         return Redirect::route('index.detecciones');
     }
@@ -213,7 +216,7 @@ class DesarrolloController extends Controller
     }
 
     public function index_curso_inscrito_desarrollo($id){
-        $docente = Docente::all();
+        $docente = Docente::orderBy('nombre', 'asc')->get();
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
             ->find($id);
         return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
@@ -224,14 +227,17 @@ class DesarrolloController extends Controller
 
     public function delete($id){
         $deteccion = DeteccionNecesidades::find($id);
-        $deteccion->delete();
 
         event(new DeleteDeteccionEvent($deteccion));
-        if ($deteccion->aceptado = 0){
-            return Redirect::route('index.detecciones');
-        }else {
+
+
+        $deteccion->delete();
+
+        if ($deteccion->aceptado == 1){
             return Redirect::route('index.desarrollo.cursos');
         }
+
+        return Redirect::route('index.detecciones');
     }
 
     public function inscripcion_por_desarrollo($id, Request $request){

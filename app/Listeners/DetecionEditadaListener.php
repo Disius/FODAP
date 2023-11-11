@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\CursosAceptados;
+use App\Events\DeteccionEditadaEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class CursosListener
+class DetecionEditadaListener
 {
     /**
      * Create the event listener.
@@ -19,8 +19,8 @@ class CursosListener
     /**
      * Handle the event.
      */
-    public function handle(CursosAceptados $event)
+    public function handle(DeteccionEditadaEvent $event)
     {
-        return $event->curso;
+        return $event->deteccion;
     }
 }

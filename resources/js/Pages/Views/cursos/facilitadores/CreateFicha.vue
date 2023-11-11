@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import {onMounted, reactive, ref} from "vue";
+import NavLink from "@/Components/NavLink.vue";
 
 const props = defineProps({
     auth: Object,
@@ -53,6 +54,11 @@ const submit = () => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Crear Ficha Técnica</h2>
+            <NavLink :href="route('show.curso.facilitador', [props.docente.id, props.curso.id])" as="button">
+                <v-btn icon="mdi-arrow-left">
+
+                </v-btn>
+            </NavLink>
         </template>
         <div class="mt-5 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">

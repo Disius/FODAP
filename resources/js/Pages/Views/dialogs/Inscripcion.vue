@@ -47,7 +47,6 @@ function addTeachers(teacher){
         if (props.auth.role === 1 || props.auth.role === 2){
             form.post(route('inscribir.docente', props.curso.id), {
                 onSuccess: () => {
-                    my_curso_store.get_curso(props.curso.id)
                     form.reset()
                 },
                 onError: () => {

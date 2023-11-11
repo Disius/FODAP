@@ -43,6 +43,9 @@ export const Deteccion = defineStore('Deteccion', {
         },
         delete_deteccion_academicos(id){
             this.academicosDetecciones = this.academicosDetecciones.filter(c => c.id !== id)
+        },
+        delete_deteccion_desarrollo(id){
+            this.detecciones = this.detecciones.filter(d => d.id !== id)
         }
     }
 });

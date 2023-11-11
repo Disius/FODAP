@@ -33,3 +33,9 @@ Broadcast::channel('deteccion-observacion', function ($user){
 Broadcast::channel('delete-deteccion', function ($user){
     return true;
 });
+Broadcast::channel('cursos-aceptados', function ($user){
+    return true;
+});
+Broadcast::channel('deteccion-editada', function ($user){
+    return true;
+});

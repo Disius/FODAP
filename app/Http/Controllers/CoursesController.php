@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DeteccionEditadaEvent;
 use App\Events\DeteccionEvent;
 use App\Http\Requests\CursoRequest;
 use App\Models\Carrera;
@@ -46,10 +47,10 @@ class CoursesController extends Controller
             DB::commit();
 
             event(new DeteccionEvent($deteccion));
-
+            return Redirect::route('detecciones.create')->with('¿todo bien en casa?');
         }catch (\Exception $exception){
             DB::rollBack();
-            return back()->with('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
+            return Redirect::route('detecciones.create')->withErrors('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
         }
     }
 
@@ -72,6 +73,8 @@ class CoursesController extends Controller
         $deteccion->update($request->validated());
 
         $deteccion->save();
+
+        event(new DeteccionEditadaEvent($deteccion));
 
         User::role(['Coordinacion de FD y AP',  'Jefe del Departamento de Desarrollo Academico'])->each(function (User $user) use ($deteccion) {
             $usuario = auth()->user() == null ? $user : auth()->user();

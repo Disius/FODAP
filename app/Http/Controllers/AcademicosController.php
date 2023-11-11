@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\InscripcionEvent;
 use App\Models\Carrera;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
@@ -22,7 +23,7 @@ class AcademicosController extends Controller
         $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
             ->where('id_jefe', auth()->user()->docente_id)
             ->where('aceptado', '=', 0)
-            ->orderBy('id', 'desc')->get();
+            ->orderBy('id', 'desc')->paginate(5);
         CoursesController::state_curso();
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->get();
         return Inertia::render('Views/academicos/IndexDetecciones', [
@@ -87,11 +88,13 @@ class AcademicosController extends Controller
     public function registros()
     {
         $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
-            ->where('aceptado', '=', 1)
             ->where('id_jefe', auth()->user()->docente_id)
-            ->where('estado', '=', 2)
+            ->where(function ($query){
+                $query->where('aceptado', '=', 1)
+                    ->where('estado', '=', 2);
+            })
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate(5);
         return Inertia::render('Views/academicos/IndexRegistros', [
             'detecciones' => $detecciones
         ]);
@@ -100,11 +103,14 @@ class AcademicosController extends Controller
     public function index_cursos_academico()
     {
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
-            ->where('aceptado', '=', 1)
             ->where('id_jefe', '=', auth()->user()->docente_id)
-            ->orWhere('estado', '=', 0)
-            ->where('estado', '=', 1)
-            ->get();
+            ->where('aceptado', '=', 1)
+            ->where(function($query) {
+                $query->where('estado', '=', 0)
+                    ->orWhere('estado', '=', 1);
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(5);
 
         //Actualiza el estado del curso
         CoursesController::state_curso();
@@ -119,26 +125,43 @@ class AcademicosController extends Controller
         CoursesController::state_curso();
         return Inertia::render('Views/cursos/academicos/ShowInscritos', [
             'curso' => $this->consult_view($id),
-            'docente' => Docente::all(),
+            'docente' => Docente::orderBy('nombre', 'asc')->get(),
         ]);
     }
 
     public function inscripcion_academicos(Request $request, $id)
     {
-        $request->validate([
-            Rule::unique('inscripcion')->where(function ($query) use ($request) {
-                return $query->where('curso_id', $request->id);
-            }),
-        ]);
         $deteccion = DeteccionNecesidades::find($id);
+
         $num = count($deteccion->docente_inscrito) + 1;
 
-        if ($num <= $deteccion->numeroProfesores){
-            $deteccion->docente_inscrito()->toggle($request->input('id_docente', []));
 
-            return Redirect::route('show.inscritos.academicos', ['id' => $deteccion->id]);
+        if ($num <= $deteccion->numeroProfesores){
+
+
+
+            foreach ($request->id_docente as $docente){
+                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
+                    $deteccion->docente_inscrito()->attach($docente);
+                }else{
+                    return back()->withErrors('Este docente ya esta inscrito');
+                }
+            }
+
+
+
+            $syncDeteccion = DB::table('docente')
+                ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+                ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
+                ->where('inscripcion.curso_id', '=', $id)
+                ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
+                ->get();
+
+            event(new InscripcionEvent($syncDeteccion));
+
+            return redirect()->route('show.inscritos.academicos', ['id' => $deteccion->id]);
         }else{
-            return Redirect::route('show.inscritos.academicos', ['id' => $deteccion->id])->withErrors('Llego al maximo de docentes que el curso permite inscribir');
+            return redirect()->route('show.inscritos.academicos', ['id' => $deteccion->id])->withErrors('Llego al maximo de docentes que el curso permite inscribir');
         }
 
     }
@@ -147,7 +170,7 @@ class AcademicosController extends Controller
         $docentes = Docente::with('usuario')
             ->where('departamento_id', '=', auth()->user()->departamento_id)
             ->orderBy('nombre')
-            ->get();
+            ->paginate(10);
         CoursesController::state_curso();
         $user = User::with('docente')->get();
         return Inertia::render('Views/academicos/docentes/DocentesA', [
@@ -155,7 +178,7 @@ class AcademicosController extends Controller
             'user' => $user,
         ]);
     }
-    public function create_docentes_academicos(){
+    public function create_docentes_academicos(Request $request){
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->get();
         $departamento = Departamento::where('id', auth()->user()->departamento_id)->get();
         $tipoPlaza = DB::table('tipo_plaza')->get();
@@ -167,28 +190,16 @@ class AcademicosController extends Controller
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,
             'posgrado' => $posgrado,
+            'from_form' => $request->input('from_form')
         ]);
     }
+    public function docente_created_from_form(Request $request){
+        $this->create_instance_docente($request);
+        return Redirect::route('detecciones.create');
+    }
     public function created_docentes_academicos(Request $request){
-        $docente = Docente::create([
-            'rfc' => $request->rfc,
-            'curp' => $request->curp,
-            'nombre' => $request->nombre,
-            'apellidoPat' => $request->apellidoPat,
-            'apellidoMat' => $request->apellidoMat,
-            'sexo' => $request->sexo,
-            'telefono' => $request->telefono,
-            'carrera_id' => $request->carrera_id,
-            'id_puesto' => $request->id_puesto,
-            'tipo_plaza' => $request->tipo_plaza,
-            'departamento_id' => $request->departamento_id,
-            'user_id' => $request->id,
-            'licenciatura' => $request->licenciatura,
-            'id_posgrado' => $request->id_posgrado,
-            'nombre_completo' => $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat
-        ]);
+        $this->create_instance_docente($request);
 
-        $docente->save();
         return Redirect::route('index.docentes.academicos');
     }
 
@@ -209,6 +220,34 @@ class AcademicosController extends Controller
         ]);
     }
     public function update_docente_academico(Request $request, $id){
+
+        $docente = $this->updated_instance_docente($request, $id);
+        return Redirect::route('edit.docentes.academicos', ['id' => $docente->id]);
+    }
+    public static function create_instance_docente($request){
+        $docente = Docente::create([
+            'rfc' => $request->rfc,
+            'curp' => $request->curp,
+            'nombre' => $request->nombre,
+            'apellidoPat' => $request->apellidoPat,
+            'apellidoMat' => $request->apellidoMat,
+            'sexo' => $request->sexo,
+            'telefono' => $request->telefono,
+            'carrera_id' => $request->carrera_id,
+            'id_puesto' => $request->id_puesto,
+            'tipo_plaza' => $request->tipo_plaza,
+            'departamento_id' => $request->departamento_id,
+            'user_id' => $request->id,
+            'licenciatura' => $request->licenciatura,
+            'id_posgrado' => $request->id_posgrado,
+            'nombre_completo' => $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat
+        ]);
+
+        $docente->save();
+
+        return $docente;
+    }
+    public static function updated_instance_docente($request, $id){
         $docente = Docente::find($id);
 
         $docente->rfc = $request->rfc;
@@ -229,6 +268,6 @@ class AcademicosController extends Controller
 
         $docente->save();
 
-        return Redirect::route('edit.docentes.academicos', ['id' => $docente->id]);
+        return $docente;
     }
 }

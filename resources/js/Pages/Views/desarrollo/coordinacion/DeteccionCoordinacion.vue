@@ -5,18 +5,20 @@ import {computed, onMounted, ref} from "vue";
 import DeteccionDialog from '/resources/js/Pages/Views/dialogs/DeteccionDialogPDF.vue'
 import {Deteccion} from "@/store/Deteccion.js";
 import { TailwindPagination } from 'laravel-vue-pagination';
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const store = Deteccion()
 const props = defineProps({
-    detecciones: Array,
+    detecciones: Object,
     auth: Object,
     carrera: Array,
     errors: Object
 });
 
 const pdf_dialog = ref(false);
-
-
+const snackCursoAdd = ref(false)
+const snackCursoDelete = ref(false)
+const snackDeteccionEditada = ref(false)
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -40,9 +42,18 @@ onMounted(() => {
 
     window.Echo.private('deteccion_necesidades').listen('DeteccionEvent', (event) => {
         store.update_detecciones_desarrollo(event.deteccion)
+        snackCursoAdd.value = true
+    });
+    window.Echo.private('delete-deteccion').listen('DeleteDeteccionEvent', (event) => {
+        store.delete_deteccion_desarrollo(event.deteccion.id)
+        snackCursoDelete.value = true
+    });
+    window.Echo.private('deteccion-editada').listen('DeteccionEditadaEvent', (event) => {
+        snackDeteccionEditada.value = true
         console.log(event.deteccion)
-    })
+    });
 });
+console.log(props.detecciones.prev_page_url)
 </script>
 
 <template>
@@ -63,7 +74,7 @@ onMounted(() => {
                     </v-col>
                 </v-row>
             </v-container>
-            <template v-if="props.detecciones.length === 0">
+            <template v-if="props.detecciones.data.length === 0">
                 <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
                         <v-alert
@@ -81,11 +92,13 @@ onMounted(() => {
                     <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-100">
                         <v-table
                             fixed-header
-                            height="600px"
+                            height="500px"
+                            fixed-footer
 
                         >
                             <thead>
                             <tr>
+                                <th class="text-center">ID</th>
                                 <th class="text-center">
                                     Nombre del curso
                                 </th>
@@ -111,9 +124,10 @@ onMounted(() => {
                             </thead>
                             <tbody>
                             <tr
-                                v-for="deteccion in store.detecciones_desarrollo"
+                                v-for="deteccion in props.detecciones.data"
                                 :key="deteccion.id"
                             >
+                                <td>{{deteccion.id}}</td>
                                 <td>{{deteccion.nombreCurso}}</td>
                                 <td>{{deteccion.contenidosTM}}</td>
                                 <td>{{deteccion.asignaturaFA}}</td>
@@ -140,10 +154,55 @@ onMounted(() => {
                             </tr>
                             </tbody>
                         </v-table>
+                            <div class="grid grid-cols-2 mt-5">
+                                <div class="flex justify-end">
+                                    <NavLink v-if="props.detecciones.prev_page_url" :href="props.detecciones.prev_page_url" as="button">
+                                        <primary-button>Anterior</primary-button>
+                                    </NavLink>
+                                </div>
+                                <div class="flex justify-start">
+                                    <NavLink v-if="props.detecciones.next_page_url" :href="props.detecciones.next_page_url" as="button">
+                                        <primary-button>Siguiente</primary-button>
+                                    </NavLink>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </template>
         </div>
+        <v-snackbar
+            :timeout="10000"
+            color="success"
+            rounded="pill"
+            v-model="snackCursoAdd"
+            vertical
+        >
+
+
+            <strong>Se ha añadido un nuevo curso, recarga la pagina para visualizarlo</strong>.
+        </v-snackbar>
+        <v-snackbar
+            :timeout="10000"
+            color="success"
+            rounded="pill"
+            v-model="snackCursoDelete"
+            vertical
+        >
+
+
+            <strong>Se ha eliminado un curso, recarga la pagina para visualizarlo</strong>.
+        </v-snackbar>
+        <v-snackbar
+            :timeout="10000"
+            color="success"
+            rounded="pill"
+            vertical
+            v-model="snackDeteccionEditada"
+        >
+
+
+            <strong>Se ha editado un curso, recarga la pagina para visualizarlo</strong>.
+        </v-snackbar>
     </AuthenticatedLayout>
 </template>
 

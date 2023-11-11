@@ -20,6 +20,9 @@ const props = defineProps({
     },
     lugar: {
         type: Array
+    },
+    errors: {
+        type: Object,
     }
 });
 
@@ -59,10 +62,9 @@ onMounted(() => {
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <DeteccionesForm :lugar="props.lugar" :carrera="props.carrera_filtro" :todos_los_departamentos="props.todos_los_departamentos" :docente="props.base_docente"></DeteccionesForm>
+                    <DeteccionesForm :errores="props.errors" :lugar="props.lugar" :carrera="props.carrera_filtro" :todos_los_departamentos="props.todos_los_departamentos" :docente="props.base_docente"></DeteccionesForm>
                 </div>
             </div>
-<!--            <ResetForm v-model="dialogReset" @update:modelValue="dialogReset = $event"></ResetForm>-->
         </div>
     </AuthenticatedLayout>
 </template>

@@ -27,8 +27,11 @@ Route::middleware('auth')->prefix('v1')->group(function () {
     Route::get('/cursos-docentes', [DataResponseController::class, 'Curso_docente'])->name('v1.curso.docente');
     Route::get('/facilitadores-check', [DataResponseController::class, 'facilitador_check'])->name('v1.facilitadores');
     Route::get('/calificaciones', [DataResponseController::class, 'califications'])->name('v1.calificaciones');
+
     Route::get('/inscritos', [DataResponseController::class, 'inscritos_show'])->name('v1.inscritos');
+
     Route::get('/fechas-enable', [DataResponseController::class, 'if_enable_detecciones'])->name('v1.fechas');
     Route::get('/detecciones-academicos', [DataResponseController::class, 'deteccion_academicos'])->name('v1.detecciones.academicos');
+    Route::get('/cursos-academicos', [DataResponseController::class, 'cursos_academicos'])->name('v1.cursos.academicos');
 });
 

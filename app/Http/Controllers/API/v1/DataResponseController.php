@@ -42,7 +42,16 @@ class DataResponseController extends Controller
             'cursos' => $cursos
         ]);
     }
-
+    public function cursos_academicos(){
+        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
+            ->where('aceptado', '=', 1)
+            ->where('id_jefe', '=', auth()->user()->docente_id)
+            ->orderBy('id', 'desc')
+            ->get();
+        return response()->json([
+            'cursos' => $cursos
+        ]);
+    }
     public function Curso_docente(){
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
             ->where('aceptado', '=', 1)

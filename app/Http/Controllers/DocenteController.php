@@ -85,7 +85,7 @@ class DocenteController extends Controller
     public function facilitador_curso($facilitador, $id){
         $docente = Docente::find($facilitador);
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso'])->find($id);
-        $ficha = FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id);
+        $ficha = $curso->ficha != null ? FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id) : null;
 
         return Inertia::render('Views/cursos/facilitadores/MiCursoFacilitador', [
             'curso' => $curso,
@@ -97,7 +97,7 @@ class DocenteController extends Controller
     public function crear_ficha_tecnica($facilitador, $id){
         $docente = Docente::find($facilitador);
         $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($id);
-        return Inertia::render('Views/cursos/desarrollo/CreateFicha', [
+        return Inertia::render('Views/cursos/facilitadores/CreateFicha', [
             'docente' => $docente,
             'curso' => $curso
         ]);

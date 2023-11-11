@@ -26,7 +26,7 @@ const emit = defineEmits([
 
 const submit = () => {
     loading.value = true;
-    form.delete(route('delete.deteccion', props.curso), {
+    form.delete(route('delete.deteccion.desarrollo', props.curso), {
         onSuccess: () => {
             loading.value = false;
             emit('update:modelValue', false)

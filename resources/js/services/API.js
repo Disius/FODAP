@@ -37,6 +37,15 @@ export const detecciones_academicos = () => {
         })
     })
 }
+export const cursos_academicos = () => {
+    return new Promise((resolve, reject) => {
+        axios.get('/api/v1/cursos-academicos').then(res => {
+            resolve(res.data.cursos)
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}
 export const facilitador_check = (id) => {
     return new Promise((response, reject) => {
         axios.get('/api/v1/facilitadores-check', {

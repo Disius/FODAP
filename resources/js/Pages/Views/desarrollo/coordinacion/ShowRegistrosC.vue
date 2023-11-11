@@ -3,11 +3,12 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {onMounted} from "vue";
 import NavLink from "@/Components/NavLink.vue";
 import {Curso} from "@/store/curso.js";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 
 const store = Curso()
 const props = defineProps({
-   detecciones: Array,
+   cursos: Object,
     auth: Object
 });
 
@@ -39,7 +40,7 @@ onMounted(() => {
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Registro de todos los cursos que se llevaron acabo</h2>
         </template>
 
-        <template v-if="store.set_cursos_desarrollo_end !== null">
+        <template v-if="props.cursos.data.length !== 0">
             <div class="pt-3">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div class="sm:p-8 bg-white shadow sm:rounded-lg">
@@ -75,7 +76,7 @@ onMounted(() => {
                                 </thead>
                                 <tbody>
                                 <tr
-                                    v-for="deteccion in store.set_cursos_desarrollo_end"
+                                    v-for="deteccion in props.cursos.data"
                                     :key="deteccion.id"
                                 >
                                     <td>{{deteccion.nombreCurso}}</td>
@@ -104,6 +105,18 @@ onMounted(() => {
                                 </tr>
                                 </tbody>
                             </v-table>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 mt-5">
+                        <div class="flex justify-end">
+                            <NavLink v-if="props.cursos.prev_page_url" :href="props.cursos.prev_page_url" as="button">
+                                <primary-button>Anterior</primary-button>
+                            </NavLink>
+                        </div>
+                        <div class="flex justify-start">
+                            <NavLink v-if="props.cursos.next_page_url" :href="props.cursos.next_page_url" as="button">
+                                <primary-button>Siguiente</primary-button>
+                            </NavLink>
                         </div>
                     </div>
                 </div>

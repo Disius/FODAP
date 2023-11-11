@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Events\CursosAceptados;
+use App\Events\DeleteDeteccionEvent;
 use App\Events\DeteccionEvent;
 use App\Events\InscripcionEvent;
 use App\Listeners\CursosListener;
+use App\Listeners\DeleteDeteccionListener;
 use App\Listeners\DeteccionListener;
 use App\Listeners\InscripcionListener;
 use Illuminate\Auth\Events\Registered;
@@ -32,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         InscripcionEvent::class => [
             InscripcionListener::class,
+        ],
+        DeleteDeteccionEvent::class => [
+            DeleteDeteccionListener::class,
         ],
     ];
 
