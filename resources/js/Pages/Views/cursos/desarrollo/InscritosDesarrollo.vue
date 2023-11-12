@@ -20,14 +20,6 @@ const props = defineProps({
 });
 const timeout = ref(2000);
 
-
-const formatFechaF = computed(() => {
-    return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
-})
-const formatFechaI = computed(() => {
-    return new Date(props.curso.fecha_I).toLocaleDateString('es-MX');
-});
-
 const dialog_inscripcion = ref(false);
 const dialog = ref(false);
 const dialogCalificacion = ref(false);
@@ -37,6 +29,7 @@ const snackbarInscritos = ref(false);
 const snackbarError = ref(false);
 const snackbarBien = ref(false);
 const calificacion = ref(false);
+const dialog_generar_acta = ref(false);
 
 const formCalificacion = useForm({
     calificacion: "",
@@ -44,6 +37,7 @@ const formCalificacion = useForm({
     curso_id: props.curso.id
 })
 const fila_seleccionada = (id) => {
+    formCalificacion.reset()
     formCalificacion.docente_id = id
     dialogCalificacion.value = true
 }
@@ -67,19 +61,37 @@ const submit = (inscripcion, id) => {
 }
 const submitCalificacion = () => {
     loading.value = true;
-    formCalificacion.post(route('add.calificacion.desarrollo'), {
-        onSuccess: () => {
-            loading.value = false
-            formCalificacion.reset();
-            snackbarBien.value = true
-        },
-        onError: () => {
-            loading.value = false
-            snackbarError.value = true
-        },
-    })
+    if (formCalificacion.calificacion === ""){
+        formCalificacion.post(route('add.calificacion.desarrollo'), {
+            onSuccess: () => {
+                loading.value = false
+                formCalificacion.reset();
+                snackbarBien.value = true
+            },
+            onError: () => {
+                loading.value = false
+                snackbarError.value = true
+            },
+        })
+    }else{
+        formCalificacion.patch(route('update.calificacion.desarrollo'), {
+            onSuccess: () => {
+                loading.value = false
+                formCalificacion.reset();
+                snackbarBien.value = true
+            },
+            onError: () => {
+                loading.value = false
+                snackbarError.value = true
+            },
+        })
+    }
 }
-
+const updateCalificacion = (calificacion, id) => {
+    formCalificacion.calificacion = calificacion
+    formCalificacion.docente_id = id
+    dialogCalificacion.value = true
+}
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -103,6 +115,7 @@ onMounted(() => {
     })
     window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
         store.update_calificacion_desarrollo(event.calificacion[0])
+        console.log(event.calificacion)
         calificacion.value = true
     })
     store.inscritos_curso_desarrollo(props.curso.id)
@@ -282,6 +295,7 @@ onMounted(() => {
                                     class="ma-2"
                                     color="red"
                                     text-color="white"
+                                    @click="updateCalificacion(inscrito.calificacion, inscrito.id)"
                                 >
                                     {{inscrito.calificacion}}
                                 </v-chip>
@@ -291,6 +305,7 @@ onMounted(() => {
                                     class="ma-2"
                                     color="success"
                                     text-color="white"
+                                    @click="updateCalificacion(inscrito.calificacion, inscrito.id)"
                                 >
                                     {{inscrito.calificacion}}
                                 </v-chip>

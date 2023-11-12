@@ -220,7 +220,6 @@ class AcademicosController extends Controller
         ]);
     }
     public function update_docente_academico(Request $request, $id){
-
         $docente = $this->updated_instance_docente($request, $id);
         return Redirect::route('edit.docentes.academicos', ['id' => $docente->id]);
     }

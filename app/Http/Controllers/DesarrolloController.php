@@ -318,7 +318,9 @@ class DesarrolloController extends Controller
 
     public function calificaciones_desarrollo(Request $request){
         $request->validate([
-            'docente_id' => 'required'
+            'docente_id' => 'required',
+            'calificacion' => 'alpha',
+            'curso_id' => 'required',
         ]);
         DocenteController::add_calificacion($request);
 
@@ -332,6 +334,21 @@ class DesarrolloController extends Controller
 
         event(new CalificacionEvent($syncCalificacion));
 
+        return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
+    }
+    public function calificaciones_update(Request $request){
+        $request->validate([
+            'calificacion' => 'required',
+        ]);
+        DocenteController::update_calificacion($request, $request->docente_id);
+        $syncCalificacion = DB::table('docente')
+            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+            ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
+            ->where('inscripcion.curso_id', '=', $request->curso_id)
+            ->where('docente.id', '=', $request->docente_id)
+            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
+            ->get();
+        event(new CalificacionEvent($syncCalificacion));
         return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
     }
 }

@@ -126,4 +126,13 @@ class PDFController extends Controller
 
         return $this->save_file($pdf, $path);
     }
+    public function acta_calificaciones_pdf(Request $request){
+        $year = date('Y');
+        $pdf = Pdf::loadView('pdf.actacalificaciones', compact('year'))
+            ->output();
+
+        $path = 'acta_de_calificaciones.pdf';
+
+        return $this->save_file($pdf, $path);
+    }
 }

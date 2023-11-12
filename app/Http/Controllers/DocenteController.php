@@ -160,4 +160,11 @@ class DocenteController extends Controller
         $calificacion->save();
         return $calificacion;
     }
+
+    public static function update_calificacion($payload, $id){
+        $calificacion = Calificaciones::where('docente_id', $id)->first();
+        $calificacion->calificacion = $payload->calificacion;
+        $calificacion->save();
+        return $calificacion;
+    }
 }

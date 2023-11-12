@@ -65,6 +65,7 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::get('/desarrollo/cursos', [DesarrolloController::class, 'desarrollo_cursos'])->name('index.desarrollo.cursos');
     Route::get('/desarrollo/curso/{id}', [DesarrolloController::class, 'index_curso_inscrito_desarrollo'])->name('index.desarrollo.inscritos');
     Route::post('/desarrollo/calificaciones', [DesarrolloController::class, 'calificaciones_desarrollo'])->name('add.calificacion.desarrollo');
+    Route::patch('/desarrollo/calificaciones/update', [DesarrolloController::class, 'calificaciones_update'])->name('update.calificacion.desarrollo');
 
     //gestión usuarios
     Route::get('/editar/user/{id}', [GestionParametrosController::class, 'edit_users'])->name('edit.user');
@@ -90,5 +91,6 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
 
     //subir cvu
     Route::post('/subir/cvu', [GestionParametrosController::class, 'subir_cvu'])->name('subir.cvu');
+    Route::post('/subir/acta-calificaciones', [GestionParametrosController::class, 'subir_img_acta'])->name('subir.actacalificaciones');
 
 });

@@ -323,5 +323,11 @@ class   GestionParametrosController extends Controller
         $request->file('file')->storeAs('/CVUdownload/', 'CVU_editable.docx', 'public');
         return redirect()->route('parametros.edit');
     }
+    public function subir_img_acta(Request $request){
+        $year = date('Y');
+        $path = '/Membretado/'.$year;
+        $request->file('file')->storeAs($path, 'img_acta_calificaciones.png', 'public');
+        return redirect()->route('parametros.edit');
+    }
 
 }

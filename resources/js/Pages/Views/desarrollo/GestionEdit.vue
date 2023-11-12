@@ -30,6 +30,9 @@ const form = useForm({
 const form_file = useForm({
     file: null,
 });
+const form_file_acta_img = useForm({
+    file: null,
+});
 
 const props = defineProps({
     docente: {
@@ -69,6 +72,15 @@ const upload_cvu = () => {
         }
     })
 }
+const upload_acta = () => {
+    form_file_acta_img.post(route('subir.actacalificaciones'), {
+        forceFormData: true,
+        onSuccess: () => {
+            form_file.reset()
+            snack_success_cvu.value = true
+        }
+    })
+}
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -87,7 +99,6 @@ onMounted(() => {
         }
     });
 });
-console.log(props.errors)
 </script>
 
 <template>
@@ -244,12 +255,12 @@ console.log(props.errors)
                 </div>
 
                 <form @submit.prevent="upload_cvu">
-                    <div class="flex justify-center">
-                        <v-file-input label="" variant="solo" @input="form_file.file = $event.target.files[0]"></v-file-input>
-                    </div>
-                    <div class="flex justify-start">
-                        <div class="flex justify-start mt-5">
-                            <v-btn color="blue-darken-1" width="500">Subir</v-btn>
+                    <div class="grid grid-cols-1">
+                        <div class="flex justify-center">
+                            <v-file-input label="" variant="solo" @input="form_file.file = $event.target.files[0]"></v-file-input>
+                            <div class="flex justify-end mt-2 ml-5 w-11">
+                                <v-btn type="submit" color="blue-darken-1" width="500" icon="mdi-content-save-check-outline"></v-btn>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -261,6 +272,43 @@ console.log(props.errors)
                     <div class="text-subtitle-1 pb-2"></div>
 
                     <p>CVU subido con exito</p>
+
+                    <template v-slot:actions>
+                        <v-btn
+                            variant="text"
+                            @click="snack_success_cvu = false"
+                        >
+                            Cerrar
+                        </v-btn>
+                    </template>
+                </v-snackbar>
+
+                <header>
+                    <h2 class="text-xl font-medium text-gray-900 mb-8 mt-8">Membretado de documentos</h2>
+                </header>
+                <div class="mt-3">
+                    <strong class="text-lg text-gray-600">
+                        Subir membretado.
+                    </strong>
+                </div>
+                <form @submit.prevent="upload_acta">
+                    <div class="grid grid-cols-1">
+                        <div class="flex justify-center">
+                            <v-file-input label="Acta Calificaciones" variant="solo" @input="form_file_acta_img.file = $event.target.files[0]"></v-file-input>
+                            <div class="flex justify-end mt-2 ml-5 w-11">
+                                <v-btn type="submit" color="blue-darken-1" width="500" icon="mdi-content-save-check-outline"></v-btn>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <v-snackbar
+                    v-model="snack_success_cvu"
+                    vertical
+                    color="success"
+                >
+                    <div class="text-subtitle-1 pb-2"></div>
+
+                    <p>Membretado subido con exito</p>
 
                     <template v-slot:actions>
                         <v-btn
