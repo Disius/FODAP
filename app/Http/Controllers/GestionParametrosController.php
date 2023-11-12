@@ -329,5 +329,11 @@ class   GestionParametrosController extends Controller
         $request->file('file')->storeAs($path, 'img_acta_calificaciones.png', 'public');
         return redirect()->route('parametros.edit');
     }
+    public function subir_img_constancia(Request $request){
+        $year = date('Y');
+        $path = '/Membretado/'.$year;
+        $request->file('file')->storeAs($path, 'img_constancia.png', 'public');
+        return redirect()->route('parametros.edit');
+    }
 
 }

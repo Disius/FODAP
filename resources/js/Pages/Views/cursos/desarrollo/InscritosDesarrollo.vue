@@ -28,12 +28,13 @@ const dialogCalificacion = ref(false);
 const snackbar = ref(false);
 const loading = ref(false);
 const loadingActa = ref(false);
+const loadingConstancia = ref(false);
 const snackbarInscritos = ref(false);
 const snackbarError = ref(false);
 const snackbarBien = ref(false);
 const calificacion = ref(false);
 const dialog_generar_acta = ref(false);
-const button_enable_pdf = ref(false);
+const dialog_constancia_pdf = ref(false);
 
 const calificacion_string = ref("")
 const formCalificacion = useForm({
@@ -101,6 +102,26 @@ const submitActa = () => {
         console.log(error)
     })
 }
+const submitConstancia = () => {
+    loadingConstancia.value = true
+    dialog_constancia_pdf.value = true
+    axios.get(route('pdf.constancia'), {
+        params: {
+            id: props.curso.id
+        }
+    }).then(res => {
+        const url = '/storage/constancia.pdf';
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'constancia.pdf');
+        document.body.appendChild(link);
+        link.click();
+        loadingConstancia.value = false
+        dialog_constancia_pdf.value = false
+    }).catch(error => {
+        console.log(error)
+    })
+}
 
 const updateCalificacion = (calificacion, id) => {
     calificacion_string.value = calificacion
@@ -139,7 +160,7 @@ onMounted(() => {
 
 
 watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
-    formCalificacion.calificacion = newCalificacion
+    formCalificacion.calificacion = newCalificacion.toUpperCase()
 });
 </script>
 
@@ -301,6 +322,7 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
                         <th class="text-center">Apellido Materno</th>
                         <th class="text-center">CÉDULA DE INSCRIPCIÓN</th>
                         <th class="text-center">CALIFICACIÓN</th>
+                        <th class="text-center">Constancia</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -344,6 +366,13 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
                                 >
                                     {{inscrito.calificacion}}
                                 </v-chip>
+                            </template>
+                        </td>
+                        <td class="text-center">
+                            <template v-if="inscrito.calificacion === 'APROBADO'">
+                                <v-btn icon="mdi-file-pdf-box" color="success" @click="submitConstancia">
+
+                                </v-btn>
                             </template>
                         </td>
                     </tr>
@@ -393,6 +422,17 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
                     </v-row>
                 </v-card-actions>
             </v-card>
+        </v-dialog>
+        <v-dialog width="auto" v-model="dialog_constancia_pdf">
+            <v-fade-transition leave-absolute>
+                <v-progress-circular
+                    v-if="loadingConstancia"
+                    color="info"
+                    :size="64"
+                    :width="7"
+                    indeterminate
+                ></v-progress-circular>
+            </v-fade-transition>
         </v-dialog>
         <v-snackbar
             v-model="snackbar"

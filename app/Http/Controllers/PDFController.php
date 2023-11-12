@@ -136,4 +136,20 @@ class PDFController extends Controller
 
         return $this->save_file($pdf, $path);
     }
+    public function constancia_pdf(Request $request){
+        $year = date('Y');
+        $pdf_1 = Pdf::loadView('pdf.constancia', compact('year'))
+            ->output();
+
+        $path = 'constancia_1.pdf';
+
+        $pdf_2 = Pdf::loadView('pdf.constancia', compact('year'))
+            ->setPaper('landscape')
+            ->output();
+
+        $path_2 = 'constancia_2.pdf';
+
+        $this->save_file($pdf_1, $path);
+        $this->save_file($pdf_2, $path_2);
+    }
 }
