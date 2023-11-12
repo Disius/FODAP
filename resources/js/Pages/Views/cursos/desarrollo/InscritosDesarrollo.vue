@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {computed, onMounted} from "vue";
+import {computed, onMounted, watch} from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
 import Inscripcion from "../../dialogs/Inscripcion.vue";
@@ -10,6 +10,8 @@ import DangerButton from "@/Components/DangerButton.vue";
 import EliminarDeteccionConfirmation from "@/Pages/Views/dialogs/EliminarDeteccionConfirmation.vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
+import ActaCalificaciones from "@/Pages/Views/dialogs/ActaCalificaciones.vue";
+import axios from 'axios'
 
 const store = Curso();
 
@@ -25,19 +27,23 @@ const dialog = ref(false);
 const dialogCalificacion = ref(false);
 const snackbar = ref(false);
 const loading = ref(false);
+const loadingActa = ref(false);
 const snackbarInscritos = ref(false);
 const snackbarError = ref(false);
 const snackbarBien = ref(false);
 const calificacion = ref(false);
 const dialog_generar_acta = ref(false);
+const button_enable_pdf = ref(false);
 
+const calificacion_string = ref("")
 const formCalificacion = useForm({
-    calificacion: "",
+    calificacion: calificacion_string.value,
     docente_id: null,
     curso_id: props.curso.id
 })
+
 const fila_seleccionada = (id) => {
-    formCalificacion.reset()
+    calificacion_string.value = ""
     formCalificacion.docente_id = id
     dialogCalificacion.value = true
 }
@@ -61,34 +67,43 @@ const submit = (inscripcion, id) => {
 }
 const submitCalificacion = () => {
     loading.value = true;
-    if (formCalificacion.calificacion === ""){
         formCalificacion.post(route('add.calificacion.desarrollo'), {
             onSuccess: () => {
                 loading.value = false
                 formCalificacion.reset();
                 snackbarBien.value = true
+                dialog_generar_acta.value = false
             },
             onError: () => {
                 loading.value = false
                 snackbarError.value = true
             },
         })
-    }else{
-        formCalificacion.patch(route('update.calificacion.desarrollo'), {
-            onSuccess: () => {
-                loading.value = false
-                formCalificacion.reset();
-                snackbarBien.value = true
-            },
-            onError: () => {
-                loading.value = false
-                snackbarError.value = true
-            },
-        })
-    }
 }
+
+const submitActa = () => {
+    loadingActa.value = true
+    dialog_generar_acta.value = true
+    axios.get(route('pdf.acta.calificaciones'), {
+        params: {
+            id: props.curso.id
+        }
+    }).then(res => {
+        const url = '/storage/acta_de_calificaciones.pdf';
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'acta calificaciones.pdf');
+        document.body.appendChild(link);
+        link.click();
+        loadingActa.value = false
+        dialog_generar_acta.value = false
+    }).catch(error => {
+        console.log(error)
+    })
+}
+
 const updateCalificacion = (calificacion, id) => {
-    formCalificacion.calificacion = calificacion
+    calificacion_string.value = calificacion
     formCalificacion.docente_id = id
     dialogCalificacion.value = true
 }
@@ -109,6 +124,7 @@ onMounted(() => {
                 break;
         }
     });
+    console.log(store.inscritos_calificacion)
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
         store.update_inscritos_desarrollo(event.inscritos)
         snackbarInscritos.value = true
@@ -119,6 +135,11 @@ onMounted(() => {
         calificacion.value = true
     })
     store.inscritos_curso_desarrollo(props.curso.id)
+});
+
+
+watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
+    formCalificacion.calificacion = newCalificacion
 });
 </script>
 
@@ -258,6 +279,20 @@ onMounted(() => {
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h2 class="text-lg font-medium text-gray-900">Docentes inscritos a este curso</h2>
+                <div class="flex justify-end mb-10">
+                    <v-btn color="blue-darken-1" @click="submitActa" :disabled="!store.inscritos_calificacion">Descargar Acta de Calificaciones</v-btn>
+                    <v-dialog width="auto" v-model="dialog_generar_acta">
+                        <v-fade-transition leave-absolute>
+                            <v-progress-circular
+                                v-if="loadingActa"
+                                color="info"
+                                :size="64"
+                                :width="7"
+                                indeterminate
+                            ></v-progress-circular>
+                        </v-fade-transition>
+                    </v-dialog>
+                </div>
                 <v-table fixed-header height="500px" hover>
                     <thead>
                     <tr>
@@ -290,7 +325,7 @@ onMounted(() => {
                                     <v-icon>mdi-pencil-plus</v-icon>
                                 </v-btn>
                             </template>
-                            <template v-else-if="inscrito.calificacion === 'NA'">
+                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
                                 <v-chip
                                     class="ma-2"
                                     color="red"
@@ -323,10 +358,10 @@ onMounted(() => {
                     <v-row justify="center">
                         <v-col cols="12">
                             <InputLabel for="calificacion"
-                                        value="Unicamente ESCRIBIR si es APROBATORIO o NA (No acreditado)" />
+                                        value="Unicamente ESCRIBIR si el docente esta APROBADO o NO APROBADO (MARCAR EN MAYÚSCULAS)" />
                         </v-col>
                         <v-col cols="10" class="mt-16">
-                            <v-text-field variant="solo-filled" v-model="formCalificacion.calificacion"></v-text-field>
+                            <v-text-field variant="solo-filled" v-model="calificacion_string"></v-text-field>
                         </v-col>
                     </v-row>
                 </v-card-text>

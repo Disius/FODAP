@@ -8,6 +8,7 @@ use App\Events\DeleteDeteccionEvent;
 use App\Events\InscripcionEvent;
 use App\Events\ObservacionEvent;
 use App\Http\Requests\CursoRequest;
+use App\Models\Calificaciones;
 use App\Models\Carrera;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
@@ -319,10 +320,15 @@ class DesarrolloController extends Controller
     public function calificaciones_desarrollo(Request $request){
         $request->validate([
             'docente_id' => 'required',
-            'calificacion' => 'alpha',
+            'calificacion' => 'required',
             'curso_id' => 'required',
         ]);
-        DocenteController::add_calificacion($request);
+
+        if (Calificaciones::where('docente_id', $request->docente_id)->exists()){
+            DocenteController::update_calificacion($request, $request->docente_id);
+        }else{
+            DocenteController::add_calificacion($request);
+        }
 
         $syncCalificacion = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
@@ -332,7 +338,7 @@ class DesarrolloController extends Controller
             ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
             ->get();
 
-        event(new CalificacionEvent($syncCalificacion));
+            event(new CalificacionEvent($syncCalificacion));
 
         return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
     }

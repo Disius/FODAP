@@ -128,7 +128,8 @@ class PDFController extends Controller
     }
     public function acta_calificaciones_pdf(Request $request){
         $year = date('Y');
-        $pdf = Pdf::loadView('pdf.actacalificaciones', compact('year'))
+        $curso = DeteccionNecesidades::with('calificaciones_curso', 'carrera')->find($request->id);
+        $pdf = Pdf::loadView('pdf.actacalificaciones', compact('year', 'curso'))
             ->output();
 
         $path = 'acta_de_calificaciones.pdf';

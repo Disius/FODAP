@@ -302,7 +302,7 @@ onMounted(() => {
                                     <v-icon>mdi-pencil-plus</v-icon>
                                 </v-btn>
                             </template>
-                            <template v-else-if="inscrito.calificacion === 'NA'">
+                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
                                 <v-chip
                                     class="ma-2"
                                     color="red"
@@ -333,7 +333,7 @@ onMounted(() => {
                     <v-row justify="center">
                         <v-col cols="12">
                             <InputLabel for="calificacion"
-                                        value="Unicamente ESCRIBIR si es APROBATORIO o NA (No acreditado)" />
+                                        value="Unicamente ESCRIBIR si el docente esta APROBADO o NO APROBADO (MARCAR EN MAYÚSCULAS)" />
                         </v-col>
                         <v-col cols="10" class="mt-16">
                             <v-text-field variant="solo-filled" v-model="form.calificacion"></v-text-field>

@@ -42,9 +42,13 @@ export const Curso = defineStore('Curso', {
         },
         my_inscritos_desarrollo(state){
             return state.inscritos_desarrollo
-        },my_inscritos_academicos(state){
+        },
+        my_inscritos_academicos(state){
             return state.inscritos_academicos
         },
+        inscritos_calificacion(state){
+            return state.inscritos_desarrollo.every(inscrito => inscrito.calificacion !== null);
+        }
     },
     actions: {
         get_curso_desarrollo(){
