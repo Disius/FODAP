@@ -22,6 +22,7 @@ const search = ref("");
 const dialogSub = ref(false);
 const snackbar = ref(false);
 const snack_success_cvu = ref(false);
+const snack_error = ref(false);
 const form = useForm({
     fecha_Inicio: "",
     fecha_Final: "",
@@ -75,6 +76,9 @@ const upload_cvu = () => {
         onSuccess: () => {
             form_file.reset()
             snack_success_cvu.value = true
+        },
+        onError: () => {
+            snack_error.value = true
         }
     })
 }
@@ -84,6 +88,9 @@ const upload_acta = () => {
         onSuccess: () => {
             form_file_acta_img.reset()
             snack_success_cvu.value = true
+        },
+        onError: () => {
+            snack_error.value = true
         }
     })
 }
@@ -93,6 +100,9 @@ const upload_constancia = () => {
         onSuccess: () => {
             form_file_constancia_img.reset()
             snack_success_cvu.value = true
+        },
+        onError: () => {
+            snack_error.value = true
         }
     })
 }
@@ -102,6 +112,9 @@ const upload_constancia_2 = () => {
         onSuccess: () => {
             form_file_constancia_img_2.reset()
             snack_success_cvu.value = true
+        },
+        onError: () => {
+            snack_error.value = true
         }
     })
 }
@@ -377,7 +390,24 @@ onMounted(() => {
                 </form>
             </div>
         </div>
+        <v-snackbar
+            v-model="snack_error"
+            vertical
+            color="error"
+        >
+            <div class="text-subtitle-1 pb-2"></div>
 
+            <p>Error. No es posible generar el recurso</p>
+
+            <template v-slot:actions>
+                <v-btn
+                    variant="text"
+                    @click="snack_error = false"
+                >
+                    Cerrar
+                </v-btn>
+            </template>
+        </v-snackbar>
     </AuthenticatedLayout>
 </template>
 

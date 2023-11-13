@@ -144,36 +144,48 @@ class PDFController extends Controller
         $pdf_1 = Pdf::loadView('pdf.constancia', compact('year'))
             ->output();
 
-        $path = 'constancia_1.pdf';
+        $path = 'constancia1.pdf';
 
         $pdf_2 = Pdf::loadView('pdf.constancia_2', compact('year'))
-            ->setPaper('landscape')
+            ->setPaper('a4','landscape')
             ->output();
 
-        $path_2 = 'constancia_2.pdf';
+        $path_2 = 'constancia2.pdf';
 
         $this->save_file($pdf_1, $path);
         $this->save_file($pdf_2, $path_2);
 
-        $merge = $this->merge_pdf($path, $path_2);
+        $this->merge_pdf('constancia1', 'constancia2');
     }
 
     public static function merge_pdf($pdf1, $pdf2){
-        $pdf = new Fpdi();
+        $name = "constancia.pdf";
+        $ruta = storage_path('app/public/'.$name);
+        $pdf_1 = storage_path('app/public/'.$pdf1.'.pdf');
+        $pdf_2 = storage_path('app/public/'.$pdf2.'.pdf');
 
-        // Añade la primera página del primer PDF
-        $pageCount1 = $pdf->setSourceFile(public_path('/storage/'.$pdf1));
-        $template1 = $pdf->importPage(1);
-        $pdf->addPage();
-        $pdf->useTemplate($template1);
+        if (!file_exists($pdf_1) || !file_exists($pdf_2)) {
+            // Manejar la falta de archivos, lanzar excepción o generar los PDFs previamente si es necesario
+            return null;
+        }else {
+            $pdf = new Fpdi();
 
-        // Añade la primera página del segundo PDF
-        $pageCount2 = $pdf->setSourceFile(public_path('/storage/'.$pdf2));
-        $template2 = $pdf->importPage(1);
-        $pdf->addPage();
-        $pdf->useTemplate($template2);
+            $pageCount1 = $pdf->setSourceFile($pdf_1);
+            $template1 = $pdf->importPage(1);
+            $pdf->addPage();
+            $pdf->useTemplate($template1);
 
-        // Guarda el archivo PDF resultante
-        return $pdf->Output();
+            // Añade la primera página del segundo PDF
+            $pageCount2 = $pdf->setSourceFile($pdf_2);
+
+
+            // Añade la primera página del segundo PDF con la misma orientación del papel del primer PDF
+            $template2 = $pdf->importPage(1);
+            $pdf->addPage('landscape');
+            $pdf->useTemplate($template2);
+
+            $pdf->Output($ruta, 'F');
+            return $ruta;
+        }
     }
 }
