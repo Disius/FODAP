@@ -141,7 +141,20 @@ class PDFController extends Controller
     }
     public function constancia_pdf(Request $request){
         $year = date('Y');
-        $pdf_1 = Pdf::loadView('pdf.constancia', compact('year'))
+        $instituto = DB::table('nombre_instituto')->get();
+        $docente = Docente::with('inscrito')->find($request->id_docente);
+        $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($docente->inscrito[0]->id);
+
+        $facilitador = $curso->deteccion_facilitador;
+
+        $fecha = $docente->inscrito[0]->fecha_I;
+        $fecha2 = $docente->inscrito[0]->fecha_F;
+        $formatFechasI = explode("-", $fecha);
+        $formatFechasF = explode("-", $fecha2);
+
+        $month = $this->parse_date($fecha);
+
+        $pdf_1 = Pdf::loadView('pdf.constancia', compact('year', 'instituto', 'docente', 'formatFechasI', 'formatFechasF', 'month', 'facilitador'))
             ->output();
 
         $path = 'constancia1.pdf';
@@ -188,4 +201,35 @@ class PDFController extends Controller
             return $ruta;
         }
     }
+
+    public static function parse_date($fecha1){
+        $fechaActual = date("Y-m-d");
+        $componentes2 = date_parse($fechaActual);
+        $componentes = date_parse($fecha1);
+
+        $anio = $componentes['year'];
+        $anio_2 = $componentes2['year'];
+
+        $mesesEnEspanol = [
+            1 => 'enero',
+            2 => 'febrero',
+            3 => 'marzo',
+            4 => 'abril',
+            5 => 'mayo',
+            6 => 'junio',
+            7 => 'julio',
+            8 => 'agosto',
+            9 => 'septiembre',
+            10 => 'octubre',
+            11 => 'noviembre',
+            12 => 'diciembre'
+        ];
+
+        $mesNumero = $componentes['month'];
+
+        $month_number = $componentes2['month'];
+        $day = $componentes2['day'];
+        return [$mesesEnEspanol[$mesNumero], $mesesEnEspanol[$month_number], $day];
+    }
+
 }

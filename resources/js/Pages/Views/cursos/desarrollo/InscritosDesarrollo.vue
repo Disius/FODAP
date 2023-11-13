@@ -102,15 +102,21 @@ const submitActa = () => {
         console.log(error)
     })
 }
-const submitConstancia = () => {
+const submitConstancia = (docente_id) => {
     loadingConstancia.value = true
     dialog_constancia_pdf.value = true
     axios.get(route('pdf.constancia'), {
         params: {
-            id: props.curso.id
+            id: props.curso.id,
+            id_docente: docente_id
         }
     }).then(res => {
-
+        const url = '/storage/constancia.pdf';
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'constancia.pdf');
+        document.body.appendChild(link);
+        link.click();
         loadingConstancia.value = false
         dialog_constancia_pdf.value = false
     }).catch(error => {
@@ -366,7 +372,7 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
                         </td>
                         <td class="text-center">
                             <template v-if="inscrito.calificacion === 'APROBADO'">
-                                <v-btn icon="mdi-file-pdf-box" color="success" @click="submitConstancia">
+                                <v-btn icon="mdi-file-pdf-box" color="success" @click="submitConstancia(inscrito.id)">
 
                                 </v-btn>
                             </template>

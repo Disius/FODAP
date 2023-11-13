@@ -26,22 +26,158 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            font-weight: bold;
-            font-family: "Arial", "Helvetica", sans-serif;
-            font-size: 10pt;
+            font-weight: normal;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 17pt;
         }
         .text-position {
             display: flex;
             position: relative;
-            top: 220px;
+            top: 210px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: normal;
+            text-align: start;
+            margin-left: 100px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 14pt;
+        }
+        .text-2 {
+            display: flex;
+            position: relative;
+            top: 230px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: normal;
+            text-align: center;
+            margin-right: 50px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 14pt;
+        }
+        .text-3 {
+            display: flex;
+            position: relative;
+            top: 250px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: normal;
+            text-align: center;
+            margin-right: 50px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 21pt;
+        }
+        .text-4 {
+            display: flex;
+            position: relative;
+            top: 270px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: normal;
+            text-align: center;
+            margin-right: 50px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 21pt;
+        }
+        .text-5 {
+            display: flex;
+            position: relative;
+            top: 290px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             font-weight: bold;
-            text-align: start;
-            margin-left: 100px;
-            font-family: "Arial", "Helvetica", sans-serif;
+            text-align: center;
+            margin-right: 50px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 23pt;
+        }
+        .text-6 {
+            display: flex;
+            position: relative;
+            top: 310px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: normal;
+            text-align: center;
+            margin-right: 50px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 14pt;
+        }
+        .text-7 {
+            display: flex;
+            position: relative;
+            top: 330px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            text-align: center;
+            margin-right: 50px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 17pt;
+        }
+        .text-8 {
+            display: flex;
+            position: relative;
+            top: 390px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: normal;
+            text-align: justify;
+            margin-left: 80px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 12pt;
+            width: 600px;
+        }
+        .text-9 {
+            display: flex;
+            position: relative;
+            top: 430px;
+            flex-direction: column;
+            justify-content: end;
+            align-items: center;
+            font-weight: normal;
+            text-align: justify;
+            margin-left: 390px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
             font-size: 10pt;
+        }
+        .firmaDirector {
+            font-weight: normal;
+            text-align: center;
+            margin-left: 390px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 9pt;
+        }
+        .nameDirector {
+            font-weight: normal;
+            text-align: center;
+            margin-left: 100px;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 9pt;
+        }
+        .footer {
+            position: fixed;
+            bottom: 230px;
+            width: 100%;
+            text-align: center;
+            padding: 10px;;
+        }
+
+        .director-signature {
+            float: right;
+            margin-right: 160px;
+        }
+
+        .teacher-signature {
+            float: left;
+            margin-left: 80px;
         }
         .custom_table {
             table-layout: fixed;
@@ -51,7 +187,12 @@
             margin-top: 250px;
             margin-left: 100px;
         }
-
+        p {
+            font-weight: normal;
+            text-align: center;
+            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-size: 8pt;
+        }
 
         .custom_table td,
         .custom_table th {
@@ -98,7 +239,51 @@
 </head>
 
 <body>
+    <diV class="header">EL TECNOLÓGICO NACIONAL DE MÉXICO</diV>
+    <diV class="text-position">A TRAVÉS DEL {{$instituto[0]->name}}</diV>
+    <diV class="text-2">OTORGA LA PRESENTE</diV>
+    <diV class="text-3">CONSTANCIA</diV>
+    <diV class="text-4">A</diV>
 
+    <div class="text-5">
+        {{$docente->nombre_completo}}
+    </div>
+    <div class="text-6">
+        Por su destacada participación en el Curso/taller:
+    </div>
+    <div class="text-7">
+        "{{$docente->inscrito[0]->nombreCurso}}"
+    </div>
+    <div class="text-8">
+        Que dentro del programa Institucional de Formación Docente y Actualización
+        Profesional @if($docente->inscrito[0]->periodo === 1)
+                        enero-junio
+        @else
+                        agosto-diciembre
+        @endif
+        {{$year}} se llevó a cabo en este instituto, del {{$formatFechasI[2]}} al {{$formatFechasF[2]}} de {{$month[0]}} de {{$year}}, con una duración de {{$docente->inscrito[0]->total_horas}} horas.
+    </div>
+    <div class="text-9">
+        Tuxtla Gutierrez, Chiapas; {{$month[2]}} {{$month[1]}} de {{$year}}
+    </div>
+
+    <div class="footer">
+        <div class="director-signature" style="float: right;">
+            <!-- Firma del director -->
+            @foreach($facilitador as $facilitadores)
+                <p>{{$facilitadores->nombre_completo}}</p>
+            @endforeach
+            <p>FACILITADOR</p>
+            <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->
+        </div>
+        <div class="teacher-signature" style="float: left;">
+            <!-- Firma del maestro -->
+            <p>JOSÉ MANUEL ROSADO PÉREZ</p>
+            <p>DIRECTOR DEL</p>
+            <p>{{$instituto[0]->name}}</p>
+            <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->
+        </div>
+    </div>
 </body>
 
 </html>
