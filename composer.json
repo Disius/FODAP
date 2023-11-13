@@ -14,6 +14,8 @@
         "laravel/tinker": "^2.8",
         "phpoffice/phpword": "^1.1",
         "pusher/pusher-php-server": "^7.2",
+        "setasign/fpdi": "^2.5",
+        "setasign/fpdi-tcpdf": "^2.3",
         "spatie/laravel-permission": "^5.10",
         "tightenco/ziggy": "^1.0",
         "webklex/laravel-pdfmerger": "^1.3"

@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Validator;
+use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
+use setasign\Fpdi\Fpdi;
+use setasign\Fpdi\PdfReader;
 class PDFController extends Controller
 {
     public static function pdf_request_deteccion($data): \Illuminate\Database\Eloquent\Collection|array
@@ -143,7 +146,7 @@ class PDFController extends Controller
 
         $path = 'constancia_1.pdf';
 
-        $pdf_2 = Pdf::loadView('pdf.constancia', compact('year'))
+        $pdf_2 = Pdf::loadView('pdf.constancia_2', compact('year'))
             ->setPaper('landscape')
             ->output();
 
@@ -151,5 +154,26 @@ class PDFController extends Controller
 
         $this->save_file($pdf_1, $path);
         $this->save_file($pdf_2, $path_2);
+
+        $merge = $this->merge_pdf($path, $path_2);
+    }
+
+    public static function merge_pdf($pdf1, $pdf2){
+        $pdf = new Fpdi();
+
+        // Añade la primera página del primer PDF
+        $pageCount1 = $pdf->setSourceFile(public_path('/storage/'.$pdf1));
+        $template1 = $pdf->importPage(1);
+        $pdf->addPage();
+        $pdf->useTemplate($template1);
+
+        // Añade la primera página del segundo PDF
+        $pageCount2 = $pdf->setSourceFile(public_path('/storage/'.$pdf2));
+        $template2 = $pdf->importPage(1);
+        $pdf->addPage();
+        $pdf->useTemplate($template2);
+
+        // Guarda el archivo PDF resultante
+        return $pdf->Output();
     }
 }

@@ -110,16 +110,12 @@ const submitConstancia = () => {
             id: props.curso.id
         }
     }).then(res => {
-        const url = '/storage/constancia.pdf';
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'constancia.pdf');
-        document.body.appendChild(link);
-        link.click();
+
         loadingConstancia.value = false
         dialog_constancia_pdf.value = false
     }).catch(error => {
-        console.log(error)
+        loadingConstancia.value = false
+        snackbarError.value = true
     })
 }
 

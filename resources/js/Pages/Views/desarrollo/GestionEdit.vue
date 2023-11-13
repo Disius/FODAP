@@ -36,6 +36,9 @@ const form_file_acta_img = useForm({
 const form_file_constancia_img = useForm({
     file: null,
 });
+const form_file_constancia_img_2 = useForm({
+    file: null,
+});
 
 const props = defineProps({
     docente: {
@@ -89,6 +92,15 @@ const upload_constancia = () => {
         forceFormData: true,
         onSuccess: () => {
             form_file_constancia_img.reset()
+            snack_success_cvu.value = true
+        }
+    })
+}
+const upload_constancia_2 = () => {
+    form_file_constancia_img_2.post(route('subir.constancia.2'), {
+        forceFormData: true,
+        onSuccess: () => {
+            form_file_constancia_img_2.reset()
             snack_success_cvu.value = true
         }
     })
@@ -331,10 +343,32 @@ onMounted(() => {
                         </v-btn>
                     </template>
                 </v-snackbar>
+                <div class="flex justify-start ml-10 mb-2">
+                    <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                            <v-btn icon v-bind="props" size="normal" color="blue-darken-1">
+                                <v-icon>
+                                    mdi-help
+                                </v-icon>
+                            </v-btn>
+                        </template>
+                        <span>En el caso de las constancias deben agregarse el membretado y la imagen.</span>
+                    </v-tooltip>
+                </div>
                 <form @submit.prevent="upload_constancia">
                     <div class="grid grid-cols-1">
                         <div class="flex justify-center">
                             <v-file-input label="Constancia" variant="solo" @input="form_file_constancia_img.file = $event.target.files[0]"></v-file-input>
+                            <div class="flex justify-end mt-2 ml-5 w-11">
+                                <v-btn type="submit" color="blue-darken-1" width="500" icon="mdi-content-save-check-outline"></v-btn>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form @submit.prevent="upload_constancia_2">
+                    <div class="grid grid-cols-1">
+                        <div class="flex justify-center">
+                            <v-file-input label="Constancia Imagen 2" variant="solo" @input="form_file_constancia_img_2.file = $event.target.files[0]"></v-file-input>
                             <div class="flex justify-end mt-2 ml-5 w-11">
                                 <v-btn type="submit" color="blue-darken-1" width="500" icon="mdi-content-save-check-outline"></v-btn>
                             </div>
