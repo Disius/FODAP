@@ -14,7 +14,6 @@ class InstaladorServiceProvider extends ServiceProvider
         if (env('APP_KEY') === null) {
             Artisan::call('key:generate');
         }
-
         // Verificar si las migraciones aún no se han ejecutado
         if (!$this->migrationsHaveRun()) {
             Artisan::call('migrate');
@@ -31,6 +30,9 @@ class InstaladorServiceProvider extends ServiceProvider
 
         // Ejecutar npm install
         $this->npmInstall();
+
+        // Establecer el nombre de la base de datos en el archivo .env
+        $this->setDatabaseName();
     }
 
     public function register()
@@ -117,6 +119,22 @@ class InstaladorServiceProvider extends ServiceProvider
         file_put_contents(base_path('.env'), PHP_EOL . 'SEEDERS_HAVE_RUN=true', FILE_APPEND);
     }
 
+    protected function setDatabaseName()
+    {
+        $envFilePath = base_path('.env');
+
+        // Obtener el nombre de la base de datos (puedes ajustar esto según tus necesidades)
+        $databaseName = 'db_fodap';
+
+        // Abrir el archivo .env para lectura/escritura
+        $content = file_get_contents($envFilePath);
+
+        // Reemplazar o agregar la línea que establece el nombre de la base de datos
+        $content = preg_replace('/DB_DATABASE=.*$/m', 'DB_DATABASE=' . $databaseName, $content);
+
+        // Guardar los cambios en el archivo .env
+        file_put_contents($envFilePath, $content);
+    }
 
     /**
      * Mostrar salida en la consola (opcional).

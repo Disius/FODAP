@@ -24,7 +24,7 @@ class Installer extends Controller
 
     public function store(Request $request){
 
-        $file_path = $request->file('file')->storeAs('/img/', 'logo.jpg', 'public');
+        $request->file('file')->storeAs('/img/', 'logo.jpg', 'public');
         $admin = User::where('email', 'admin@tuxtla.tecnm.mx')->first();
         $admin->removeRole('Super Admin');
         auth()->logout();
