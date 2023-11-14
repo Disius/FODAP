@@ -170,7 +170,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Webklex\PDFMerger\Providers\PDFMergerServiceProvider::class,
-        \App\Providers\InstaladorServiceProvider::class,
     ])->toArray(),
 
     /*
