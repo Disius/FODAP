@@ -269,7 +269,7 @@ onMounted(() => {
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
-                    <h2 class="text-xl font-medium text-gray-900 mb-8">Subdirección Académica</h2>
+                    <h2 class="text-xl font-medium text-gray-900 mb-8">Nombre del Instituto y subdirección académica</h2>
                 </header>
                 <tabla-sub :sub="props.sub" :modelValue="dialogSub" @update:modelValue="dialogSub = $event"></tabla-sub>
                 <form-subdireccion :sub="props.sub" v-model="dialogSub" @update:modelValue="dialogSub = $event"></form-subdireccion>

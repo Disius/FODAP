@@ -5,10 +5,12 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
-import {computed} from "vue";
-import {administrador} from "@/services/API.js";
+import { Link, useForm } from '@inertiajs/vue3';
+import {computed, onMounted, ref} from "vue";
+import {FODAPStore} from "@/store/server.js";
 
+
+const store = FODAPStore()
 const props = defineProps({
     canResetPassword: {
         type: Boolean,
@@ -23,9 +25,10 @@ const props = defineProps({
         type: String
     }
 });
-
-const ad = Boolean(props.administrator)
-
+const alert = ref(false);
+const transform_prop = computed(() => {
+    return Boolean(props.administrator)
+})
 const form = useForm({
     email: '',
     password: '',
@@ -45,16 +48,43 @@ const email_rules = [
         return /^[A-Za-z0-9._%+-]+@(tuxtla\.tecnm\.mx|tecnm\.mx)$/.test(v) || "Su email debe ser exclusivamente institucional"
     }
 ];
+
+onMounted(() => {
+    store.admin_get()
+})
 </script>
 
 <template>
     <GuestLayout>
-
-
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
-
+        <template v-if="transform_prop === true">
+            <div class="flex justify-end">
+                <v-tooltip location="left">
+                    <template v-slot:activator="{ props }">
+                        <v-btn icon v-bind="props" color="blue-darken-1" size="normal" @click="alert = !alert">
+                            <v-icon>
+                                mdi-help
+                            </v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Presionar para acceder a datos de inicio de sesión e iniciar la instalacion</span>
+                </v-tooltip>
+            </div>
+            <div class="flex justify-center mt-3 mb-4">
+                <v-alert
+                    v-model="alert"
+                    variant="tonal"
+                    closable
+                    close-label="Cerrar"
+                    color="info"
+                    title="Inicio de sesión"
+                >
+                    <p>Usuario: admin@tuxtla.tecnm.mx</p> <br> <p>Contraseña: admin123</p>
+                </v-alert>
+            </div>
+        </template>
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="email" value="Correo Institucional" />

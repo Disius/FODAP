@@ -187,7 +187,7 @@ onMounted(() => {
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Apellido Paterno</th>
                         <th class="text-center">Apellido Materno</th>
-                        <!--                <th class="text-center">Cédula de Inscripcion</th>-->
+                        <th class="text-center">CALIFICACIÓN</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -199,6 +199,35 @@ onMounted(() => {
                         <td class="text-center">{{inscrito.nombre}}</td>
                         <td class="text-center">{{inscrito.apellidoPat}}</td>
                         <td class="text-center">{{inscrito.apellidoMat}}</td>
+                        <td class="text-center">
+                            <template v-if="inscrito.calificacion === null">
+                                <v-chip
+                                    class="ma-2"
+                                    color="white"
+                                    text-color="white"
+                                >
+
+                                </v-chip>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="red"
+                                    text-color="white"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="success"
+                                    text-color="white"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
+                        </td>
                     </tr>
                     </tbody>
                 </v-table>

@@ -303,7 +303,9 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h2 class="text-lg font-medium text-gray-900">Docentes inscritos a este curso</h2>
                 <div class="flex justify-end mb-10">
-                    <v-btn color="blue-darken-1" @click="submitActa" :disabled="!store.inscritos_calificacion">Descargar Acta de Calificaciones</v-btn>
+                    <template v-if="store.my_inscritos_desarrollo.length !== 0">
+                        <v-btn color="blue-darken-1" @click="submitActa" :disabled="!store.inscritos_calificacion">Descargar Acta de Calificaciones</v-btn>
+                    </template>
                     <v-dialog width="auto" v-model="dialog_generar_acta">
                         <v-fade-transition leave-absolute>
                             <v-progress-circular
@@ -459,7 +461,7 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
             v-model="snackbarInscritos"
             vertical
             color="info"
-            :timeout="10000"
+            :timeout="5000"
         >
             <div class="text-subtitle-1 pb-2"></div>
 
