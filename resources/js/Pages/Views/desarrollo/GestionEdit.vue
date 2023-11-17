@@ -5,21 +5,21 @@ import NavLink from "@/Components/NavLink.vue";
 import {router, useForm} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {onMounted, ref} from "vue";
-import FormCarrera from "@/Pages/Views/desarrollo/forms/CreateCarrera.vue";
-import CreateCarrera from "@/Pages/Views/desarrollo/forms/CreateCarrera.vue";
 import TablaDepartamento from "@/Pages/Views/desarrollo/tablas/TablaDepartamento.vue";
 import TablaLugares from "@/Pages/Views/desarrollo/tablas/TablaLugares.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import TablaUsuarios from "@/Pages/Views/desarrollo/tablas/TablaUsuariosAcademicos.vue";
 import TablaUsuariosCoordinacion from "@/Pages/Views/desarrollo/tablas/TablaUsuariosCoordinacion.vue";
 import TablaUsuariosDocente from "@/Pages/Views/desarrollo/tablas/TablaUsuariosDocente.vue";
 import TablaUsuariosAcademicos from "@/Pages/Views/desarrollo/tablas/TablaUsuariosAcademicos.vue";
 import FormSubdireccion from "@/Pages/Views/dialogs/DialogSubdireccion.vue";
 import TablaSub from "@/Pages/Views/desarrollo/tablas/TablaSub.vue";
+import TablaDirector from "@/Pages/Views/desarrollo/tablas/TablaDirector.vue";
+import DialogDirector from "@/Pages/Views/dialogs/DialogDirector.vue";
 
 
 const search = ref("");
 const dialogSub = ref(false);
+const dialogDirector = ref(false);
 const snackbar = ref(false);
 const snack_success_cvu = ref(false);
 const snack_error = ref(false);
@@ -57,6 +57,7 @@ const props = defineProps({
     sub: Array,
     fechas: Object,
     errors: Object,
+    director: Array,
 });
 
 function submit(){
@@ -271,11 +272,18 @@ onMounted(() => {
                 <header>
                     <h2 class="text-xl font-medium text-gray-900 mb-8">Nombre del Instituto y subdirección académica</h2>
                 </header>
+                <tabla-director :director="props.director" :modelValue="dialogDirector" @update:modelValue="dialogDirector = $event"></tabla-director>
+                <dialog-director :director="props.director" v-model="dialogDirector" @update:modelValue="dialogDirector = $event"></dialog-director>
+                <template v-if="props.director.length < 0">
+                    <div class="flex justify-end mt-8 mr-12 items-center">
+                        <primary-button @click="dialogDirector = true">Crear/Guardar</primary-button>
+                    </div>
+                </template>
                 <tabla-sub :sub="props.sub" :modelValue="dialogSub" @update:modelValue="dialogSub = $event"></tabla-sub>
                 <form-subdireccion :sub="props.sub" v-model="dialogSub" @update:modelValue="dialogSub = $event"></form-subdireccion>
                 <template v-if="props.sub.length < 0">
                     <div class="flex justify-end mt-8 mr-12 items-center">
-                        <primary-button @click="dialogSub = true">Crear</primary-button>
+                        <primary-button @click="dialogSub = true">Crear/Guardar</primary-button>
                     </div>
                 </template>
             </div>

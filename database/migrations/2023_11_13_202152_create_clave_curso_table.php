@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('clave_curso', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('curso_id');
+            $table->unsignedBigInteger('clave');
             $table->timestamps();
         });
     }

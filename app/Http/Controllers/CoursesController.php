@@ -129,4 +129,8 @@ class CoursesController extends Controller
             $curso->save();
         }
     }
+
+    public static function clave($curso){
+
+    }
 }

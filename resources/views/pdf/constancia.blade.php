@@ -5,6 +5,12 @@
     <!-- Styles -->
 
     <style>
+        @font-face {
+            font-family: 'Montserrat';
+            font-weight: 800;
+            src: url({{public_path('/storage/font_for_constancia/Montserrat-ExtraBold.ttf')}}) format('ttf');
+            /* Asegúrate de que la ruta y el formato coincidan con los archivos descargados */
+        }
         @page {
             size: A4 portrait;
             margin: 0;
@@ -27,7 +33,7 @@
             align-items: center;
             text-align: center;
             font-weight: normal;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 17pt;
         }
         .text-position {
@@ -40,7 +46,7 @@
             font-weight: normal;
             text-align: start;
             margin-left: 100px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 14pt;
         }
         .text-2 {
@@ -53,7 +59,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 50px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 14pt;
         }
         .text-3 {
@@ -66,7 +72,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 50px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 21pt;
         }
         .text-4 {
@@ -79,7 +85,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 50px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 21pt;
         }
         .text-5 {
@@ -92,7 +98,7 @@
             font-weight: bold;
             text-align: center;
             margin-right: 50px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 23pt;
         }
         .text-6 {
@@ -105,7 +111,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 50px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 14pt;
         }
         .text-7 {
@@ -118,7 +124,7 @@
             font-weight: bold;
             text-align: center;
             margin-right: 50px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 17pt;
         }
         .text-8 {
@@ -131,7 +137,7 @@
             font-weight: normal;
             text-align: justify;
             margin-left: 80px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 12pt;
             width: 600px;
         }
@@ -145,21 +151,21 @@
             font-weight: normal;
             text-align: justify;
             margin-left: 390px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 10pt;
         }
         .firmaDirector {
             font-weight: normal;
             text-align: center;
             margin-left: 390px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 9pt;
         }
         .nameDirector {
             font-weight: normal;
             text-align: center;
             margin-left: 100px;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 9pt;
         }
         .footer {
@@ -190,7 +196,7 @@
         p {
             font-weight: normal;
             text-align: center;
-            font-family: "Montserrat ExtraBold", "Helvetica", sans-serif;
+            font-family: 'Montserrat', sans-serif;
             font-size: 8pt;
         }
 
@@ -278,7 +284,7 @@
         </div>
         <div class="teacher-signature" style="float: left;">
             <!-- Firma del maestro -->
-            <p>JOSÉ MANUEL ROSADO PÉREZ</p>
+            <p>{{$director[0]->nameDirector}}</p>
             <p>DIRECTOR DEL</p>
             <p>{{$instituto[0]->name}}</p>
             <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->

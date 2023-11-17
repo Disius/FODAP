@@ -154,7 +154,6 @@ onMounted(() => {
     })
     window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
         store.update_calificacion_desarrollo(event.calificacion[0])
-        console.log(event.calificacion)
         calificacion.value = true
     })
     store.inscritos_curso_desarrollo(props.curso.id)
@@ -171,7 +170,7 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">{{curso.nombreCurso}}</h2>
             <div class="grid grid-cols-2">
-                <div class="flex justify-center">
+                <div class="flex justify-end mr-3">
                     <NavLink :href="route('curso.editar', props.curso.id)" as="button">
                         <PrimaryButton class="mt-5">Editar</PrimaryButton>
                     </NavLink>
@@ -182,6 +181,97 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
                 </div>
             </div>
         </template>
+        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
+                <h2 class="text-lg font-medium text-gray-900">Docentes inscritos a este curso</h2>
+                <div class="flex justify-start mt-3 mb-5">
+                    <div class="flex justify-end items-end mt-2">
+                        <v-btn @click="dialog_inscripcion = true" block size="large" color="blue-darken-1">Inscribir</v-btn>
+                    </div>
+                    <Inscripcion :errors="$page.props.errors" :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
+                </div>
+                <div class="flex justify-end mb-10">
+                    <template v-if="store.my_inscritos_desarrollo.length !== 0">
+                        <v-btn color="blue-darken-1" @click="submitActa" :disabled="!store.inscritos_calificacion">Descargar Acta de Calificaciones</v-btn>
+                    </template>
+                </div>
+                <v-table fixed-header height="500px" hover>
+                    <thead>
+                    <tr>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Apellido Paterno</th>
+                        <th class="text-center">Apellido Materno</th>
+                        <th class="text-center">CÉDULA DE INSCRIPCIÓN</th>
+                        <th class="text-center">CALIFICACIÓN</th>
+                        <th class="text-center">Constancia</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr
+                        v-for="inscrito in store.my_inscritos_desarrollo"
+                        :key="inscrito.id"
+
+                    >
+                        <td class="text-center">{{inscrito.nombre}}</td>
+                        <td class="text-center">{{inscrito.apellidoPat}}</td>
+                        <td class="text-center">{{inscrito.apellidoMat}}</td>
+                        <td>
+                            <div class="flex justify-center items-center">
+                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit(inscrito.id, props.curso.id)">
+                                    GENERAR PDF
+                                </v-btn>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <template v-if="inscrito.calificacion === null">
+                                <v-btn icon @click="fila_seleccionada(inscrito.id)">
+                                    <v-icon>mdi-pencil-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="red"
+                                    text-color="white"
+                                    @click="updateCalificacion(inscrito.calificacion, inscrito.id)"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="success"
+                                    text-color="white"
+                                    @click="updateCalificacion(inscrito.calificacion, inscrito.id)"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
+                        </td>
+                        <td class="text-center">
+                            <template v-if="inscrito.calificacion === 'APROBADO'">
+                                <v-btn icon="mdi-file-pdf-box" color="success" @click="submitConstancia(inscrito.id)">
+
+                                </v-btn>
+                            </template>
+                        </td>
+                    </tr>
+                    </tbody>
+                </v-table>
+                <v-dialog width="auto" v-model="dialog_generar_acta">
+                    <v-fade-transition leave-absolute>
+                        <v-progress-circular
+                            v-if="loadingActa"
+                            color="info"
+                            :size="64"
+                            :width="7"
+                            indeterminate
+                        ></v-progress-circular>
+                    </v-fade-transition>
+                </v-dialog>
+            </div>
+        </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="flex items-center">
@@ -289,99 +379,6 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="flex justify-end items-end mt-2">
-                    <v-btn @click="dialog_inscripcion = true" block size="large" color="blue-darken-1">Inscribir</v-btn>
-                </div>
-                <Inscripcion :errors="$page.props.errors" :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
-            </div>
-        </div>
-        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                <h2 class="text-lg font-medium text-gray-900">Docentes inscritos a este curso</h2>
-                <div class="flex justify-end mb-10">
-                    <template v-if="store.my_inscritos_desarrollo.length !== 0">
-                        <v-btn color="blue-darken-1" @click="submitActa" :disabled="!store.inscritos_calificacion">Descargar Acta de Calificaciones</v-btn>
-                    </template>
-                    <v-dialog width="auto" v-model="dialog_generar_acta">
-                        <v-fade-transition leave-absolute>
-                            <v-progress-circular
-                                v-if="loadingActa"
-                                color="info"
-                                :size="64"
-                                :width="7"
-                                indeterminate
-                            ></v-progress-circular>
-                        </v-fade-transition>
-                    </v-dialog>
-                </div>
-                <v-table fixed-header height="500px" hover>
-                    <thead>
-                    <tr>
-                        <th class="text-center">Nombre</th>
-                        <th class="text-center">Apellido Paterno</th>
-                        <th class="text-center">Apellido Materno</th>
-                        <th class="text-center">CÉDULA DE INSCRIPCIÓN</th>
-                        <th class="text-center">CALIFICACIÓN</th>
-                        <th class="text-center">Constancia</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr
-                        v-for="inscrito in store.my_inscritos_desarrollo"
-                        :key="inscrito.id"
-
-                    >
-                        <td class="text-center">{{inscrito.nombre}}</td>
-                        <td class="text-center">{{inscrito.apellidoPat}}</td>
-                        <td class="text-center">{{inscrito.apellidoMat}}</td>
-                        <td>
-                            <div class="flex justify-center items-center">
-                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit(inscrito.id, props.curso.id)">
-                                    GENERAR PDF
-                                </v-btn>
-                            </div>
-                        </td>
-                        <td class="text-center">
-                            <template v-if="inscrito.calificacion === null">
-                                <v-btn icon @click="fila_seleccionada(inscrito.id)">
-                                    <v-icon>mdi-pencil-plus</v-icon>
-                                </v-btn>
-                            </template>
-                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
-                                <v-chip
-                                    class="ma-2"
-                                    color="red"
-                                    text-color="white"
-                                    @click="updateCalificacion(inscrito.calificacion, inscrito.id)"
-                                >
-                                    {{inscrito.calificacion}}
-                                </v-chip>
-                            </template>
-                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
-                                <v-chip
-                                    class="ma-2"
-                                    color="success"
-                                    text-color="white"
-                                    @click="updateCalificacion(inscrito.calificacion, inscrito.id)"
-                                >
-                                    {{inscrito.calificacion}}
-                                </v-chip>
-                            </template>
-                        </td>
-                        <td class="text-center">
-                            <template v-if="inscrito.calificacion === 'APROBADO'">
-                                <v-btn icon="mdi-file-pdf-box" color="success" @click="submitConstancia(inscrito.id)">
-
-                                </v-btn>
-                            </template>
-                        </td>
-                    </tr>
-                    </tbody>
-                </v-table>
             </div>
         </div>
         <v-dialog width="auto" v-model="dialogCalificacion" persistent>

@@ -20,22 +20,24 @@ class DocenteController extends Controller
 {
     public function index_cursos(){
 
+        //Actualiza el estado del curso
+        CoursesController::state_curso();
+
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
                 ->where('aceptado', '=', 1)
                 ->orWhere('estado', '=', 0)
                 ->where('id_departamento', '=', auth()->user()->departamento_id)
                 ->where('estado', '=', 1)
                 ->get();
-        //Actualiza el estado del curso
-        CoursesController::state_curso();
+
         return Inertia::render('Views/cursos/docentes/CursosDocentes', [
             'cursos' => $cursos
         ]);
     }
 
     public function index_registros_docente(){
-        $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
         CoursesController::state_curso();
+        $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
         return Inertia::render('Views/cursos/docentes/RegistrosIndex', [
             'cursos' => $docente
         ]);
@@ -44,13 +46,13 @@ class DocenteController extends Controller
 
     public function inscripcion_docente(Request $request, $id){
         $deteccion = DeteccionNecesidades::find($id);
-        $deteccion->docente_inscrito()->sync($request->input('id_docente'));
+        $deteccion->docente_inscrito()->attach($request->input('id_docente'));
         return Redirect::route('index.cursos.docentes');
     }
 
     public function misCursos(){
-        $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
         CoursesController::state_curso();
+        $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
         return Inertia::render('Views/cursos/docentes/MisCursosDocentes', [
             'docente' => $docente,
         ]);

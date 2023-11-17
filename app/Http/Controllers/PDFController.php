@@ -6,6 +6,7 @@ use App\Http\Requests\PIFDAPRequest;
 use App\Http\Requests\RequestPDFDeteccion;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
+use App\Models\Director;
 use App\Models\Docente;
 use App\Models\FichaTecnica;
 use App\Models\NombreInstituto;
@@ -151,10 +152,10 @@ class PDFController extends Controller
         $fecha2 = $docente->inscrito[0]->fecha_F;
         $formatFechasI = explode("-", $fecha);
         $formatFechasF = explode("-", $fecha2);
-
+        $director = Director::all();
         $month = $this->parse_date($fecha);
 
-        $pdf_1 = Pdf::loadView('pdf.constancia', compact('year', 'instituto', 'docente', 'formatFechasI', 'formatFechasF', 'month', 'facilitador'))
+        $pdf_1 = Pdf::loadView('pdf.constancia', compact('year', 'instituto', 'docente', 'formatFechasI', 'formatFechasF', 'month', 'facilitador', 'director'))
             ->output();
 
         $path = 'constancia1.pdf';

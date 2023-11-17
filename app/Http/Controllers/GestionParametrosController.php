@@ -9,6 +9,7 @@ use App\Models\Carrera;
 use App\Models\ConfigDates;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
+use App\Models\Director;
 use App\Models\Docente;
 use App\Models\Lugar;
 use App\Models\Subdireccion;
@@ -40,6 +41,7 @@ class   GestionParametrosController extends Controller
         $carrera = Carrera::with('departamento', 'presidente_academia')->get();
         $docente = Docente::all();
         $sub = Subdireccion::all();
+        $director = Director::all();
         $fechas = ConfigDates::latest('id')->first();
 
 
@@ -51,7 +53,8 @@ class   GestionParametrosController extends Controller
             'lugar' => $lugar,
             'users' => $users,
             'sub' => $sub,
-            'fechas' => $fechas
+            'fechas' => $fechas,
+            'director' => $director,
         ]);
     }
 
@@ -342,4 +345,23 @@ class   GestionParametrosController extends Controller
         return redirect()->route('parametros.edit');
     }
 
+    public function create_director(Request $request){
+        $request->validate([
+            'nameDirector' => 'required'
+        ]);
+
+        $director = Director::create($request->all());
+
+        $director->save();
+
+    }
+    public function update_director($id, Request $request){
+        $director = Director::find($id);
+
+        $director->delete();
+
+        $director->nameDirector = $request->nameDirector;
+
+        $director->save();
+    }
 }

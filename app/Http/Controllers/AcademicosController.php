@@ -19,12 +19,13 @@ class AcademicosController extends Controller
 {
     public function index()
     {
+        CoursesController::state_curso();
 
         $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
             ->where('id_jefe', auth()->user()->docente_id)
             ->where('aceptado', '=', 0)
             ->orderBy('id', 'desc')->paginate(5);
-        CoursesController::state_curso();
+
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->get();
         return Inertia::render('Views/academicos/IndexDetecciones', [
             'detecciones' => $detecciones,
@@ -60,17 +61,6 @@ class AcademicosController extends Controller
         ]);
     }
 
-    public function detecciones_data()
-    {
-        $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
-            ->where('id_jefe', auth()->user()->docente_id)
-            ->where('aceptado', '=', 0)
-            ->orderBy('id', 'desc')->get();
-
-        return response()->json([
-            'detecciones' => $detecciones
-        ]);
-    }
 
     public function edit(string $id)
     {
@@ -102,6 +92,9 @@ class AcademicosController extends Controller
 
     public function index_cursos_academico()
     {
+        //Actualiza el estado del curso
+        CoursesController::state_curso();
+
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
             ->where('id_jefe', '=', auth()->user()->docente_id)
             ->where('aceptado', '=', 1)
@@ -112,8 +105,6 @@ class AcademicosController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(5);
 
-        //Actualiza el estado del curso
-        CoursesController::state_curso();
 
         return Inertia::render('Views/cursos/academicos/CursosAcademicos', [
             'cursos' => $cursos,
@@ -140,13 +131,7 @@ class AcademicosController extends Controller
 
 
 
-            foreach ($request->id_docente as $docente){
-                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
-                    $deteccion->docente_inscrito()->attach($docente);
-                }else{
-                    return back()->withErrors('Este docente ya esta inscrito');
-                }
-            }
+            (new DesarrolloController)->itareble_inscritos($request->id_docente, $deteccion);
 
 
 

@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('enlace_curso_virtual', function (Blueprint $table) {
+        Schema::create('director', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('curso_id');
-            $table->integer('enlace');
+            $table->string('nameDirector');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('enlace_curso_virtual');
+        Schema::dropIfExists('director');
     }
 };

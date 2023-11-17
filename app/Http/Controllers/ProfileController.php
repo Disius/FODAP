@@ -87,23 +87,7 @@ class ProfileController extends Controller
     public function DocenteProfileCreate(Request $request)
     {
 
-        $docente = Docente::create([
-            'rfc' => $request->rfc,
-            'curp' => $request->curp,
-            'nombre' => $request->nombre,
-            'apellidoPat' => $request->apellidoPat,
-            'apellidoMat' => $request->apellidoMat,
-            'sexo' => $request->sexo,
-            'telefono' => $request->telefono,
-            'carrera_id' => $request->carrera_id,
-            'id_puesto' => $request->id_puesto,
-            'tipo_plaza' => $request->tipo_plaza,
-            'departamento_id' => $request->departamento_id,
-            'user_id' => $request->id,
-            'licenciatura' => $request->licenciatura,
-            'id_posgrado' => $request->id_posgrado,
-            'nombre_completo' => $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat
-        ]);
+        $docente = AcademicosController::create_instance_docente($request);
 
         $docente->save();
 
@@ -115,23 +99,7 @@ class ProfileController extends Controller
 
     public function update_docente(Request $request, $id)
     {
-        $docente = Docente::find($id);
-
-        $docente->rfc = $request->rfc;
-        $docente->curp = $request->curp;
-        $docente->nombre = $request->nombre;
-        $docente->apellidoPat = $request->apellidoPat;
-        $docente->apellidoMat = $request->apellidoMat;
-        $docente->sexo = $request->sexo;
-        $docente->telefono = $request->telefono;
-        $docente->carrera_id = $request->carrera_id;
-        $docente->id_puesto = $request->id_puesto;
-        $docente->tipo_plaza = $request->tipo_plaza;
-        $docente->departamento_id = $request->departamento_id;
-        $docente->user_id = $request->id;
-        $docente->licenciatura = $request->licenciatura;
-        $docente->id_posgrado = $request->id_posgrado;
-        $docente->nombre_completo = $request->nombre . " " . $request->apellidoPat . " " . $request->apellidoMat;
+        $docente = AcademicosController::updated_instance_docente($request, $id);
 
         $docente->save();
 

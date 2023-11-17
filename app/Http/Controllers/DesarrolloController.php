@@ -53,6 +53,9 @@ class DesarrolloController extends Controller
     }
 
     public function desarrollo_cursos(){
+
+        CoursesController::state_curso();
+
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
             ->where('aceptado', '=', 1)
             ->where(function($query) {
@@ -62,7 +65,6 @@ class DesarrolloController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(5);
 
-        CoursesController::state_curso();
 
         return Inertia::render('Views/cursos/desarrollo/DesarrolloCursos', [
             'cursos' => $cursos,
@@ -146,6 +148,9 @@ class DesarrolloController extends Controller
 
     public static function query_carrera($query){
         return Carrera::with('departamento')->where('id', '=', $query)->first();
+    }
+    public static function query_consult_carrera(){
+        return Carrera::with('departamento')->get();
     }
     /**
      * Store a newly created resource in storage.
@@ -234,25 +239,18 @@ class DesarrolloController extends Controller
         return Redirect::route('index.detecciones');
     }
 
-    public function inscripcion_por_desarrollo($id, Request $request){
+
+    public function inscripcion_por_desarrollo($id, Request $request)
+    {
 
         $deteccion = DeteccionNecesidades::find($id);
         $num = count($deteccion->docente_inscrito) + 1;
 
 
-        if ($num <= $deteccion->numeroProfesores){
+        if ($num <= $deteccion->numeroProfesores) {
 
 
-
-            foreach ($request->id_docente as $docente){
-                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
-                    $deteccion->docente_inscrito()->attach($docente);
-                }else{
-                    return back()->withErrors('Este docente ya esta inscrito');
-                }
-            }
-
-
+            $this->itareble_inscritos($request->id_docente, $deteccion);
 
             $syncDeteccion = DB::table('docente')
                 ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
@@ -264,10 +262,20 @@ class DesarrolloController extends Controller
             event(new InscripcionEvent($syncDeteccion));
 
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
-        }else{
+        } else {
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id])->withErrors('Llego al maximo de docentes que el curso permite inscribir');
         }
     }
+        public function itareble_inscritos($docente_id, $deteccion){
+            foreach ($docente_id as $docente){
+                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
+                    $deteccion->docente_inscrito()->attach($docente);
+                }else{
+                    return back()->withErrors('Este docente ya esta inscrito');
+                }
+            }
+        }
+
 
     public function docentes(){
         $docentes = Docente::with('usuario')->orderBy('nombre')->get();
@@ -296,12 +304,12 @@ class DesarrolloController extends Controller
         return Redirect::route('index.docentes');
     }
     public function edit_docente($id){
-        $carrera = Carrera::all();
-        $departamento = Departamento::select('nameDepartamento', 'id')->get();
+        $carrera = $this->query_consult_carrera();
         $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
         $docente = Docente::with('carrera', 'plaza', 'puesto', 'departamento', 'posgrado')->find($id);
+        $departamento = Departamento::select('nameDepartamento', 'id')->get();
         return Inertia::render('Views/desarrollo/docente/EditDocente', [
             'carrera' => $carrera->except(['13']),
             'departamento' => $departamento,

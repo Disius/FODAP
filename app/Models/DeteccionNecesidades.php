@@ -89,4 +89,8 @@ class DeteccionNecesidades extends Model
     public function calificaciones_curso(){
         return $this->hasMany(Calificaciones::class, 'curso_id', 'id');
     }
+
+    public function clave_curso(){
+        return $this->hasOne(ClaveCurso::class, 'curso_id', 'id');
+    }
 }
