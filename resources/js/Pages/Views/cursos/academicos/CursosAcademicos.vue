@@ -42,7 +42,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head title="Cursos" />
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Cursos</h2>
@@ -142,7 +141,7 @@ onMounted(() => {
                             </td>
                             <td width="200">
                                 <div v-if="curso.estado === 0">
-                                    <v-alert width="200" height="200" color="warning">Por realizarse</v-alert>
+                                    <v-alert width="100" height="100" color="warning">Por realizarse</v-alert>
                                 </div>
                                 <div v-else-if="curso.estado === 1">
                                     <v-alert color="success">En curso</v-alert>

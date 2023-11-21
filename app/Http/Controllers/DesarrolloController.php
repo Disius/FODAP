@@ -33,7 +33,7 @@ class DesarrolloController extends Controller
         $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe')
             ->where('aceptado', '=', 0)
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->get();
 
         return Inertia::render('Views/desarrollo/coordinacion/DeteccionCoordinacion', [
             'detecciones' => $detecciones,
@@ -46,7 +46,7 @@ class DesarrolloController extends Controller
             ->where('aceptado', '=', 1)
             ->where('estado', '=', 2)
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->get();
         return Inertia::render('Views/desarrollo/coordinacion/ShowRegistrosC', [
             'cursos' => $detecciones,
         ]);
@@ -63,7 +63,7 @@ class DesarrolloController extends Controller
                     ->orWhere('estado', '=', 1);
             })
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->get();
 
 
         return Inertia::render('Views/cursos/desarrollo/DesarrolloCursos', [
@@ -242,7 +242,6 @@ class DesarrolloController extends Controller
 
     public function inscripcion_por_desarrollo($id, Request $request)
     {
-
         $deteccion = DeteccionNecesidades::find($id);
         $num = count($deteccion->docente_inscrito) + 1;
 
@@ -254,9 +253,12 @@ class DesarrolloController extends Controller
 
             $syncDeteccion = DB::table('docente')
                 ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
-                ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
-                ->where('inscripcion.curso_id', '=', $id)
-                ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
+                ->leftJoin('calificaciones', function ($join) {
+                    $join->on('calificaciones.docente_id', '=', 'docente.id')
+                        ->on('calificaciones.curso_id', '=', 'inscripcion.curso_id');
+                })
+                ->where('inscripcion.curso_id', '=', $request->id)
+                ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
                 ->get();
 
             event(new InscripcionEvent($syncDeteccion));
@@ -266,13 +268,13 @@ class DesarrolloController extends Controller
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id])->withErrors('Llego al maximo de docentes que el curso permite inscribir');
         }
     }
-        public function itareble_inscritos($docente_id, $deteccion){
-            foreach ($docente_id as $docente){
-                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
-                    $deteccion->docente_inscrito()->attach($docente);
-                }else{
-                    return back()->withErrors('Este docente ya esta inscrito');
-                }
+    public function itareble_inscritos($docente_id, $deteccion){
+        foreach ($docente_id as $docente){
+            if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
+                $deteccion->docente_inscrito()->attach($docente);
+            }else{
+                return back()->withErrors('Este docente ya esta inscrito');
+            }
             }
         }
 
@@ -324,7 +326,7 @@ class DesarrolloController extends Controller
         $docente = AcademicosController::updated_instance_docente($request, $id);
         return Redirect::route('edit.docentes', ['id' => $docente->id]);
     }
-
+    //revisar este otro metodo
     public function calificaciones_desarrollo(Request $request){
         $request->validate([
             'docente_id' => 'required',
@@ -337,32 +339,23 @@ class DesarrolloController extends Controller
         }else{
             DocenteController::add_calificacion($request);
         }
-
-        $syncCalificacion = DB::table('docente')
-            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
-            ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
-            ->where('inscripcion.curso_id', '=', $request->curso_id)
-            ->where('docente.id', '=', $request->docente_id)
-            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
-            ->get();
-
+            $syncCalificacion = $this->consult_to_sync($request->curso_id, $request->docente_id);
             event(new CalificacionEvent($syncCalificacion));
 
         return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
     }
-    public function calificaciones_update(Request $request){
-        $request->validate([
-            'calificacion' => 'required',
-        ]);
-        DocenteController::update_calificacion($request, $request->docente_id);
+
+    public static function consult_to_sync($curso_id, $docente_id){
         $syncCalificacion = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
-            ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
-            ->where('inscripcion.curso_id', '=', $request->curso_id)
-            ->where('docente.id', '=', $request->docente_id)
+            ->leftJoin('calificaciones', function($join) {
+                $join->on('calificaciones.docente_id', '=', 'docente.id')
+                    ->on('calificaciones.curso_id', '=', 'inscripcion.curso_id'); // Agregar esta condición
+            })
+            ->where('inscripcion.curso_id', '=', $curso_id)
+            ->where('docente.id', '=', $docente_id)
             ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
             ->get();
-        event(new CalificacionEvent($syncCalificacion));
-        return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
+        return $syncCalificacion;
     }
 }

@@ -63,6 +63,64 @@ onMounted(() => {
         </template>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
+                <div class="flex justify-start">
+                    <v-btn @click="dialog_inscripcion = true" size="large" color="blue-darken-1">Inscribir Docentes a Este Curso</v-btn>
+                    <Inscripcion :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
+                </div>
+                <v-table fixed-header height="500px" hover>
+                    <thead>
+                    <tr>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Apellido Paterno</th>
+                        <th class="text-center">Apellido Materno</th>
+                        <th class="text-center">CALIFICACIÓN</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr
+                        v-for="inscrito in store.my_inscritos_academicos"
+                        :key="inscrito.id"
+
+                    >
+                        <td class="text-center">{{inscrito.nombre}}</td>
+                        <td class="text-center">{{inscrito.apellidoPat}}</td>
+                        <td class="text-center">{{inscrito.apellidoMat}}</td>
+                        <td class="text-center">
+                            <template v-if="inscrito.calificacion === null">
+                                <v-chip
+                                    class="ma-2"
+                                    color="white"
+                                    text-color="white"
+                                >
+
+                                </v-chip>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="red"
+                                    text-color="white"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
+                                <v-chip
+                                    class="ma-2"
+                                    color="success"
+                                    text-color="white"
+                                >
+                                    {{inscrito.calificacion}}
+                                </v-chip>
+                            </template>
+                        </td>
+                    </tr>
+                    </tbody>
+                </v-table>
+            </div>
+        </div>
+        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="flex items-center">
                     <div>
                         <div class="p-5">
@@ -168,69 +226,6 @@ onMounted(() => {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                <h2 class="text-lg font-medium text-gray-900">Docentes inscritos a este curso</h2>
-                <div class="flex justify-end items-end mt-2">
-                    <v-btn @click="dialog_inscripcion = true" block size="large" color="blue-darken-1">Inscribir Docentes a Este Curso</v-btn>
-                </div>
-                <Inscripcion :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
-            </div>
-        </div>
-        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                <v-table fixed-header height="500px" hover>
-                    <thead>
-                    <tr>
-                        <th class="text-center">Nombre</th>
-                        <th class="text-center">Apellido Paterno</th>
-                        <th class="text-center">Apellido Materno</th>
-                        <th class="text-center">CALIFICACIÓN</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr
-                        v-for="inscrito in store.my_inscritos_academicos"
-                        :key="inscrito.id"
-
-                    >
-                        <td class="text-center">{{inscrito.nombre}}</td>
-                        <td class="text-center">{{inscrito.apellidoPat}}</td>
-                        <td class="text-center">{{inscrito.apellidoMat}}</td>
-                        <td class="text-center">
-                            <template v-if="inscrito.calificacion === null">
-                                <v-chip
-                                    class="ma-2"
-                                    color="white"
-                                    text-color="white"
-                                >
-
-                                </v-chip>
-                            </template>
-                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
-                                <v-chip
-                                    class="ma-2"
-                                    color="red"
-                                    text-color="white"
-                                >
-                                    {{inscrito.calificacion}}
-                                </v-chip>
-                            </template>
-                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
-                                <v-chip
-                                    class="ma-2"
-                                    color="success"
-                                    text-color="white"
-                                >
-                                    {{inscrito.calificacion}}
-                                </v-chip>
-                            </template>
-                        </td>
-                    </tr>
-                    </tbody>
-                </v-table>
             </div>
         </div>
         <v-snackbar

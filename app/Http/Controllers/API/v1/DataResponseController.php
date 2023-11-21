@@ -85,12 +85,23 @@ class DataResponseController extends Controller
         ]);
     }
 
+
+    //revisar metodo porque si me retorna el id de la tabla inscripcion pero no del curso relacionado
     public function inscritos_show(Request $request){
+//        $inscritos = DB::table('docente')
+//            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+//            ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
+//            ->where('inscripcion.curso_id', '=', $request->id)
+//            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
+//            ->get();
         $inscritos = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
-            ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
+            ->leftJoin('calificaciones', function ($join) {
+                $join->on('calificaciones.docente_id', '=', 'docente.id')
+                    ->on('calificaciones.curso_id', '=', 'inscripcion.curso_id');
+            })
             ->where('inscripcion.curso_id', '=', $request->id)
-            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
+            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
             ->get();
 
         return response()->json([
@@ -116,4 +127,5 @@ class DataResponseController extends Controller
             ]);
         }
     }
+
 }

@@ -10,7 +10,6 @@ import DangerButton from "@/Components/DangerButton.vue";
 import EliminarDeteccionConfirmation from "@/Pages/Views/dialogs/EliminarDeteccionConfirmation.vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
-import ActaCalificaciones from "@/Pages/Views/dialogs/ActaCalificaciones.vue";
 import axios from 'axios'
 
 const store = Curso();
@@ -35,17 +34,18 @@ const snackbarBien = ref(false);
 const calificacion = ref(false);
 const dialog_generar_acta = ref(false);
 const dialog_constancia_pdf = ref(false);
+const checkchip = ref()
+
 
 const calificacion_string = ref("")
 const formCalificacion = useForm({
-    calificacion: calificacion_string.value,
+    calificacion: null,
     docente_id: null,
     curso_id: props.curso.id
 })
 
-const fila_seleccionada = (id) => {
-    calificacion_string.value = ""
-    formCalificacion.docente_id = id
+const fila_seleccionada = (docente_id) => {
+    formCalificacion.docente_id = docente_id
     dialogCalificacion.value = true
 }
 const submit = (inscripcion, id) => {
@@ -147,7 +147,6 @@ onMounted(() => {
                 break;
         }
     });
-    console.log(store.inscritos_calificacion)
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
         store.update_inscritos_desarrollo(event.inscritos)
         snackbarInscritos.value = true
@@ -155,14 +154,11 @@ onMounted(() => {
     window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
         store.update_calificacion_desarrollo(event.calificacion[0])
         calificacion.value = true
+        console.log(event.calificacion[0])
     })
     store.inscritos_curso_desarrollo(props.curso.id)
 });
 
-
-watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
-    formCalificacion.calificacion = newCalificacion.toUpperCase()
-});
 </script>
 
 <template>
@@ -228,29 +224,29 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
                                     <v-icon>mdi-pencil-plus</v-icon>
                                 </v-btn>
                             </template>
-                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
+                            <template v-else-if="inscrito.calificacion === 0">
                                 <v-chip
                                     class="ma-2"
                                     color="red"
                                     text-color="white"
                                     @click="updateCalificacion(inscrito.calificacion, inscrito.id)"
                                 >
-                                    {{inscrito.calificacion}}
+                                    <p class="text-center">NO APROBADO</p>
                                 </v-chip>
                             </template>
-                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
+                            <template v-else-if="inscrito.calificacion === 1">
                                 <v-chip
                                     class="ma-2"
                                     color="success"
                                     text-color="white"
                                     @click="updateCalificacion(inscrito.calificacion, inscrito.id)"
                                 >
-                                    {{inscrito.calificacion}}
+                                    <p class="text-center">APROBADO</p>
                                 </v-chip>
                             </template>
                         </td>
                         <td class="text-center">
-                            <template v-if="inscrito.calificacion === 'APROBADO'">
+                            <template v-if="inscrito.calificacion === 1">
                                 <v-btn icon="mdi-file-pdf-box" color="success" @click="submitConstancia(inscrito.id)">
 
                                 </v-btn>
@@ -382,16 +378,23 @@ watch(calificacion_string, async (newCalificacion, oldCalificacion) => {
             </div>
         </div>
         <v-dialog width="auto" v-model="dialogCalificacion" persistent>
-            <v-card width="500" height="500">
+            <v-card width="500" height="300">
                 <v-card-title>Añadir calificación</v-card-title>
                 <v-card-text>
                     <v-row justify="center">
                         <v-col cols="12">
                             <InputLabel for="calificacion"
-                                        value="Unicamente ESCRIBIR si el docente esta APROBADO o NO APROBADO (MARCAR EN MAYÚSCULAS)" />
+                                        value="Unicamente SELECCIONAR si el docente esta APROBADO o NO APROBADO" />
                         </v-col>
-                        <v-col cols="10" class="mt-16">
-                            <v-text-field variant="solo-filled" v-model="calificacion_string"></v-text-field>
+                        <v-col cols="8" class="mt-5 ml-6" align="center">
+                            <v-chip-group
+                            v-model="formCalificacion.calificacion"
+                            column
+                            >
+                                <v-chip color="error">NO APROBADO</v-chip>
+
+                                <v-chip color="success">APROBADO</v-chip>
+                            </v-chip-group>
                         </v-col>
                     </v-row>
                 </v-card-text>

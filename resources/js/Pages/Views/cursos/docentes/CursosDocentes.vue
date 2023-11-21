@@ -36,8 +36,6 @@ onMounted(() => {
                 break;
         }
     });
-
-    store.get_curso_docente()
 });
 </script>
 
@@ -50,7 +48,7 @@ onMounted(() => {
         <template v-if="props.cursos.length !== 0">
             <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <v-table fixed-header height="500px" hover>
+                    <v-table fixed-header height="500px" hover class="text-caption">
                         <thead>
                         <tr>
                             <th class="text-left">Nombre de los
@@ -83,7 +81,7 @@ onMounted(() => {
                         </thead>
                         <tbody>
                         <tr
-                            v-for="curso in store.cursosDocentes"
+                            v-for="curso in props.cursos"
                             :key="curso.id"
 
                         >

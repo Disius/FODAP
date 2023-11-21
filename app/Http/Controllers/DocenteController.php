@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\CalificacionEvent;
+use App\Events\InscripcionEvent;
 use App\Http\Requests\FichaTecnicaRequest;
 use App\Models\Calificaciones;
 use App\Models\CriteriosEvaluacion;
@@ -11,6 +12,9 @@ use App\Models\Docente;
 use App\Models\FichaTecnica;
 use App\Models\FilesCVU;
 use App\Models\Temas;
+use App\Models\User;
+use App\Notifications\InscripcionDocente;
+use App\Notifications\NewDeteccionNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -25,9 +29,12 @@ class DocenteController extends Controller
 
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
                 ->where('aceptado', '=', 1)
-                ->orWhere('estado', '=', 0)
                 ->where('id_departamento', '=', auth()->user()->departamento_id)
-                ->where('estado', '=', 1)
+                ->where(function($query) {
+                    $query->where('estado', '=', 0)
+                    ->orWhere('estado', '=', 1);
+                })
+                ->orderBy('id', 'desc')
                 ->get();
 
         return Inertia::render('Views/cursos/docentes/CursosDocentes', [
@@ -47,6 +54,12 @@ class DocenteController extends Controller
     public function inscripcion_docente(Request $request, $id){
         $deteccion = DeteccionNecesidades::find($id);
         $deteccion->docente_inscrito()->attach($request->input('id_docente'));
+        User::role(['Coordinacion de FD y AP', 'Jefe del Departamento de Desarrollo Academico'])->each(function ($user) use ($deteccion) {
+            $docente = auth()->user() == null ? null : auth()->user()->docente;
+            $user->notify(new InscripcionDocente($deteccion, $docente));
+        });
+        $syncDeteccion = DesarrolloController::consult_to_sync($id, $request->id_docente);
+        event(new InscripcionEvent($syncDeteccion));
         return Redirect::route('index.cursos.docentes');
     }
 
@@ -140,13 +153,7 @@ class DocenteController extends Controller
         ]);
         $this->add_calificacion($request);
 
-        $syncCalificacion = DB::table('docente')
-            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
-            ->leftjoin('calificaciones', 'calificaciones.docente_id', '=', 'docente.id')
-            ->where('inscripcion.curso_id', '=', $request->curso_id)
-            ->where('docente.id', '=', $request->docente_id)
-            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
-            ->get();
+        $syncCalificacion = DesarrolloController::consult_to_sync($request->curso_id, $request->docente_id);
 
         event(new CalificacionEvent($syncCalificacion));
 
@@ -154,19 +161,35 @@ class DocenteController extends Controller
     }
 
     public static function add_calificacion($payload){
-        $calificacion = Calificaciones::create([
-            'calificacion' => $payload->calificacion,
-            'docente_id' => $payload->docente_id,
-            'curso_id' => $payload->curso_id
-        ]);
-        $calificacion->save();
-        return $calificacion;
+        if(isset($payload->curso_id)) {
+            try {
+                DB::beginTransaction();
+                $calificacion = Calificaciones::create([
+                    'calificacion' => $payload->calificacion,
+                    'docente_id' => $payload->docente_id,
+                    'curso_id' => $payload->curso_id
+                ]);
+                $calificacion->save();
+                DB::commit();
+                return "Ok";
+            }catch (\Exception $exception){
+                    DB::rollBack();
+                    return Redirect::back()->withErrors('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
+            }
+        }
+        return null;
     }
 
     public static function update_calificacion($payload, $id){
-        $calificacion = Calificaciones::where('docente_id', $id)->first();
-        $calificacion->calificacion = $payload->calificacion;
-        $calificacion->save();
-        return $calificacion;
+        $calificacion = Calificaciones::where('docente_id', $id)
+            ->where('curso_id', $payload->curso_id)
+            ->first();
+
+        if($calificacion) {
+            $calificacion->calificacion = $payload->calificacion;
+            $calificacion->save();
+            return $calificacion;
+        }
+        return null;
     }
 }

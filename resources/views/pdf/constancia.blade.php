@@ -267,10 +267,10 @@
         @else
                         agosto-diciembre
         @endif
-        {{$year}} se llevó a cabo en este instituto, del {{$formatFechasI[2]}} al {{$formatFechasF[2]}} de {{$month[0]}} de {{$year}}, con una duración de {{$docente->inscrito[0]->total_horas}} horas.
+        {{$year}} se llevó a cabo en este instituto, del {{$formatFechasI[2]}} al {{$formatFechasF[2]}} de {{$month[0]}} de {{$formatFechasF[0]}}, con una duración de {{$docente->inscrito[0]->total_horas}} horas.
     </div>
     <div class="text-9">
-        Tuxtla Gutierrez, Chiapas; {{$month[2]}} {{$month[1]}} de {{$year}}
+        Tuxtla Gutierrez, Chiapas; {{$month[2]}} {{$month[1]}} de {{$formatFechasF[0]}}
     </div>
 
     <div class="footer">

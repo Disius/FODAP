@@ -12,18 +12,12 @@ const props = defineProps({
 
 const search = ref("");
 
-const filterData = computed(() => {
-    const busqueda = search.value.toLowerCase().trim();
-
-    return props.docentes.filter(item => {
-        return item.nombre.toLowerCase().includes(busqueda) ||
-            item.apellidoPat.toLowerCase().includes(busqueda) ||
-            item.apellidoMat.toLowerCase().includes(busqueda) ||
-            item.nombre_completo.toLowerCase().includes(busqueda)
-    });
-
-});
-
+const header = [
+    {key: "nombre", title: "Nombre"},
+    {key: "apellidoPat", title: "Apellido Paterno"},
+    {key: "apellidoMat", title: "Apellido Materno"},
+    {key: "options", title: "Opciones"},
+];
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -50,11 +44,6 @@ onMounted(() => {
         <h2 class="text-lg font-medium text-gray-900">Docentes</h2>
     </template>
     <div class="grid grid-cols-2 mt-5 ml-16">
-        <div class="flex justify-center w-50 ml-16">
-            <v-text-field label="Buscar" variant="solo" v-model="search" prepend-icon="mdi-magnify">
-
-            </v-text-field>
-        </div>
         <div class="flex justify-center">
             <NavLink :href="route('create.docentes')">
                 <v-btn prepend-icon="mdi-plus">
@@ -65,30 +54,52 @@ onMounted(() => {
     </div>
     <div class="mt-5 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
         <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-            <v-table fixed-header height="400">
-                <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido paterno</th>
-                    <th>Apellido materno</th>
-                    <th>Editar</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="d in filterData" :key="d.id">
-                    <td class="text-center">{{d.nombre}}</td>
-                    <td class="text-center">{{d.apellidoPat}}</td>
-                    <td class="text-center">{{d.apellidoMat}}</td>
-                    <td class="text-center">
-                        <NavLink :href="route('edit.docentes', d.id)" as="button">
-                            <v-btn icon size="large" elevation="0">
-                                <v-icon>mdi-pencil</v-icon>
-                            </v-btn>
-                        </NavLink>
-                    </td>
-                </tr>
-                </tbody>
-            </v-table>
+
+                <v-text-field
+                    v-model="search"
+                    label="Search"
+                    prepend-icon="mdi-magnify"
+                    variant="solo"
+                ></v-text-field>
+            <v-data-table :headers="header" :items="props.docentes" :search="search"
+                          fixed-header
+                          next-icon="mdi-arrow-right-bold-circle"
+                          prev-icon="mdi-arrow-left-bold-circle"
+                          items-per-page="5"
+                          items-per-page-text="Paginas"
+            >
+                <template v-slot:item.options="{item}">
+                    <NavLink :href="route('edit.docentes', item.id)" as="button">
+                        <v-btn icon size="large" elevation="0">
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                    </NavLink>
+                </template>
+            </v-data-table>
+<!--            <v-table fixed-header height="400">-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th>Nombre</th>-->
+<!--                    <th>Apellido paterno</th>-->
+<!--                    <th>Apellido materno</th>-->
+<!--                    <th>Editar</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr v-for="d in filterData" :key="d.id">-->
+<!--                    <td class="text-center">{{d.nombre}}</td>-->
+<!--                    <td class="text-center">{{d.apellidoPat}}</td>-->
+<!--                    <td class="text-center">{{d.apellidoMat}}</td>-->
+<!--                    <td class="text-center">-->
+<!--                        <NavLink :href="route('edit.docentes', d.id)" as="button">-->
+<!--                            <v-btn icon size="large" elevation="0">-->
+<!--                                <v-icon>mdi-pencil</v-icon>-->
+<!--                            </v-btn>-->
+<!--                        </NavLink>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </v-table>-->
         </div>
     </div>
 </AuthenticatedLayout>
