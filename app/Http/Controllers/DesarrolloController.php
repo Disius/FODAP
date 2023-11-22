@@ -334,7 +334,7 @@ class DesarrolloController extends Controller
             'curso_id' => 'required',
         ]);
 
-        if (Calificaciones::where('docente_id', $request->docente_id)->exists()){
+        if (Calificaciones::where('curso_id', $request->curso_id)->exists()){
             DocenteController::update_calificacion($request, $request->docente_id);
         }else{
             DocenteController::add_calificacion($request);
