@@ -36,6 +36,6 @@ class UsersSeeder extends Seeder
 
         $user->save();
 
-//        $user->assignRole('Super Admin');
+        $user->assignRole('Super Admin');
     }
 }
