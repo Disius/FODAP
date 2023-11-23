@@ -2,10 +2,12 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import NavLink from "@/Components/NavLink.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import {ref} from "vue";
 
+const search = ref()
 const props = defineProps({
     detecciones: {
-        type: Object
+        type: Array
     },
     auth: Object,
 })
@@ -17,87 +19,101 @@ const props = defineProps({
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Registros de cursos</h2>
         </template>
 
-        <template v-if="props.detecciones.data.length !== 0">
-            <div class="mx-auto sm:px-6 lg:px-8 space-y-6 mt-5">
-                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <v-table
-                            fixed-header
-                            height="300px"
-
-                        >
-                            <thead>
-                            <tr>
-                                <th class="text-left">
-                                    Nombre del curso
-                                </th>
-                                <th class="text-left">
-                                    Contenido tematicos
-                                </th>
-                                <th class="text-left">
-                                    Periodo de Realización
-                                </th>
-                                <th class="text-left">
-                                    Objetivo de la actividad o evento
-                                </th>
-                                <th class="text-left">
-                                    Ver
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr
-                                v-for="deteccion in props.detecciones.data"
-                                :key="deteccion.id"
-
+        <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+                <template v-if="props.detecciones.length !== 0">
+                    <v-data-iterator
+                        :items="props.detecciones"
+                        item-value="nombreCurso"
+                        :search="search"
+                    >
+                        <template v-slot:header>
+                            <v-text-field
+                                v-model="search"
+                                clearable
+                                density="comfortable"
+                                hide-details
+                                placeholder="Buscar"
+                                prepend-inner-icon="mdi-magnify"
+                                style="max-width: 300px;"
+                                variant="solo"
                             >
 
-                                <td class="">{{deteccion.nombreCurso}}</td>
-                                <td class="">{{deteccion.contenidosTM}}</td>
-                                <template v-if="deteccion.periodo === 1">
-                                    <td class="">ENERO-JUNIO</td>
-                                </template>
-                                <template v-if="deteccion.periodo === 2">
-                                    <td class="">AGOSTO-DICIEMBRE</td>
-                                </template>
-                                <td class="">{{deteccion.objetivoEvento}}</td>
-                                <td>
-                                    <NavLink :href="route('show.inscritos.academicos', deteccion.id)" type="button" as="button">
-                                        <v-btn icon color="blue">
-                                            <v-icon>mdi-eye-arrow-right-outline</v-icon>
-                                        </v-btn>
-                                    </NavLink>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </v-table>
-                </div>
-                <div class="grid grid-cols-2 mt-5">
-                    <div class="flex justify-end">
-                        <NavLink v-if="props.detecciones.prev_page_url" :href="props.detecciones.prev_page_url" as="button">
-                            <primary-button>Anterior</primary-button>
-                        </NavLink>
+                            </v-text-field>
+                        </template>
+                        <template v-slot:default="{items}">
+                            <v-container class="pa-2" fluid>
+                                <v-row dense>
+                                    <v-col v-for="item in items" :key="item.nameCarrera"
+                                           cols="auto"
+                                           md="4"
+                                    >
+                                        <v-card class="pb-3" border flat >
+                                            <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">
+                                                <template v-slot:title>
+                                                    <strong class="text-h6 mb-2">
+                                                        {{item.raw.nombreCurso}}
+                                                    </strong>
+                                                </template>
+                                            </v-list-item>
+                                            <div class="d-flex justify-space-between px-4">
+                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                                    <template v-if="item.raw.tipo_FDoAP === 1">
+                                                        <p class="text-truncate">Formación Docente</p>
+                                                    </template>
+                                                    <template v-if="item.raw.tipo_FDoAP === 2">
+                                                        <p>Actualización Profesional</p>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-space-between px-4">
+                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                                    <p class="text-truncate">Dirigido a la academica de {{item.raw.carrera.nameCarrera}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-space-between px-4">
+                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                                    <template v-if="item.raw.estado === 0">
+                                                        <strong class="text-truncate">Curso por realizar</strong>
+                                                    </template>
+                                                    <template v-else>
+                                                        <strong class="text-truncate">En curso</strong>
+                                                    </template>
+                                                </div>
+                                                <NavLink :href="route('index.desarrollo.inscritos', item.raw.id)" type="button" as="button">
+                                                    <v-btn
+                                                        border
+                                                        flat
+                                                        size="small"
+                                                        class="text-none"
+                                                        text="Ver"
+                                                        prepend-icon="mdi-eye-arrow-right-outline"
+                                                    >
+                                                    </v-btn>
+                                                </NavLink>
+                                            </div>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </template>
+                    </v-data-iterator>
+                </template>
+                <template v-else>
+                    <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
+                        <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+                            <v-alert
+                                color="blue-darken-1"
+                                icon="mdi-alert-circle"
+                                prominent
+                            >
+                                Actualmente no hay cursos por realizarse, puede visualizar todos los que se llevaron acabo al presionar  "Ver todos los registros".
+                            </v-alert>
+                        </div>
                     </div>
-                    <div class="flex justify-start">
-                        <NavLink v-if="props.detecciones.next_page_url" :href="props.detecciones.next_page_url" as="button">
-                            <primary-button>Siguiente</primary-button>
-                        </NavLink>
-                    </div>
-                </div>
+                </template>
             </div>
-        </template>
-        <template v-else>
-            <div class="mt-10 pt-10 mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <v-alert
-                        color="blue-darken-1"
-                        icon="mdi-alert-circle"
-                        prominent
-                    >
-                        Actualmente no han finalizado cursos.
-                    </v-alert>
-                </div>
-            </div>
-        </template>
+        </div>
     </AuthenticatedLayout>
 </template>
 

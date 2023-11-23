@@ -24,7 +24,7 @@ class AcademicosController extends Controller
         $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
             ->where('id_jefe', auth()->user()->docente_id)
             ->where('aceptado', '=', 0)
-            ->orderBy('id', 'desc')->paginate(5);
+            ->orderBy('id', 'desc')->get();
 
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->get();
         return Inertia::render('Views/academicos/IndexDetecciones', [
@@ -84,7 +84,7 @@ class AcademicosController extends Controller
                     ->where('estado', '=', 2);
             })
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->get();
         return Inertia::render('Views/academicos/IndexRegistros', [
             'detecciones' => $detecciones
         ]);
@@ -103,7 +103,7 @@ class AcademicosController extends Controller
                     ->orWhere('estado', '=', 1);
             })
             ->orderBy('id', 'desc')
-            ->paginate(5);
+            ->get();
 
 
         return Inertia::render('Views/cursos/academicos/CursosAcademicos', [
@@ -155,7 +155,7 @@ class AcademicosController extends Controller
         $docentes = Docente::with('usuario')
             ->where('departamento_id', '=', auth()->user()->departamento_id)
             ->orderBy('nombre')
-            ->paginate(10);
+            ->get();
         CoursesController::state_curso();
         $user = User::with('docente')->get();
         return Inertia::render('Views/academicos/docentes/DocentesA', [

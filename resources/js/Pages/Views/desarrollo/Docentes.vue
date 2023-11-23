@@ -76,30 +76,6 @@ onMounted(() => {
                     </NavLink>
                 </template>
             </v-data-table>
-<!--            <v-table fixed-header height="400">-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <th>Nombre</th>-->
-<!--                    <th>Apellido paterno</th>-->
-<!--                    <th>Apellido materno</th>-->
-<!--                    <th>Editar</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                <tr v-for="d in filterData" :key="d.id">-->
-<!--                    <td class="text-center">{{d.nombre}}</td>-->
-<!--                    <td class="text-center">{{d.apellidoPat}}</td>-->
-<!--                    <td class="text-center">{{d.apellidoMat}}</td>-->
-<!--                    <td class="text-center">-->
-<!--                        <NavLink :href="route('edit.docentes', d.id)" as="button">-->
-<!--                            <v-btn icon size="large" elevation="0">-->
-<!--                                <v-icon>mdi-pencil</v-icon>-->
-<!--                            </v-btn>-->
-<!--                        </NavLink>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                </tbody>-->
-<!--            </v-table>-->
         </div>
     </div>
 </AuthenticatedLayout>

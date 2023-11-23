@@ -112,7 +112,7 @@ onMounted(() => {
                                          cols="auto"
                                          md="4"
                                   >
-                                      <v-card class="pb-3" border flat :color="setColor(item.raw.estado)">
+                                      <v-card class="pb-3" border flat >
                                           <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">
                                               <template v-slot:title>
                                                   <strong class="text-h6 mb-2">
@@ -135,13 +135,17 @@ onMounted(() => {
                                                   <p class="text-truncate">Dirigido a la academica de {{item.raw.carrera.nameCarrera}}</p>
                                               </div>
                                           </div>
-                                          <div class="d-flex justify-space-between px-4">
+                                          <div class="d-flex justify-space-between px-4 pt-4">
                                               <div class="d-flex align-center text-caption text-medium-emphasis me-1">
                                                   <template v-if="item.raw.estado === 0">
-                                                      <strong class="text-truncate">Curso por realizar</strong>
+                                                      <v-chip variant="flat" color="warning" prepend-icon="$info">
+                                                          Curso por realizar
+                                                      </v-chip>
                                                   </template>
                                                   <template v-else>
-                                                      <strong class="text-truncate">En curso</strong>
+                                                      <v-chip variant="flat" color="success" prepend-icon="$info">
+                                                          En curso
+                                                      </v-chip>
                                                   </template>
                                               </div>
                                               <NavLink :href="route('index.desarrollo.inscritos', item.raw.id)" type="button" as="button">
@@ -183,7 +187,7 @@ onMounted(() => {
       <div class="mt-6 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
               <v-row justify="center" class="">
-                  <v-col cols="6" align="center">
+                  <v-col xs="9" sm="8" lg="6" cols="6" align="center">
                       <NavLink :href="route('index.registros.c')" as="button">
                           <v-btn block size="large" color="blue-darken-1" prepend-icon="mdi-archive" height="50"
                                  width="550">
@@ -191,7 +195,7 @@ onMounted(() => {
                           </v-btn>
                       </NavLink>
                   </v-col>
-                  <v-col cols="6" align="center">
+                  <v-col sm="9" lg="6" cols="6" align="center">
                       <NavLink :href="route('create.curso')">
                           <v-btn block size="large" color="blue-darken-1" prepend-icon="mdi-pencil" height="50" width="550">
                               Crear Curso

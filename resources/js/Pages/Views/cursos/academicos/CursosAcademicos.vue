@@ -10,11 +10,11 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 const curso_store = Curso()
 
 const props = defineProps({
-    cursos: Object,
+    cursos: Array,
     auth: Object,
 });
 const snackCursoAceptado = ref(false);
-
+const search = ref("");
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -58,109 +58,89 @@ onMounted(() => {
             <strong>Se ha aceptado un curso, por favor recarga la pagina para visualizarlo</strong>.
         </v-snackbar>
 
-        <template v-if="props.cursos.data.length !== 0">
+        <template v-if="props.cursos.length !== 0">
             <div class="mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 mt-3 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <v-table fixed-header height="500px" hover>
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th class="text-left">Nombre de los
-                                Cursos</th>
-                            <th class="text-left">Objetivo</th>
-                            <th class="text-left">Fecha de
-                                realización</th>
-                            <th class="text-left">Lugar
-                                (presencial
-                                o virtual)
-                            </th>
-                            <th class="text-left">Horario
-                            </th>
-                            <th class="text-left">No. de
-                                horas
-                                x
-                                Curso
-                            </th>
-                            <th class="text-left">
-                                Facilitador (a)
-                            </th>
-                            <th class="text-left">Dirigido a:</th>
-                            <th class="text-left">Observaciones
-                            </th>
-                            <th>Estado</th>
-                            <th class="text-left">
-                                Ver Inscritos
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr
-                            v-for="curso in props.cursos.data"
-                            :key="curso.id"
+                    <v-data-iterator
+                        :items="props.cursos"
+                        item-value="nombreCurso"
+                        :search="search"
+                    >
+                        <template v-slot:header>
+                            <v-text-field
+                                v-model="search"
+                                clearable
+                                density="comfortable"
+                                hide-details
+                                placeholder="Buscar"
+                                prepend-inner-icon="mdi-magnify"
+                                style="max-width: 300px;"
+                                variant="solo"
+                            >
 
-                        >
-                            <td>{{curso.id}}</td>
-                            <td class="">
-                                {{ curso.nombreCurso }}
-                            </td>
-                            <td class="">
-                                {{ curso.objetivoEvento }}
-                            </td>
-                            <td class="">
-                                {{ curso.fecha_I }} al {{curso.fecha_F}}
-                            </td>
-                            <td class="">
-                                <template v-if="curso.modalidad === 1">
-                                    <span>Virtual</span>
-                                </template>
-                                <template v-if="curso.modalidad === 2">
-                                    <span>Presencial</span>
-                                </template>
-                                <template v-if="curso.modalidad === 3">
-                                    <span>Hibrído</span>
-                                </template>
-                            </td>
-                            <td class="">
-                                {{ curso.hora_I }} a {{curso.hora_F}}
-                            </td>
-                            <td class="">
-                                {{curso.total_horas}}
-                            </td>
-                            <td class="">
-                                <template
-                                    v-for="facilitador in curso.deteccion_facilitador"
-                                >
-                                    <br> • {{facilitador.nombre}} {{facilitador.apellidoPat}} {{facilitador.apellidoMat}}
-                                </template>
-                            </td>
-                            <td class="">
-                                {{ curso.carrera.nameCarrera }}
-                            </td>
-                            <td class="">
-                                {{ curso.observaciones }}
-                            </td>
-                            <td width="200">
-                                <div v-if="curso.estado === 0">
-                                    <v-alert width="100" height="100" color="warning">Por realizarse</v-alert>
-                                </div>
-                                <div v-else-if="curso.estado === 1">
-                                    <v-alert color="success">En curso</v-alert>
-                                </div>
-                                <div v-else-if="curso.estado === 2">
-                                    <v-alert color="error">Finalizado</v-alert>
-                                </div>
-                            </td>
-                            <td class="">
-                                <NavLink :href="route('show.inscritos.academicos', curso.id)" type="button" as="button">
-                                    <v-btn icon color="blue">
-                                        <v-icon>mdi-eye-arrow-right-outline</v-icon>
-                                    </v-btn>
-                                </NavLink>
-                            </td>
-
-                        </tr>
-                        </tbody>
-                    </v-table>
+                            </v-text-field>
+                        </template>
+                        <template v-slot:default="{items}">
+                            <v-container class="pa-2 pt-15" fluid>
+                                <v-row dense>
+                                    <v-col v-for="item in items" :key="item.nameCarrera"
+                                           cols="auto"
+                                           md="4"
+                                    >
+                                        <v-card class="pb-3" border flat >
+                                            <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">
+                                                <template v-slot:title>
+                                                    <strong class="text-h6 mb-2">
+                                                        {{item.raw.nombreCurso}}
+                                                    </strong>
+                                                </template>
+                                            </v-list-item>
+                                            <div class="d-flex justify-space-between px-4">
+                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                                    <template v-if="item.raw.tipo_FDoAP === 1">
+                                                        <p class="text-truncate">Formación Docente</p>
+                                                    </template>
+                                                    <template v-if="item.raw.tipo_FDoAP === 2">
+                                                        <p>Actualización Profesional</p>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-space-between px-4">
+                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                                    <p class="text-truncate">Dirigido a la academica de {{item.raw.carrera.nameCarrera}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-space-between px-4 pt-4">
+                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                                    <template v-if="item.raw.estado === 0">
+                                                        <v-chip variant="flat" color="warning" prepend-icon="$info">
+                                                            Curso por realizar
+                                                        </v-chip>
+                                                    </template>
+                                                    <template v-else>
+                                                        <v-chip variant="flat" color="success" prepend-icon="$info">
+                                                            En curso
+                                                        </v-chip>
+                                                    </template>
+                                                </div>
+                                                <NavLink :href="route('index.desarrollo.inscritos', item.raw.id)" type="button" as="button">
+                                                    <v-btn
+                                                        border
+                                                        flat
+                                                        size="small"
+                                                        class="text-none"
+                                                        text="Ver"
+                                                        prepend-icon="mdi-eye-arrow-right-outline"
+                                                    >
+                                                    </v-btn>
+                                                </NavLink>
+                                            </div>
+                                        </v-card>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </template>
+                    </v-data-iterator>
                 </div>
                 <div class="grid grid-cols-2 mt-5">
                     <div class="flex justify-end">

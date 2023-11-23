@@ -10,6 +10,7 @@ use App\Events\ObservacionEvent;
 use App\Http\Requests\CursoRequest;
 use App\Models\Calificaciones;
 use App\Models\Carrera;
+use App\Models\ClaveCurso;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
@@ -173,6 +174,8 @@ class DesarrolloController extends Controller
         User::where('departamento_id', $detecciones->id_departamento)->role(['Jefes Academicos'])->each(function(User $user) use ($detecciones){
             $user->notify(new AceptadoNotification($detecciones, $user));
         });
+
+        $this->clave_generar($id);
 
         return Redirect::route('index.detecciones');
     }
@@ -357,5 +360,17 @@ class DesarrolloController extends Controller
             ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
             ->get();
         return $syncCalificacion;
+    }
+
+    public static function clave_generar($curso_id){
+        $anioActual = date('Y');
+
+        $claveCurso = 'TNM-021-' . $curso_id . '-' . $anioActual;
+
+        return ClaveCurso::create([
+            'curso_id' => $curso_id,
+            'clave' => $claveCurso,
+        ]);
+
     }
 }
