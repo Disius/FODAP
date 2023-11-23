@@ -93,4 +93,8 @@ class DeteccionNecesidades extends Model
     public function clave_curso(){
         return $this->hasOne(ClaveCurso::class, 'curso_id', 'id');
     }
+
+    public function clave_validacion(){
+        return $this->hasOne(ClaveValidacion::class, 'curso_id', 'id');
+    }
 }
