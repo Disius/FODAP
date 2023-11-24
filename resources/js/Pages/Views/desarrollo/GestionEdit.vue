@@ -158,9 +158,7 @@ onMounted(() => {
                 <form @submit.prevent="submit">
                     <div class="flex justify-center mr-5 items-center">
                         <InputLabel for="inicio" value="Inicia: "></InputLabel>
-                        <v-locale-provider locale="sv">
-                            <v-date-picker></v-date-picker>
-                        </v-locale-provider>
+                        <v-text-field type="date" v-model="form.fecha_Inicio"></v-text-field>
                     </div>
                     <div class="flex justify-center items-center">
                         <InputLabel class="text-lg" for="termino" value="Termina: "></InputLabel>

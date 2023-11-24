@@ -1,6 +1,6 @@
 <script setup>
 
-import { computed, ref, onMounted } from "vue";
+import {computed, ref, onMounted, watch} from "vue";
 import { useForm, usePage } from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -35,6 +35,7 @@ let dialogReset = ref(false);
 const snackCursoNoStored = ref(false);
 const snackCursoStored = ref(false);
 const dialog = ref(true);
+let horas_totales = ref();
 
 const form = useForm({
     AsignaturasFA: "",
@@ -100,9 +101,48 @@ const maxCount = [
     }
 ]
 
-onMounted(() => {
+function totalHoras(fechaInicio, fechaFinal, horaInicio, horaFinal) {
+    let fechaInicioObj = new Date(fechaInicio);
+    let fechaFinalObj = new Date(fechaFinal);
+    let horaInicioObj = new Date(`01/01/1970 ${horaInicio}`);
+    let horaFinalObj = new Date(`01/01/1970 ${horaFinal}`);
 
+    let diasHabiles = 0;
+    let horasTotales = 0;
+
+    function esDiaDeSemana(fecha) {
+        const dia = fecha.getDay();
+        return dia !== 0 && dia !== 6; // 0 representa domingo, 6 representa sábado
+    }
+
+    while (fechaInicioObj <= fechaFinalObj) {
+        if (esDiaDeSemana(fechaInicioObj)) {
+            diasHabiles++;
+
+            // Aquí se deben calcular las horas del día en base al horario
+            // Calcular las horas entre la hora de inicio y la hora final
+            let tiempoTranscurrido = horaFinalObj - horaInicioObj;
+            let horaEnDia = tiempoTranscurrido / (1000 * 60 * 60); // Convertir a horas
+            horasTotales += horaEnDia;
+        }
+        fechaInicioObj.setDate(fechaInicioObj.getDate() + 1); // Avanzar al siguiente día
+    }
+
+    return horasTotales;
+}
+
+onMounted(() => {
+    // horas_totales.value = totalHoras(form.fecha_I, form.fecha_F, form.hora_I, form.hora_F);
+    console.log(form.fecha_I)
 });
+
+watch(() => [form.fecha_I, form.fecha_F, form.hora_I, form.hora_F], ([newFechaI, newFechaF, newHoraI, newHoraF], [oldFechaI, oldFechaF, oldHoraI, oldHoraF]) => {
+    console.log(newFechaI, newFechaF, newHoraI, newHoraF)
+    if (newFechaI && newFechaF && newHoraI && newHoraF){
+        horas_totales.value = totalHoras(newFechaI, newFechaF, newHoraI, newHoraF)
+        // console.log(horas)
+    }
+})
 
 
 const submit = () => {
@@ -436,7 +476,7 @@ const submit = () => {
                                     </v-col>
                                 </v-row>
                                 <v-autocomplete :counter="3" multiple :items="props.docente" item-title="nombre_completo" item-value="id"
-                                    v-model="form.facilitadores" variant="solo" :rules="maxCount">
+                                    v-model="form.facilitadores" variant="solo" :rules="maxCount" class="mt-4">
 
                                 </v-autocomplete>
                             </v-col>
@@ -506,7 +546,7 @@ const submit = () => {
 
                                 </v-text-field>
                             </v-col>
-                            <v-col cols="6">
+                            <v-col cols="12">
                                 <v-row justify="center">
                                     <v-col align="start" cols="8">
                                         <h4>Elegir las fechas en que se
@@ -537,15 +577,13 @@ const submit = () => {
                                     </v-col>
                                 </v-row>
                             </v-col>
-                            <v-col cols="6">
+                            <v-col cols="12">
                                 <v-row justify="center">
-                                    <v-col align="start" cols="5">
+                                    <v-col align="start" cols="12">
                                         <h4>Elegir los horarios en que
                                             se realizará la
                                             actividad o
                                             evento</h4>
-                                    </v-col>
-                                    <v-col align="start" cols="7" class="mt-2 pa-0">
                                         <div class="d-flex justify-start mb-0">
                                             <v-tooltip location="right">
                                                 <template v-slot:activator="{ props }">
@@ -570,6 +608,25 @@ const submit = () => {
                                     </v-col>
                                 </v-row>
                             </v-col>
+                            <v-row justify="center">
+                                <v-col cols="6" align="center" class="">
+                                    <template v-if="horas_totales < 30">
+                                        <v-chip variant="flat" color="error" prepend-icon="mdi-cancel">
+                                            El curso es menor a 30 horas
+                                        </v-chip>
+                                    </template>
+                                    <template v-else-if="horas_totales === 30">
+                                        <v-chip variant="flat" color="success" prepend-icon="mdi-check-circle">
+                                            El curso debe ser de 30 horas
+                                        </v-chip>
+                                    </template>
+                                    <template v-else-if="horas_totales > 30">
+                                        <v-chip variant="flat" color="error" prepend-icon="mdi-cancel">
+                                            El curso es mayor a 30 horas
+                                        </v-chip>
+                                    </template>
+                                </v-col>
+                            </v-row>
                             <v-col align-self="center" cols="12">
                                 <v-row justify="center">
                                     <v-col align="start" cols="5">

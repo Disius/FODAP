@@ -28,26 +28,33 @@ class CoursesController extends Controller
     {
         try {
             DB::beginTransaction();
+            $fecha_Inical = Carbon::parse($request->fecha_I);
+            $fecha_final = Carbon::parse($request->fecha_F);
+            if ($fecha_Inical <= $fecha_final){
 
-            $deteccion = DeteccionNecesidades::create($request->validated() + [
-                    'aceptado' => 0,
-                    'obs' => 0,
-                    'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
-                    'id_departamento' => auth()->user()->departamento_id,
-                    'facilitador_externo' => $request->facilitador_externo,
-                    'id_jefe' => $request->id_jefe
-                ]);
+                $deteccion = DeteccionNecesidades::create($request->validated() + [
+                        'aceptado' => 0,
+                        'obs' => 0,
+                        'total_horas' => $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F),
+                        'id_departamento' => auth()->user()->departamento_id,
+                        'facilitador_externo' => $request->facilitador_externo,
+                        'id_jefe' => $request->id_jefe
+                    ]);
 
-            $deteccion->save();
+                $deteccion->save();
 
-            $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
+                $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
 
-            $this->sendNotification($deteccion);
+                $this->sendNotification($deteccion);
 
-            DB::commit();
+                DB::commit();
 
-            event(new DeteccionEvent($deteccion));
-            return Redirect::route('detecciones.create')->with('¿todo bien en casa?');
+                event(new DeteccionEvent($deteccion));
+                return Redirect::route('detecciones.create');
+
+            }else{
+                return back()->withErrors('La fecha final no puede ser menor que la fecha inicial');
+            }
         }catch (\Exception $exception){
             DB::rollBack();
             return Redirect::route('detecciones.create')->withErrors('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
