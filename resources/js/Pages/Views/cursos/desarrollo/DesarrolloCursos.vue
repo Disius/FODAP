@@ -110,9 +110,9 @@ onMounted(() => {
                               <v-row dense>
                                   <v-col v-for="item in items" :key="item.nameCarrera"
                                          cols="auto"
-                                         md="4"
+                                         md="6"
                                   >
-                                      <v-card class="pb-3" border flat >
+                                      <v-card class="pb-3" border flat width="600">
                                           <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">
                                               <template v-slot:title>
                                                   <strong class="text-h6 mb-2">

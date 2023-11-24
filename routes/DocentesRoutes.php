@@ -20,6 +20,6 @@ use Inertia\Inertia;
 Route::middleware(['auth', 'role:Docentes'])->group(function(){
     Route::get('/docentes/cursos', [DocenteController::class, 'index_cursos'])->name('index.cursos.docentes');
     Route::post('/docente/inscrito/{id}', [DocenteController::class, 'inscripcion_docente'])->name('inscripcion.docente');
-    Route::get('/docente/mis/cursos', [DocenteController::class, 'misCursos'])->name('index.misCursos');
+    Route::get('/docente/mis-cursos', [DocenteController::class, 'misCursos'])->name('index.misCursos');
     Route::get('/docente/registros/cursos/finalizados', [DocenteController::class, 'index_registros_docente'])->name('d.c.r');
 });

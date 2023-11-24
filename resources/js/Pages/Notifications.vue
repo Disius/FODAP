@@ -3,6 +3,9 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import {computed, onBeforeMount, onMounted} from "vue";
 import NavLink from "@/Components/NavLink.vue";
+import {no} from "vuetify/locale";
+
+
 const props = defineProps({
     auth: Object,
     notifications: Array,
@@ -12,6 +15,7 @@ const props = defineProps({
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
+        console.log(notification.data)
         switch (notification.type){
             case 'App\\Notifications\\NewDeteccionNotification':
                 props.auth.usernotifications++
@@ -36,19 +40,15 @@ onMounted(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Notificaciones</h2>
-            <template v-if="props.notifications.length !== 0">
-                <NavLink :href="route('markNotification')" method="post" as="button">
-                    <v-btn color="success" prepend-icon="mdi-check-circle-outline" width="400">Marcar como leidas</v-btn>
-                </NavLink>
-            </template>
+
         </template>
 
 
         <template v-if="props.notifications.length !== 0">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="pa-12 ma-6 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <div v-for="notification in props.notifications" :key="notification.id">
-                        <v-card width="400">
+                    <div v-for="notification in props.notifications" :key="notification.id" class="pa-4">
+                        <v-card width="400" class="pa-4">
                             <template v-slot:title>
                                 {{notification.data.email}}
                             </template>
@@ -63,20 +63,36 @@ onMounted(() => {
                             <template v-slot:actions>
                                 <div class="d-flex justify-space-between px-4 pt-4">
                                     <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                        <NavLink :href="notification.data.route + '/' + notification.data.id" type="button" as="button">
-                                            <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
-                                                Ver notificacion
-                                            </v-chip>
-                                        </NavLink>
-                                        <NavLink :href="route('markNotification', notification.id)" type="button" as="button" method="post" :data="{id: notification.data.id}">
+                                        <template v-if="props.auth.user.role !== 4">
+                                            <NavLink :href="notification.data.route + '/' + notification.data.id" type="button" as="button">
+                                                <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
+                                                    Ver notificacion
+                                                </v-chip>
+                                            </NavLink>
+                                        </template>
+                                        <template v-if="props.auth.user.role === 4">
+                                            <NavLink :href="notification.data.route" type="button" as="button">
+                                                <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
+                                                    Ver notificacion
+                                                </v-chip>
+                                            </NavLink>
+                                        </template>
+                                        <NavLink :href="route('markNotification')" type="button" as="button" method="post" :data="{id: notification.id}">
                                             <v-chip variant="flat" color="success" prepend-icon="mdi-check-circle">
-                                                Pendiente a revisar
+                                                Leida
                                             </v-chip>
                                         </NavLink>
                                     </div>
                                 </div>
                             </template>
                         </v-card>
+                    </div>
+                    <div class="flex justify-end mt-12">
+                        <template v-if="props.notifications.length !== 0">
+                            <NavLink :href="route('markNotification')" method="post" as="button">
+                                <v-btn color="success" prepend-icon="mdi-check-circle-outline" width="400">Marcar como leidas</v-btn>
+                            </NavLink>
+                        </template>
                     </div>
                 </div>
             </div>

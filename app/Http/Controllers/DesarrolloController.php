@@ -17,6 +17,7 @@ use App\Models\Docente;
 use App\Models\Lugar;
 use App\Models\User;
 use App\Notifications\AceptadoNotification;
+use App\Notifications\DocenteInscripcion;
 use App\Notifications\ObservacionNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -265,7 +266,10 @@ class DesarrolloController extends Controller
                 ->get();
 
             event(new InscripcionEvent($syncDeteccion));
-
+            User::where('departamento_id', $deteccion->id_departamento)->role(['Docentes'])->each(function(User $user) use ($deteccion){
+                $usuario = auth()->user();
+                $user->notify(new DocenteInscripcion($usuario, $deteccion));
+            });
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
         } else {
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id])->withErrors('Llego al maximo de docentes que el curso permite inscribir');
