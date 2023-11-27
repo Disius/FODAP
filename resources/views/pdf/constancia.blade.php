@@ -3,12 +3,13 @@
 
     <!-- <title></title> -->
     <!-- Styles -->
-
+{{--    <link rel="preconnect" href="https://fonts.googleapis.com">--}}
+{{--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>--}}
+{{--    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">--}}
     <style>
         @font-face {
             font-family: 'Montserrat';
             font-weight: 800;
-            src: url({{public_path('/storage/font_for_constancia/Montserrat-ExtraBold.ttf')}}) format('ttf');
             /* Asegúrate de que la ruta y el formato coincidan con los archivos descargados */
         }
         @page {
@@ -33,7 +34,7 @@
             align-items: center;
             text-align: center;
             font-weight: normal;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 17pt;
         }
         .text-position {
@@ -46,7 +47,7 @@
             font-weight: normal;
             text-align: start;
             margin-left: 100px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 14pt;
         }
         .text-2 {
@@ -59,7 +60,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 50px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 14pt;
         }
         .text-3 {
@@ -72,7 +73,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 50px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 21pt;
         }
         .text-4 {
@@ -85,7 +86,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 50px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 21pt;
         }
         .text-5 {
@@ -98,7 +99,7 @@
             font-weight: bold;
             text-align: center;
             margin-right: 50px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 23pt;
         }
         .text-6 {
@@ -111,7 +112,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 50px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 14pt;
         }
         .text-7 {
@@ -124,7 +125,7 @@
             font-weight: bold;
             text-align: center;
             margin-right: 50px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 17pt;
         }
         .text-8 {
@@ -137,7 +138,7 @@
             font-weight: normal;
             text-align: justify;
             margin-left: 80px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 12pt;
             width: 600px;
         }
@@ -151,21 +152,21 @@
             font-weight: normal;
             text-align: justify;
             margin-left: 390px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 10pt;
         }
         .firmaDirector {
             font-weight: normal;
             text-align: center;
             margin-left: 390px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 9pt;
         }
         .nameDirector {
             font-weight: normal;
             text-align: center;
             margin-left: 100px;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 9pt;
         }
         .footer {
@@ -196,7 +197,7 @@
         p {
             font-weight: normal;
             text-align: center;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat';
             font-size: 8pt;
         }
 
