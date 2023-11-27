@@ -54,6 +54,7 @@ onMounted(() => {
                         :items="props.cursos"
                         item-value="nombreCurso"
                         :search="search"
+                        class="pa-4"
                     >
                         <template v-slot:header>
                             <v-text-field
@@ -70,7 +71,7 @@ onMounted(() => {
                             </v-text-field>
                         </template>
                         <template v-slot:default="{items}">
-                            <v-container class="pa-2" fluid>
+                            <v-container class="pa-8" fluid>
                                 <v-row dense>
                                     <v-col v-for="item in items" :key="item.nameCarrera"
                                            cols="auto"
@@ -101,12 +102,12 @@ onMounted(() => {
                                             </div>
                                             <div class="d-flex justify-space-between px-4">
                                                 <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                    <template v-if="item.raw.estado === 0">
-                                                        <strong class="text-truncate">Curso por realizar</strong>
-                                                    </template>
-                                                    <template v-else>
-                                                        <strong class="text-truncate">En curso</strong>
-                                                    </template>
+<!--                                                    <template v-if="item.raw.estado === 0">-->
+<!--                                                        <strong class="text-truncate">Curso por realizar</strong>-->
+<!--                                                    </template>-->
+<!--                                                    <template v-else>-->
+<!--                                                        <strong class="text-truncate">En curso</strong>-->
+<!--                                                    </template>-->
                                                 </div>
                                                 <NavLink :href="route('index.desarrollo.inscritos', item.raw.id)" type="button" as="button">
                                                     <v-btn

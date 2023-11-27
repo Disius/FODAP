@@ -48,6 +48,7 @@ class DesarrolloController extends Controller
             ->where('aceptado', '=', 1)
             ->where('estado', '=', 2)
             ->orderBy('id', 'desc')
+            ->orderByRaw('deteccion_necesidades.estado ASC, ABS(DATEDIFF(NOW(), deteccion_necesidades.fecha_I)) ASC')
             ->get();
         return Inertia::render('Views/desarrollo/coordinacion/ShowRegistrosC', [
             'cursos' => $detecciones,
@@ -266,10 +267,6 @@ class DesarrolloController extends Controller
                 ->get();
 
             event(new InscripcionEvent($syncDeteccion));
-            User::where('departamento_id', $deteccion->id_departamento)->role(['Docentes'])->each(function(User $user) use ($deteccion){
-                $usuario = auth()->user();
-                $user->notify(new DocenteInscripcion($usuario, $deteccion));
-            });
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
         } else {
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id])->withErrors('Llego al maximo de docentes que el curso permite inscribir');

@@ -18,6 +18,7 @@ const props = defineProps({
     auth: Object,
     facilitador: Object,
     ficha_tecnica: Object,
+    inscritos: Array,
 });
 const timeout = ref(2000);
 const id_teacher = ref(null);
@@ -117,10 +118,11 @@ onMounted(() => {
     });
 
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
-        my_curso_store.update_inscritos(event.inscritos)
+        // my_curso_store.update_inscritos(event.inscritos)
+        calificacion.value = true;
     })
     window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
-        my_curso_store.update_calificacion(event.calificacion[0])
+        // my_curso_store.update_calificacion(event.calificacion[0])
         calificacion.value = true
     })
     my_curso_store.inscritos_curso(props.curso.id)
@@ -138,6 +140,57 @@ onMounted(() => {
                 </v-btn>
             </NavLink>
         </template>
+        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
+                <v-table fixed-header height="500px" hover>
+                    <thead>
+                    <tr>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Apellido Paterno</th>
+                        <th class="text-center">Apellido Materno</th>
+                        <th class="text-center">CALIFICACIÓN</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr
+                        v-for="inscrito in props.inscritos"
+                        :key="inscrito.id" :class="{ id_teacher: inscrito.id === id_teacher }"
+
+                    >
+                        <td class="text-center">{{inscrito.nombre}}</td>
+                        <td class="text-center">{{inscrito.apellidoPat}}</td>
+                        <td class="text-center">{{inscrito.apellidoMat}}</td>
+                        <td class="text-center">
+                            <template v-if="inscrito.calificacion === null">
+                                <v-btn icon @click="fila_seleccionada(inscrito.id)">
+                                    <v-icon>mdi-pencil-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 0">
+                                <v-chip
+                                    class="ma-2"
+                                    color="red"
+                                    text-color="white"
+                                >
+                                    NO APROBADO
+                                </v-chip>
+                            </template>
+                            <template v-else-if="inscrito.calificacion === 1">
+                                <v-chip
+                                    class="ma-2"
+                                    color="success"
+                                    text-color="white"
+                                >
+                                    APROBADO
+                                </v-chip>
+                            </template>
+                        </td>
+                    </tr>
+                    </tbody>
+                </v-table>
+            </div>
+        </div>
+
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="flex items-center">
@@ -268,64 +321,6 @@ onMounted(() => {
                     </v-card>
             </div>
         </div>
-        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                <v-table fixed-header height="500px" hover>
-                    <thead>
-                    <tr>
-                        <th class="text-center">Nombre</th>
-                        <th class="text-center">Apellido Paterno</th>
-                        <th class="text-center">Apellido Materno</th>
-                        <th class="text-center">CÉDULA DE INSCRIPCIÓN</th>
-                        <th class="text-center">CALIFICACIÓN</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr
-                        v-for="inscrito in my_curso_store.my_inscritos"
-                        :key="inscrito.id" :class="{ id_teacher: inscrito.id === id_teacher }"
-
-                    >
-                        <td class="text-center">{{inscrito.nombre}}</td>
-                        <td class="text-center">{{inscrito.apellidoPat}}</td>
-                        <td class="text-center">{{inscrito.apellidoMat}}</td>
-                        <td>
-                            <div class="flex justify-center items-center">
-                                <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit(inscrito.id, props.curso.id)">
-                                    GENERAR PDF
-                                </v-btn>
-                            </div>
-                        </td>
-                        <td class="text-center">
-                            <template v-if="inscrito.calificacion === null">
-                                <v-btn icon @click="fila_seleccionada(inscrito.id)">
-                                    <v-icon>mdi-pencil-plus</v-icon>
-                                </v-btn>
-                            </template>
-                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
-                                <v-chip
-                                    class="ma-2"
-                                    color="red"
-                                    text-color="white"
-                                >
-                                    {{inscrito.calificacion}}
-                                </v-chip>
-                            </template>
-                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
-                                <v-chip
-                                    class="ma-2"
-                                    color="success"
-                                    text-color="white"
-                                >
-                                    {{inscrito.calificacion}}
-                                </v-chip>
-                            </template>
-                        </td>
-                    </tr>
-                    </tbody>
-                </v-table>
-            </div>
-        </div>
         <v-dialog width="auto" v-model="dialog" persistent>
             <v-card width="500" height="500">
                 <v-card-title>Añadir calificación</v-card-title>
@@ -415,7 +410,7 @@ onMounted(() => {
         >
             <div class="text-subtitle-1 pb-2"></div>
 
-            <p>Se añadio una calificacion</p>
+            <p>Se han actualizado los recursos, refresca la pagina</p>
 
             <template v-slot:actions>
                 <v-btn

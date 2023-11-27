@@ -125,7 +125,13 @@
             <tr>
                 <td>{{$count++}}</td>
                 <td>{{$docente->docente_calificacion->nombre_completo}}</td>
-                <td>{{$docente->calificacion}}</td>
+                <td>
+                    @if($docente->calificacion == 0)
+                        NO APROBADO
+                    @else
+                        APROBADO
+                    @endif
+                </td>
             </tr>
             </tbody>
         @endforeach

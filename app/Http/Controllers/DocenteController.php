@@ -54,10 +54,6 @@ class DocenteController extends Controller
     public function inscripcion_docente(Request $request, $id){
         $deteccion = DeteccionNecesidades::find($id);
         $deteccion->docente_inscrito()->attach($request->input('id_docente'));
-        User::role(['Coordinacion de FD y AP', 'Jefe del Departamento de Desarrollo Academico'])->each(function ($user) use ($deteccion) {
-            $docente = auth()->user() == null ? null : auth()->user()->docente;
-            $user->notify(new InscripcionDocente($deteccion, $docente));
-        });
         $syncDeteccion = DesarrolloController::consult_to_sync($id, $request->id_docente);
         event(new InscripcionEvent($syncDeteccion));
         return Redirect::route('index.cursos.docentes');
@@ -107,6 +103,7 @@ class DocenteController extends Controller
     }
 
     public function show_facilitadores($id){
+        CoursesController::state_curso();
         $docente = Docente::with('cvu', 'facilitador_has_deteccion')->find($id);
         return Inertia::render('Views/cursos/facilitadores/Facilitadores', [
             'docente' => $docente
@@ -117,11 +114,20 @@ class DocenteController extends Controller
         $docente = Docente::find($facilitador);
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso'])->find($id);
         $ficha = $curso->ficha != null ? FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id) : null;
-
+        $inscritos = DB::table('docente')
+            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+            ->leftJoin('calificaciones', function ($join) {
+                $join->on('calificaciones.docente_id', '=', 'docente.id')
+                    ->on('calificaciones.curso_id', '=', 'inscripcion.curso_id');
+            })
+            ->where('inscripcion.curso_id', '=', $id)
+            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
+            ->get();
         return Inertia::render('Views/cursos/facilitadores/MiCursoFacilitador', [
             'curso' => $curso,
             'facilitador' => $docente,
             'ficha_tecnica' => $ficha,
+            'inscritos' => $inscritos,
         ]);
     }
 

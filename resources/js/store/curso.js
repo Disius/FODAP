@@ -14,6 +14,7 @@ export const Curso = defineStore('Curso', {
             inscritos: [],
             inscritos_desarrollo: [],
             inscritos_academicos: [],
+            inscritros_facilitador: [],
         }
     },
     getters: {
@@ -115,6 +116,6 @@ export const Curso = defineStore('Curso', {
         },
         curso_aceptado_update(curso){
             this.academicos_cursos.unshift(curso)
-        }
+        },
     }
 })
