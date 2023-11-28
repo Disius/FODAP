@@ -223,9 +223,19 @@ class DesarrolloController extends Controller
         $docente = Docente::orderBy('nombre', 'asc')->get();
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
             ->find($id);
+        $inscritos = DB::table('docente')
+            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+            ->leftJoin('calificaciones', function ($join) {
+                $join->on('calificaciones.docente_id', '=', 'docente.id')
+                    ->on('calificaciones.curso_id', '=', 'inscripcion.curso_id');
+            })
+            ->where('inscripcion.curso_id', '=', $id)
+            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
+            ->get();
         return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
             'curso' => $curso,
             'docente' => $docente,
+            'inscritos' => $inscritos
         ]);
     }
 
@@ -233,7 +243,6 @@ class DesarrolloController extends Controller
         $deteccion = DeteccionNecesidades::find($id);
 
         event(new DeleteDeteccionEvent($deteccion));
-
 
         $deteccion->delete();
 

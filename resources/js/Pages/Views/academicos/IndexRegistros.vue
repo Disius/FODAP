@@ -80,7 +80,7 @@ const props = defineProps({
                                                         <strong class="text-truncate">En curso</strong>
                                                     </template>
                                                 </div>
-                                                <NavLink :href="route('index.desarrollo.inscritos', item.raw.id)" type="button" as="button">
+                                                <NavLink :href="route('show.inscritos.academicos', item.raw.id)" type="button" as="button">
                                                     <v-btn
                                                         border
                                                         flat

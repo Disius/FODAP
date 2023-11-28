@@ -11,6 +11,7 @@ import EliminarDeteccionConfirmation from "@/Pages/Views/dialogs/EliminarDetecci
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import axios from 'axios'
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const store = Curso();
 
@@ -18,6 +19,7 @@ const props = defineProps({
     curso: Object,
     auth: Object,
     docente: Array,
+    inscritos: Array,
 });
 const timeout = ref(2000);
 
@@ -28,16 +30,14 @@ const snackbar = ref(false);
 const loading = ref(false);
 const loadingActa = ref(false);
 const loadingConstancia = ref(false);
-const snackbarInscritos = ref(false);
-const snackbarError = ref(false);
-const snackbarBien = ref(false);
 const calificacion = ref(false);
 const dialog_generar_acta = ref(false);
 const dialog_constancia_pdf = ref(false);
-const checkchip = ref()
+const color = ref("")
+const message = ref("")
 
 
-const calificacion_string = ref("")
+
 const formCalificacion = useForm({
     calificacion: null,
     docente_id: null,
@@ -72,12 +72,12 @@ const submitCalificacion = () => {
             onSuccess: () => {
                 loading.value = false
                 formCalificacion.reset();
-                snackbarBien.value = true
                 dialog_generar_acta.value = false
+
+
             },
             onError: () => {
                 loading.value = false
-                snackbarError.value = true
             },
         })
 }
@@ -126,10 +126,16 @@ const submitConstancia = (docente_id) => {
 }
 
 const updateCalificacion = (calificacion, id) => {
-    calificacion_string.value = calificacion
+    formCalificacion.calificacion = calificacion
     formCalificacion.docente_id = id
     dialogCalificacion.value = true
 }
+
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+};
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -148,15 +154,15 @@ onMounted(() => {
         }
     });
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
-        store.update_inscritos_desarrollo(event.inscritos)
-        snackbarInscritos.value = true
+        snackEventActivator()
     })
     window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
         store.update_calificacion_desarrollo(event.calificacion[0])
         calificacion.value = true
-        console.log(event.calificacion[0])
     })
     store.inscritos_curso_desarrollo(props.curso.id)
+
+
 });
 
 </script>
@@ -204,7 +210,7 @@ onMounted(() => {
                     </thead>
                     <tbody>
                     <tr
-                        v-for="inscrito in store.my_inscritos_desarrollo"
+                        v-for="inscrito in props.inscritos"
                         :key="inscrito.id"
 
                     >
@@ -438,101 +444,7 @@ onMounted(() => {
                 ></v-progress-circular>
             </v-fade-transition>
         </v-dialog>
-        <v-snackbar
-            v-model="snackbar"
-            vertical
-            color="error"
-            :timeout="timeout"
-        >
-            <div class="text-subtitle-1 pb-2">Error</div>
-
-            <p>No se pudo generar correctamente la cédula de inscripción</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="snackbar = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
-        <v-snackbar
-            v-model="snackbarInscritos"
-            vertical
-            color="info"
-            :timeout="5000"
-        >
-            <div class="text-subtitle-1 pb-2"></div>
-
-            <p>Se inscribio un nuevo docente a este curso</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="snackbarInscritos = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
-        <v-snackbar
-            v-model="snackbarError"
-            vertical
-            color="error"
-            :timeout="10000"
-        >
-            <div class="text-subtitle-1 pb-2"></div>
-
-            <p>Se produjo un error</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="snackbarError = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
-        <v-snackbar
-            v-model="snackbarBien"
-            vertical
-            color="success"
-            :timeout="10000"
-        >
-            <div class="text-subtitle-1 pb-2"></div>
-
-            <p>Se añadio la calificacion con exito</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="snackbarBien = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
-        <v-snackbar
-            v-model="calificacion"
-            vertical
-            color="success"
-            :timeout="10000"
-        >
-            <div class="text-subtitle-1 pb-2"></div>
-
-            <p>Se añadio una calificacion</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="calificacion = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
+        <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event"/>
     </AuthenticatedLayout>
 </template>
 
