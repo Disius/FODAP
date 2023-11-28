@@ -65,6 +65,13 @@ onMounted(() => {
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{props.deteccion.nombreCurso}}</h2>
 
+                <div class="mt-6">
+                    <NavLink :href="route('detecciones.index')" type="button" as="button">
+                        <v-btn icon="mdi-arrow-left" class="" color="blue-darken-1">
+
+                        </v-btn>
+                    </NavLink>
+                </div>
                 <template v-if="props.deteccion.aceptado === 0">
                     <div class="mt-6">
                         <NavLink :href="route('edit.detecciones', props.deteccion.id)" type="button" as="button">

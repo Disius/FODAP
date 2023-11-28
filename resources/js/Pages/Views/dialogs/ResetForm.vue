@@ -16,9 +16,6 @@ const emit = defineEmits([
 ]);
 
 
-
-
-
 </script>
 
 <template>

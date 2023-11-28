@@ -14,25 +14,29 @@ const props = defineProps({
     cursos: Array,
     auth: Object,
 });
-const snackCursoAceptado = ref(false);
+
 const search = ref("");
 const message = ref("")
 const color = ref()
 const snackbar = ref(false)
+const timeout = ref(0)
 const snackEventActivator = () => {
     snackbar.value = true;
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
+    timeout.value = 5000
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
+    timeout.value = 5000
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
+    timeout.value = 5000
 };
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -51,7 +55,7 @@ onMounted(() => {
                 break;
         }
     });
-    curso_store.get_cursos_academicos()
+
     window.Echo.private('cursos-aceptados').listen('CursosAceptados', (event) => {
         snackEventActivator()
     });
@@ -64,7 +68,7 @@ onMounted(() => {
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Cursos</h2>
         </template>
-        <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event"/>
+        <CustomSnackBar :message="message" :color="color" v-model="snackbar" :timeout="timeout" @update:modelValue="snackbar = $event"/>
 
         <template v-if="props.cursos.length !== 0">
             <div class="mx-auto sm:px-6 lg:px-8 space-y-6">

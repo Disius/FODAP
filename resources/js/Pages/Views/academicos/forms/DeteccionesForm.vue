@@ -27,9 +27,7 @@ const props = defineProps({
         type: Object
     }
 });
-const emit = defineEmits([
-    'update:modelValue'
-]);
+
 const user = computed(() => usePage().props.auth.user);
 let dialogReset = ref(false);
 const snackCursoNoStored = ref(false);
@@ -447,7 +445,6 @@ const submit = () => {
                                 </v-select>
                             </v-col>
                             <v-col cols="12">
-                                <v-row justify="center">
                                     <v-col align="start" cols="4">
                                         <InputLabel for="facilitador"
                                             value="Facilitador(a) que impartirá el curso/taller" />
@@ -468,13 +465,8 @@ const submit = () => {
                                         </div>
                                     </v-col>
                                     <v-col cols="4">
-                                        <NavLink :href="route('create.docentes.academicos')" as="button" :data="{ from_form: true }" preserve-state>
-                                            <v-btn prepend-icon="mdi-plus" color="blue-darken-1">
-                                                Dar de alta a un docente
-                                            </v-btn>
-                                        </NavLink>
+
                                     </v-col>
-                                </v-row>
                                 <v-autocomplete :counter="3" multiple :items="props.docente" item-title="nombre_completo" item-value="id"
                                     v-model="form.facilitadores" variant="solo" :rules="maxCount" class="mt-4">
 
@@ -669,28 +661,7 @@ const submit = () => {
             </v-row>
         </form>
         <ResetForm v-model="dialogReset" @update:modelValue="dialogReset = $event"></ResetForm>
-        <v-snackbar
-            :timeout="3000"
-            color="error"
-            rounded="pill"
-            v-model="snackCursoNoStored"
-            vertical
-        >
 
-
-            <strong>{{props.errores}}</strong>.
-        </v-snackbar>
-        <v-snackbar
-            :timeout="3000"
-            color="success"
-            rounded="pill"
-            v-model="snackCursoStored"
-            vertical
-        >
-
-
-            <strong>Curso creado con exito</strong>.
-        </v-snackbar>
     </section>
 </template>
 

@@ -1,18 +1,42 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {computed, onMounted, ref} from "vue";
-import {Head} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import TablaMisCursoDocente from "@/Pages/Views/cursos/tablas/TablaMisCursoDocente.vue";
 import NavLink from "@/Components/NavLink.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const props = defineProps({
     docente: Object,
     auth: Object,
-    misCursos: Array
+    misCursos: {
+        type: Array
+    }
 });
 
 const search = ref()
-
+const color = ref("")
+const message = ref("")
+const snackbar = ref(false)
+const timeout = ref(0)
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 8000
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -30,11 +54,16 @@ onMounted(() => {
                 break;
         }
     });
-
+    window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
+        snackEventActivator()
+    })
 
 });
 
-// console.log(props.docente.inscrito)
+const reloadPage = () => {
+    router.reload();
+    snackbar.value = false
+}
 
 </script>
 
@@ -45,8 +74,7 @@ onMounted(() => {
             <h2 class="text-lg font-medium text-gray-900">Mis Cursos</h2>
         </template>
 
-        <template v-if="props.docente !== null">
-            <template v-if="props.docente.inscrito.length !== 0">
+            <template v-if="props.misCursos.length !== 0">
                 <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
                     <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                         <v-data-iterator
@@ -151,32 +179,22 @@ onMounted(() => {
                     </div>
                 </div>
             </template>
-        </template>
-        <template v-else>
-            <div class="mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <v-alert
-                    border="start"
-                    color="info"
-                    type="info"
-                    title="Cursos"
-                    >
-                        <h2>Actualmente no estas inscrito a un curso o no estan disponbles !Pronto deberias verlos disponible!</h2>
-                    </v-alert>
-                </div>
-            </div>
-        </template>
         <div class="mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="grid grid-cols-2">
-                    <div class="flex justify-center">
-                        <NavLink :href="route('d.c.r')">
-                            <v-btn width="600" height="50" color="blue-darken-1" prepend-icon="mdi-archive">Ver todos los cursos finalizados</v-btn>
-                        </NavLink>
-                    </div>
-                </div>
+                <v-col>
+                    <NavLink :href="route('d.c.r')">
+                        <v-btn width="600" height="50" color="blue-darken-1" prepend-icon="mdi-archive">Ver todos los cursos finalizados</v-btn>
+                    </NavLink>
+                </v-col>
             </div>
         </div>
+        <CustomSnackBar :message="message" :timeout="timeout" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event">
+            <template v-slot:reloadingbutton>
+                <div class="flex justify-start pa-1">
+                    <v-btn @click="reloadPage" icon="mdi-reload"></v-btn>
+                </div>
+            </template>
+        </CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 

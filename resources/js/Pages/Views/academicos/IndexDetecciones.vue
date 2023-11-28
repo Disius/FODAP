@@ -20,9 +20,31 @@ const props = defineProps({
     auth: Object,
 });
 const pdf_dialog = ref(false);
-const snackCursoDelete = ref(false)
-const snackCursoObs = ref(false)
+const snackbar = ref(false);
+const color = ref("")
+const message = ref("")
+const timeout = ref(0)
 const search = ref()
+
+
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 8000
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -46,12 +68,10 @@ onMounted(() => {
         store.update_enable_dates(event.dates.fechas)
     });
     window.Echo.private('deteccion-observacion').listen('ObservacionEvent', (event) => {
-        console.log(event.deteccion)
-        snackCursoObs.value = true
+        snackEventActivator()
     });
     window.Echo.private('delete-deteccion').listen('DeleteDeteccionEvent', (event) => {
-        detecciones_store.delete_deteccion_academicos(event.deteccion.id)
-        snackCursoDelete.value = true
+        snackEventActivator()
     });
 });
 </script>
@@ -209,27 +229,5 @@ onMounted(() => {
                 </div>
             </div>
         </template>
-        <v-snackbar
-            :timeout="8000"
-            color="error"
-            rounded="pill"
-            v-model="snackCursoDelete"
-            vertical
-        >
-
-
-            <strong>Se ha eliminado un curso, por favor recarga la pagina para visualizarlo</strong>.
-        </v-snackbar>
-        <v-snackbar
-            :timeout="8000"
-            color="warning"
-            rounded="pill"
-            v-model="snackCursoObs"
-            vertical
-        >
-
-
-            <strong>Se ha añadido una observacion a un curso, por favor recarga la pagina para visualizarlo</strong>.
-        </v-snackbar>
     </AuthenticatedLayout>
 </template>

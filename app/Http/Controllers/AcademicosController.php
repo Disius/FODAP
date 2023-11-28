@@ -37,13 +37,21 @@ class AcademicosController extends Controller
     {
         $docentes = Docente::select('nombre_completo', 'id')->get();
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->select('nameCarrera', 'id', 'departamento_id')->get();
-        $departamento = Departamento::all();
         $lugar = Lugar::with('curso')->get();
+        $departamento = Departamento::where('id', auth()->user()->departamento_id)->get();
+        $tipoPlaza = DB::table('tipo_plaza')->get();
+        $puesto = DB::table('puesto')->select('id', 'nombre')->get();
+        $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
         return Inertia::render('Views/academicos/CreateDetecciones', [
             'base_docente' => $docentes,
             'carrera_filtro' => $carrera,
             'todos_los_departamentos' => $departamento,
-            'lugar' => $lugar
+            'lugar' => $lugar,
+            'carrera' => Carrera::all(),
+            'departamento' => Departamento::all(),
+            'tipo_plaza' => $tipoPlaza,
+            'puesto' => $puesto,
+            'posgrado' => $posgrado,
         ]);
     }
 
@@ -194,7 +202,6 @@ class AcademicosController extends Controller
     }
     public function docente_created_from_form(Request $request){
         $this->create_instance_docente($request);
-        return Redirect::route('detecciones.create');
     }
     public function created_docentes_academicos(Request $request){
         $this->create_instance_docente($request);

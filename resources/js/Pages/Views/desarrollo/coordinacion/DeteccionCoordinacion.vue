@@ -6,6 +6,8 @@ import DeteccionDialog from '/resources/js/Pages/Views/dialogs/DeteccionDialogPD
 import {Deteccion} from "@/store/Deteccion.js";
 import { TailwindPagination } from 'laravel-vue-pagination';
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
+import {router} from "@inertiajs/vue3";
 
 const store = Deteccion()
 const props = defineProps({
@@ -16,11 +18,36 @@ const props = defineProps({
 });
 
 const pdf_dialog = ref(false);
-const snackCursoAdd = ref(false)
-const snackCursoDelete = ref(false)
-const snackDeteccionEditada = ref(false)
+const timeout = ref(0)
+const message = ref("")
+const color = ref("")
+const snackbar = ref(false)
+
 const search = ref("");
 
+
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 8000
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
+const reloadPage = () => {
+    router.reload();
+    snackbar.value = false
+}
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -39,19 +66,15 @@ onMounted(() => {
         }
     });
 
-    store.getDeteccionesDesarrollo();
 
     window.Echo.private('deteccion_necesidades').listen('DeteccionEvent', (event) => {
-        store.update_detecciones_desarrollo(event.deteccion)
-        snackCursoAdd.value = true
+        snackEventActivator()
     });
     window.Echo.private('delete-deteccion').listen('DeleteDeteccionEvent', (event) => {
-        store.delete_deteccion_desarrollo(event.deteccion.id)
-        snackCursoDelete.value = true
+        snackEventActivator()
     });
     window.Echo.private('deteccion-editada').listen('DeteccionEditadaEvent', (event) => {
-        snackDeteccionEditada.value = true
-        console.log(event.deteccion)
+        snackEventActivator()
     });
 });
 </script>
@@ -155,39 +178,13 @@ onMounted(() => {
                 </template>
             </div>
         </div>
-        <v-snackbar
-            :timeout="10000"
-            color="success"
-            rounded="pill"
-            v-model="snackCursoAdd"
-            vertical
-        >
-
-
-            <strong>Se ha añadido un nuevo curso, recarga la pagina para visualizarlo</strong>.
-        </v-snackbar>
-        <v-snackbar
-            :timeout="10000"
-            color="success"
-            rounded="pill"
-            v-model="snackCursoDelete"
-            vertical
-        >
-
-
-            <strong>Se ha eliminado un curso, recarga la pagina para visualizarlo</strong>.
-        </v-snackbar>
-        <v-snackbar
-            :timeout="10000"
-            color="success"
-            rounded="pill"
-            vertical
-            v-model="snackDeteccionEditada"
-        >
-
-
-            <strong>Se ha editado un curso, recarga la pagina para visualizarlo</strong>.
-        </v-snackbar>
+        <CustomSnackBar :message="message" :color="color" :timeout="timeout" v-model="snackbar" @update:modelValue="snackbar = $event">
+            <template v-slot:reloadingbutton>
+                <div class="flex justify-start pa-1">
+                    <v-btn @click="reloadPage" icon="mdi-reload"></v-btn>
+                </div>
+            </template>
+        </CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 

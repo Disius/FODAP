@@ -54,8 +54,8 @@ class DocenteController extends Controller
     public function inscripcion_docente(Request $request, $id){
         $deteccion = DeteccionNecesidades::find($id);
         $deteccion->docente_inscrito()->attach($request->input('id_docente'));
-        $syncDeteccion = DesarrolloController::consult_to_sync($id, $request->id_docente);
-        event(new InscripcionEvent($syncDeteccion));
+        $syncDocente = DesarrolloController::consult_to_sync($id, $request->id_docente);
+        event(new CalificacionEvent($syncDocente));
         return Redirect::route('index.cursos.docentes');
     }
 
@@ -68,11 +68,11 @@ class DocenteController extends Controller
             ->join('deteccion_necesidades', 'inscripcion.curso_id', '=', 'deteccion_necesidades.id')
             ->leftJoin('calificaciones', function ($join) {
                 $join->on('calificaciones.curso_id', '=', 'inscripcion.curso_id')
-                    ->where('calificaciones.docente_id', '=', 'inscripcion.docente_id');
+                    ->where('calificaciones.docente_id', '=', auth()->user()->docente_id);
             })
             ->where('inscripcion.docente_id', '=', auth()->user()->docente_id)
-            ->select('deteccion_necesidades.*', 'inscripcion.id AS InscripcionID', 'calificaciones.calificacion')
             ->orderByRaw('deteccion_necesidades.estado ASC, ABS(DATEDIFF(NOW(), deteccion_necesidades.fecha_I)) ASC')
+            ->select('deteccion_necesidades.*', 'inscripcion.id AS InscripcionID', 'calificaciones.calificacion AS calificacion', 'calificaciones.id AS calificacionID')
             ->get();
 
 

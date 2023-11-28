@@ -9,7 +9,7 @@ const props = defineProps({
         type: String,
     },
     timeout: {
-        type: Number,   
+        type: Number,
     },
     message: {
         type: String,

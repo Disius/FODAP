@@ -21,7 +21,7 @@ const props = defineProps({
     docente: Array,
     inscritos: Array,
 });
-const timeout = ref();
+const timeout = ref(0);
 
 const dialog_inscripcion = ref(false);
 const dialog = ref(false);
