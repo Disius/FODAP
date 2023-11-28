@@ -22,6 +22,7 @@ const teacherSelected = ref([]);
 const search = ref("");
 const snackbar = ref(false);
 const timeout = ref(4000);
+
 const emit = defineEmits([
     'update:modelValue'
 ]);
@@ -50,7 +51,7 @@ function addTeachers(teacher){
                     form.reset()
                 },
                 onError: () => {
-                    snackbar.value = true;
+
                     form.reset()
                 },
             })
@@ -128,24 +129,4 @@ function addTeachers(teacher){
         </v-card-actions>
     </v-card>
 </v-dialog>
-    <v-snackbar
-        v-model="snackbar"
-        vertical
-        color="warning"
-        :timeout="timeout"
-    >
-        <div class="text-subtitle-1 pb-2">Alerta</div>
-
-        <template v-if="props.errors">
-            <p class="text-center text-lg">{{props.errors[0]}}</p>
-        </template>
-
-        <template v-slot:actions>
-            <v-btn
-                @click="snackbar = false"
-            >
-                Cerrar
-            </v-btn>
-        </template>
-    </v-snackbar>
 </template>

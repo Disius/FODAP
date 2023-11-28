@@ -8,7 +8,7 @@ import {ref} from 'vue';
 import {Curso} from "@/store/curso.js";
 import DangerButton from "@/Components/DangerButton.vue";
 import EliminarDeteccionConfirmation from "@/Pages/Views/dialogs/EliminarDeteccionConfirmation.vue";
-import {useForm} from "@inertiajs/vue3";
+import {router, useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import axios from 'axios'
 import CustomSnackBar from "@/Components/CustomSnackBar.vue";
@@ -21,7 +21,7 @@ const props = defineProps({
     docente: Array,
     inscritos: Array,
 });
-const timeout = ref(2000);
+const timeout = ref();
 
 const dialog_inscripcion = ref(false);
 const dialog = ref(false);
@@ -37,13 +37,15 @@ const color = ref("")
 const message = ref("")
 
 
-
 const formCalificacion = useForm({
     calificacion: null,
     docente_id: null,
     curso_id: props.curso.id
 })
-
+const reloadPage = () => {
+    router.reload();
+    snackbar.value = false
+}
 const fila_seleccionada = (docente_id) => {
     formCalificacion.docente_id = docente_id
     dialogCalificacion.value = true
@@ -73,11 +75,11 @@ const submitCalificacion = () => {
                 loading.value = false
                 formCalificacion.reset();
                 dialog_generar_acta.value = false
-
-
+                snackSuccessActivator()
             },
             onError: () => {
                 loading.value = false
+                snackErrorActivator()
             },
         })
 }
@@ -98,8 +100,9 @@ const submitActa = () => {
         link.click();
         loadingActa.value = false
         dialog_generar_acta.value = false
+        snackSuccessActivator()
     }).catch(error => {
-        console.log(error)
+        snackErrorActivator()
     })
 }
 const submitConstancia = (docente_id) => {
@@ -119,9 +122,10 @@ const submitConstancia = (docente_id) => {
         link.click();
         loadingConstancia.value = false
         dialog_constancia_pdf.value = false
+        snackSuccessActivator()
     }).catch(error => {
         loadingConstancia.value = false
-        snackbarError.value = true
+        snackErrorActivator()
     })
 }
 
@@ -135,7 +139,21 @@ const snackEventActivator = () => {
     snackbar.value = true;
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
+    timeout.value = 8000
 };
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
+
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -157,8 +175,7 @@ onMounted(() => {
         snackEventActivator()
     })
     window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
-        store.update_calificacion_desarrollo(event.calificacion[0])
-        calificacion.value = true
+        snackEventActivator()
     })
     store.inscritos_curso_desarrollo(props.curso.id)
 
@@ -444,7 +461,13 @@ onMounted(() => {
                 ></v-progress-circular>
             </v-fade-transition>
         </v-dialog>
-        <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event"/>
+        <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event" :timeout="timeout">
+            <template v-slot:reloadingbutton>
+                <div class="flex justify-start pa-1">
+                    <v-btn @click="reloadPage" icon="mdi-reload"></v-btn>
+                </div>
+            </template>
+        </CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 

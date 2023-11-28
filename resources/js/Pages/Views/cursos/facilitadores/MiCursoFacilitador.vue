@@ -9,6 +9,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import {router, useForm} from "@inertiajs/vue3";
 import DangerButton from "@/Components/DangerButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const my_curso_store = Curso()
 const store = FODAPStore()
@@ -20,13 +21,14 @@ const props = defineProps({
     ficha_tecnica: Object,
     inscritos: Array,
 });
-const timeout = ref(2000);
+const timeout = ref();
 const id_teacher = ref(null);
 const snackbar = ref(false);
-const snackbarCDI = ref(false);
 const dialog = ref(false);
 const loading = ref(false);
-const calificacion = ref(false);
+const message = ref("")
+const color = ref("")
+
 
 const formatFechaF = computed(() => {
     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
@@ -34,7 +36,24 @@ const formatFechaF = computed(() => {
 const formatFechaI = computed(() => {
     return new Date(props.curso.fecha_I).toLocaleDateString('es-MX');
 });
-
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 8000
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
 
 const submit = (inscripcion, id) => {
     axios.get(route('cdi.pdf'), {
@@ -49,9 +68,9 @@ const submit = (inscripcion, id) => {
         link.setAttribute('download', 'CDI.pdf');
         document.body.appendChild(link);
         link.click();
+        snackSuccessActivator()
     }).catch(error => {
-        console.log(error.response.data)
-        snackbarCDI.value = true
+        snackErrorActivator()
     })
 }
 
@@ -67,14 +86,14 @@ const generar_ficha = () => {
         link.setAttribute('download', 'ficha.pdf');
         document.body.appendChild(link);
         link.click();
+        snackSuccessActivator()
     }).catch(error => {
-        console.log(error.response.data)
-        snackbar.value = true
+        snackErrorActivator()
     })
 };
 
 const form = useForm({
-    calificacion: "",
+    calificacion: null,
     docente_id: null,
     curso_id: props.curso.id
 })
@@ -89,11 +108,11 @@ const submitCalificacion = () => {
         onSuccess: () => {
             loading.value = false
             form.reset();
-            my_curso_store.inscritos_curso(props.curso.id)
+            snackSuccessActivator()
         },
         onError: () => {
             loading.value = false
-            console.log("Error")
+            snackErrorActivator()
         },
     })
 }
@@ -119,11 +138,11 @@ onMounted(() => {
 
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
         // my_curso_store.update_inscritos(event.inscritos)
-        calificacion.value = true;
+        snackEventActivator()
     })
     window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
         // my_curso_store.update_calificacion(event.calificacion[0])
-        calificacion.value = true
+        snackEventActivator()
     })
     my_curso_store.inscritos_curso(props.curso.id)
 
@@ -313,25 +332,39 @@ onMounted(() => {
                                 </NavLink>
                             </v-col>
                             <v-col cols="6" align="center" class="mt-2">
-                                <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box" @click="generar_ficha">
-                                    Descargar PDF
-                                </v-btn>
+                                <template v-if="props.ficha_tecnica === null">
+                                    <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box" @click="snackErrorActivator">
+                                        Descargar PDF
+                                    </v-btn>
+                                </template>
+                                <template v-else>
+                                    <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box" @click="generar_ficha">
+                                        Descargar PDF
+                                    </v-btn>
+                                </template>
                             </v-col>
                         </v-row>
                     </v-card>
             </div>
         </div>
         <v-dialog width="auto" v-model="dialog" persistent>
-            <v-card width="500" height="500">
+            <v-card width="500" height="300">
                 <v-card-title>Añadir calificación</v-card-title>
                 <v-card-text>
                     <v-row justify="center">
                         <v-col cols="12">
                             <InputLabel for="calificacion"
-                                        value="Unicamente ESCRIBIR si el docente esta APROBADO o NO APROBADO (MARCAR EN MAYÚSCULAS)" />
+                                        value="Unicamente SELECCIONAR si el docente esta APROBADO o NO APROBADO" />
                         </v-col>
-                        <v-col cols="10" class="mt-16">
-                            <v-text-field variant="solo-filled" v-model="form.calificacion"></v-text-field>
+                        <v-col cols="8" class="mt-5 ml-6" align="center">
+                            <v-chip-group
+                                v-model="form.calificacion"
+                                column
+                            >
+                                <v-chip color="error">NO APROBADO</v-chip>
+
+                                <v-chip color="success">APROBADO</v-chip>
+                            </v-chip-group>
                         </v-col>
                     </v-row>
                 </v-card-text>
@@ -356,7 +389,7 @@ onMounted(() => {
                             </danger-button>
                         </v-col>
                         <v-col cols="2" align="end" class="mr-16">
-                            <primary-button @click="submitCalificacion">
+                            <primary-button elevation="5" color="success" @click="submitCalificacion">
                                 Subir
                             </primary-button>
                         </v-col>
@@ -364,63 +397,9 @@ onMounted(() => {
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-snackbar
-            v-model="snackbar"
-            vertical
-            color="error"
-            :timeout="timeout"
-        >
-            <div class="text-subtitle-1 pb-2">Error</div>
+        <CustomSnackBar :message="message" :timeout="timeout" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event">
 
-            <p>No se pudo generar correctamente la ficha técnica</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="snackbar = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
-        <v-snackbar
-            v-model="snackbarCDI"
-            vertical
-            color="error"
-            :timeout="timeout"
-        >
-            <div class="text-subtitle-1 pb-2">Error</div>
-
-            <p>No se pudo generar correctamente la cédula de inscipción</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="snackbarCDI = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
-        <v-snackbar
-            v-model="calificacion"
-            vertical
-            color="success"
-            :timeout="10000"
-        >
-            <div class="text-subtitle-1 pb-2"></div>
-
-            <p>Se han actualizado los recursos, refresca la pagina</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="calificacion = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
+        </CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 

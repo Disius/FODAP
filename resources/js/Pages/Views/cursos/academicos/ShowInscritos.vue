@@ -1,23 +1,30 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import TablaCursoAcademicoInscritos from "@/Pages/Views/cursos/tablas/TablaCursoAcademicoInscritos.vue";
-import {Head} from "@inertiajs/vue3";
+import {Head, router} from "@inertiajs/vue3";
 import {computed, onMounted, ref} from "vue";
 import Inscripcion from "../../dialogs/Inscripcion.vue";
 import {Curso} from "@/store/curso.js";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const store = Curso()
 
 const props = defineProps({
     curso: Object,
     auth: Object,
-    docente: Array
+    docente: Array,
+    inscritos: Array,
 });
 
 
 const dialog_inscripcion = ref(false);
 const snackbarInscritos = ref(false);
 const calificacion = ref(false);
+const message = ref("")
+const color = ref();
+const snackbar = ref(false);
+const timeout = ref();
+
 
 const formatFechaF = computed(() => {
     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
@@ -25,6 +32,30 @@ const formatFechaF = computed(() => {
 const formatFechaI = computed(() => {
     return new Date(props.curso.fecha_I).toLocaleDateString('es-MX');
 });
+
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 8000
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
+
+const reloadPage = () => {
+    router.reload();
+    snackbar.value = false
+}
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -43,12 +74,10 @@ onMounted(() => {
         }
     });
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
-        store.update_inscritos_academicos(event.inscritos)
-        snackbarInscritos.value = true
+        snackEventActivator()
     })
     window.Echo.private('calificacion-update').listen('CalificacionEvent', (event) => {
-        store.update_calificacion_academicos(event.calificacion[0])
-        calificacion.value = true
+        snackEventActivator()
     })
     store.inscritos_curso_academicos(props.curso.id)
 });
@@ -78,7 +107,7 @@ onMounted(() => {
                     </thead>
                     <tbody>
                     <tr
-                        v-for="inscrito in store.my_inscritos_academicos"
+                        v-for="inscrito in props.inscritos"
                         :key="inscrito.id"
 
                     >
@@ -95,22 +124,22 @@ onMounted(() => {
 
                                 </v-chip>
                             </template>
-                            <template v-else-if="inscrito.calificacion === 'NO APROBADO'">
+                            <template v-else-if="inscrito.calificacion === 0">
                                 <v-chip
                                     class="ma-2"
                                     color="red"
                                     text-color="white"
                                 >
-                                    {{inscrito.calificacion}}
+                                    NO APROBADO
                                 </v-chip>
                             </template>
-                            <template v-else-if="inscrito.calificacion === 'APROBADO'">
+                            <template v-else-if="inscrito.calificacion === 1">
                                 <v-chip
                                     class="ma-2"
                                     color="success"
                                     text-color="white"
                                 >
-                                    {{inscrito.calificacion}}
+                                    APROBADO
                                 </v-chip>
                             </template>
                         </td>
@@ -228,44 +257,13 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-        <v-snackbar
-            v-model="snackbarInscritos"
-            vertical
-            color="info"
-            :timeout="10000"
-        >
-            <div class="text-subtitle-1 pb-2"></div>
-
-            <p>Se inscribio un nuevo docente a este curso</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="snackbarInscritos = false"
-                >
-                    Cerrar
-                </v-btn>
+        <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event" :timeout="timeout">
+            <template v-slot:reloadingbutton>
+                <div class="flex justify-start pa-1">
+                    <v-btn @click="reloadPage" icon="mdi-reload"></v-btn>
+                </div>
             </template>
-        </v-snackbar>
-        <v-snackbar
-            v-model="calificacion"
-            vertical
-            color="success"
-            :timeout="10000"
-        >
-            <div class="text-subtitle-1 pb-2"></div>
-
-            <p>Se añadio una calificacion</p>
-
-            <template v-slot:actions>
-                <v-btn
-
-                    @click="calificacion = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
+        </CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 

@@ -9,8 +9,7 @@ const props = defineProps({
         type: String,
     },
     timeout: {
-        type: Number,
-        default: 8000
+        type: Number,   
     },
     message: {
         type: String,
@@ -29,6 +28,7 @@ const emit = defineEmits([
         <template v-slot:actions>
             <v-btn color="white" text @click="emit('update:modelValue', false)">Cerrar</v-btn>
         </template>
+        <slot name="reloadingbutton"/>
     </v-snackbar>
 </template>
 

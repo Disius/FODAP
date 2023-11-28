@@ -6,6 +6,7 @@ import {Head} from "@inertiajs/vue3";
 import NavLink from "@/Components/NavLink.vue";
 import {Curso} from "@/store/curso.js";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const curso_store = Curso()
 
@@ -15,6 +16,24 @@ const props = defineProps({
 });
 const snackCursoAceptado = ref(false);
 const search = ref("");
+const message = ref("")
+const color = ref()
+const snackbar = ref(false)
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+};
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -34,8 +53,7 @@ onMounted(() => {
     });
     curso_store.get_cursos_academicos()
     window.Echo.private('cursos-aceptados').listen('CursosAceptados', (event) => {
-        snackCursoAceptado.value = true
-        curso_store.curso_aceptado_update(event.curso)
+        snackEventActivator()
     });
 
 });
@@ -46,17 +64,7 @@ onMounted(() => {
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Cursos</h2>
         </template>
-        <v-snackbar
-            :timeout="8000"
-            color="info"
-            rounded="pill"
-            v-model="snackCursoAceptado"
-            vertical
-        >
-
-
-            <strong>Se ha aceptado un curso, por favor recarga la pagina para visualizarlo</strong>.
-        </v-snackbar>
+        <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event"/>
 
         <template v-if="props.cursos.length !== 0">
             <div class="mx-auto sm:px-6 lg:px-8 space-y-6">

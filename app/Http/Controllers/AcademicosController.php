@@ -106,6 +106,8 @@ class AcademicosController extends Controller
             ->get();
 
 
+
+
         return Inertia::render('Views/cursos/academicos/CursosAcademicos', [
             'cursos' => $cursos,
         ]);
@@ -114,9 +116,21 @@ class AcademicosController extends Controller
     public function index_cursos_inscritos($id)
     {
         CoursesController::state_curso();
+
+
+        $inscritos = DB::table('docente')
+            ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
+            ->leftJoin('calificaciones', function ($join) {
+                $join->on('calificaciones.docente_id', '=', 'docente.id')
+                    ->on('calificaciones.curso_id', '=', 'inscripcion.curso_id');
+            })
+            ->where('inscripcion.curso_id', '=', $id)
+            ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
+            ->get();
         return Inertia::render('Views/cursos/academicos/ShowInscritos', [
             'curso' => $this->consult_view($id),
             'docente' => Docente::orderBy('nombre', 'asc')->get(),
+            'inscritos' => $inscritos,
         ]);
     }
 
