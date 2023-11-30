@@ -63,9 +63,9 @@ const submit = (inscripcion, id) => {
         link.setAttribute('download', 'CDI.pdf');
         document.body.appendChild(link);
         link.click();
+        snackSuccessActivator()
     }).catch(error => {
-        console.log(error.response.data)
-        snackbar.value = true
+        snackErrorActivator()
     })
 }
 const submitCalificacion = () => {

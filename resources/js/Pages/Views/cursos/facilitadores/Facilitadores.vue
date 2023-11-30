@@ -9,6 +9,11 @@ import {router, useForm} from "@inertiajs/vue3";
 
 const dialog = ref(false);
 const search = ref("")
+const color = ref("")
+const message = ref("")
+const snackbar = ref(false)
+const timeout = ref(0)
+
 
 const props = defineProps({
    auth: Object,
@@ -35,8 +40,11 @@ const upload_file = () => {
     form.post(route('upload.cvu'), {
         forceFormData: true,
         onSuccess: () => {
-
-        }
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        },
     })
 }
 
@@ -49,7 +57,24 @@ const download_cvu_editado = () => {
     link.click();
 }
 
-
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 8000
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
 
 </script>
 
@@ -65,22 +90,20 @@ const download_cvu_editado = () => {
                 <div class="flex justify-items-center mb-12">
                     <h2 class="text-xl font-medium text-gray-900 text-center">CVU</h2>
                 </div>
-                <template v-if="props.docente.cvu === null">
-                    <div class="flex justify-center w-50">
-                        <v-btn block height="50" color="blue-darken-1" @click="download_cvu">Descargar para editar</v-btn>
-                    </div>
+                <div class="flex justify-center w-50">
+                    <v-btn block height="50" color="blue-darken-1" @click="download_cvu">Descargar para editar</v-btn>
+                </div>
 
-                    <div class="grid grid-cols-2">
-                        <div class="flex justify-start mt-12">
-                            <v-file-input label="Ingresar CVU" variant="solo" @input="form.file = $event.target.files[0]"></v-file-input>
-                        </div>
-                        <div class="flex justify-center mt-12">
-                            <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">
-                                Subir
-                            </v-btn>
-                        </div>
+                <div class="grid grid-cols-2">
+                    <div class="flex justify-start mt-12">
+                        <v-file-input label="Ingresar CVU" variant="solo" @input="form.file = $event.target.files[0]"></v-file-input>
                     </div>
-                </template>
+                    <div class="flex justify-center mt-12">
+                        <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">
+                            Subir
+                        </v-btn>
+                    </div>
+                </div>
                 <template v-if="props.docente.cvu != null">
                     <div class="flex justify-start mt-5">
                         <v-btn color="blue-darken-1" width="500" @click="download_cvu_editado">DESCARGAR MI CVU</v-btn>
