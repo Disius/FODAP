@@ -72,7 +72,7 @@ onMounted(() => {
                                   items-per-page-text="Paginas"
                     >
                         <template v-slot:item.options="{item}">
-                            <NavLink :href="route('edit.docentes', item.id)" as="button">
+                            <NavLink :href="route('edit.docentes.academicos', item.id)" as="button">
                                 <v-btn icon size="large" elevation="0">
                                     <v-icon>mdi-pencil</v-icon>
                                 </v-btn>
