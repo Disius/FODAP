@@ -111,6 +111,17 @@ onMounted(() => {
                                 </strong>
                             </v-alert>
                         </template>
+                        <template v-if="store.si_dates[1].d === 0">
+                            <v-alert
+                                color="error"
+                                icon="$error"
+                                prominent
+                            >
+                                <strong class="text-center text-lg">
+                                    Quedan {{store.si_dates[1].h}} h para poder capturar Deteccion de Necesidades
+                                </strong>
+                            </v-alert>
+                        </template>
                         <template v-else>
                             <v-alert
                                 color="info"

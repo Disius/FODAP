@@ -269,9 +269,11 @@ onMounted(() => {
                                 </v-card-text>
                                 <v-divider></v-divider>
                                 <div class="flex items-center mr-5 mb-7 justify-end gap-4">
-                                    <v-btn color="error" @click="dialog = false">
-                                        Cancelar
-                                    </v-btn>
+                                    <NavLink :href="route('detecciones.index')" as="button" type="button">
+                                        <v-btn color="error">
+                                            Cancelar
+                                        </v-btn>
+                                    </NavLink>
                                     <PrimaryButton @click="dialog = false" :disabled="form.processing">Confirmar</PrimaryButton>
 
                                     <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
