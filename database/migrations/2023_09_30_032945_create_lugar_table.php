@@ -16,6 +16,7 @@ class CreateLugarTable extends Migration
         Schema::create('lugar', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->string('nombreAula', 60)->nullable();
+            $table->unsignedBigInteger('ocupado')->nullable();
         });
     }
 

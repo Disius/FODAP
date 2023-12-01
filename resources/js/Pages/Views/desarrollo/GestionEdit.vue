@@ -145,47 +145,38 @@ onMounted(() => {
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
                     <h2 class="text-lg font-medium text-gray-900">Establecer fechas para la captura de deteccion de necesidades</h2>
-                    <template v-if="props.fechas !== null">
-                        <div class="flex justify-center mt-4">
-                            <strong class="mr-3">Ultima fecha establecida: </strong>
-                            <p>{{props.fechas.fecha_inicio}}</p>
-                            <p class="ml-5">al</p>
-                            <p class="ml-4">{{props.fechas.fecha_final}}</p>
-                        </div>
-                    </template>
+                        <v-row dense justify="center" class="pa-6">
+                            <v-col dense align="center" cols="6">
+                                <v-alert color="info" icon="$info">
+                                    <template v-if="props.fechas !== null">
+                                        <div class="">
+                                            <strong class="mr-3">Ultimas fechas establecidas: </strong>
+                                            <div class="flex justify-center">
+                                                <p>{{props.fechas.fecha_inicio}}</p>
+                                                <p class="ml-5">al</p>
+                                                <p class="ml-4">{{props.fechas.fecha_final}}</p>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </v-alert>
+                            </v-col>
+                        </v-row>
                 </header>
-
-                <form @submit.prevent="submit">
-                    <div class="flex justify-center mr-5 items-center">
-                        <InputLabel for="inicio" value="Inicia: "></InputLabel>
-                        <v-text-field type="date" v-model="form.fecha_Inicio"></v-text-field>
-                    </div>
-                    <div class="flex justify-center items-center">
-                        <InputLabel class="text-lg" for="termino" value="Termina: "></InputLabel>
-                        <v-text-field type="date" v-model="form.fecha_Final"></v-text-field>
-                    </div>
-                    <div class="flex justify-center items-end mr-8">
-                        <primary-button>Guardar</primary-button>
-                    </div>
-                </form>
-                <v-snackbar
-                    v-model="snackbar"
-                    vertical
-                    color="error"
-                >
-                    <div class="text-subtitle-1 pb-2">Error</div>
-
-                    <p>{{$page.props.errors.fecha_Inicio}} y {{$page.props.errors.fecha_Final}}</p>
-
-                    <template v-slot:actions>
-                        <v-btn
-                            variant="text"
-                            @click="snackbar = false"
-                        >
-                            Cerrar
-                        </v-btn>
-                    </template>
-                </v-snackbar>
+                    <v-row dense justify="center">
+                        <form @submit.prevent="submit">
+                            <v-col cols="12">
+                                <InputLabel for="inicio" value="Inicia: "></InputLabel>
+                                <v-text-field type="date" v-model="form.fecha_Inicio"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <InputLabel class="text-lg" for="termino" value="Termina: "></InputLabel>
+                                <v-text-field type="date" v-model="form.fecha_Final"></v-text-field>
+                            </v-col>
+                            <v-col cols="12" align="end">
+                                <primary-button>Guardar</primary-button>
+                            </v-col>
+                        </form>
+                    </v-row>
             </div>
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>

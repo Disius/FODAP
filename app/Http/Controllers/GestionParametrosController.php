@@ -101,7 +101,7 @@ class   GestionParametrosController extends Controller
 
         $carrera->save();
 
-        return redirect()->route('parametros.edit');
+        return redirect()->route('edit.carrera', ['id' => $id]);
 
     }
 
@@ -148,7 +148,7 @@ class   GestionParametrosController extends Controller
 
         $departamento->save();
 
-        return redirect()->route('parametros.edit');
+        return redirect()->route('edit.departamento', ['id' => $id]);
 
     }
 

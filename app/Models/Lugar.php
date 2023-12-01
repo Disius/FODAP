@@ -14,7 +14,7 @@ class Lugar extends Model
 
 
     protected $fillable = [
-      'nombreAula'
+      'nombreAula', 'ocupado'
     ];
 
     public function curso(): HasOne {

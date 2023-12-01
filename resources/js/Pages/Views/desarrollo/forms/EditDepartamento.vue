@@ -1,3 +1,72 @@
+<script setup>
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import {useForm} from "@inertiajs/vue3";
+import InputLabel from "@/Components/InputLabel.vue";
+import {onMounted} from "vue";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import NavLink from "@/Components/NavLink.vue";
+import {ref} from "vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
+
+const snackbar = ref(false);
+const timeout = ref(0)
+const message = ref("");
+const color = ref("")
+
+const form = useForm({
+    nameDepartamento: "",
+    jefe_id: null
+})
+const props = defineProps({
+    carrera: {
+        type: Array
+    },
+    docente: {
+        type: Array
+    },
+    departamento: {
+        type: Object
+    }
+});
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 8000
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
+
+const submit = () => {
+    form.put(route('update.departamento', props.departamento.id), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
+onMounted(() => {
+    if (!props.departamento){
+        return form;
+    }else{
+        form.nameDepartamento = props.departamento.nameDepartamento
+        form.jefe_id = props.departamento.jefe_id
+    }
+})
+</script>
 <template>
     <AuthenticatedLayout>
         <template #header>
@@ -5,7 +74,7 @@
         </template>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                <form class="mt-6 space-y-6" @submit.prevent="form.put(route('update.departamento', props.departamento.id))">
+                <form class="mt-6 space-y-6" @submit.prevent="submit">
                         <v-container>
                             <v-row justify="center">
                                 <v-col cols="12">
@@ -32,44 +101,13 @@
                 </form>
             </div>
         </div>
+        <custom-snack-bar
+            :timeout="timeout" :color="color" :message="message" v-model="snackbar" @update:modelValue="snackbar = $event"
+        >
+
+        </custom-snack-bar>
     </AuthenticatedLayout>
 </template>
-
-<script setup>
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import {useForm} from "@inertiajs/vue3";
-import InputLabel from "@/Components/InputLabel.vue";
-import {onMounted} from "vue";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import DangerButton from "@/Components/DangerButton.vue";
-import NavLink from "@/Components/NavLink.vue";
-
-
-const form = useForm({
-    nameDepartamento: "",
-    jefe_id: null
-})
-const props = defineProps({
-    carrera: {
-        type: Array
-    },
-    docente: {
-        type: Array
-    },
-    departamento: {
-        type: Object
-    }
-});
-
-onMounted(() => {
-    if (!props.departamento){
-        return form;
-    }else{
-            form.nameDepartamento = props.departamento.nameDepartamento
-            form.jefe_id = props.departamento.jefe_id
-    }
-})
-</script>
 
 <style scoped>
 
