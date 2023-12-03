@@ -20,6 +20,7 @@ const emit = defineEmits([
     <v-table
         fixed-header
         height="120px"
+        style="width: 500px;"
         hover
     >
         <thead>
@@ -33,7 +34,7 @@ const emit = defineEmits([
             v-for="d in props.director"
             :key="d.id"
         >
-            <td class="text-center">{{d.nameDirector}}</td>
+            <td class="text-center text-truncate">{{d.nameDirector}}</td>
             <td class="text-center">
                 <primary-button @click="emit('update:modelValue', true)">
                     <v-icon>mdi-pencil</v-icon>

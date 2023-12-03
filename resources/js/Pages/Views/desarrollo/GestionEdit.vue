@@ -23,6 +23,21 @@ const dialogDirector = ref(false);
 const snackbar = ref(false);
 const snack_success_cvu = ref(false);
 const snack_error = ref(false);
+
+const props = defineProps({
+    docente: Array,
+    carrera: Array,
+    departamento: Array,
+    auth: Object,
+    lugar: Array,
+    users: Array,
+    sub: Array,
+    fechas: Object,
+    errors: Object,
+    director: Array,
+    instituto: Array,
+});
+
 const form = useForm({
     fecha_Inicio: "",
     fecha_Final: "",
@@ -39,25 +54,6 @@ const form_file_constancia_img = useForm({
 });
 const form_file_constancia_img_2 = useForm({
     file: null,
-});
-
-const props = defineProps({
-    docente: {
-        type: Array
-    },
-    carrera: {
-        type: Array
-    },
-    departamento: {
-        type: Array,
-    },
-    auth: Object,
-    lugar: Array,
-    users: Array,
-    sub: Array,
-    fechas: Object,
-    errors: Object,
-    director: Array,
 });
 
 function submit(){
@@ -144,7 +140,7 @@ onMounted(() => {
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-16 pt-16">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
-                    <h2 class="text-lg font-medium text-gray-900">Establecer fechas para la captura de deteccion de necesidades</h2>
+                    <h2 class="text-lg font-medium text-gray-900">Establecer fechas para la captura de Deteccion de Necesidades</h2>
                         <v-row dense justify="center" class="pa-6">
                             <v-col dense align="center" cols="6">
                                 <v-alert color="info" icon="$info">
@@ -261,20 +257,22 @@ onMounted(() => {
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
-                    <h2 class="text-xl font-medium text-gray-900 mb-8">Nombre del Instituto y subdirección académica</h2>
+                    <h2 class="text-xl font-medium text-gray-900 mb-8">Nombre de la Institución, del Director y de la Subdirección Académica</h2>
                 </header>
-                <tabla-director :director="props.director" :modelValue="dialogDirector" @update:modelValue="dialogDirector = $event"></tabla-director>
-                <dialog-director :director="props.director" v-model="dialogDirector" @update:modelValue="dialogDirector = $event"></dialog-director>
-                <template v-if="props.director.length < 0">
-                    <div class="flex justify-end mt-8 mr-12 items-center">
-                        <primary-button @click="dialogDirector = true">Crear/Guardar</primary-button>
-                    </div>
-                </template>
                 <tabla-sub :sub="props.sub" :modelValue="dialogSub" @update:modelValue="dialogSub = $event"></tabla-sub>
                 <form-subdireccion :sub="props.sub" v-model="dialogSub" @update:modelValue="dialogSub = $event"></form-subdireccion>
                 <template v-if="props.sub.length < 0">
                     <div class="flex justify-end mt-8 mr-12 items-center">
                         <primary-button @click="dialogSub = true">Crear/Guardar</primary-button>
+                    </div>
+                </template>
+            </div>
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <tabla-director :director="props.director" :modelValue="dialogDirector" @update:modelValue="dialogDirector = $event"></tabla-director>
+                <dialog-director :director="props.director" v-model="dialogDirector" @update:modelValue="dialogDirector = $event"></dialog-director>
+                <template v-if="props.director.length < 0">
+                    <div class="flex justify-end mt-8 mr-12 items-center">
+                        <primary-button @click="dialogDirector = true">Crear/Guardar</primary-button>
                     </div>
                 </template>
             </div>

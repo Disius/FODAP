@@ -12,6 +12,7 @@ use App\Models\DeteccionNecesidades;
 use App\Models\Director;
 use App\Models\Docente;
 use App\Models\Lugar;
+use App\Models\NombreInstituto;
 use App\Models\Subdireccion;
 use App\Models\User;
 use Carbon\Carbon;
@@ -43,7 +44,7 @@ class   GestionParametrosController extends Controller
         $sub = Subdireccion::all();
         $director = Director::all();
         $fechas = ConfigDates::latest('id')->first();
-
+        $instituto = NombreInstituto::all();
 
         return Inertia::render('Views/desarrollo/GestionEdit', [
             'docente' => $docente,
@@ -55,6 +56,7 @@ class   GestionParametrosController extends Controller
             'sub' => $sub,
             'fechas' => $fechas,
             'director' => $director,
+            'instituto' => $instituto,
         ]);
     }
 

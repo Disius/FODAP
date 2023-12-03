@@ -71,6 +71,12 @@ onMounted(() => {
                                   items-per-page="5"
                                   items-per-page-text="Paginas"
                     >
+                        <template v-slot:no-data>
+                            <v-alert :value="true" color="warning">
+                                <v-icon left color="white">warning</v-icon
+                                >No se encontraron datos
+                            </v-alert>
+                        </template>
                         <template v-slot:item.options="{item}">
                             <NavLink :href="route('edit.docentes.academicos', item.id)" as="button">
                                 <v-btn icon size="large" elevation="0">

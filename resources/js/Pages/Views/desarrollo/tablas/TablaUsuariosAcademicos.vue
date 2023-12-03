@@ -1,7 +1,7 @@
 <script setup>
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import DeleteUserSelectForm from "@/Pages/Views/desarrollo/forms/DeleteUserSelectForm.vue";
 
 const props = defineProps({
@@ -9,6 +9,17 @@ const props = defineProps({
         type: Array
     }
 });
+const search = ref("")
+
+const header = [
+    {key: "email", title: "Correo Institucional"},
+    {key: "departamento.nameDepartamento", title: "Departamento a su cargo"},
+    {key: "edit", title: "Editar Usuario"},
+    {key: "delete", title: "Eliminar usuario"},
+    {key: "permiso", title: "Permitir actualizar email u contraseña"},
+    {key: "revocar", title: "Revocar permiso"},
+];
+
 
 const usersA = computed(() => {
     return props.users.filter(user => {
@@ -21,55 +32,59 @@ const wich_user = (user) => {
 </script>
 
 <template>
-    <v-table
+
+    <v-data-table
+        :items="props.users"
+        :headers="header"
         fixed-header
-        height="300px"
-        hover
+        next-icon="mdi-arrow-right-bold-circle"
+        prev-icon="mdi-arrow-left-bold-circle"
+        items-per-page="5"
+        items-per-page-text="Paginas"
     >
-        <thead>
-        <tr>
-            <th class="text-center">Correo Institucional</th>
-            <th class="text-center">Departamento a su cargo</th>
-            <th class="text-center">Editar usuario</th>
-            <th class="text-center">Eliminar usuario</th>
-            <th class="text-center">Permitir actualizar email u contraseña</th>
-            <th class="text-center">Revocar permisos</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr
-            v-for="u in usersA"
-            :key="u.id"
-        >
-            <td class="text-center">{{u.email}}</td>
-            <td class="text-center">{{u.departamento.nameDepartamento}}</td>
-            <td class="text-center">
-                <NavLink :href="route('edit.user', u.id)" as="button">
-                    <primary-button><v-icon>mdi-pencil</v-icon></primary-button>
-                </NavLink>
-            </td>
-            <td class="text-center">
-                <DeleteUserSelectForm :user="wich_user(u)"></DeleteUserSelectForm>
-            </td>
-            <td class="text-center">
-                <NavLink :href="route('permiso.edit', u.id)" as="button" method="post">
-                    <v-btn height="35" color="info">
-                        <v-icon>mdi-check</v-icon>
-                    </v-btn>
-                </NavLink>
-            </td>
-            <template v-if="u.permissions.length > 0">
+
+        <template v-slot:no-data>
+            <v-alert :value="true" color="warning">
+                <v-icon left color="white">warning</v-icon
+                >No se encontraron datos
+            </v-alert>
+        </template>
+
+        <template v-slot:item.options="{item}">
+            <NavLink  :href="route('edit.lugar', item.id)">
+                <PrimaryButton class="bg-blue-accent-4">
+                    <v-icon>mdi-pencil</v-icon>
+                </PrimaryButton>
+            </NavLink>
+        </template>
+        <template v-slot:item.edit="{item}">
+            <NavLink :href="route('edit.user', item.id)" as="button">
+                <primary-button><v-icon>mdi-pencil</v-icon></primary-button>
+            </NavLink>
+        </template>
+        <template v-slot:item.delete="{item}">
+            <DeleteUserSelectForm :user="wich_user(item)"></DeleteUserSelectForm>
+        </template>
+        <template v-slot:item.permiso="{item}">
+            <NavLink :href="route('permiso.edit', item.id)" as="button" method="post">
+                <v-btn height="35" color="info">
+                    <v-icon>mdi-check</v-icon>
+                </v-btn>
+            </NavLink>
+        </template>1111111111111111111111111111111111111
+        <template v-slot:item.revocar="{item}">
+            <div v-if="item.permissions.length > 0">
                 <td class="text-center">
-                    <NavLink :href="route('permiso.revoke', u.id)" as="button" method="post">
+                    <NavLink :href="route('permiso.revoke', item.id)" as="button" method="post">
                         <v-btn width="250" height="35" color="error">
                             <v-icon>mdi-cancel</v-icon>
                         </v-btn>
                     </NavLink>
                 </td>
-            </template>
-        </tr>
-        </tbody>
-    </v-table>
+            </div>
+        </template>
+
+    </v-data-table>
 </template>
 
 
