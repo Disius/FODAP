@@ -35,7 +35,8 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
 //  Rutas para establecer fechas
     Route::post('/fechas', [GestionParametrosController::class, 'dates_detecciones'])->name('config.dates');
     Route::get('/fechas/isActive', [GestionParametrosController::class, 'if_enable_detecciones'])->name('dates.get');
-
+    Route::post('/name-instituto', [GestionParametrosController::class, 'create_instituto'])->name('create.instituto');
+    Route::put('/name-instituto-update/{id}', [GestionParametrosController::class, 'update_instituto'])->name('update.instituto');
 //rutas lugar
 
     Route::get('/desarrollo/create/lugar', [GestionParametrosController::class, 'create_lugar'])->name('create.lugar');

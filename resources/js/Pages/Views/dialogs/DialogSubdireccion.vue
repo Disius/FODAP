@@ -2,12 +2,15 @@
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import {onMounted, ref} from "vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const form = useForm({
     name: ""
 });
-const snackSuccess = ref(false);
-const snackError = ref(false);
+const snack = ref(false);
+const message = ref("")
+const color = ref()
+const timeout = ref(0)
 const props = defineProps({
     sub: Array,
     modelValue: Boolean
@@ -16,23 +19,42 @@ const props = defineProps({
 const emit = defineEmits([
     'update:modelValue'
 ]);
+
+const snackEventActivator = () => {
+    snack.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 5000
+};
+const snackErrorActivator = () => {
+    snack.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snack.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
 const submit = () => {
     if (props.sub.length === 0){
         return form.post(route('create.sub'), {
             onSuccess: () => {
-                snackSuccess.value = true
+                snackSuccessActivator()
             },
             onError: () => {
-                snackError.value = true
+                snackErrorActivator()
             }
         })
     }else{
         return form.put(route('update.sub', props.sub[0].id), {
             onSuccess: () => {
-                snackSuccess.value = true
+                snackSuccessActivator()
             },
             onError: () => {
-                snackError.value = true
+                snackErrorActivator()
             }
         })
     }
@@ -76,42 +98,9 @@ onMounted(() => {
             </v-card-actions>
         </v-card>
     </v-dialog>
-    <v-snackbar
-        v-model="snackSuccess"
-        vertical
-        color="success"
-    >
-        <div class="text-subtitle-1 pb-2"></div>
+    <CustomSnackBar :message="message" :color="color" :timeout="timeout" v-model="snack" @update:modelValue="snack = $event">
 
-        <p>Se actualizo con exito</p>
-
-        <template v-slot:actions>
-            <v-btn
-                variant="text"
-                @click="snackSuccess = false"
-            >
-                Cerrar
-            </v-btn>
-        </template>
-    </v-snackbar>
-    <v-snackbar
-        v-model="snackError"
-        vertical
-        color="error"
-    >
-        <div class="text-subtitle-1 pb-2"></div>
-
-        <p>Error al actualizar</p>
-
-        <template v-slot:actions>
-            <v-btn
-                variant="text"
-                @click="snackError = false"
-            >
-                Cerrar
-            </v-btn>
-        </template>
-    </v-snackbar>
+    </CustomSnackBar>
 </template>
 
 <style scoped>

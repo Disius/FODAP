@@ -291,7 +291,7 @@ class   GestionParametrosController extends Controller
     public function set_permission($id){
         $user = User::find($id);
         $user->givePermissionTo('edit profile');
-        Mail::to($user->email)->send(new PermisosUserEdit(self::admin()));
+//        Mail::to($user->email)->send(new PermisosUserEdit(self::admin()));
     }
 
     public function revoke_permissions($id){
@@ -365,5 +365,25 @@ class   GestionParametrosController extends Controller
         $director->nameDirector = $request->nameDirector;
 
         $director->save();
+    }
+
+    public function create_instituto(Request $request){
+        $request->validate([
+            'nameInstituto'
+        ]);
+        $instituto = NombreInstituto::create([
+            'name' => 'nameInstituto'
+        ]);
+
+        $instituto->save();
+    }
+    public function update_instituto($id, Request $request){
+        $instituto = NombreInstituto::find($id);
+
+        $instituto->delete();
+
+        $instituto->name = $request->nameInstituto;
+
+        $instituto->save();
     }
 }

@@ -15,15 +15,38 @@ import FormSubdireccion from "@/Pages/Views/dialogs/DialogSubdireccion.vue";
 import TablaSub from "@/Pages/Views/desarrollo/tablas/TablaSub.vue";
 import TablaDirector from "@/Pages/Views/desarrollo/tablas/TablaDirector.vue";
 import DialogDirector from "@/Pages/Views/dialogs/DialogDirector.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
+import NombreInstitutoTable from "@/Pages/Views/desarrollo/tablas/NombreInstitutoTable.vue";
+import DialogNombreInstituto from "@/Pages/Views/dialogs/DialogNombreInstituto.vue";
 
 
 const search = ref("");
 const dialogSub = ref(false);
 const dialogDirector = ref(false);
 const snackbar = ref(false);
-const snack_success_cvu = ref(false);
-const snack_error = ref(false);
+const message = ref("")
+const color = ref()
+const timeout = ref(0)
+const dialogInstituto = ref(false);
 
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 5000
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+};
 const props = defineProps({
     docente: Array,
     carrera: Array,
@@ -60,9 +83,10 @@ function submit(){
     form.post(route('config.dates'), {
         onSuccess: () => {
             form.reset()
+            snackSuccessActivator()
         },
         onError: () => {
-            snackbar.value = true
+            snackErrorActivator()
         }
     });
 }
@@ -72,10 +96,10 @@ const upload_cvu = () => {
         forceFormData: true,
         onSuccess: () => {
             form_file.reset()
-            snack_success_cvu.value = true
+            snackSuccessActivator()
         },
         onError: () => {
-            snack_error.value = true
+            snackErrorActivator()
         }
     })
 }
@@ -84,10 +108,10 @@ const upload_acta = () => {
         forceFormData: true,
         onSuccess: () => {
             form_file_acta_img.reset()
-            snack_success_cvu.value = true
+            snackSuccessActivator()
         },
         onError: () => {
-            snack_error.value = true
+            snackErrorActivator()
         }
     })
 }
@@ -96,10 +120,10 @@ const upload_constancia = () => {
         forceFormData: true,
         onSuccess: () => {
             form_file_constancia_img.reset()
-            snack_success_cvu.value = true
+            snackSuccessActivator()
         },
         onError: () => {
-            snack_error.value = true
+            snackErrorActivator()
         }
     })
 }
@@ -108,10 +132,10 @@ const upload_constancia_2 = () => {
         forceFormData: true,
         onSuccess: () => {
             form_file_constancia_img_2.reset()
-            snack_success_cvu.value = true
+            snackSuccessActivator()
         },
         onError: () => {
-            snack_error.value = true
+            snackErrorActivator()
         }
     })
 }
@@ -257,24 +281,40 @@ onMounted(() => {
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
-                    <h2 class="text-xl font-medium text-gray-900 mb-8">Nombre de la Institución, del Director y de la Subdirección Académica</h2>
+                    <h2 class="text-xl font-medium text-gray-900 mb-8 text-center">Nombre de la Institución, del Director y de la Subdirección Académica</h2>
                 </header>
-                <tabla-sub :sub="props.sub" :modelValue="dialogSub" @update:modelValue="dialogSub = $event"></tabla-sub>
-                <form-subdireccion :sub="props.sub" v-model="dialogSub" @update:modelValue="dialogSub = $event"></form-subdireccion>
-                <template v-if="props.sub.length < 0">
-                    <div class="flex justify-end mt-8 mr-12 items-center">
-                        <primary-button @click="dialogSub = true">Crear/Guardar</primary-button>
+                <div class="grid grid-cols-2">
+                    <div class="flex justify-center">
+                        <tabla-sub :sub="props.sub" :modelValue="dialogSub" @update:modelValue="dialogSub = $event"></tabla-sub>
+                        <form-subdireccion :sub="props.sub" v-model="dialogSub" @update:modelValue="dialogSub = $event"></form-subdireccion>
+                        <template v-if="props.sub.length < 0">
+                            <div class="flex justify-end mt-8 mr-12 items-center">
+                                <primary-button @click="dialogSub = true">Crear/Guardar</primary-button>
+                            </div>
+                        </template>
                     </div>
-                </template>
-            </div>
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <tabla-director :director="props.director" :modelValue="dialogDirector" @update:modelValue="dialogDirector = $event"></tabla-director>
-                <dialog-director :director="props.director" v-model="dialogDirector" @update:modelValue="dialogDirector = $event"></dialog-director>
-                <template v-if="props.director.length < 0">
-                    <div class="flex justify-end mt-8 mr-12 items-center">
-                        <primary-button @click="dialogDirector = true">Crear/Guardar</primary-button>
+
+                    <div class="flex justify-center">
+                        <tabla-director :director="props.director" :modelValue="dialogDirector" @update:modelValue="dialogDirector = $event"></tabla-director>
+                        <dialog-director :director="props.director" v-model="dialogDirector" @update:modelValue="dialogDirector = $event"></dialog-director>
+                        <template v-if="props.director.length < 0">
+                            <div class="flex justify-end mt-8 mr-12 items-center">
+                                <primary-button @click="dialogDirector = true">Crear/Guardar</primary-button>
+                            </div>
+                        </template>
                     </div>
-                </template>
+                </div>
+                <div class="grid grid-cols-2">
+                    <div class="flex justify-center">
+                        <NombreInstitutoTable :instituto="props.instituto" :modelValue="dialogInstituto" @update:modelValue="dialogInstituto = $event"></NombreInstitutoTable>
+                        <DialogNombreInstituto :instituto="props.instituto" v-model="dialogInstituto" @update:modelValue="dialogInstituto = $event"></DialogNombreInstituto>
+                        <template v-if="props.instituto.length < 0">
+                            <div class="flex justify-end mt-8 mr-12 items-center">
+                                <primary-button @click="dialogDirector = true">Crear/Guardar</primary-button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
             </div>
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -298,25 +338,6 @@ onMounted(() => {
                         </div>
                     </div>
                 </form>
-                <v-snackbar
-                    v-model="snack_success_cvu"
-                    vertical
-                    color="success"
-                >
-                    <div class="text-subtitle-1 pb-2"></div>
-
-                    <p>CVU subido con exito</p>
-
-                    <template v-slot:actions>
-                        <v-btn
-                            variant="text"
-                            @click="snack_success_cvu = false"
-                        >
-                            Cerrar
-                        </v-btn>
-                    </template>
-                </v-snackbar>
-
                 <header>
                     <h2 class="text-xl font-medium text-gray-900 mb-8 mt-8">Membretado de documentos</h2>
                 </header>
@@ -335,24 +356,6 @@ onMounted(() => {
                         </div>
                     </div>
                 </form>
-                <v-snackbar
-                    v-model="snack_success_cvu"
-                    vertical
-                    color="success"
-                >
-                    <div class="text-subtitle-1 pb-2"></div>
-
-                    <p>Membretado subido con exito</p>
-
-                    <template v-slot:actions>
-                        <v-btn
-                            variant="text"
-                            @click="snack_success_cvu = false"
-                        >
-                            Cerrar
-                        </v-btn>
-                    </template>
-                </v-snackbar>
                 <div class="flex justify-start ml-10 mb-2">
                     <v-tooltip location="right">
                         <template v-slot:activator="{ props }">
@@ -387,24 +390,7 @@ onMounted(() => {
                 </form>
             </div>
         </div>
-        <v-snackbar
-            v-model="snack_error"
-            vertical
-            color="error"
-        >
-            <div class="text-subtitle-1 pb-2"></div>
-
-            <p>Error. No es posible generar el recurso</p>
-
-            <template v-slot:actions>
-                <v-btn
-                    variant="text"
-                    @click="snack_error = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
+        <CustomSnackBar :message="message" :color="color" :timeout="timeout" v-model="snackbar" @update:modelValue="snackbar = $event"></CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 

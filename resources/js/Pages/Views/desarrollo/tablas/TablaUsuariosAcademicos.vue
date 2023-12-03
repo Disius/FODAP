@@ -71,7 +71,7 @@ const wich_user = (user) => {
                     <v-icon>mdi-check</v-icon>
                 </v-btn>
             </NavLink>
-        </template>1111111111111111111111111111111111111
+        </template>
         <template v-slot:item.revocar="{item}">
             <div v-if="item.permissions.length > 0">
                 <td class="text-center">

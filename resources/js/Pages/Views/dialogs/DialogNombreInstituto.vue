@@ -5,32 +5,34 @@ import {onMounted, ref} from "vue";
 import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const form = useForm({
-    nameDirector: ""
+    nameInstituto: ""
 });
-const snackbarD = ref(false);
+const snackbarDialog = ref(false);
 const message = ref("")
 const color = ref()
-const timeout = ref(0)
+const timeout = ref(0);
+
+
 const snackEventActivator = () => {
-    snackbarD.value = true;
+    snackbarDialog.value = true;
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
     timeout.value = 5000
 };
 const snackErrorActivator = () => {
-    snackbarD.value = true;
+    snackbarDialog.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
     timeout.value = 5000
 };
 const snackSuccessActivator = () => {
-    snackbarD.value = true;
+    snackbarDialog.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
     timeout.value = 5000
 };
 const props = defineProps({
-    director: Array,
+    instituto: Array,
     modelValue: Boolean
 });
 
@@ -38,8 +40,8 @@ const emit = defineEmits([
     'update:modelValue'
 ]);
 const submit = () => {
-    if (props.director.length === 0){
-        return form.post(route('create.director'), {
+    if (props.instituto.length === 0){
+        return form.post(route('create.instituto'), {
             onSuccess: () => {
                 snackSuccessActivator()
             },
@@ -48,7 +50,7 @@ const submit = () => {
             }
         })
     }else{
-        return form.put(route('update.director', props.director[0].id), {
+        return form.put(route('update.instituto', props.instituto[0].id), {
             onSuccess: () => {
                 snackSuccessActivator()
             },
@@ -60,22 +62,22 @@ const submit = () => {
 }
 
 onMounted(() => {
-    if (props.director.length === 0){
-        return form.nameDirector
+    if (props.instituto.length === 0){
+        return form.nameInstituto
     }else{
-         form.nameDirector = props.director[0].nameDirector
+         form.nameInstituto = props.instituto[0].name
     }
 })
 </script>
 
 <template>
-    <v-dialog width="auto" v-model="props.modelValue" >
+    <v-dialog width="500" v-model="props.modelValue" >
         <v-card>
             <v-card-title>Establecer nombre del Director(a)</v-card-title>
             <v-card-text>
                     <div class="grid grid-cols-1">
                         <div class="flex justify-center mt-4">
-                            <v-text-field v-model="form.nameDirector">
+                            <v-text-field v-model="form.nameInstituto">
 
                             </v-text-field>
                         </div>
@@ -97,7 +99,7 @@ onMounted(() => {
             </v-card-actions>
         </v-card>
     </v-dialog>
-    <CustomSnackBar :timeout="timeout" :color="color" :message="message" v-model="snackbarD" @update:modelValue="snackbarD = $event">
+    <CustomSnackBar :timeout="timeout" :color="color" :message="message" v-model="snackbarDialog" @update:modelValue="snackbarDialog = $event">
 
     </CustomSnackBar>
 </template>
