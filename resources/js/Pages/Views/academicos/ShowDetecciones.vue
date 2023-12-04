@@ -14,15 +14,15 @@ const props = defineProps({
 });
 
 
-const formatFechaF = computed(() => {
-    return new Date(props.deteccion.fecha_F).toLocaleDateString('es-MX');
-})
-// Computed propierties
-
-
-const formatFechaI = computed(() => {
-    return new Date(props.deteccion.fecha_I).toLocaleDateString('es-MX');
-});
+// const formatFechaF = computed(() => {
+//     return new Date(props.deteccion.fecha_F).toLocaleDateString('es-MX');
+// })
+// // Computed propierties
+//
+//
+// const formatFechaI = computed(() => {
+//     return new Date(props.deteccion.fecha_I).toLocaleDateString('es-MX');
+// });
 // const dialog = ref(true);
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -49,7 +49,11 @@ onMounted(() => {
         <AuthenticatedLayout>
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight"></h2>
-
+                <div class="flex justify-start align-center mt-3 ml-5">
+                    <NavLink :href="route('detecciones.index')" as="button" type="button">
+                        <v-btn color="blue-darken-1" icon="mdi-arrow-left"></v-btn>
+                    </NavLink>
+                </div>
             </template>
             <v-alert
                 icon="$info"
@@ -61,15 +65,11 @@ onMounted(() => {
     </template>
     <template v-else>
         <AuthenticatedLayout>
-            <Head title="Deteccion" />
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{props.deteccion.nombreCurso}}</h2>
-
-                <div class="mt-6">
-                    <NavLink :href="route('detecciones.index')" type="button" as="button">
-                        <v-btn icon="mdi-arrow-left" class="" color="blue-darken-1">
-
-                        </v-btn>
+                <div class="flex justify-start align-center mt-3 ml-5">
+                    <NavLink :href="route('detecciones.index')" as="button" type="button">
+                        <v-btn color="blue-darken-1" icon="mdi-arrow-left"></v-btn>
                     </NavLink>
                 </div>
                 <template v-if="props.deteccion.aceptado === 0">
@@ -170,7 +170,7 @@ onMounted(() => {
                                     </div>
                                     <div class="flow-root ... pt-5">
                                         <strong class="text-xl">Fechas en las que se realizara la actividad o evento: </strong>
-                                        <span>Del {{formatFechaI}} al {{formatFechaF}}</span>
+                                        <span>Del {{props.deteccion.fecha_I}} al {{props.deteccion.fecha_F}}</span>
                                     </div>
                                     <div class="flow-root ... pt-5">
                                         <strong class="text-xl">Horarios en las que se realizara la actividad o evento: </strong>

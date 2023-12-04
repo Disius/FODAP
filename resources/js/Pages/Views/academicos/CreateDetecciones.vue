@@ -141,14 +141,16 @@ const maxCount = [
 ]
 
 function totalHoras(fechaInicio, fechaFinal, horaInicio, horaFinal) {
-    let fechaInicioObj = new Date(fechaInicio);
-    let fechaFinalObj = new Date(fechaFinal);
+    let fechaInicioParts = fechaInicio.split('-');
+    let fechaFinalParts = fechaFinal.split('-');
+    let fechaInicioObj = new Date(fechaInicioParts[0], fechaInicioParts[1] - 1, fechaInicioParts[2]);
+    let fechaFinalObj = new Date(fechaFinalParts[0], fechaFinalParts[1] - 1, fechaFinalParts[2]);
     let horaInicioObj = new Date(`01/01/1970 ${horaInicio}`).toLocaleTimeString('es-MX', { timeZone: 'America/Mexico_City' });
     let horaFinalObj = new Date(`01/01/1970 ${horaFinal}`).toLocaleTimeString('es-MX', { timeZone: 'America/Mexico_City' });
 
     let diasHabiles = 0;
     let horasTotales = 0;
-
+    // console.log(fechaFinalObj, fechaFinal)
     function esDiaDeSemana(fecha) {
         const dia = fecha.getDay();
         return dia !== 0 && dia !== 6; // 0 representa domingo, 6 representa sábado
@@ -157,7 +159,6 @@ function totalHoras(fechaInicio, fechaFinal, horaInicio, horaFinal) {
     while (fechaInicioObj <= fechaFinalObj) {
         if (esDiaDeSemana(fechaInicioObj)) {
             diasHabiles++;
-
             // Calcular las horas entre la hora de inicio y la hora final en zona horaria de México
             let tiempoInicio = new Date(`${fechaInicioObj.toISOString().slice(0, 10)} ${horaInicioObj}`).getTime();
             let tiempoFinal = new Date(`${fechaInicioObj.toISOString().slice(0, 10)} ${horaFinalObj}`).getTime();
@@ -185,19 +186,15 @@ async function submitDocente(form){
             }
         })
     }catch (e) {
-        console.log(e)
+        snackErrorActivator()
     }
 }
 
-onMounted(() => {
-
-});
-
 watch(() => [form.fecha_I, form.fecha_F, form.hora_I, form.hora_F], ([newFechaI, newFechaF, newHoraI, newHoraF], [oldFechaI, oldFechaF, oldHoraI, oldHoraF]) => {
-    console.log(newFechaI, newFechaF, newHoraI, newHoraF)
+    // console.log(newFechaI, newFechaF, newHoraI, newHoraF)
     if (newFechaI && newFechaF && newHoraI && newHoraF){
         horas_totales.value = totalHoras(newFechaI, newFechaF, newHoraI, newHoraF)
-        // console.log(horas)
+        // totalHoras(newFechaI, newFechaF, newHoraI, newHoraF)
     }
 })
 
@@ -715,7 +712,7 @@ onMounted(() => {
                                                 </template>
                                                 <template v-else-if="horas_totales === 30">
                                                     <v-chip variant="flat" color="success" prepend-icon="mdi-check-circle">
-                                                        El curso debe ser de 30 horas
+                                                        El curso es de 30 horas
                                                     </v-chip>
                                                 </template>
                                                 <template v-else-if="horas_totales > 30">

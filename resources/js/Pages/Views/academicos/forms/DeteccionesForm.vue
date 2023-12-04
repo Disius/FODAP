@@ -6,7 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import ResetForm from '@/Pages/Views/dialogs/ResetForm.vue';
 import { FODAPStore } from "@/store/server";
-import NavLink from "@/Components/NavLink.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const store = FODAPStore();
 
@@ -30,11 +30,12 @@ const props = defineProps({
 
 const user = computed(() => usePage().props.auth.user);
 let dialogReset = ref(false);
-const snackCursoNoStored = ref(false);
-const snackCursoStored = ref(false);
+const snackCurso = ref(false);
 const dialog = ref(true);
 let horas_totales = ref();
-
+const timeout = ref()
+const message = ref()
+const color = ref()
 const form = useForm({
     AsignaturasFA: "",
     ContenidoTFA: "",
@@ -147,12 +148,18 @@ const submit = () => {
     form.post(route('store.detecciones'), {
         onSuccess: () => {
             form.reset();
-            snackCursoStored.value = true;
+            message.value = 'Curso almacenado con exito'
+            color.value = 'success'
+            timeout.value = 5000
+            snackCurso.value = true
             dialogReset.value = true;
             dialog.value = true;
         },
         onError: () => {
-            snackCursoNoStored.value = true
+            message.value = 'Error al almacenar los registros'
+            color.value = 'error'
+            timeout.value = 5000
+            snackCurso.value = true
         },
     })
 }
@@ -661,7 +668,7 @@ const submit = () => {
             </v-row>
         </form>
         <ResetForm v-model="dialogReset" @update:modelValue="dialogReset = $event"></ResetForm>
-
+        <CustomSnackBar :message="message" :color="color" :timeout="timeout" v-model="snackCurso" @update:modelValue="snackCurso = $event"></CustomSnackBar>
     </section>
 </template>
 

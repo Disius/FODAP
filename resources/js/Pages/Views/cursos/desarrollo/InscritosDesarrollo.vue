@@ -377,7 +377,7 @@ onMounted(() => {
                             </div>
                             <div class="flow-root ... pt-5">
                                 <strong>Fechas en las que se realizara la actividad o evento: </strong>
-                                <span>Del {{curso.fecha_I}} al {{curso.fecha_F}}</span>
+                                <span>Del {{props.curso.fecha_I}} al {{props.curso.fecha_F}}</span>
                             </div>
                             <div class="flow-root ... pt-5">
                                 <strong>Horarios en las que se realizara la actividad o evento: </strong>

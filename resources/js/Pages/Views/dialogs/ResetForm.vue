@@ -26,13 +26,12 @@ const emit = defineEmits([
             </v-card-text>
             <v-card-actions>
                 <v-row justify="center">
-                    <v-col cols="6" align="end">
+                    <v-col cols="6">
                         <nav-link :href="route('detecciones.index')" as="button">
                             <danger-button color="error" size="normal" block>No</danger-button>
                         </nav-link>
                     </v-col>
-
-                    <v-col cols="6" align="end">
+                    <v-col cols="6">
                         <primary-button color="success" size="normal" block @click="emit('update:modelValue', false)">Si</primary-button>
                     </v-col>
                 </v-row>

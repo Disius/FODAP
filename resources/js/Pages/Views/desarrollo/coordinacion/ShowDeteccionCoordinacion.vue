@@ -17,15 +17,15 @@ const props = defineProps({
 
 const dialog = ref(false);
 
-const formatFechaF = computed(() => {
-    return new Date(props.deteccion.fecha_F).toLocaleDateString('es-MX');
-})
-// Computed propierties
-
-
-const formatFechaI = computed(() => {
-    return new Date(props.deteccion.fecha_I).toLocaleDateString('es-MX');
-});
+// const formatFechaF = computed(() => {
+//     return new Date(props.deteccion.fecha_F).toLocaleDateString('es-MX');
+// })
+// // Computed propierties
+//
+//
+// const formatFechaI = computed(() => {
+//     return new Date(props.deteccion.fecha_I).toLocaleDateString('es-MX');
+// });
 
 const form = useForm({
     observaciones: "",
@@ -61,7 +61,11 @@ onMounted(() => {
         <AuthenticatedLayout>
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight"></h2>
-
+                <div class="flex justify-start align-center mt-3 ml-5">
+                    <NavLink :href="route('index.detecciones')" as="button" type="button">
+                        <v-btn color="blue-darken-1" icon="mdi-arrow-left"></v-btn>
+                    </NavLink>
+                </div>
             </template>
             <v-alert
                 icon="$info"
@@ -75,6 +79,11 @@ onMounted(() => {
         <AuthenticatedLayout>
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{props.deteccion.nombreCurso}}</h2>
+                <div class="flex justify-start align-center mt-3 ml-5">
+                    <NavLink :href="route('index.detecciones')" as="button" type="button">
+                        <v-btn color="blue-darken-1" icon="mdi-arrow-left"></v-btn>
+                    </NavLink>
+                </div>
                 <template v-if="props.deteccion.aceptado === 0">
                     <div class="grid grid-cols-2">
                         <div class="flex justify-center">
@@ -184,7 +193,7 @@ onMounted(() => {
                                     </div>
                                     <div class="flow-root ... pt-5">
                                         <strong class="text-xl">Fechas en las que se realizara la actividad o evento: </strong>
-                                        <span>Del {{formatFechaI}} al {{formatFechaF}}</span>
+                                        <span>Del {{props.deteccion.fecha_I}} al {{props.deteccion.fecha_F}}</span>
                                     </div>
                                     <div class="flow-root ... pt-5">
                                         <strong class="text-xl">Horarios en las que se realizara la actividad o evento: </strong>

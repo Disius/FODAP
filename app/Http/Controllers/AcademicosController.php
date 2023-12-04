@@ -201,6 +201,21 @@ class AcademicosController extends Controller
         ]);
     }
     public function docente_created_from_form(Request $request){
+        $request->validate([
+            'rfc' => 'required',
+            'curp' => 'required' ,
+            'nombre' => 'required' ,
+            'apellidoPat' => 'required',
+            'apellidoMat' => 'required',
+            'sexo' => 'required',
+            'telefono' =>  'required',
+            'carrera_id' => 'required',
+            'id_puesto' => 'required',
+            'tipo_plaza' => 'required',
+            'departamento_id' => 'required',
+            'licenciatura' => 'required',
+            'id_posgrado' => 'required',
+        ]);
         $this->create_instance_docente($request);
     }
     public function created_docentes_academicos(Request $request){

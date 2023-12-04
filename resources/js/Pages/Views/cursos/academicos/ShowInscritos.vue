@@ -26,12 +26,12 @@ const snackbar = ref(false);
 const timeout = ref();
 
 
-const formatFechaF = computed(() => {
-    return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
-})
-const formatFechaI = computed(() => {
-    return new Date(props.curso.fecha_I).toLocaleDateString('es-MX');
-});
+// const formatFechaF = computed(() => {
+//     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
+// })
+// const formatFechaI = computed(() => {
+//     return new Date(props.curso.fecha_I).toLocaleDateString('es-MX');
+// });
 
 const snackEventActivator = () => {
     snackbar.value = true;
@@ -234,7 +234,7 @@ onMounted(() => {
                             </div>
                             <div class="flow-root ... pt-5">
                                 <strong>Fechas en las que se realizara la actividad o evento: </strong>
-                                <span>Del {{formatFechaI}} al {{formatFechaF}}</span>
+                                <span>Del {{props.curso.fecha_I}} al {{props.curso.fecha_F}}</span>
                             </div>
                             <div class="flow-root ... pt-5">
                                 <strong>Horarios en las que se realizara la actividad o evento: </strong>

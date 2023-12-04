@@ -76,15 +76,7 @@ const submit = () => {
                     <v-toolbar-title>Crear Docente</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
-                        <div class="flex items-center gap-4 mr-15">
-                            <v-btn type="submit" icon :disabled="form.processing">
-                                <v-icon>mdi-content-save-check</v-icon>
-                            </v-btn>
 
-                            <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
-                                <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Guardado.</p>
-                            </Transition>
-                        </div>
                     </v-toolbar-items>
                 </v-toolbar>
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6" >
@@ -255,12 +247,27 @@ const submit = () => {
                     </div>
                 </div>
                 <v-divider></v-divider>
+                <div class="flex items-center gap-4 mr-15">
+                    <v-btn type="submit" color="blue-darken-1" icon="mdi-content-save-all" size="x-large" class="floating-btn">
 
+                    </v-btn>
+
+                    <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
+                        <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Guardado.</p>
+                    </Transition>
+                </div>
             </v-card>
         </form>
     </v-dialog>
 </template>
 
 <style scoped>
-
+.floating-btn {
+    position: fixed;
+    bottom: 50px; /* Ajusta la posición vertical como desees */
+    right: 200px; /* Ajusta la posición horizontal como desees */
+    z-index: 1000; /* Ajusta el z-index según tus necesidades para asegurarte de que esté por encima de otros elementos. */
+    width: 80px;
+    height: 80px;
+}
 </style>
