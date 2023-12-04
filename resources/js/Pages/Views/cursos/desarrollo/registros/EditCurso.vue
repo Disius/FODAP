@@ -4,6 +4,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import {useForm} from "@inertiajs/vue3";
 import {computed, onMounted, ref} from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import NavLink from "@/Components/NavLink.vue";
 
 const props = defineProps({
     auth: {
@@ -128,6 +129,13 @@ onMounted(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight mt-4">Editar Curso</h2>
+            <div class="flex justify-start">
+                <NavLink :href="route('index.desarrollo.inscritos', props.curso.id)" as="button" type="button">
+                    <v-btn icon color="blue-darken-1">
+                        <v-icon>mdi-arrow-left</v-icon>
+                    </v-btn>
+                </NavLink>
+            </div>
         </template>
 
         <div class="py-5">

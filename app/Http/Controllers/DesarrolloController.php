@@ -44,14 +44,29 @@ class DesarrolloController extends Controller
     }
 
     public function index_registros(){
-        $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'docente_inscrito')
-            ->where('aceptado', '=', 1)
-            ->where('estado', '=', 2)
+        $cursos_fd = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'docente_inscrito')
+            ->where(function($query) {
+                $query->where('estado', '=', 2)
+                    ->orWhere('aceptado', '=', 1);
+            })
+            ->where('tipo_FDoAP', '=', 1)
             ->orderBy('id', 'desc')
             ->orderByRaw('deteccion_necesidades.estado ASC, ABS(DATEDIFF(NOW(), deteccion_necesidades.fecha_I)) ASC')
             ->get();
+
+        $cursos_ap = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'docente_inscrito')
+            ->where(function($query) {
+                $query->where('estado', '=', 2)
+                    ->orWhere('aceptado', '=', 1);
+            })
+            ->where('tipo_FDoAP', '=', 2)
+            ->orderBy('id', 'desc')
+            ->orderByRaw('deteccion_necesidades.estado ASC, ABS(DATEDIFF(NOW(), deteccion_necesidades.fecha_I)) ASC')
+            ->get();
+
         return Inertia::render('Views/desarrollo/coordinacion/ShowRegistrosC', [
-            'cursos' => $detecciones,
+            'cursos_fd' => $cursos_fd,
+            'cursos_ap' => $cursos_ap,
         ]);
     }
 
@@ -177,7 +192,8 @@ class DesarrolloController extends Controller
             $user->notify(new AceptadoNotification($detecciones, $user));
         });
 
-        $this->clave_generar($id);
+        CoursesController::clave_generar($id);
+        CoursesController::clave_validacion($id);
 
         return Redirect::route('index.detecciones');
     }
@@ -221,7 +237,7 @@ class DesarrolloController extends Controller
 
     public function index_curso_inscrito_desarrollo($id){
         $docente = Docente::orderBy('nombre', 'asc')->get();
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->where('aceptado', '=', 1)
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'clave_curso', 'clave_validacion'])->where('aceptado', '=', 1)
             ->find($id);
         $inscritos = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
@@ -370,17 +386,5 @@ class DesarrolloController extends Controller
             ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.id AS inscripcion')
             ->get();
         return $syncCalificacion;
-    }
-
-    public static function clave_generar($curso_id){
-        $anioActual = date('Y');
-
-        $claveCurso = 'TNM-021-' . $curso_id . '-' . $anioActual;
-
-        return ClaveCurso::create([
-            'curso_id' => $curso_id,
-            'clave' => $claveCurso,
-        ]);
-
     }
 }

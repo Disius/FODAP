@@ -50,6 +50,10 @@ const fila_seleccionada = (docente_id) => {
     formCalificacion.docente_id = docente_id
     dialogCalificacion.value = true
 }
+
+const if_calificacion = computed(() => {
+    return props.inscritos.every(inscrito => inscrito.calificacion !== null)
+})
 const submit = (inscripcion, id) => {
     axios.get(route('cdi.pdf'), {
         params: {
@@ -178,8 +182,6 @@ onMounted(() => {
         snackEventActivator()
     })
     store.inscritos_curso_desarrollo(props.curso.id)
-
-
 });
 
 </script>
@@ -187,19 +189,53 @@ onMounted(() => {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-lg font-medium text-gray-900">{{curso.nombreCurso}}</h2>
-            <div class="grid grid-cols-2">
+            <div class="grid grid-cols-3">
+                <div class="flex justify-center">
+                    <h2 class="text-h5 font-medium text-gray-900">{{props.curso.nombreCurso}}</h2>
+                </div>
+                <template v-if="props.curso.clave_curso !== null">
+                    <div class="flex justify-center">
+                        <h2 class="font-medium text-gray-900">Clave del curso: {{props.curso.clave_curso.clave}}</h2>
+                    </div>
+                </template>
+                <template v-if="props.curso.clave_validacion !== null">
+                    <div class="flex justify-center">
+                        <h2 class="font-medium text-gray-900">Clave de validación: {{props.curso.clave_validacion.clave}}</h2>
+                    </div>
+                </template>
+            </div>
+            <div class="grid grid-cols-3">
+                <template v-if="props.curso.estado === 0 || props.curso.estado === 1">
+                    <div class="flex justify-start">
+                        <NavLink :href="route('index.desarrollo.cursos')" as="button" type="button">
+                            <v-btn icon color="blue-darken-1">
+                                <v-icon>mdi-arrow-left</v-icon>
+                            </v-btn>
+                        </NavLink>
+                    </div>
+                </template>
+                <template v-if="props.curso.estado === 2">
+                    <div class="flex justify-start">
+                        <NavLink :href="route('index.registros.c')" as="button" type="button">
+                            <v-btn icon color="blue-darken-1">
+                                <v-icon>mdi-arrow-left</v-icon>
+                            </v-btn>
+                        </NavLink>
+                    </div>
+                </template>
                 <div class="flex justify-end mr-3">
                     <NavLink :href="route('curso.editar', props.curso.id)" as="button">
-                        <PrimaryButton class="mt-5">Editar</PrimaryButton>
+                        <v-btn color="blue-darken-1" class="mt-5">Editar</v-btn>
                     </NavLink>
                 </div>
-                <div class="flex justify-start">
+                <div class="flex justify-start mr-16 pr-16">
                     <DangerButton @click="dialog = true" class="mt-5">Eliminar curso</DangerButton>
                     <EliminarDeteccionConfirmation v-model="dialog" :curso="props.curso.id" @update:modelValue="dialog = $event"></EliminarDeteccionConfirmation>
                 </div>
             </div>
         </template>
+
+
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h2 class="text-lg font-medium text-gray-900">Docentes inscritos a este curso</h2>
@@ -210,8 +246,8 @@ onMounted(() => {
                     <Inscripcion :errors="$page.props.errors" :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
                 </div>
                 <div class="flex justify-end mb-10">
-                    <template v-if="store.my_inscritos_desarrollo.length !== 0">
-                        <v-btn color="blue-darken-1" @click="submitActa" :disabled="!store.inscritos_calificacion">Descargar Acta de Calificaciones</v-btn>
+                    <template v-if="props.inscritos.length !== 0">
+                        <v-btn color="blue-darken-1" @click="submitActa" :disabled="!if_calificacion">Descargar Acta de Calificaciones</v-btn>
                     </template>
                 </div>
                 <v-table fixed-header height="500px" hover>

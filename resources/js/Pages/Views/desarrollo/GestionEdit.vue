@@ -200,7 +200,7 @@ onMounted(() => {
             </div>
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <header>
-                    <h2 class="text-lg font-medium text-gray-900">Areas academicas</h2>
+                    <h2 class="text-lg font-medium text-gray-900">Aréas académicas</h2>
 
                     <p class="mt-1 text-sm text-gray-600">
                         Actualizar o añadir

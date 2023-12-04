@@ -41,9 +41,9 @@ const header = [
 
         <template v-slot:item.options="{item}">
             <NavLink  :href="route('edit.lugar', item.id)">
-                <PrimaryButton class="bg-blue-accent-4">
+                <v-btn class="" icon color="success">
                     <v-icon>mdi-pencil</v-icon>
-                </PrimaryButton>
+                </v-btn>
             </NavLink>
         </template>
     </v-data-table>

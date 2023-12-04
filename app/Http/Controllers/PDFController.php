@@ -144,7 +144,7 @@ class PDFController extends Controller
         $year = date('Y');
         $instituto = DB::table('nombre_instituto')->get();
         $docente = Docente::with('inscrito')->find($request->id_docente);
-        $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($docente->inscrito[0]->id);
+        $curso = DeteccionNecesidades::with('deteccion_facilitador',  'clave_curso', 'clave_validacion')->find($docente->inscrito[0]->id);
 
         $facilitador = $curso->deteccion_facilitador;
 

@@ -6,6 +6,8 @@ use App\Events\DeteccionEditadaEvent;
 use App\Events\DeteccionEvent;
 use App\Http\Requests\CursoRequest;
 use App\Models\Carrera;
+use App\Models\ClaveCurso;
+use App\Models\ClaveValidacion;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
@@ -137,7 +139,32 @@ class CoursesController extends Controller
         }
     }
 
-    public static function clave($curso){
+    public static function clave_generar($curso_id){
+        $curso = DeteccionNecesidades::find($curso_id);
+        $anio = explode("-", $curso->fecha_F);
+        $claveCurso = 'TNM-021-' . $curso_id . '-' . $anio[0];
 
+        return ClaveCurso::create([
+            'curso_id' => $curso_id,
+            'clave' => $claveCurso,
+        ]);
+
+    }
+
+    public static function clave_validacion($curso_id){
+        $curso = DeteccionNecesidades::find($curso_id);
+        $anio = explode("-", $curso->fecha_F);
+        $type = null;
+        switch ($curso->tipo_FDoAP){
+            case 1: $type = 'FD';
+                    break;
+            case 2: $type = 'AP';
+                    break;
+        }
+        $claveValidacion = 'SA-DDA-'.$type.'-'.$curso->id.'-'.$anio[0];
+        return ClaveValidacion::create([
+            'curso_id' => $curso->id,
+            'clave' => $claveValidacion
+        ]);
     }
 }

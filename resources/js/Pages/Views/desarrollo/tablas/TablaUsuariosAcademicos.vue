@@ -59,7 +59,7 @@ const wich_user = (user) => {
         </template>
         <template v-slot:item.edit="{item}">
             <NavLink :href="route('edit.user', item.id)" as="button">
-                <primary-button><v-icon>mdi-pencil</v-icon></primary-button>
+                <v-btn icon color="success"><v-icon>mdi-pencil</v-icon></v-btn>
             </NavLink>
         </template>
         <template v-slot:item.delete="{item}">

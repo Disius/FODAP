@@ -1,24 +1,62 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import NavLink from "@/Components/NavLink.vue";
 import {Curso} from "@/store/curso.js";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 
 const store = Curso()
 const props = defineProps({
-   cursos: Array,
-    auth: Object
+   cursos_fd: Array,
+   auth: Object,
+   cursos_ap: Array,
 });
 const search = ref("");
-const setColor = (state) => {
-    if (state === 0){
-        return 'warning';
-    }else {
-        return 'success'
+const search_ap = ref("")
+const anio_filter_fd = ref()
+
+const filterCursoFD = computed(() => {
+    const busqueda = search.value.toLowerCase().trim();
+    const anio = anio_filter_fd.value;
+
+    let cursosFiltrados = [...props.cursos_fd];
+
+    if (busqueda) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            return item.nombreCurso.toLowerCase().includes(busqueda)
+        });
     }
-}
+
+    if (anio) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            const parse_anio = new Date(item.fecha_I).getFullYear()
+            return parse_anio === anio
+        });
+    }
+
+    return cursosFiltrados;
+});
+
+const filterCursoAP = computed(() => {
+    const busqueda = search_ap.value.toLowerCase().trim();
+
+    return props.cursos_ap.filter(item => {
+        return item.nombreCurso.toLowerCase().includes(busqueda)
+    });
+
+});
+
+const fullYears = computed(() => {
+    const maxYears = new Date().getFullYear() + 1;
+    const minYears = maxYears - 7;
+    const years = [];
+    for (let i = maxYears; i >= minYears; i--) {
+        years.push(i)
+    }
+
+    return years
+});
+
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -49,84 +87,51 @@ onMounted(() => {
 
         <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
-                <template v-if="props.cursos.length !== 0">
-                    <v-data-iterator
-                        :items="props.cursos"
-                        item-value="nombreCurso"
-                        :search="search"
-                        class="pa-4"
-                    >
-                        <template v-slot:header>
-                            <v-text-field
-                                v-model="search"
-                                clearable
-                                density="comfortable"
-                                hide-details
-                                placeholder="Buscar"
-                                prepend-inner-icon="mdi-magnify"
-                                style="max-width: 300px;"
-                                variant="solo"
-                            >
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Cursos de Formación Docente</h2>
+                <template v-if="props.cursos_fd.length !== 0">
+                    <div class="grid grid-cols-3">
+                        <div class="flex justify-center w-50 mt-6">
+                            <v-text-field variant="solo" v-model="search" label="Buscar por nombre de curso" clearable></v-text-field>
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="flex justify-center w-50 mt-6">
+                                <v-select variant="solo" v-model="anio_filter_fd" :items="fullYears" label="Filtrar por año"></v-select>
+                            </div>
+                        </div>
+                    </div>
+                    <v-virtual-scroll
+                        :items="filterCursoFD"
+                        height="300"
+                        item-height="50"
+                        class="mt-4"
 
-                            </v-text-field>
+                    >
+                        <template v-slot:default="{ item }">
+                            <v-list-item>
+                                <template v-slot:prepend>
+
+                                </template>
+
+                                <v-list-item-title>{{ item.nombreCurso }}</v-list-item-title>
+                                <v-list-item-subtitle>
+                                    {{item.asignaturaFA}}
+                                </v-list-item-subtitle>
+                                <template v-slot:append>
+                                    <NavLink :href="route('index.desarrollo.inscritos', item.id)" type="button" as="button">
+                                        <v-btn
+                                            border
+                                            flat
+                                            size="small"
+                                            class="text-none"
+                                            text="Ver"
+                                            prepend-icon="mdi-eye-arrow-right-outline"
+                                        >
+                                        </v-btn>
+                                    </NavLink>
+                                </template>
+                            </v-list-item>
                         </template>
-                        <template v-slot:default="{items}">
-                            <v-container class="pa-8" fluid>
-                                <v-row dense>
-                                    <v-col v-for="item in items" :key="item.nameCarrera"
-                                           cols="auto"
-                                           md="4"
-                                    >
-                                        <v-card class="pb-3" border flat >
-                                            <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">
-                                                <template v-slot:title>
-                                                    <strong class="text-h6 mb-2">
-                                                        {{item.raw.nombreCurso}}
-                                                    </strong>
-                                                </template>
-                                            </v-list-item>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                    <template v-if="item.raw.tipo_FDoAP === 1">
-                                                        <p class="text-truncate">Formación Docente</p>
-                                                    </template>
-                                                    <template v-if="item.raw.tipo_FDoAP === 2">
-                                                        <p>Actualización Profesional</p>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                    <p class="text-truncate">Dirigido a la academica de {{item.raw.carrera.nameCarrera}}</p>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-<!--                                                    <template v-if="item.raw.estado === 0">-->
-<!--                                                        <strong class="text-truncate">Curso por realizar</strong>-->
-<!--                                                    </template>-->
-<!--                                                    <template v-else>-->
-<!--                                                        <strong class="text-truncate">En curso</strong>-->
-<!--                                                    </template>-->
-                                                </div>
-                                                <NavLink :href="route('index.desarrollo.inscritos', item.raw.id)" type="button" as="button">
-                                                    <v-btn
-                                                        border
-                                                        flat
-                                                        size="small"
-                                                        class="text-none"
-                                                        text="Ver"
-                                                        prepend-icon="mdi-eye-arrow-right-outline"
-                                                    >
-                                                    </v-btn>
-                                                </NavLink>
-                                            </div>
-                                        </v-card>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </template>
-                    </v-data-iterator>
+                    </v-virtual-scroll>
                 </template>
                 <template v-else>
                     <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -136,7 +141,61 @@ onMounted(() => {
                                 icon="mdi-alert-circle"
                                 prominent
                             >
-                                Actualmente no hay cursos por realizarse, puede visualizar todos los que se llevaron acabo al presionar  "Ver todos los registros".
+                                Sin registros.
+                            </v-alert>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Cursos de Actualización Profesional</h2>
+                <template v-if="props.cursos_ap !== null">
+                    <div class="flex justify-center w-50 mt-6">
+                        <v-text-field variant="solo" v-model="search_ap" label="Buscar por nombre de curso"></v-text-field>
+                    </div>
+                    <v-virtual-scroll
+                        :items="filterCursoAP"
+                        height="300"
+                        item-height="50"
+                        class="mt-4"
+
+                    >
+                        <template v-slot:default="{ item }">
+                            <v-list-item>
+                                <template v-slot:prepend>
+
+                                </template>
+
+                                <v-list-item-title>{{ item.nombreCurso }}</v-list-item-title>
+                                <v-list-item-subtitle>
+                                    {{item.asignaturaFA}}
+                                </v-list-item-subtitle>
+                                <template v-slot:append>
+                                    <NavLink :href="route('index.desarrollo.inscritos', item.id)" type="button" as="button">
+                                        <v-btn
+                                            border
+                                            flat
+                                            size="small"
+                                            class="text-none"
+                                            text="Ver"
+                                            prepend-icon="mdi-eye-arrow-right-outline"
+                                        >
+                                        </v-btn>
+                                    </NavLink>
+                                </template>
+                            </v-list-item>
+                        </template>
+                    </v-virtual-scroll>
+                </template>
+                <template v-else>
+                    <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
+                        <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+                            <v-alert
+                                color="blue-darken-1"
+                                icon="mdi-alert-circle"
+                                prominent
+                            >
+                                Sin registros.
                             </v-alert>
                         </div>
                     </div>
