@@ -84,9 +84,12 @@ onMounted(() => {
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Deteccion de Necesidades</h2>
         </template>
-
+        <v-container class="mt-4">
+            <v-row justify="start" class="ml-16">
+                <v-btn color="blue-darken-1" rounded size="large" @click="pdf_dialog = true">Generar PDF</v-btn>
+            </v-row>
+        </v-container>
         <DeteccionDialog :carreras="props.carrera" v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DeteccionDialog>
-
         <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
                 <template v-if="props.detecciones.length !== 0">

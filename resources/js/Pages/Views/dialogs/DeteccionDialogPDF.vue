@@ -4,12 +4,15 @@ import { router, useForm } from "@inertiajs/vue3";
 import axios from "axios";
 import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable'
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 
-const errorHandle = ref("");
-const alert = ref(false);
-const alert2 = ref(false);
 const snackSuccess = ref(false);
+const timeout = ref(0)
+const message = ref("")
+const color = ref("")
+
+
 const props = defineProps({
     modelValue: Boolean,
     carreras: Array,
@@ -28,10 +31,9 @@ const periodos = [
     { id: 2, name: "AGOSTO-DICIEMBRE" }
 ];
 const fullYears = computed(() => {
-    const maxYears = new Date().getFullYear();
-    const minYears = maxYears - 6;
+    const maxYears = new Date().getFullYear() + 1;
+    const minYears = maxYears - 7;
     const years = [];
-
     for (let i = maxYears; i >= minYears; i--) {
         years.push(i)
     }
@@ -50,8 +52,10 @@ function submit() {
     }).then(res => {
         // cursos.value = res.data.cursos
         if (res.data.mensaje) {
-            alert.value = true
-            errorHandle.value = res.data.mensaje
+            message.value = res.data.mensaje
+            color.value = 'error'
+            timeout.value = 5000
+            snackSuccess.value = true
         }
         else {
             const url = '/storage/Deteccion.pdf';
@@ -60,22 +64,23 @@ function submit() {
             link.setAttribute('download', 'deteccion.pdf');
             document.body.appendChild(link);
             link.click();
+            message.value = 'Documento generado con exito'
+            timeout.value = 5000
+            color.value = 'success'
             snackSuccess.value = true
         }
 
     }).catch(error => {
-        alert2.value = true
+        message.value = '¡Debe ingresar los datos para generar el documento!';
+        color.value = 'error'
+        timeout.value = 5000
+        snackSuccess.value = true
     })
 
 }
 
 
 onMounted(() => {
-    setTimeout(() => {
-        alert.value = false
-        alert2.value = false
-    }, 10000)
-
 
 })
 
@@ -84,19 +89,14 @@ onMounted(() => {
 <template>
     <v-dialog width="auto" persistent v-model="props.modelValue">
         <form @submit.prevent="submit">
-            <v-card elevation="3" width="500" height="600">
+            <v-card elevation="3" width="500" height="500">
                 <v-card-title>Ingresar los datos para generar PDF</v-card-title>
                 <v-card-text>
-                    <div class="pb-2">
-                        <v-alert v-model="alert" closable close-label="Cerrar" color="error" icon="$error" title="Error">
-                            {{ errorHandle }}
-                        </v-alert>
-                    </div>
-                    <div class="pb-2">
-                        <v-alert v-model="alert2" closable close-label="Cerrar" color="error" icon="$error" title="Error">
-                            ¡Debe ingresar los datos para generar el documento!
-                        </v-alert>
-                    </div>
+<!--                    <div class="pb-2">-->
+<!--                        <v-alert v-model="alert2" closable close-label="Cerrar" color="error" icon="$error" title="Error">-->
+<!--                            ¡Debe ingresar los datos para generar el documento!-->
+<!--                        </v-alert>-->
+<!--                    </div>-->
                     <label for="carrera"
                         class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Carrera a
                         la que va dirigida: </label>
@@ -134,24 +134,9 @@ onMounted(() => {
             </v-card>
         </form>
     </v-dialog>
-    <v-snackbar
-        v-model="snackSuccess"
-        color="success"
-        vertical
-    >
-        <div class="text-subtitle-1 pb-2">¡Exito!</div>
+    <CustomSnackBar :message="message" :color="color" :timeout="timeout" v-model="snackSuccess" @update:modelValue="snackSuccess = $event">
 
-        <p>El documento PDF se ha generado con exito</p>
-
-        <template v-slot:actions>
-            <v-btn
-                variant="text"
-                @click="snackSuccess = false"
-            >
-                Cerrar
-            </v-btn>
-        </template>
-    </v-snackbar>
+    </CustomSnackBar>
 </template>
 
 <style scoped></style>
