@@ -4,14 +4,30 @@ import {onMounted} from "vue";
 import NavLink from "@/Components/NavLink.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref, computed} from 'vue'
+import CreateDocenteA from "@/Pages/Views/academicos/docentes/CreateDocenteA.vue";
 
 const props = defineProps({
     auth: Object,
-    docentes: Object
+    docentes: Object,
+    tipo_plaza: {
+        type: Array,
+    },
+    puesto: {
+        type: Array
+    },
+    carrera: {
+        type: Array,
+    },
+    posgrado: {
+        type: Array
+    },
+    departamento: {
+        type: Array
+    }
 });
 
 const search = ref("");
-
+const dialogDocente = ref(false)
 
 const header = [
     {key: "nombre", title: "Nombre"},
@@ -19,6 +35,23 @@ const header = [
     {key: "apellidoMat", title: "Apellido Materno"},
     {key: "options", title: "Opciones"},
 ];
+
+async function submitDocente(form){
+    try {
+        form.post(route('create.docentes.academicos.up'), {
+            onSuccess: () => {
+                dialogDocente.value = false
+                snackSuccessActivator()
+                form.reset()
+            },
+            onError: () => {
+                snackErrorActivator()
+            }
+        })
+    }catch (e) {
+        snackErrorActivator()
+    }
+}
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -46,11 +79,22 @@ onMounted(() => {
     </template>
     <div class="grid grid-cols-3 mt-5 ml-16">
         <div class="flex justify-center">
-            <NavLink :href="route('create.docentes.academicos')" as="button">
-                <v-btn prepend-icon="mdi-plus">
-                    Agregar docente
-                </v-btn>
-            </NavLink>
+            <v-btn prepend-icon="mdi-plus" @click="dialogDocente = true">
+                Agregar docente
+            </v-btn>
+            <create-docente-a
+                :auth="props.auth"
+                :carrera="props.carrera"
+                :departamento="props.departamento"
+                :tipo_plaza="props.tipo_plaza"
+                :posgrado="props.posgrado"
+                :puesto="props.puesto"
+                v-model="dialogDocente"
+                @update:modelValue="dialogDocente = $event"
+                @docente-add="submitDocente"
+            >
+
+            </create-docente-a>
         </div>
     </div>
     <div class="mt-5 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">

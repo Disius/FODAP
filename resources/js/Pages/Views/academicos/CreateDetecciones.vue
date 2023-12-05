@@ -563,6 +563,7 @@ onMounted(() => {
                                                 :departamento="props.departamento"
                                                 :posgrado="props.posgrado"
                                                 :puesto="props.puesto"
+                                                :tipo_plaza="props.tipo_plaza"
                                                 v-model="dialogDocente"
                                                 @update:modelValue="dialogDocente = $event"
                                                 @docente-add="submitDocente"

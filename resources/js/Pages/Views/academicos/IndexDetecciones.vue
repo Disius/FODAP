@@ -74,6 +74,7 @@ onMounted(() => {
         snackEventActivator()
     });
 });
+console.log(props.detecciones === null)
 </script>
 
 <template>
@@ -92,7 +93,7 @@ onMounted(() => {
         </template>
 
         <div class="grid grid-cols-2 mt-4 mb-4">
-            <template v-if="props.detecciones === null">
+            <template v-if="props.detecciones.length === 0">
                 <div class="flex justify-center ml-5 pl-5">
                     <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl" width="400">
                         Generar PDF

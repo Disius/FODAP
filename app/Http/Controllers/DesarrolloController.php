@@ -33,7 +33,10 @@ class DesarrolloController extends Controller
     {
         $carrera = Carrera::all();
         $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe')
-            ->where('aceptado', '=', 0)
+            ->where(function ($query) {
+                $query->where('aceptado', '=', 0)
+                    ->where('tipo_FDoAP', '=', 1);
+            })
             ->orderBy('id', 'desc')
             ->get();
 

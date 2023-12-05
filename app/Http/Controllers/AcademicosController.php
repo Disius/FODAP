@@ -174,32 +174,42 @@ class AcademicosController extends Controller
     }
 
     public function index_docentes_academicos(){
-        $docentes = Docente::with('usuario')
-            ->where('departamento_id', '=', auth()->user()->departamento_id)
-            ->orderBy('nombre')
-            ->get();
         CoursesController::state_curso();
-        $user = User::with('docente')->get();
-        return Inertia::render('Views/academicos/docentes/DocentesA', [
-            'docentes' => $docentes,
-            'user' => $user,
-        ]);
-    }
-    public function create_docentes_academicos(Request $request){
         $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->get();
         $departamento = Departamento::where('id', auth()->user()->departamento_id)->get();
         $tipoPlaza = DB::table('tipo_plaza')->get();
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
-        return Inertia::render('Views/academicos/docentes/CreateDocenteA', [
+        $docentes = Docente::with('usuario')
+            ->where('departamento_id', '=', auth()->user()->departamento_id)
+            ->orderBy('nombre')
+            ->get();
+        $user = User::with('docente')->get();
+        return Inertia::render('Views/academicos/docentes/DocentesA', [
+            'docentes' => $docentes,
+            'user' => $user,
             'carrera' => $carrera,
             'departamento' => $departamento,
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,
             'posgrado' => $posgrado,
-            'from_form' => $request->input('from_form')
         ]);
     }
+//    public function create_docentes_academicos(Request $request){
+//        $carrera = Carrera::where('departamento_id', auth()->user()->departamento_id)->get();
+//        $departamento = Departamento::where('id', auth()->user()->departamento_id)->get();
+//        $tipoPlaza = DB::table('tipo_plaza')->get();
+//        $puesto = DB::table('puesto')->select('id', 'nombre')->get();
+//        $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
+//        return Inertia::render('Views/academicos/docentes/CreateDocenteA', [
+//            'carrera' => $carrera,
+//            'departamento' => $departamento,
+//            'tipo_plaza' => $tipoPlaza,
+//            'puesto' => $puesto,
+//            'posgrado' => $posgrado,
+//            'from_form' => $request->input('from_form')
+//        ]);
+//    }
     public function docente_created_from_form(Request $request){
         $request->validate([
             'rfc' => 'required',
