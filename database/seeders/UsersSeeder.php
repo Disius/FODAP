@@ -29,13 +29,13 @@ class UsersSeeder extends Seeder
             ['email' => 'l17270705@tuxtla.tecnm.mx', 'password' => Hash::make('exalumnotecnm123'), 'departamento_id' => 7,'role' => 4,  'docente_id' => 36],
         ]);
 
-        $user = User::create([
-            'email' => 'admin@tuxtla.tecnm.mx',
-            'password' => Hash::make('admin123'),
-        ]);
-
-        $user->save();
-
-        $user->assignRole('Super Admin');
+//        $user = User::create([
+//            'email' => 'admin@tuxtla.tecnm.mx',
+//            'password' => Hash::make('admin123'),
+//        ]);
+//
+//        $user->save();
+//
+//        $user->assignRole('Super Admin');
     }
 }

@@ -136,7 +136,7 @@
             </tbody>
         @endforeach
     </table>
-    <div style="page-break-before: always"></div>
+    <div style="page-break-before: auto"></div>
     <div class="final_part">
         <div style="float: left;" class="margen-izquierdo">
             <p class="firmas">FACILITADOR 1</p>

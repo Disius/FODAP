@@ -102,19 +102,19 @@ onMounted(() => {
                         la que va dirigida: </label>
                     <div class="pt-5">
                         <v-select v-model="form.carrera" :items="props.carreras" item-title="nameCarrera"
-                            item-value="id"></v-select>
+                            item-value="id" variant="solo"></v-select>
                     </div>
                     <label for="periodo"
                         class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Periodo:
                     </label>
                     <div class="pt-5">
-                        <v-select v-model="form.periodo" :items="periodos" item-title="name" item-value="id"></v-select>
+                        <v-select v-model="form.periodo" :items="periodos" item-title="name" item-value="id" variant="solo"></v-select>
                     </div>
                     <label for="anio"
                         class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Año:
                     </label>
                     <div class="pt-5">
-                        <v-select v-model="form.anio" :items="fullYears" item-title="name" item-value="id"></v-select>
+                        <v-select v-model="form.anio" :items="fullYears" item-title="name" item-value="id" variant="solo"></v-select>
                     </div>
                 </v-card-text>
                 <v-card-actions>

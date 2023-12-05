@@ -92,12 +92,14 @@ onMounted(() => {
         </template>
 
         <div class="grid grid-cols-2 mt-4 mb-4">
-            <div class="flex justify-center ml-5 pl-5">
-                <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl" width="400">
-                    Generar PDF
-                </v-btn>
-            </div>
-            <div class="flex justify-end mr-4 pr-4">
+            <template v-if="props.detecciones === null">
+                <div class="flex justify-center ml-5 pl-5">
+                    <v-btn @click="pdf_dialog = true" prepend-icon="mdi-file-pdf-box" color="blue-darken-1" rounded="xl" width="400">
+                        Generar PDF
+                    </v-btn>
+                </div>
+            </template>
+            <div class="flex justify-end mr-2 pr-2">
                 <div v-if="store.si_dates !== null">
                     <template v-if="store.si_dates[0]  === true">
                         <template v-if="store.si_dates[1].d === 1">
