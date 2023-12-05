@@ -5,6 +5,7 @@ import NavLink from "@/Components/NavLink.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref, computed} from 'vue'
 import CreateDocenteA from "@/Pages/Views/academicos/docentes/CreateDocenteA.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const props = defineProps({
     auth: Object,
@@ -28,12 +29,18 @@ const props = defineProps({
 
 const search = ref("");
 const dialogDocente = ref(false)
+const message = ref("")
+const color = ref("")
+const snack_bar = ref(false)
+const timeout = ref(5000)
+
 
 const header = [
     {key: "nombre", title: "Nombre"},
     {key: "apellidoPat", title: "Apellido Paterno"},
     {key: "apellidoMat", title: "Apellido Materno"},
     {key: "options", title: "Opciones"},
+    {key: "delete", title: "Eliminar"},
 ];
 
 async function submitDocente(form){
@@ -41,15 +48,20 @@ async function submitDocente(form){
         form.post(route('create.docentes.academicos.up'), {
             onSuccess: () => {
                 dialogDocente.value = false
-                snackSuccessActivator()
+                message.value = 'Recurso actualizado con exito'
+                color.value = 'success'
+                snack_bar.value = true
                 form.reset()
             },
             onError: () => {
-                snackErrorActivator()
+                message.value = 'Ah ocurrido un error al generar el recurso'
+                color.value = 'error'
+                snack_bar.value = true
+                dialogDocente.value = false
             }
         })
     }catch (e) {
-        snackErrorActivator()
+        console.log(e)
     }
 }
 onMounted(() => {
@@ -128,11 +140,19 @@ onMounted(() => {
                                 </v-btn>
                             </NavLink>
                         </template>
+                        <template v-slot:item.delete="{item}">
+<!--                            <NavLink :href="route('edit.docentes.academicos', item.id)" as="button">-->
+                                <v-btn icon size="large" elevation="0">
+                                    <v-icon>mdi-delete</v-icon>
+                                </v-btn>
+<!--                            </NavLink>-->
+                        </template>
                     </v-data-table>
                 </div>
-        </div>
+            </div>
         </div>
     </div>
+    <CustomSnackBar :timeout="timeout" :color="color" :message="message" v-model="snack_bar" @update:modelValue="snack_bar = $event"></CustomSnackBar>
 </AuthenticatedLayout>
 </template>
 

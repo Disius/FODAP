@@ -74,7 +74,6 @@ onMounted(() => {
         snackEventActivator()
     });
 });
-console.log(props.detecciones === null)
 </script>
 
 <template>

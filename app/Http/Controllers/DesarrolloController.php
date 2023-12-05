@@ -334,7 +334,7 @@ class DesarrolloController extends Controller
         ]);
     }
     public function store_docentes(Request $request){
-        AcademicosController::create_instance_docente($request);
+        DocenteController::create_instance_docente($request);
         return Redirect::route('index.docentes');
     }
     public function edit_docente($id){
@@ -355,7 +355,7 @@ class DesarrolloController extends Controller
     }
 
     public function update_docente(Request $request, $id){
-        $docente = AcademicosController::updated_instance_docente($request, $id);
+        $docente = DocenteController::updated_instance_docente($request, $id);
         return Redirect::route('edit.docentes', ['id' => $docente->id]);
     }
     //revisar este otro metodo
