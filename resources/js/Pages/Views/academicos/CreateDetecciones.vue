@@ -711,14 +711,9 @@ onMounted(() => {
                                                         El curso es menor a 30 horas
                                                     </v-chip>
                                                 </template>
-                                                <template v-else-if="horas_totales === 30">
+                                                <template v-else-if="horas_totales >= 30">
                                                     <v-chip variant="flat" color="success" prepend-icon="mdi-check-circle">
-                                                        El curso es de 30 horas
-                                                    </v-chip>
-                                                </template>
-                                                <template v-else-if="horas_totales > 30">
-                                                    <v-chip variant="flat" color="error" prepend-icon="mdi-cancel">
-                                                        El curso es mayor a 30 horas
+                                                        El curso es de {{horas_totales}} horas
                                                     </v-chip>
                                                 </template>
                                             </v-col>
