@@ -86,86 +86,53 @@ onMounted(() => {
       <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
           <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
               <template v-if="props.cursos.length !== 0">
-                  <v-data-iterator
+                  <v-virtual-scroll
                       :items="props.cursos"
-                      item-value="nombreCurso"
-                      :search="search"
-                  >
-                      <template v-slot:header>
-                          <v-text-field
-                              v-model="search"
-                              clearable
-                              density="comfortable"
-                              hide-details
-                              placeholder="Buscar"
-                              prepend-inner-icon="mdi-magnify"
-                              style="max-width: 300px;"
-                              variant="solo"
-                          >
+                      height="300"
+                      item-height="50"
+                      class="mt-4"
 
-                          </v-text-field>
+                  >
+                      <template v-slot:default="{ item }">
+                          <v-list-item>
+                              <template v-slot:prepend>
+                                  <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                      <template v-if="item.estado === 0">
+                                          <v-chip variant="flat" color="warning" prepend-icon="$info">
+                                              Curso por realizar
+                                          </v-chip>
+                                      </template>
+                                      <template v-else>
+                                          <v-chip variant="flat" color="success" prepend-icon="$info">
+                                              En curso
+                                          </v-chip>
+                                      </template>
+                                  </div>
+                              </template>
+
+                              <div class="ml-8">
+                                  <v-list-item-title>{{ item.nombreCurso }}</v-list-item-title>
+                                  <v-list-item-subtitle>
+                                      {{item.departamento.nameDepartamento}}
+                                  </v-list-item-subtitle>
+                                  <v-list-item-action><strong>{{item.jefe.nombre_completo}}</strong></v-list-item-action>
+                              </div>
+                              <template v-slot:append>
+                                  <NavLink :href="route('show.Cdetecciones', item.id)" type="button" as="button">
+                                      <v-btn
+                                          border
+                                          flat
+                                          size="small"
+                                          class="text-none"
+                                          text="Ver"
+                                          prepend-icon="mdi-eye-arrow-right-outline"
+                                      >
+                                      </v-btn>
+                                  </NavLink>
+                              </template>
+                          </v-list-item>
                       </template>
-                      <template v-slot:default="{items}">
-                          <v-container class="pa-2 pt-15" fluid>
-                              <v-row dense>
-                                  <v-col v-for="item in items" :key="item.nameCarrera"
-                                         cols="auto"
-                                         md="6"
-                                  >
-                                      <v-card class="pb-3" border flat width="600">
-                                          <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">
-                                              <template v-slot:title>
-                                                  <strong class="text-h6 mb-2">
-                                                      {{item.raw.nombreCurso}}
-                                                  </strong>
-                                              </template>
-                                          </v-list-item>
-                                          <div class="d-flex justify-space-between px-4">
-                                              <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                  <template v-if="item.raw.tipo_FDoAP === 1">
-                                                      <p class="text-truncate">Formación Docente</p>
-                                                  </template>
-                                                  <template v-if="item.raw.tipo_FDoAP === 2">
-                                                      <p>Actualización Profesional</p>
-                                                  </template>
-                                              </div>
-                                          </div>
-                                          <div class="d-flex justify-space-between px-4">
-                                              <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                  <p class="text-truncate">Dirigido a la academica de {{item.raw.carrera.nameCarrera}}</p>
-                                              </div>
-                                          </div>
-                                          <div class="d-flex justify-space-between px-4 pt-4">
-                                              <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                  <template v-if="item.raw.estado === 0">
-                                                      <v-chip variant="flat" color="warning" prepend-icon="$info">
-                                                          Curso por realizar
-                                                      </v-chip>
-                                                  </template>
-                                                  <template v-else>
-                                                      <v-chip variant="flat" color="success" prepend-icon="$info">
-                                                          En curso
-                                                      </v-chip>
-                                                  </template>
-                                              </div>
-                                              <NavLink :href="route('index.desarrollo.inscritos', item.raw.id)" type="button" as="button">
-                                                  <v-btn
-                                                      border
-                                                      flat
-                                                      size="small"
-                                                      class="text-none"
-                                                      text="Ver"
-                                                      prepend-icon="mdi-eye-arrow-right-outline"
-                                                  >
-                                                  </v-btn>
-                                              </NavLink>
-                                          </div>
-                                      </v-card>
-                                  </v-col>
-                              </v-row>
-                          </v-container>
-                      </template>
-                  </v-data-iterator>
+                  </v-virtual-scroll>
               </template>
                         <template v-else>
                             <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">

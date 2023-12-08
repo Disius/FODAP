@@ -21,7 +21,7 @@ class AcademicosController extends Controller
     {
         CoursesController::state_curso();
 
-        $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador'])
+        $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'departamento', 'jefe'])
             ->where('id_jefe', auth()->user()->docente_id)
             ->where('aceptado', '=', 0)
             ->orderBy('id', 'desc')->get();
@@ -103,7 +103,7 @@ class AcademicosController extends Controller
         //Actualiza el estado del curso
         CoursesController::state_curso();
 
-        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
+        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'departamento', 'jefe'])
             ->where('id_jefe', '=', auth()->user()->docente_id)
             ->where('aceptado', '=', 1)
             ->where(function($query) {

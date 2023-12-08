@@ -32,7 +32,7 @@ class DesarrolloController extends Controller
     public function index()
     {
         $carrera = Carrera::all();
-        $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe')
+        $detecciones = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe', 'departamento')
             ->where(function ($query) {
                 $query->where('aceptado', '=', 0)
                     ->where('tipo_FDoAP', '=', 1);
@@ -77,7 +77,7 @@ class DesarrolloController extends Controller
 
         CoursesController::state_curso();
 
-        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
+        $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'departamento', 'jefe'])
             ->where('aceptado', '=', 1)
             ->where(function($query) {
                 $query->where('estado', '=', 0)

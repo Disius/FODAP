@@ -14,6 +14,7 @@ const props = defineProps({
 const search = ref("");
 const search_ap = ref("")
 const anio_filter_fd = ref()
+const anio_filter_ap = ref()
 
 const filterCursoFD = computed(() => {
     const busqueda = search.value.toLowerCase().trim();
@@ -39,10 +40,26 @@ const filterCursoFD = computed(() => {
 
 const filterCursoAP = computed(() => {
     const busqueda = search_ap.value.toLowerCase().trim();
+    const anio = anio_filter_ap.value;
 
-    return props.cursos_ap.filter(item => {
-        return item.nombreCurso.toLowerCase().includes(busqueda)
-    });
+
+
+    let cursosFiltrados = [...props.cursos_ap];
+
+    if (busqueda) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            return item.nombreCurso.toLowerCase().includes(busqueda)
+        });
+    }
+
+    if (anio) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            const parse_anio = new Date(item.fecha_I).getFullYear()
+            return parse_anio === anio
+        });
+    }
+
+    return cursosFiltrados;
 
 });
 
@@ -150,8 +167,15 @@ onMounted(() => {
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Cursos de Actualización Profesional</h2>
                 <template v-if="props.cursos_ap !== null">
-                    <div class="flex justify-center w-50 mt-6">
-                        <v-text-field variant="solo" v-model="search_ap" label="Buscar por nombre de curso"></v-text-field>
+                    <div class="grid grid-cols-2">
+                        <div class="flex justify-center w-50 mt-6">
+                            <v-text-field variant="solo" v-model="search_ap" label="Buscar por nombre de curso"></v-text-field>
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="flex justify-center w-50 mt-6">
+                                <v-select variant="solo" v-model="anio_filter_ap" :items="fullYears" label="Filtrar por año"></v-select>
+                            </div>
+                        </div>
                     </div>
                     <v-virtual-scroll
                         :items="filterCursoAP"

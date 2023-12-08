@@ -146,86 +146,45 @@ onMounted(() => {
             <!--Tabla-->
             <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <v-data-iterator
+                    <v-virtual-scroll
                         :items="props.detecciones"
-                        item-value="nombreCurso"
-                        :search="search"
+                        height="300"
+                        item-height="50"
+                        class="mt-4"
+
                     >
-                        <template v-slot:header>
-                            <v-text-field
-                                v-model="search"
-                                clearable
-                                density="comfortable"
-                                hide-details
-                                placeholder="Buscar"
-                                prepend-inner-icon="mdi-magnify"
-                                style="max-width: 500px;"
-                                variant="solo"
-                            >
+                        <template v-slot:default="{ item }">
+                            <v-list-item>
+                                <template v-slot:prepend>
 
-                            </v-text-field>
-                        </template>
-                        <template v-slot:default="{items}">
-                            <v-container class="pa-2 pt-16" fluid>
-                                <v-row dense>
-                                    <v-col v-for="item in items" :key="item.nameCarrera"
-                                           cols="auto"
-                                           md="4"
-                                    >
-                                        <v-card class="pb-3" border flat >
-                                            <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">
-                                                <template v-slot:title>
-                                                    <strong class="text-h6 mb-2">
-                                                        {{item.raw.nombreCurso}}
-                                                    </strong>
-                                                </template>
-                                            </v-list-item>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                    <template v-if="item.raw.tipo_FDoAP === 1">
-                                                        <p class="text-truncate">Formación Docente</p>
-                                                    </template>
-                                                    <template v-if="item.raw.tipo_FDoAP === 2">
-                                                        <p>Actualización Profesional</p>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                </template>
 
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-space-between px-4 pt-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                    <template v-if="item.raw.obs === 1">
-                                                        <v-chip variant="flat" color="warning" prepend-icon="$info">
-                                                            Observacion
-                                                        </v-chip>
-                                                    </template>
-                                                    <template v-else-if="item.raw.obs === 0">
-                                                        <v-chip variant="flat" color="info" prepend-icon="$info">
-                                                            Pendiente a revisar
-                                                        </v-chip>
-                                                    </template>
-                                                </div>
-                                                <NavLink :href="route('show.detecciones', item.raw.id)" type="button" as="button">
-                                                    <v-btn
-                                                        border
-                                                        flat
-                                                        size="small"
-                                                        class="text-none"
-                                                        text="Ver"
-                                                        prepend-icon="mdi-eye-arrow-right-outline"
-                                                    >
-                                                    </v-btn>
-                                                </NavLink>
-                                            </div>
-                                        </v-card>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
+                                <v-list-item-title>{{ item.nombreCurso }}</v-list-item-title>
+                                <v-list-item-subtitle>
+                                    <template v-if="item.tipo_FDoAP === 1">
+                                        FORMACIÓN DOCENTE
+                                    </template>
+                                    <template v-if="item.tipo_FDoAP === 2">
+                                        ACTUALIZACIÓN PROFESIONAL
+                                    </template>
+                                </v-list-item-subtitle>
+<!--                                <v-list-item-action><strong>{{item.jefe.nombre_completo}}</strong></v-list-item-action>-->
+                                <template v-slot:append>
+                                    <NavLink :href="route('show.Cdetecciones', item.id)" type="button" as="button">
+                                        <v-btn
+                                            border
+                                            flat
+                                            size="small"
+                                            class="text-none"
+                                            text="Ver"
+                                            prepend-icon="mdi-eye-arrow-right-outline"
+                                        >
+                                        </v-btn>
+                                    </NavLink>
+                                </template>
+                            </v-list-item>
                         </template>
-                    </v-data-iterator>
+                    </v-virtual-scroll>
                 </div>
             </div>
         </template>
