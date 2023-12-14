@@ -57,7 +57,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'message' => fn () => $request->session()->get('message')
             ],
-
+            'can_install' => Installer::can_install(),
         ]);
     }
 }

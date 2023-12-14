@@ -11,11 +11,7 @@ class Installer extends Controller
 
     public static function can_install(){
         $admin = User::where('email', 'admin@tuxtla.tecnm.mx')->first();
-        $role = $admin->hasRole('Super Admin');
-
-        return response()->json([
-            'config' => $role
-        ]);
+        return $admin->hasRole('Super Admin');
     }
 
     public function index(){

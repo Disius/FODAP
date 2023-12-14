@@ -5,7 +5,7 @@ export const administrador = () => {
         axios.get('/api/admin').then(res => {
             response(res.data.config)
         }).catch(error => {
-            console.log(error)
+
         })
     })
 }

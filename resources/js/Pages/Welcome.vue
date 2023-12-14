@@ -1,10 +1,8 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import {onMounted, ref} from "vue";
-import {FODAPStore} from "@/store/server.js";
 import NavLink from "@/Components/NavLink.vue";
 
-const store = FODAPStore()
 defineProps({
     canLogin: {
         type: Boolean,
@@ -12,7 +10,9 @@ defineProps({
     canRegister: {
         type: Boolean,
     },
-
+    can_install: {
+        type: Boolean,
+    }
 });
 
 const nameCards = ref([
@@ -22,7 +22,7 @@ const nameCards = ref([
 ]);
 
 onMounted(() => {
-    store.admin_get()
+
 })
 </script>
 
@@ -32,7 +32,7 @@ onMounted(() => {
             <v-col
             v-for="card in nameCards"
             :cols="card.flex"
-            class="mt-16 pt-16"
+            class="mt-12 pt-12"
             lg="6"
             md="7"
             sm="8"
@@ -63,7 +63,7 @@ onMounted(() => {
             </v-col>
         </v-row>
     </v-container>
-    <template v-if="store.if_admin">
+    <template v-if="can_install">
         <div class="grid grid-cols-2">
             <div class="flex justify-center mt-10 ml-16">
                 <v-alert
