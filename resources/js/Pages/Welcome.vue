@@ -74,7 +74,7 @@ onMounted(() => {
                 </v-alert>
             </div>
             <div class="flex justify-start ml-10 mt-10">
-                <NavLink href="/login" as="button" :data="{ administrator: true }">
+                <NavLink :href="route('login')" as="button" :data="{ administrator: true }">
                     <v-btn size="x-large" color="info">
                         Instalar
                     </v-btn>
