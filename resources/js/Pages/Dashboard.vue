@@ -14,7 +14,8 @@ import Instalar from "@/Pages/Installer/Instalar.vue";
 const store = FODAPStore()
 const props = defineProps({
     auth: Object,
-    notifications: Array
+    notifications: Array,
+    can_install: Boolean,
 });
 
 
@@ -52,7 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <template v-if="store.if_admin === true">
+    <template v-if="props.can_install === true">
         <Instalar>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-16 pt-16">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -68,7 +69,7 @@ onMounted(() => {
             </div>
         </Instalar>
     </template>
-    <template v-if="store.if_admin === false">
+    <template v-if="props.can_install === false">
         <AuthenticatedLayout>
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Inicio</h2>
