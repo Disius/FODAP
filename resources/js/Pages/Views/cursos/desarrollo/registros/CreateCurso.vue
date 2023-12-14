@@ -4,6 +4,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import {useForm} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import CreateDocenteA from "@/Pages/Views/academicos/docentes/CreateDocenteA.vue";
 
 const props = defineProps({
     auth: {
@@ -20,8 +21,19 @@ const props = defineProps({
     },
     lugar: {
         type: Array
-    }
+    },
+    posgrado: {
+        type: Array,
+    },
+    puesto: {
+      type: Array
+    },
+    tipo_plaza: {
+        type: Array,
+    },
 });
+
+const dialogDocente = ref(false);
 
 const tipoSolicitud = ref([
     {text: "FORMACIÓN DOCENTE", value:1},
@@ -64,14 +76,22 @@ const form = useForm({
     id_lugar: null,
     observaciones: null,
 });
-// const filtroCarrera = computed(() => {
-//     let filtro = props.carrera.filter(e => {
-//         return e.departamento_id === form.id_departamento
-//     });
-//     const addTodas = {nameCarrera: "TODAS LAS CARRERAS", id: 11};
-//     filtro.push(addTodas)
-//     return filtro;
-// });
+async function submitDocente(form){
+    try {
+        form.post(route('store.docentes'), {
+            onSuccess: () => {
+                dialogDocente.value = false
+                snackSuccessActivator()
+                form.reset()
+            },
+            onError: () => {
+                snackErrorActivator()
+            }
+        })
+    }catch (e) {
+        snackErrorActivator()
+    }
+}
 
 const fullYears = computed(() => {
     const maxYears = new Date().getFullYear();
@@ -435,10 +455,10 @@ const fullYears = computed(() => {
                                 </v-col>
                                 <v-col>
                                     <v-row justify="center">
-                                        <v-col align="start" cols="5">
+                                        <v-col align="start" cols="4">
                                             <InputLabel for="facilitador" value="Facilitador(a) que impartirá el curso/taller"  />
                                         </v-col>
-                                        <v-col align="start" cols="7" class="mb-0 pa-0">
+                                        <v-col align="center" cols="4" class="mb-0 pa-0">
                                             <div class="d-flex justify-start mb-5">
                                                 <v-tooltip
                                                     location="right"
@@ -458,6 +478,22 @@ const fullYears = computed(() => {
                                                     <span>Anotar el nombre del facilitador (a) que impartirá el curso/taller.</span>
                                                 </v-tooltip>
                                             </div>
+                                        </v-col>
+                                        <v-col cols="4" class="mb-2">
+                                            <v-btn @click="dialogDocente = true" prepend-icon="mdi-plus" color="blue-darken-1">Docente</v-btn>
+                                            <create-docente-a
+                                                :auth="props.auth"
+                                                :carrera="props.carrera"
+                                                :departamento="props.departamento"
+                                                :posgrado="props.posgrado"
+                                                :puesto="props.puesto"
+                                                :tipo_plaza="props.tipo_plaza"
+                                                v-model="dialogDocente"
+                                                @update:modelValue="dialogDocente = $event"
+                                                @docente-add="submitDocente"
+                                            >
+
+                                            </create-docente-a>
                                         </v-col>
                                     </v-row>
                                     <v-autocomplete multiple :items="props.docente" item-title="nombre_completo" item-value="id" v-model="form.facilitadores" variant="solo">

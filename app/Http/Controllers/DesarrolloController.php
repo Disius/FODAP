@@ -15,6 +15,9 @@ use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use App\Models\Lugar;
+use App\Models\Plaza;
+use App\Models\Posgrado;
+use App\Models\Puesto;
 use App\Models\User;
 use App\Notifications\AceptadoNotification;
 use App\Notifications\DocenteInscripcion;
@@ -108,12 +111,19 @@ class DesarrolloController extends Controller
         $docentes = Docente::select('nombre_completo', 'id')->get();
         $carrera = Carrera::all();
         $departamento = Departamento::all();
+        $posgrado = Posgrado::all();
+        $puesto = Puesto::all();
+        $tipoplaza = Plaza::all();
         $lugar = Lugar::with('curso')->get();
         return Inertia::render('Views/cursos/desarrollo/registros/CreateCurso', [
             'docente' => $docentes,
             'carrera' => $carrera,
             'todos_los_departamentos' => $departamento,
-            'lugar' => $lugar
+            'lugar' => $lugar,
+            'posgrado' => $posgrado,
+            'puesto' => $puesto,
+            'tipo_plaza' => $tipoplaza,
+
         ]);
     }
     public function store_cursos(CursoRequest $request)
