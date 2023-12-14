@@ -11,7 +11,8 @@ import {router} from "@inertiajs/vue3";
 
 const store = Deteccion()
 const props = defineProps({
-    detecciones: Array,
+    deteccionesFD: Array,
+    deteccionesAP: Array,
     auth: Object,
     carrera: Array,
     errors: Object
@@ -92,9 +93,64 @@ onMounted(() => {
         <DeteccionDialog :carreras="props.carrera" v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DeteccionDialog>
         <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
-                <template v-if="props.detecciones.length !== 0">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Deteccion de Necesidades de Formación Docente</h2>
+                <template v-if="props.deteccionesFD.length !== 0">
                     <v-virtual-scroll
-                        :items="props.detecciones"
+                        :items="props.deteccionesFD"
+                        height="300"
+                        item-height="50"
+                        class="mt-4"
+
+                    >
+                        <template v-slot:default="{ item }">
+                            <v-list-item>
+                                <template v-slot:prepend>
+
+                                </template>
+
+                                <v-list-item-title>{{ item.nombreCurso }}</v-list-item-title>
+                                <v-list-item-subtitle>
+                                    {{item.departamento.nameDepartamento}}
+                                </v-list-item-subtitle>
+                                <v-list-item-action><strong>{{item.jefe.nombre_completo}}</strong></v-list-item-action>
+                                <template v-slot:append>
+                                    <NavLink :href="route('show.Cdetecciones', item.id)" type="button" as="button">
+                                        <v-btn
+                                            border
+                                            flat
+                                            size="small"
+                                            class="text-none"
+                                            text="Ver"
+                                            prepend-icon="mdi-eye-arrow-right-outline"
+                                        >
+                                        </v-btn>
+                                    </NavLink>
+                                </template>
+                            </v-list-item>
+                        </template>
+                    </v-virtual-scroll>
+                </template>
+                <template v-else>
+                    <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
+                        <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+                            <v-alert
+                                color="blue-darken-1"
+                                icon="mdi-alert-circle"
+                                prominent
+                            >
+                                Actualmente no hay cursos por realizarse, puede visualizar todos los que se llevaron acabo al presionar  "Ver todos los registros".
+                            </v-alert>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Deteccion de Necesidades de Actualización Profesional</h2>
+                <template v-if="props.deteccionesAP.length !== 0">
+                    <v-virtual-scroll
+                        :items="props.deteccionesAP"
                         height="300"
                         item-height="50"
                         class="mt-4"

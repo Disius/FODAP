@@ -39,9 +39,17 @@ class DesarrolloController extends Controller
             })
             ->orderBy('id', 'desc')
             ->get();
+        $deteccionesAP = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe', 'departamento')
+            ->where(function ($query) {
+                $query->where('aceptado', '=', 0)
+                    ->where('tipo_FDoAP', '=', 2);
+            })
+            ->orderBy('id', 'desc')
+            ->get();
 
         return Inertia::render('Views/desarrollo/coordinacion/DeteccionCoordinacion', [
-            'detecciones' => $detecciones,
+            'deteccionesFD' => $detecciones,
+            'deteccionesAP' => $deteccionesAP,
             'carrera' => $carrera
         ]);
     }
