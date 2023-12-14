@@ -16,9 +16,9 @@ defineProps({
 });
 
 const nameCards = ref([
-    { flex: 4, name: "Departamento de Desarrollo Académico", user_rol: 1, route: "/login"},
-    { flex: 4, name: "Jefes Academicos", user_rol: 3, route: "/login" },
-    { flex: 4, name: "Docentes", user_rol: 4, route: "/login" },
+    { flex: 4, name: "Departamento de Desarrollo Académico", user_rol: 1},
+    { flex: 4, name: "Jefes Academicos", user_rol: 3 },
+    { flex: 4, name: "Docentes", user_rol: 4 },
 ]);
 
 onMounted(() => {
@@ -39,7 +39,7 @@ onMounted(() => {
             xs="8"
             xl="4"
             >
-                <Link :href="card.route"
+                <Link :href="route('login')"
                       as="card"
                       type="card"
                       :data="{ role: card.user_rol }">
