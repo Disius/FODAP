@@ -353,7 +353,6 @@ class DesarrolloController extends Controller
     }
     public function store_docentes(Request $request){
         DocenteController::create_instance_docente($request);
-        return Redirect::route('index.docentes');
     }
     public function edit_docente($id){
         $carrera = $this->query_consult_carrera();
