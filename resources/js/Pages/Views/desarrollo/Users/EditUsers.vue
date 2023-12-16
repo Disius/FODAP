@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import UpdateProfileInformationFormSelected
     from "@/Pages/Views/desarrollo/forms/UpdateProfileInformationFormSelected.vue";
 import UpdatePasswordFormSelected from "@/Pages/Views/desarrollo/forms/UpdatePasswordFormSelected.vue";
+import NavLink from "@/Components/NavLink.vue";
 
 const props = defineProps({
     user: Object,
@@ -14,7 +15,14 @@ const props = defineProps({
 
 <template>
     <AuthenticatedLayout>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-16 pt-10">
+        <template #header>
+            <NavLink :href="route('parametros.edit')" as="button">
+                <v-btn icon="mdi-arrow-left" color="blue-darken-1">
+
+                </v-btn>
+            </NavLink>
+        </template>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 mt-2">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <UpdateProfileInformationFormSelected :rol="props.rol" :departamento="props.departamento" :docente="props.docente" :user="props.user">
 

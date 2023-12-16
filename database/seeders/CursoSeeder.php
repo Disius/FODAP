@@ -17,7 +17,6 @@ class CursoSeeder extends Seeder
      */
     public function run(): void
     {
-        //Electrica electronica departamento 3 electronica 4 y 5 electrica
 
         Subdireccion::create([
             'name' => 'María Delina Culebro Farrera'

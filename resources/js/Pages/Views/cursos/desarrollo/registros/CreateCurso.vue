@@ -34,7 +34,10 @@ const props = defineProps({
 });
 
 const dialogDocente = ref(false);
-
+const snackbar = ref();
+const message = ref("")
+const color = ref("")
+const timeout = ref()
 const tipoSolicitud = ref([
     {text: "FORMACIÓN DOCENTE", value:1},
     {text: "ACTUALIZACIÓN PROFESIONAL", value:2}
@@ -76,13 +79,31 @@ const form = useForm({
     id_lugar: null,
     observaciones: null,
 });
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
+};
 async function submitDocente(form){
     try {
         form.post(route('store.docentes'), {
             onSuccess: () => {
-                dialogDocente.value = false
                 snackSuccessActivator()
                 form.reset()
+                dialogDocente.value = false
             },
             onError: () => {
                 snackErrorActivator()
@@ -105,7 +126,16 @@ const fullYears = computed(() => {
     return years
 });
 
-
+const submit = () => {
+    form.post(route('store.curso.add'), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
 </script>
 
 <template>
@@ -117,7 +147,7 @@ const fullYears = computed(() => {
         <div class="py-5">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <form @submit.prevent="form.post(route('store.curso.add'))">
+                    <form @submit.prevent="submit">
                         <v-container>
                             <InputLabel for="tipo_solicitud" value="Tipo de solicitud" />
                             <v-row align="center" justify="center" class="mt-2">

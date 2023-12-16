@@ -4,8 +4,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
-import {ref} from "vue";
-
+import {computed, ref} from "vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 const props = defineProps({
     mustVerifyEmail: {
         type: Boolean,
@@ -29,19 +29,39 @@ const props = defineProps({
 
 const user = usePage().props.auth.user;
 const snackbarSuccess = ref(false);
-const snackbarError = ref(false);
+const message = ref("")
+const color = ref("")
 const timeout = ref(2000);
 const form = useForm({
     email: props.user.email,
     docente_id: props.user.docente_id,
     departamento_id: props.user.departamento_id,
-    role: props.user.role,
+    role: props.user.roles[0].id,
 });
+
+
+
 
 const submit = () => {
     form.patch(route('update.user', props.user.id), {
-        onSuccess: () => snackbarSuccess.value = true,
-        onError: () => snackbarError.value = true,
+        onSuccess: () => {
+            message.value = "Actualizado con exito"
+            color.value = "success"
+            timeout.value = 2000;
+            snackbarSuccess.value = true
+            setTimeout(() => {
+                snackbarSuccess.value = false;
+            }, timeout.value);
+        },
+        onError: () => {
+            message.value = "Error al actualizar este recurso"
+            color.value = "error"
+            timeout.value = 2000;
+            snackbarSuccess.value = true
+            setTimeout(() => {
+                snackbarSuccess.value = false;
+            }, timeout.value);
+        },
     })
 }
 </script>
@@ -135,44 +155,8 @@ const submit = () => {
                 </Transition>
             </div>
         </form>
-        <v-snackbar
-            v-model="snackbarSuccess"
-            vertical
-            color="success"
-            :timeout="timeout"
-        >
-            <div class="text-subtitle-1 pb-2">!Listo¡</div>
-
-            <p>Se actualizado con exito el perfil</p>
-
-            <template v-slot:actions>
-                <v-btn
-                    variant="text"
-                    @click="snackbarSuccess = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
-        <v-snackbar
-            v-model="snackbarError"
-            vertical
-            color="error"
-            :timeout="timeout"
-        >
-            <div class="text-subtitle-1 pb-2">!Error¡</div>
-
-            <p>Hubo un error</p>
-
-            <template v-slot:actions>
-                <v-btn
-                    color="indigo"
-                    variant="text"
-                    @click="snackbarError = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
     </section>
+    <CustomSnackBar :message="message" :timeout="timeout" :color="color" v-model="snackbarSuccess" @update:modelValue="snackbarSuccess = $event">
+
+    </CustomSnackBar>
 </template>

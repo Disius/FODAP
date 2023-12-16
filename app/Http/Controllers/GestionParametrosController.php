@@ -259,17 +259,14 @@ class   GestionParametrosController extends Controller
         Docente::where('id', $request->docente_id)->update([
             'user_id' => $user->id
         ]);
+        $rol = Role::where('id', $request->role)->first();
+        $user->syncRoles([]);
+        $user->assignRole($rol->name);
 
-        if ($request->role != $user->role){
-            $rol = Role::where('id', $request->role)->first();
-            $user->syncRoles([]);
-            $user->assignRole($rol->name);
-        }
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
         $user->save();
-
     }
 
     public function update_password(Request $request, $id)

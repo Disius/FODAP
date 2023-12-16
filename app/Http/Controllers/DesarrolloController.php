@@ -332,9 +332,20 @@ class DesarrolloController extends Controller
     public function docentes(){
         $docentes = Docente::with('usuario')->orderBy('nombre')->get();
         $user = User::with('docente')->get();
+        $carrera = Carrera::all();
+        $departamento = Departamento::select('nameDepartamento', 'id')->get();
+        $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
+        $puesto = DB::table('puesto')->select('id', 'nombre')->get();
+        $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
+
         return Inertia::render('Views/desarrollo/Docentes', [
             'docentes' => $docentes,
             'user' => $user,
+            'carrera' => $carrera->except(['13']),
+            'departamento' => $departamento,
+            'tipo_plaza' => $tipoPlaza,
+            'puesto' => $puesto,
+            'posgrado' => $posgrado,
         ]);
     }
     public function create_docentes(){

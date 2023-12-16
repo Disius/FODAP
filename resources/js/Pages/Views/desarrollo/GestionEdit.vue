@@ -34,18 +34,27 @@ const snackEventActivator = () => {
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
 };
 const props = defineProps({
     docente: Array,
@@ -252,7 +261,10 @@ onMounted(() => {
                         Jefes de departamento.
                     </strong>
                 </header>
-                <TablaUsuariosAcademicos :users="props.users"></TablaUsuariosAcademicos>
+                <div class="flex justify-center">
+                    <v-text-field label="Buscar" variant="solo" v-model="search" clearable></v-text-field>
+                </div>
+                <TablaUsuariosAcademicos :users="props.users" :search="search"></TablaUsuariosAcademicos>
 
                 <div class="mt-15 mb-4">
                     <strong class="text-lg text-gray-600">

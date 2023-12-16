@@ -7,9 +7,12 @@ import DeleteUserSelectForm from "@/Pages/Views/desarrollo/forms/DeleteUserSelec
 const props = defineProps({
     users: {
         type: Array
+    },
+    search: {
+        type: String
     }
 });
-const search = ref("")
+
 
 const header = [
     {key: "email", title: "Correo Institucional"},
@@ -34,13 +37,14 @@ const wich_user = (user) => {
 <template>
 
     <v-data-table
-        :items="props.users"
+        :items="usersA"
         :headers="header"
         fixed-header
         next-icon="mdi-arrow-right-bold-circle"
         prev-icon="mdi-arrow-left-bold-circle"
         items-per-page="5"
         items-per-page-text="Paginas"
+        :search="props.search"
     >
 
         <template v-slot:no-data>

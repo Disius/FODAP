@@ -4,20 +4,77 @@ import {onMounted} from "vue";
 import NavLink from "@/Components/NavLink.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref, computed} from 'vue'
+import CreateDocenteA from "@/Pages/Views/academicos/docentes/CreateDocenteA.vue";
+import Loading from "@/Components/Loading.vue";
 
 const props = defineProps({
     auth: Object,
-    docentes: Array
+    docentes: Array,
+    posgrado: {
+        type: Array,
+    },
+    puesto: {
+        type: Array
+    },
+    tipo_plaza: {
+        type: Array,
+    },
+    carrera: Array,
+    departamento: Array,
 });
 
 const search = ref("");
+const dialog = ref(false)
+const loading = ref(false)
+const snackbar = ref();
+const message = ref("")
+const color = ref("")
+const timeout = ref()
 
 const header = [
     {key: "nombre", title: "Nombre"},
     {key: "apellidoPat", title: "Apellido Paterno"},
     {key: "apellidoMat", title: "Apellido Materno"},
-    {key: "options", title: "Opciones"},
+    {key: "options", title: "Editar"},
+    {key: "delete", title: "Eliminar"},
 ];
+
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
+};
+async function submitDocente(form){
+    loading.value = true
+    try {
+        form.post(route('store.docentes'), {
+            onSuccess: () => {
+                snackSuccessActivator()
+                form.reset()
+                dialog.value = false
+                loading.value = false
+            },
+            onError: () => {
+                snackErrorActivator()
+            }
+        })
+    }catch (e) {
+        snackErrorActivator()
+    }
+}
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -45,11 +102,15 @@ onMounted(() => {
     </template>
     <div class="grid grid-cols-2 mt-5 ml-16">
         <div class="flex justify-center">
-            <NavLink :href="route('create.docentes')">
-                <v-btn prepend-icon="mdi-plus">
-                    Agregar docente
-                </v-btn>
-            </NavLink>
+            <v-btn prepend-icon="mdi-plus" @click="dialog = true" color="blue-darken-1">
+                Agregar docente
+            </v-btn>
+            <create-docente-a :tipo_plaza="props.tipo_plaza" :puesto="props.puesto" :posgrado="props.posgrado"
+                              :departamento="props.departamento" :carrera="props.carrera" :auth="props.auth"
+                                v-model="dialog" @docente-add="submitDocente" @update:modelValue="dialog = $event"
+            >
+
+            </create-docente-a>
         </div>
     </div>
     <div class="mt-5 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -78,6 +139,9 @@ onMounted(() => {
             </v-data-table>
         </div>
     </div>
+    <Loading v-model="loading" @update:modelValue="loading = $event">
+
+    </Loading>
 </AuthenticatedLayout>
 </template>
 
