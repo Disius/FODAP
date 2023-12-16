@@ -89,6 +89,7 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::post('/desarrollo/docentes/store', [DesarrolloController::class, 'store_docentes'])->name('store.docentes');
     Route::get('/desarrollo/docentes/edit/{id}', [DesarrolloController::class, 'edit_docente'])->name('edit.docentes');
     Route::put('/desarrollo/docentes/update/{id}', [DesarrolloController::class, 'update_docente'])->name('update.docentes');
+    Route::delete('/desarrollo/docentes/delete/{id}', [DesarrolloController::class, 'delete_docente_desarrollo'])->name('delete.docentesDa');
 
 
     //subir cvu

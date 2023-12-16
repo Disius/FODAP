@@ -260,4 +260,8 @@ class DocenteController extends Controller
         return $docente;
     }
 
+    public static function delete_docente($id){
+        $docente = Docente::find($id);
+        $docente->delete();
+    }
 }

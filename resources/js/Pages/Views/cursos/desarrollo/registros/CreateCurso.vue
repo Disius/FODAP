@@ -5,6 +5,7 @@ import {useForm} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CreateDocenteA from "@/Pages/Views/academicos/docentes/CreateDocenteA.vue";
+import Loading from "@/Components/Loading.vue";
 
 const props = defineProps({
     auth: {
@@ -38,6 +39,7 @@ const snackbar = ref();
 const message = ref("")
 const color = ref("")
 const timeout = ref()
+const loading = ref(false)
 const tipoSolicitud = ref([
     {text: "FORMACIÓN DOCENTE", value:1},
     {text: "ACTUALIZACIÓN PROFESIONAL", value:2}
@@ -127,11 +129,14 @@ const fullYears = computed(() => {
 });
 
 const submit = () => {
+    loading.value = true
     form.post(route('store.curso.add'), {
         onSuccess: () => {
+            loading.value = false
             snackSuccessActivator()
         },
         onError: () => {
+            loading.value = false
             snackErrorActivator()
         }
     })
@@ -143,7 +148,6 @@ const submit = () => {
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight mt-4">Añadir Curso</h2>
         </template>
-
         <div class="py-5">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -772,6 +776,17 @@ const submit = () => {
                 </div>
             </div>
         </div>
+        <Loading v-model="loading" @update:modelValue="loading = $event">
+            <v-fade-transition leave-absolute>
+                <v-progress-circular
+                    v-if="loading"
+                    color="info"
+                    :size="64"
+                    :width="7"
+                    indeterminate
+                ></v-progress-circular>
+            </v-fade-transition>
+        </Loading>
     </AuthenticatedLayout>
 </template>
 

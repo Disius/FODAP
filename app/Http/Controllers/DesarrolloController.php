@@ -363,7 +363,16 @@ class DesarrolloController extends Controller
         ]);
     }
     public function store_docentes(Request $request){
+        $request->validate([
+           'nombre' => 'required',
+           'apellidoPat' => 'required',
+            'apellidoMat' => 'required'
+        ]);
         DocenteController::create_instance_docente($request);
+    }
+
+    public function delete_docente_desarrollo($id){
+        DocenteController::delete_docente($id);
     }
     public function edit_docente($id){
         $carrera = $this->query_consult_carrera();

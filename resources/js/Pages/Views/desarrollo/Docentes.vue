@@ -6,6 +6,11 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref, computed} from 'vue'
 import CreateDocenteA from "@/Pages/Views/academicos/docentes/CreateDocenteA.vue";
 import Loading from "@/Components/Loading.vue";
+import DeleteModal from "@/Components/DeleteModal.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
+import {router} from "@inertiajs/vue3";
+import {el} from "vuetify/locale";
+
 
 const props = defineProps({
     auth: Object,
@@ -30,6 +35,9 @@ const snackbar = ref();
 const message = ref("")
 const color = ref("")
 const timeout = ref()
+const eliminar = ref(false)
+let docente_id = ref(null)
+
 
 const header = [
     {key: "nombre", title: "Nombre"},
@@ -62,18 +70,43 @@ async function submitDocente(form){
     try {
         form.post(route('store.docentes'), {
             onSuccess: () => {
-                snackSuccessActivator()
                 form.reset()
                 dialog.value = false
                 loading.value = false
+                snackSuccessActivator()
             },
             onError: () => {
-                snackErrorActivator()
+                loading.value = false
+                snackSuccessActivator()
             }
         })
     }catch (e) {
         snackErrorActivator()
     }
+}
+async function DeleteDocente(id){
+    loading.value = true
+    try {
+        router.delete(route('delete.docentesDa', id), {
+            onSuccess: () => {
+                eliminar.value = false
+                loading.value = false
+                snackSuccessActivator()
+            },
+            onError: () => {
+                eliminar.value = false
+                loading.value = false
+                snackSuccessActivator()
+            }
+        })
+    }catch (e) {
+        snackErrorActivator()
+    }
+}
+
+function DropOut(id) {
+    docente_id.value = id
+    eliminar.value = true
 }
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -136,11 +169,50 @@ onMounted(() => {
                         </v-btn>
                     </NavLink>
                 </template>
+                <template v-slot:item.delete="{item}">
+                        <v-btn icon size="large" elevation="0" @click="DropOut(item.id)">
+                            <v-icon>mdi-delete-forever</v-icon>
+                        </v-btn>
+                </template>
             </v-data-table>
         </div>
     </div>
-    <Loading v-model="loading" @update:modelValue="loading = $event">
 
+    <DeleteModal
+        :item="docente_id"
+        v-model="eliminar"
+        @update:modelValue="eliminar = $event"
+        @delete:item="DeleteDocente"
+    >
+        <template #title>
+            ¿Esta seguro que desea eliminar este docente?
+        </template>
+
+        <template #cancelText>
+            Cancelar
+        </template>
+
+    </DeleteModal>
+
+    <CustomSnackBar
+    :message="message"
+    :timeout="timeout"
+    :color="color"
+    v-model="snackbar"
+    @update:modelValue="snackbar = $event"
+    >
+
+    </CustomSnackBar>
+    <Loading v-model="loading" @update:modelValue="loading = $event">
+        <v-fade-transition leave-absolute>
+            <v-progress-circular
+                v-if="loading"
+                color="info"
+                :size="64"
+                :width="7"
+                indeterminate
+            ></v-progress-circular>
+        </v-fade-transition>
     </Loading>
 </AuthenticatedLayout>
 </template>
