@@ -62,18 +62,27 @@ const snackEventActivator = () => {
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
     timeout.value = 8000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 
 </script>
@@ -117,79 +126,80 @@ const snackSuccessActivator = () => {
                     <h2 class="text-xl font-medium text-gray-900 text-center">Cursos que impartidos</h2>
                 </div>
                 <div class="flex justify-center">
-                    <v-data-iterator
-                        :items="props.docente.facilitador_has_deteccion"
-                        item-value="nombreCurso"
-                        class="pa-4"
-                    >
-                        <template v-slot:header>
-                            <v-text-field
-                                v-model="search"
-                                clearable
-                                density="comfortable"
-                                hide-details
-                                placeholder="Buscar"
-                                prepend-inner-icon="mdi-magnify"
-                                style="max-width: 300px;"
-                                variant="solo"
-                            >
 
-                            </v-text-field>
-                        </template>
-                        <template v-slot:default="{items}">
-                            <v-container class="pa-8" fluid>
-                                <v-row dense>
-                                    <v-col v-for="item in items" :key="item.nombreCurso"
-                                           cols="auto"
-                                           md="4"
-                                    >
-                                        <v-card class="pb-3" border flat >
-                                            <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">
-                                                <template v-slot:title>
-                                                    <strong class="text-h6 mb-2">
-                                                        {{item.raw.nombreCurso}}
-                                                    </strong>
-                                                </template>
-                                            </v-list-item>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                    <template v-if="item.raw.tipo_FDoAP === 1">
-                                                        <p class="text-truncate">Formación Docente</p>
-                                                    </template>
-                                                    <template v-if="item.raw.tipo_FDoAP === 2">
-                                                        <p>Actualización Profesional</p>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+<!--                    <v-data-iterator-->
+<!--                        :items="props.docente.facilitador_has_deteccion"-->
+<!--                        item-value="nombreCurso"-->
+<!--                        class="pa-4"-->
+<!--                    >-->
+<!--                        <template v-slot:header>-->
+<!--                            <v-text-field-->
+<!--                                v-model="search"-->
+<!--                                clearable-->
+<!--                                density="comfortable"-->
+<!--                                hide-details-->
+<!--                                placeholder="Buscar"-->
+<!--                                prepend-inner-icon="mdi-magnify"-->
+<!--                                style="max-width: 300px;"-->
+<!--                                variant="solo"-->
+<!--                            >-->
 
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                    <template v-if="item.raw.estado === 0">
-                                                        <v-chip color="info" prepend-icon="mdi-information">Curso por realizar</v-chip>
-                                                    </template>
-                                                    <template v-if="item.raw.estado === 1">
-                                                        <v-chip class="text-truncate" color="success" prepend-icon="mdi-check-circle">En curso</v-chip>
-                                                    </template>
-                                                    <template v-if="item.raw.estado === 2">
-                                                        <v-chip class="text-truncate" color="error" prepend-icon="mdi-cancel">Finalizado</v-chip>
-                                                    </template>
-                                                </div>
-                                                <NavLink :href="route('show.curso.facilitador', [props.auth.user.docente_id, item.raw.id])" as="button">
-                                                    <v-btn icon="mdi-eye" color="blue-darken-1" >
+<!--                            </v-text-field>-->
+<!--                        </template>-->
+<!--                        <template v-slot:default="{items}">-->
+<!--                            <v-container class="pa-8" fluid>-->
+<!--                                <v-row dense>-->
+<!--                                    <v-col v-for="item in items" :key="item.nombreCurso"-->
+<!--                                           cols="auto"-->
+<!--                                           md="4"-->
+<!--                                    >-->
+<!--                                        <v-card class="pb-3" border flat >-->
+<!--                                            <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">-->
+<!--                                                <template v-slot:title>-->
+<!--                                                    <strong class="text-h6 mb-2">-->
+<!--                                                        {{item.raw.nombreCurso}}-->
+<!--                                                    </strong>-->
+<!--                                                </template>-->
+<!--                                            </v-list-item>-->
+<!--                                            <div class="d-flex justify-space-between px-4">-->
+<!--                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">-->
+<!--                                                    <template v-if="item.raw.tipo_FDoAP === 1">-->
+<!--                                                        <p class="text-truncate">Formación Docente</p>-->
+<!--                                                    </template>-->
+<!--                                                    <template v-if="item.raw.tipo_FDoAP === 2">-->
+<!--                                                        <p>Actualización Profesional</p>-->
+<!--                                                    </template>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            <div class="d-flex justify-space-between px-4">-->
+<!--                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">-->
 
-                                                    </v-btn>
-                                                </NavLink>
-                                            </div>
-                                        </v-card>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </template>
-                    </v-data-iterator>
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            <div class="d-flex justify-space-between px-4">-->
+<!--                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">-->
+<!--                                                    <template v-if="item.raw.estado === 0">-->
+<!--                                                        <v-chip color="info" prepend-icon="mdi-information">Curso por realizar</v-chip>-->
+<!--                                                    </template>-->
+<!--                                                    <template v-if="item.raw.estado === 1">-->
+<!--                                                        <v-chip class="text-truncate" color="success" prepend-icon="mdi-check-circle">En curso</v-chip>-->
+<!--                                                    </template>-->
+<!--                                                    <template v-if="item.raw.estado === 2">-->
+<!--                                                        <v-chip class="text-truncate" color="error" prepend-icon="mdi-cancel">Finalizado</v-chip>-->
+<!--                                                    </template>-->
+<!--                                                </div>-->
+<!--                                                <NavLink :href="route('show.curso.facilitador', [props.auth.user.docente_id, item.raw.id])" as="button">-->
+<!--                                                    <v-btn icon="mdi-eye" color="blue-darken-1" >-->
+
+<!--                                                    </v-btn>-->
+<!--                                                </NavLink>-->
+<!--                                            </div>-->
+<!--                                        </v-card>-->
+<!--                                    </v-col>-->
+<!--                                </v-row>-->
+<!--                            </v-container>-->
+<!--                        </template>-->
+<!--                    </v-data-iterator>-->
                 </div>
             </div>
         </div>

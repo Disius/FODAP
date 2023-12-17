@@ -288,13 +288,14 @@ class   GestionParametrosController extends Controller
     public function set_permission($id){
         $user = User::find($id);
         $user->givePermissionTo('edit profile');
-//        Mail::to($user->email)->send(new PermisosUserEdit(self::admin()));
     }
 
     public function revoke_permissions($id){
         $user = User::find($id);
         $user->revokePermissionTo('edit profile');
     }
+
+
     public static function admin(){
         return User::find(auth()->user()->id);
     }
