@@ -25,7 +25,9 @@ const color = ref("")
 const snackbar = ref(false)
 
 const search = ref("");
+const search2 = ref("");
 const carrera = ref()
+const carrera2= ref()
 
 const filterCursoFD = computed(() => {
     const busqueda = search.value.toLowerCase().trim();
@@ -47,8 +49,8 @@ const filterCursoFD = computed(() => {
     return cursosFiltrados;
 });
 const filterCursoAP = computed(() => {
-    const busqueda = search.value.toLowerCase().trim();
-    const carer = carrera.value
+    const busqueda = search2.value.toLowerCase().trim();
+    const carer = carrera2.value
     let cursosFiltrados = [...props.deteccionesAP];
 
     if (busqueda) {
@@ -197,10 +199,10 @@ onMounted(() => {
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Deteccion de Necesidades de Actualización Profesional</h2>
                 <div class="grid grid-cols-2">
                     <div class="flex justify-center mt-2 w-50">
-                        <v-text-field clearable label="Buscar" variant="solo" v-model="search"></v-text-field>
+                        <v-text-field clearable label="Buscar" variant="solo" v-model="search2"></v-text-field>
                     </div>
                     <div class="flex justify-center mt-2 w-50">
-                        <v-select v-model="carrera" clearable label="Filtrar por carrera" variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"></v-select>
+                        <v-select v-model="carrera2" clearable label="Filtrar por carrera" variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"></v-select>
                     </div>
                 </div>
                 <template v-if="props.deteccionesAP.length !== 0">
