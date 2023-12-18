@@ -295,7 +295,6 @@ class   GestionParametrosController extends Controller
         $user->revokePermissionTo('edit profile');
     }
 
-
     public static function admin(){
         return User::find(auth()->user()->id);
     }

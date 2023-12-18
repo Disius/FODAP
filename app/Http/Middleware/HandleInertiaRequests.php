@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\DesarrolloController;
+use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GestionParametrosController;
 use App\Http\Controllers\Installer;
 use App\Http\Controllers\NotificationController;

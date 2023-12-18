@@ -264,4 +264,11 @@ class DocenteController extends Controller
         $docente = Docente::find($id);
         $docente->delete();
     }
+
+    public static function facilitadores_permission($facilitadores){
+        foreach ($facilitadores as $facilitador){
+            $docente = Docente::with('usuario')->find($facilitador->id);
+            return $docente->usuario->givePermissionTo('facilitador');
+        }
+    }
 }
