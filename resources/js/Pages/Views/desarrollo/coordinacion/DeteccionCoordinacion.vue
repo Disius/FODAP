@@ -25,7 +25,27 @@ const color = ref("")
 const snackbar = ref(false)
 
 const search = ref("");
+const carrera = ref()
 
+const filterCursoFD = computed(() => {
+    const busqueda = search.value.toLowerCase().trim();
+    const carer = carrera.value
+    let cursosFiltrados = [...props.deteccionesFD];
+
+    if (busqueda) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            return item.nombreCurso.toLowerCase().includes(busqueda)
+        });
+    }
+
+    if (carer) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            return item.carrera_dirigido === carer
+        });
+    }
+
+    return cursosFiltrados;
+});
 
 const snackEventActivator = () => {
     snackbar.value = true;
@@ -94,9 +114,17 @@ onMounted(() => {
         <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Deteccion de Necesidades de Formación Docente</h2>
+                <div class="grid grid-cols-2">
+                    <div class="flex justify-center mt-2 w-50">
+                        <v-text-field clearable label="Buscar" variant="solo" v-model="search"></v-text-field>
+                    </div>
+                    <div class="flex justify-center mt-2 w-50">
+                        <v-select v-model="carrera" clearable label="Filtrar por carrera" variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"></v-select>
+                    </div>
+                </div>
                 <template v-if="props.deteccionesFD.length !== 0">
                     <v-virtual-scroll
-                        :items="props.deteccionesFD"
+                        :items="filterCursoFD"
                         height="300"
                         item-height="50"
                         class="mt-4"
