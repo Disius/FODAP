@@ -1,9 +1,13 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
+import Loading from "@/Components/Loading.vue";
 
-const errorHandle = ref("");
-const alert = ref(false);
-const alert2 = ref(false);
+const message = ref("")
+const color = ref("")
+const timeout = ref()
+const snackbar = ref()
+const loading = ref(false)
 
 const props = defineProps({
     modelValue: Boolean,
@@ -18,8 +22,8 @@ const form = ref({
 });
 
 const fullYears = computed(() => {
-    const maxYears = new Date().getFullYear();
-    const minYears = maxYears - 6;
+    const maxYears = new Date().getFullYear() + 1;
+    const minYears = maxYears - 7;
     const years = [];
 
     for (let i = maxYears; i >= minYears; i--) {
@@ -35,6 +39,7 @@ const periodos = [
 ];
 
 function submit(){
+    loading.value = true
     axios.get(route('pdf.pifdap'), {
         params: {
             periodo: form.value.periodo,
@@ -42,64 +47,55 @@ function submit(){
         }
     }).then(res => {
         if (res.data.mensaje){
-            alert.value = true
-            errorHandle.value = res.data.mensaje
+            message.value = res.data.mensaje
+            color.value = 'error'
+            timeout.value = 5000
+            snackbar.value = true
+            loading.value = false
+            setTimeout(()=>{
+                snackbar.value = false
+            },timeout.value)
         }else {
-            // store.getCursos(res.data.cursos)
-            // generatePDF()
             const url = '/storage/PIFDAP.pdf';
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', 'PIFDAP.pdf');
             document.body.appendChild(link);
             link.click();
+            message.value = 'Documento generado con exito'
+            color.value = 'success'
+            timeout.value = 5000
+            snackbar.value = true
+            loading.value = false
+            setTimeout(()=>{
+                snackbar.value = false
+            },timeout.value)
         }
     }).catch(error => {
-        alert2.value = true
-        console.log(error)
+        message.value = 'Error al generar el documento'
+        color.value = 'error'
+        timeout.value = 5000
+        loading.value = false
+        snackbar.value = true
+        setTimeout(()=>{
+            snackbar.value = false
+        },timeout.value)
     })
 }
 
 
 
 onMounted(() => {
-    setTimeout(()=>{
-        alert.value = false
-        alert2.value = false
-    },10000)
+
 })
 </script>
 
 <template>
     <v-dialog width="auto" persistent v-model="props.modelValue">
         <form @submit.prevent="submit">
-            <v-card elevation="3" width="500" height="600">
+            <v-card elevation="3" width="500" height="500">
                 <v-card-title>Ingresar los datos para generar PDF</v-card-title>
                 <v-card-text>
-                    <div class="pb-4 mb-4">
-                        <v-alert
-                            v-model="alert"
-                            closable
-                            close-label="Cerrar"
-                            color="error"
-                            icon="$error"
-                            title="Error"
-                        >
-                            {{errorHandle}}
-                        </v-alert>
-                    </div>
-                    <div class="pb-4 mb-4">
-                        <v-alert
-                            v-model="alert2"
-                            closable
-                            close-label="Cerrar"
-                            color="error"
-                            icon="$error"
-                            title="Error"
-                        >
-                            ¡Debe ingresar los datos para generar el documento!
-                        </v-alert>
-                    </div>
                     <label for="anio" class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Año: </label>
                     <div class="pt-5">
                         <v-select v-model="form.anio" :items="fullYears" item-title="name" item-value="id" variant="solo"></v-select>
@@ -126,6 +122,22 @@ onMounted(() => {
             </v-card>
         </form>
     </v-dialog>
+    <CustomSnackBar
+    :color="color" :timeout="timeout" :message="message" v-model="snackbar" @update:modelValue="snackbar = $event"
+    >
+
+    </CustomSnackBar>
+    <Loading v-model="loading" @update:loading="loading = $event">
+        <v-fade-transition leave-absolute>
+            <v-progress-circular
+                v-if="loading"
+                color="info"
+                :size="64"
+                :width="7"
+                indeterminate
+            ></v-progress-circular>
+        </v-fade-transition>
+    </Loading>
 </template>
 
 <style scoped>

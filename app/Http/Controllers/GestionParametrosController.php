@@ -15,6 +15,7 @@ use App\Models\Lugar;
 use App\Models\NombreInstituto;
 use App\Models\Subdireccion;
 use App\Models\User;
+use App\Rules\ValidFileExtension;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -322,22 +323,34 @@ class   GestionParametrosController extends Controller
     }
 
     public function subir_cvu(Request $request){
+        $request->validate([
+            'file' => ['required', 'mimes:application/pdf'],
+        ]);
         $request->file('file')->storeAs('/CVUdownload/', 'CVU_editable.docx', 'public');
         return redirect()->route('parametros.edit');
     }
     public function subir_img_acta(Request $request){
+        $request->validate([
+            'file' => ['required', 'mimes:jpg,jpeg,png'],
+        ]);
         $year = date('Y');
         $path = '/Membretado/'.$year;
         $request->file('file')->storeAs($path, 'img_acta_calificaciones.png', 'public');
         return redirect()->route('parametros.edit');
     }
     public function subir_img_constancia(Request $request){
+        $request->validate([
+            'file' => ['required', 'mimes:jpg,jpeg,png'],
+        ]);
         $year = date('Y');
         $path = '/Membretado/'.$year;
         $request->file('file')->storeAs($path, 'img_constancia.png', 'public');
         return redirect()->route('parametros.edit');
     }
     public function subir_img_constancia_2(Request $request){
+        $request->validate([
+            'file' => ['required', 'mimes:jpg,jpeg,png'],
+        ]);
         $year = date('Y');
         $path = '/Membretado/'.$year;
         $request->file('file')->storeAs($path, 'logo_constancia_page_2.png', 'public');

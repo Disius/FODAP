@@ -300,33 +300,20 @@ class DesarrolloController extends Controller
         if ($num <= $deteccion->numeroProfesores) {
 
 
-            $this->itareble_inscritos($request->id_docente, $deteccion);
+            foreach ($request->id_docente as $docente){
+                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
+                    $deteccion->docente_inscrito()->attach($docente);
+                }else{
+                    return back()->withErrors('Este docente ya esta inscrito');
+                }
+            }
 
-            $syncDeteccion = DB::table('docente')
-                ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
-                ->leftJoin('calificaciones', function ($join) {
-                    $join->on('calificaciones.docente_id', '=', 'docente.id')
-                        ->on('calificaciones.curso_id', '=', 'inscripcion.curso_id');
-                })
-                ->where('inscripcion.curso_id', '=', $request->id)
-                ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
-                ->get();
-
-            event(new InscripcionEvent($syncDeteccion));
+            event(new InscripcionEvent($request->id_docente));
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id]);
         } else {
             return redirect()->route('index.desarrollo.inscritos', ['id' => $deteccion->id])->withErrors('Llego al maximo de docentes que el curso permite inscribir');
         }
     }
-    public function itareble_inscritos($docente_id, $deteccion){
-        foreach ($docente_id as $docente){
-            if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
-                $deteccion->docente_inscrito()->attach($docente);
-            }else{
-                return back()->withErrors('Este docente ya esta inscrito');
-            }
-            }
-        }
 
 
     public function docentes(){

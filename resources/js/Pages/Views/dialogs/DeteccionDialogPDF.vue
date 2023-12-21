@@ -2,16 +2,14 @@
 import { computed, onMounted, ref } from "vue";
 import { router, useForm } from "@inertiajs/vue3";
 import axios from "axios";
-import { jsPDF } from "jspdf";
-import autoTable from 'jspdf-autotable'
 import CustomSnackBar from "@/Components/CustomSnackBar.vue";
-
+import Loading from "@/Components/Loading.vue";
 
 const snackSuccess = ref(false);
 const timeout = ref(0)
 const message = ref("")
 const color = ref("")
-
+const loading = ref(false)
 
 const props = defineProps({
     modelValue: Boolean,
@@ -43,6 +41,7 @@ const fullYears = computed(() => {
 
 
 function submit() {
+    loading.value = true
     axios.get('/pdf/deteccion', {
         params: {
             anio: form.anio,
@@ -64,10 +63,12 @@ function submit() {
             link.setAttribute('download', 'deteccion.pdf');
             document.body.appendChild(link);
             link.click();
+            form.reset()
             message.value = 'Documento generado con exito'
             timeout.value = 5000
             color.value = 'success'
             snackSuccess.value = true
+            loading.value = false
         }
 
     }).catch(error => {
@@ -75,13 +76,17 @@ function submit() {
         color.value = 'error'
         timeout.value = 5000
         snackSuccess.value = true
+        loading.value = false
+
     })
 
 }
 
 
 onMounted(() => {
-
+    setTimeout(() => {
+        snackSuccess.value = false
+    }, timeout.value)
 })
 
 </script>
@@ -92,11 +97,6 @@ onMounted(() => {
             <v-card elevation="3" width="500" height="500">
                 <v-card-title>Ingresar los datos para generar PDF</v-card-title>
                 <v-card-text>
-<!--                    <div class="pb-2">-->
-<!--                        <v-alert v-model="alert2" closable close-label="Cerrar" color="error" icon="$error" title="Error">-->
-<!--                            ¡Debe ingresar los datos para generar el documento!-->
-<!--                        </v-alert>-->
-<!--                    </div>-->
                     <label for="carrera"
                         class="absolute text-md text-gray-500 dark:text-gray-400  bg-white  left-1 pb-4 mb-5 ml-5">Carrera a
                         la que va dirigida: </label>
@@ -137,6 +137,17 @@ onMounted(() => {
     <CustomSnackBar :message="message" :color="color" :timeout="timeout" v-model="snackSuccess" @update:modelValue="snackSuccess = $event">
 
     </CustomSnackBar>
+    <Loading v-model="loading" @update:loading="loading = $event">
+        <v-fade-transition leave-absolute>
+            <v-progress-circular
+                v-if="loading"
+                color="info"
+                :size="64"
+                :width="7"
+                indeterminate
+            ></v-progress-circular>
+        </v-fade-transition>
+    </Loading>
 </template>
 
 <style scoped></style>

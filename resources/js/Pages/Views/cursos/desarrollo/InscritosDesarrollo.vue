@@ -12,6 +12,7 @@ import {router, useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import axios from 'axios'
 import CustomSnackBar from "@/Components/CustomSnackBar.vue";
+import Loading from "@/Components/Loading.vue";
 
 const store = Curso();
 
@@ -28,11 +29,7 @@ const dialog = ref(false);
 const dialogCalificacion = ref(false);
 const snackbar = ref(false);
 const loading = ref(false);
-const loadingActa = ref(false);
-const loadingConstancia = ref(false);
 const calificacion = ref(false);
-const dialog_generar_acta = ref(false);
-const dialog_constancia_pdf = ref(false);
 const color = ref("")
 const message = ref("")
 
@@ -55,6 +52,7 @@ const if_calificacion = computed(() => {
     return props.inscritos.every(inscrito => inscrito.calificacion !== null)
 })
 const submit = (inscripcion, id) => {
+    loading.value = true
     axios.get(route('cdi.pdf'), {
         params: {
             docente: inscripcion,
@@ -68,8 +66,10 @@ const submit = (inscripcion, id) => {
         document.body.appendChild(link);
         link.click();
         snackSuccessActivator()
+        loading.value = false
     }).catch(error => {
         snackErrorActivator()
+        loading.value = false
     })
 }
 const submitCalificacion = () => {
@@ -78,7 +78,6 @@ const submitCalificacion = () => {
             onSuccess: () => {
                 loading.value = false
                 formCalificacion.reset();
-                dialog_generar_acta.value = false
                 snackSuccessActivator()
             },
             onError: () => {
@@ -89,8 +88,7 @@ const submitCalificacion = () => {
 }
 
 const submitActa = () => {
-    loadingActa.value = true
-    dialog_generar_acta.value = true
+    loading.value = true
     axios.get(route('pdf.acta.calificaciones'), {
         params: {
             id: props.curso.id
@@ -102,16 +100,15 @@ const submitActa = () => {
         link.setAttribute('download', 'acta calificaciones.pdf');
         document.body.appendChild(link);
         link.click();
-        loadingActa.value = false
-        dialog_generar_acta.value = false
+        loading.value = false
         snackSuccessActivator()
     }).catch(error => {
+        loading.value = false
         snackErrorActivator()
     })
 }
 const submitConstancia = (docente_id) => {
-    loadingConstancia.value = true
-    dialog_constancia_pdf.value = true
+    loading.value = true
     axios.get(route('pdf.constancia'), {
         params: {
             id: props.curso.id,
@@ -124,11 +121,10 @@ const submitConstancia = (docente_id) => {
         link.setAttribute('download', 'constancia.pdf');
         document.body.appendChild(link);
         link.click();
-        loadingConstancia.value = false
-        dialog_constancia_pdf.value = false
+        loading.value = false
         snackSuccessActivator()
     }).catch(error => {
-        loadingConstancia.value = false
+        loading.value = false
         snackErrorActivator()
     })
 }
@@ -144,18 +140,27 @@ const snackEventActivator = () => {
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
     timeout.value = 8000
+    setTimeout(()=>{
+        snackbar.value = false
+    },timeout.value)
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
     timeout.value = 5000
+    setTimeout(()=>{
+        snackbar.value = false
+    },timeout.value)
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
     timeout.value = 5000
+    setTimeout(()=>{
+        snackbar.value = false
+    },timeout.value)
 };
 
 onMounted(() => {
@@ -314,17 +319,6 @@ onMounted(() => {
                     </tr>
                     </tbody>
                 </v-table>
-                <v-dialog width="auto" v-model="dialog_generar_acta">
-                    <v-fade-transition leave-absolute>
-                        <v-progress-circular
-                            v-if="loadingActa"
-                            color="info"
-                            :size="64"
-                            :width="7"
-                            indeterminate
-                        ></v-progress-circular>
-                    </v-fade-transition>
-                </v-dialog>
             </div>
         </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
@@ -457,19 +451,6 @@ onMounted(() => {
                         </v-col>
                     </v-row>
                 </v-card-text>
-                <v-dialog width="auto" v-model="loading">
-                    <v-fade-transition leave-absolute>
-                        <v-progress-circular
-                            v-if="loading"
-                            color="info"
-                            :size="64"
-                            :width="7"
-                            indeterminate
-                        ></v-progress-circular>
-
-
-                    </v-fade-transition>
-                </v-dialog>
                 <v-card-actions>
                     <v-row justify="center">
                         <v-col cols="6" align="end" class="mr-16">
@@ -486,17 +467,7 @@ onMounted(() => {
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-dialog width="auto" v-model="dialog_constancia_pdf">
-            <v-fade-transition leave-absolute>
-                <v-progress-circular
-                    v-if="loadingConstancia"
-                    color="info"
-                    :size="64"
-                    :width="7"
-                    indeterminate
-                ></v-progress-circular>
-            </v-fade-transition>
-        </v-dialog>
+
         <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event" :timeout="timeout">
             <template v-slot:reloadingbutton>
                 <div class="flex justify-start pa-1">
@@ -504,6 +475,17 @@ onMounted(() => {
                 </div>
             </template>
         </CustomSnackBar>
+        <Loading v-model="loading" @update:loading="loading = $event">
+            <v-fade-transition leave-absolute>
+                <v-progress-circular
+                    v-if="loading"
+                    color="info"
+                    :size="64"
+                    :width="7"
+                    indeterminate
+                ></v-progress-circular>
+            </v-fade-transition>
+        </Loading>
     </AuthenticatedLayout>
 </template>
 
