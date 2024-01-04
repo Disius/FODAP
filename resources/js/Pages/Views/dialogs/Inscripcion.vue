@@ -115,16 +115,7 @@ function addTeachers(teacher){
         </v-card-text>
         <v-card-actions>
             <v-row justify="end">
-                <v-col cols="12">
-<!--                    <v-btn color="error" block @click="emit('update:modelValue', false)">-->
-<!--                        Cancelar-->
-<!--                    </v-btn>-->
-                </v-col>
-                <!-- <v-col cols="3">
-                    <v-btn color="success" flat @click="addTeachers">
-                        Agregar
-                    </v-btn>
-                </v-col> -->
+
             </v-row>
         </v-card-actions>
     </v-card>

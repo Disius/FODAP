@@ -26,6 +26,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class DesarrolloController extends Controller
 {
@@ -390,17 +391,25 @@ class DesarrolloController extends Controller
             'curso_id' => 'required',
         ]);
 
-        if (Calificaciones::where('curso_id', $request->curso_id)->exists()){
-            DocenteController::update_calificacion($request, $request->docente_id);
-        }else{
             DocenteController::add_calificacion($request);
-        }
+
             $syncCalificacion = $this->consult_to_sync($request->curso_id, $request->docente_id);
             event(new CalificacionEvent($syncCalificacion));
 
         return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
     }
 
+    public function update_calificaciones_desarrollo(Request $request){
+        $request->validate([
+            'docente_id' => 'required',
+            'calificacion' => 'required',
+            'curso_id' => 'required',
+        ]);
+
+        DocenteController::update_calificacion($request, $request->docente_id);
+        return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
+
+    }
     public static function consult_to_sync($curso_id, $docente_id){
         $syncCalificacion = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
