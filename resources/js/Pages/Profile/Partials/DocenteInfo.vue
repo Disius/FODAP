@@ -99,12 +99,17 @@ onMounted(() => {
                 Actualizar tu información personal
             </p>
         </header>
-        <form class="mt-6 space-y-6" @submit.prevent="submit">
             <div class="flex justify-center">
                 <v-alert type="info" title="Atención"
-                    text='Nombres como apellidos deben comenzar con MAYÚSCULAS y seguido de MINUSCULAS' variant="tonal"
-                    :model-value="alert"></v-alert>
+                         text='Nombres como apellidos deben comenzar con MAYÚSCULAS y seguido de MINUSCULAS' variant="tonal"
+                         :model-value="alert"></v-alert>
             </div>
+            <div class="flex justify-center mt-3">
+                <v-alert type="warning" title="Atención"
+                         text='Importante colocar rfc y curp en caso de estar registrado en el sistema' variant="tonal"
+                         :model-value="alert"></v-alert>
+            </div>
+        <form class="mt-6 space-y-6" @submit.prevent="submit">
             <div>
                 <InputLabel for="nombre" value="Nombre" />
 

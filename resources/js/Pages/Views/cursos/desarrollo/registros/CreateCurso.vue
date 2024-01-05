@@ -6,6 +6,7 @@ import {computed, ref} from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CreateDocenteA from "@/Pages/Views/academicos/docentes/CreateDocenteA.vue";
 import Loading from "@/Components/Loading.vue";
+import NavLink from "@/Components/NavLink.vue";
 
 const props = defineProps({
     auth: {
@@ -147,6 +148,11 @@ const submit = () => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight mt-4">Añadir Curso</h2>
+            <div class="flex justify-start mt-5">
+                <NavLink :href="route('index.desarrollo.cursos')" as="button" type="button">
+                    <v-btn color="blue-darken-1" icon="mdi-arrow-left"></v-btn>
+                </NavLink>
+            </div>
         </template>
         <div class="py-5">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">

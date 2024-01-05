@@ -86,15 +86,39 @@ class ProfileController extends Controller
 
     public function DocenteProfileCreate(Request $request)
     {
+        try {
+            $request->validate([
+                'rfc' => $request->rfc,
+                'curp' => $request->curp,
+                'nombre' => $request->nombre,
+                'apellidoPat' => $request->apellidoPat,
+                'apellidoMat' => $request->apellidoMat,
+            ]);
 
-        $docente = AcademicosController::create_instance_docente($request);
+            $docente = Docente::where('nombre', $request->nombre)
+                ->where('apellidoPat', $request->apellidoPat)
+                ->where('apellidoMat', $request->apellidoMat)
+                ->where('curp', $request->curp)
+                ->where('rfc', $request->rfc)
+                ->first();
 
-        $docente->save();
+            if ($docente){
 
-        User::where('id', $request->id)->update([
-            'docente_id' => $docente->id,
-        ]);
-        return Redirect::route('profile.edit');
+            }
+
+            $docente = AcademicosController::create_instance_docente($request);
+
+            $docente->save();
+
+            User::where('id', $request->id)->update([
+                'docente_id' => $docente->id,
+            ]);
+            return Redirect::route('profile.edit');
+
+        }catch (\Exception $exception){
+            DB::rollBack();
+            return Redirect::route('profile.edit')->withErrors('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
+        }
     }
 
     public function update_docente(Request $request, $id)

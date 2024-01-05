@@ -5,6 +5,7 @@ import {useForm} from "@inertiajs/vue3";
 import {computed, onMounted, ref} from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
+import CreateDocenteA from "@/Pages/Views/academicos/docentes/CreateDocenteA.vue";
 
 const props = defineProps({
     auth: {
@@ -24,8 +25,20 @@ const props = defineProps({
     },
     curso: {
         type: Object
-    }
+    },
+    posgrado: {
+        type: Array,
+    },
+    puesto: {
+        type: Array
+    },
+    tipo_plaza: {
+        type: Array,
+    },
 });
+
+
+const dialogDocente = ref(false)
 
 const tipoSolicitud = ref([
     {text: "FORMACIÓN DOCENTE", value:1},
@@ -101,6 +114,23 @@ const idFacilitador = computed(() => {
     }
     return facilitador
 });
+
+async function submitDocente(form){
+    try {
+        form.post(route('store.docentes'), {
+            onSuccess: () => {
+                snackSuccessActivator()
+                form.reset()
+                dialogDocente.value = false
+            },
+            onError: () => {
+                snackErrorActivator()
+            }
+        })
+    }catch (e) {
+        snackErrorActivator()
+    }
+}
 onMounted(() => {
     form.AsignaturasFA = props.curso.asignaturaFA
     form.ContenidoTFA = props.curso.contenidosTM
@@ -479,10 +509,10 @@ onMounted(() => {
                                 </v-col>
                                 <v-col>
                                     <v-row justify="center">
-                                        <v-col align="start" cols="5">
+                                        <v-col align="start" cols="4">
                                             <InputLabel for="facilitador" value="Facilitador(a) que impartirá el curso/taller"  />
                                         </v-col>
-                                        <v-col align="start" cols="7" class="mb-0 pa-0">
+                                        <v-col align="start" cols="4" class="mb-0 pa-0">
                                             <div class="d-flex justify-start mb-5">
                                                 <v-tooltip
                                                     location="right"
@@ -502,6 +532,22 @@ onMounted(() => {
                                                     <span>Anotar el nombre del facilitador (a) que impartirá el curso/taller.</span>
                                                 </v-tooltip>
                                             </div>
+                                        </v-col>
+                                        <v-col cols="4">
+                                            <v-btn @click="dialogDocente = true" color="blue-darken-1">Crear Docente</v-btn>
+                                            <create-docente-a
+                                                :auth="props.auth"
+                                                :carrera="props.carrera"
+                                                :departamento="props.todos_los_departamentos"
+                                                :posgrado="props.posgrado"
+                                                :puesto="props.puesto"
+                                                :tipo_plaza="props.tipo_plaza"
+                                                v-model="dialogDocente"
+                                                @update:modelValue="dialogDocente = $event"
+                                                @docente-add="submitDocente"
+                                            >
+
+                                            </create-docente-a>
                                         </v-col>
                                     </v-row>
                                     <v-autocomplete multiple :items="props.docentes" item-title="nombre_completo" item-value="id" v-model="form.facilitadores" variant="solo">

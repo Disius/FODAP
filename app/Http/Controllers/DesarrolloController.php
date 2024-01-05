@@ -157,12 +157,18 @@ class DesarrolloController extends Controller
         $docente = Docente::all();
         $departamento = Departamento::all();
         $lugar = Lugar::with('curso')->get();
+        $posgrado = Posgrado::all();
+        $puesto = Puesto::all();
+        $tipoplaza = Plaza::all();
         return Inertia::render('Views/cursos/desarrollo/registros/EditCurso', [
             'curso' => $curso,
             'carrera' => $carrera,
             'docentes' => $docente,
             'todos_los_departamentos' => $departamento,
             'lugar' => $lugar,
+            'puesto' => $puesto,
+            'posgrado' => $posgrado,
+            'tipo_plaza' => $tipoplaza,
         ]);
 
     }

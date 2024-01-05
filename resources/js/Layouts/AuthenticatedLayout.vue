@@ -95,15 +95,18 @@ onMounted(() => {
                                         Facilitador
                                     </NavLink>
                                 </template>
+                                <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
+                                    Perfil
+                                </NavLink>
                             </div>
                         </div>
-                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:pl-16 sm:ml-16">
-                            <div class="flex justify-between h-16 sm:pl-16 sm:ml-16">
-                                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex sm:pl-16">
-                                    <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">Perfil</NavLink>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:pl-16 sm:ml-16">-->
+<!--                            <div class="flex justify-between h-16 sm:pl-16 sm:ml-16">-->
+<!--                                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex sm:pl-16">-->
+<!--                                    <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">Perfil</NavLink>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <div class="hidden sm:flex sm:items-center sm:ml-6">
                                 <!-- Settings Dropdown -->
