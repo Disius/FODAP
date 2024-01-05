@@ -14,6 +14,7 @@ import axios from 'axios'
 import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 import Loading from "@/Components/Loading.vue";
 import Calificaciones from "@/Components/Calificaciones.vue";
+import CalificacionesUpdate from "@/Components/CalificacionesUpdate.vue";
 
 const store = Curso();
 
@@ -30,17 +31,13 @@ const dialog = ref(false);
 const dialogCalificacion = ref(false);
 const snackbar = ref(false);
 const loading = ref(false);
-const calificacion = ref(false);
+const calificacion = ref();
 const color = ref("")
 const message = ref("")
 const curso_id = ref()
 const docente = ref()
+const dialogCalificacionUpdate = ref(false)
 
-const formCalificacion = useForm({
-    calificacion: null,
-    docente_id: null,
-    curso_id: props.curso.id
-})
 const reloadPage = () => {
     router.reload();
     snackbar.value = false
@@ -50,6 +47,34 @@ const docente_calificacion = (docente_id) => {
     curso_id.value = props.curso.id
     dialogCalificacion.value = true
 }
+const update_docente_calificacion = (docente_id, calification) => {
+    docente.value = docente_id
+    curso_id.value = props.curso.id
+    calificacion.value = calification
+    dialogCalificacionUpdate.value = true
+}
+
+const addCalificacion = (form) => {
+    form.post(route('add.calificacion.desarrollo'), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
+const updateCalificacion = (form) => {
+    form.post(route('update.calificacion.desarrollo'), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
+
 
 const if_calificacion = computed(() => {
     return props.inscritos.every(inscrito => inscrito.calificacion !== null)
@@ -276,7 +301,7 @@ onMounted(() => {
                                     class="ma-2"
                                     color="red"
                                     text-color="white"
-                                    @click="docente_calificacion(inscrito.id)"
+                                    @click="update_docente_calificacion(inscrito.id, inscrito.calificacion)"
                                 >
                                     <p class="text-center">NO APROBADO</p>
                                 </v-chip>
@@ -286,7 +311,7 @@ onMounted(() => {
                                     class="ma-2"
                                     color="success"
                                     text-color="white"
-                                    @click="docente_calificacion(inscrito.id)"
+                                    @click="update_docente_calificacion(inscrito.id, inscrito.calificacion)"
                                 >
                                     <p class="text-center">APROBADO</p>
                                 </v-chip>
@@ -413,49 +438,10 @@ onMounted(() => {
                 </div>
             </div>
         </div>
-<!--        <v-dialog width="auto" v-model="dialogCalificacion" persistent>-->
-<!--            <v-card width="500" height="300">-->
-<!--                <v-card-title>Añadir calificación</v-card-title>-->
-<!--                <v-card-text>-->
-<!--                    <v-row justify="center">-->
-<!--                        <v-col cols="12">-->
-<!--                            <InputLabel for="calificacion"-->
-<!--                                        value="Unicamente SELECCIONAR si el docente esta APROBADO o NO APROBADO" />-->
-<!--                        </v-col>-->
-<!--                        <v-col cols="8" class="mt-5 ml-6" align="center">-->
-<!--                            <v-chip-group-->
-<!--                            v-model="formCalificacion.calificacion"-->
-<!--                            column-->
-<!--                            >-->
-<!--                                <v-chip color="error">NO APROBADO</v-chip>-->
+        <Calificaciones v-model="dialogCalificacion" :curso="curso_id" :docente="docente" @form:Calificacion="addCalificacion" @update:modelValue="dialogCalificacion = $event"></Calificaciones>
 
-<!--                                <v-chip color="success">APROBADO</v-chip>-->
-<!--                            </v-chip-group>-->
-<!--                        </v-col>-->
-<!--                    </v-row>-->
-<!--                </v-card-text>-->
-<!--                <v-card-actions>-->
-<!--                    <v-row justify="center">-->
-<!--                        <v-col  align="end" class="ml-16 pl-16">-->
-<!--                            <danger-button @click="dialogCalificacion = false">-->
-<!--                                Cerrar-->
-<!--                            </danger-button>-->
-<!--                        </v-col>-->
-<!--                        <v-col  align="end" class="mr-6">-->
-<!--                                <primary-button @click="submitCalificacion">-->
-<!--                                    Subir-->
-<!--                                </primary-button>-->
-<!--                            <template>-->
-<!--                                <primary-button @click="update_calificacion">-->
-<!--                                    Actualizar-->
-<!--                                </primary-button>-->
-<!--                            </template>-->
-<!--                        </v-col>-->
-<!--                    </v-row>-->
-<!--                </v-card-actions>-->
-<!--            </v-card>-->
-<!--        </v-dialog>-->
-        <Calificaciones v-model="dialogCalificacion" :curso="curso_id" :docente="docente" @update:modelValue="dialogCalificacion = $event" ></Calificaciones>
+        <CalificacionesUpdate v-model="dialogCalificacionUpdate" :calificacion="calificacion" :curso="curso_id" :docente="docente" @update:Calificacion="updateCalificacion" @update:modelValue="dialogCalificacionUpdate = $event"></CalificacionesUpdate>
+
         <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event" :timeout="timeout">
             <template v-slot:reloadingbutton>
                 <div class="flex justify-start pa-1">
