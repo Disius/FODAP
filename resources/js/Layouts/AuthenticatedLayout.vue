@@ -158,6 +158,15 @@ onMounted(() => {
                                                     :key="index"
                                                 >
                                                     <v-list-item-title>{{ notification.data.email }}</v-list-item-title>
+                                                    <template v-if="user.role !== 4">
+                                                        <v-list-item-subtitle>
+                                                                <NavLink :href="notification.data.route + '/' + notification.data.id" type="button" as="button">
+                                                                    <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
+                                                                        Ver notificacion
+                                                                    </v-chip>
+                                                                </NavLink>
+                                                        </v-list-item-subtitle>
+                                                    </template>
                                                 </v-list-item>
                                             </v-list>
                                         </v-menu>
