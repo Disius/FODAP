@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReadNotification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -32,6 +33,9 @@ class NotificationController extends Controller
             ->when($request->id, function ($query) use ($request){
                 return $query->where('id', $request->input('id'));
             })->markAsRead();
+
+        event(new ReadNotification(auth()->user()->unreadNotifications));
+
         return response()->noContent(200);
     }
 }

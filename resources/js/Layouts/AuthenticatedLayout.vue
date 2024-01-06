@@ -22,6 +22,9 @@ onMounted(() => {
         store.update_notifications(notification)
         store.update_number_notifications()
     });
+    window.Echo.private('read-notifications').notification((notification) => {
+        store.notification_read()
+    });
     store.get_is_facilitador(user.value.docente_id)
 });
 </script>
@@ -158,7 +161,9 @@ onMounted(() => {
                                                     :key="index"
                                                 >
                                                     <v-list-item-title>{{ notification.data.email }}</v-list-item-title>
-
+                                                    <v-list-item-subtitle>
+                                                        {{notification.data.messegue}}
+                                                    </v-list-item-subtitle>
                                                     <v-list-item-action>
                                                         <v-row justify="center">
                                                             <v-col>

@@ -42,3 +42,6 @@ Broadcast::channel('deteccion-editada', function ($user){
 Broadcast::channel('calificacion-update', function ($user){
     return true;
 });
+Broadcast::channel('read-notifications', function ($user){
+    return true;
+});
