@@ -157,7 +157,7 @@ onMounted(() => {
                                                     v-for="(notification, index) in store.set_notifications"
                                                     :key="index"
                                                 >
-                                                    <v-list-item-title>{{ notification }}</v-list-item-title>
+                                                    <v-list-item-title>{{ notification.data.email }}</v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
                                         </v-menu>
