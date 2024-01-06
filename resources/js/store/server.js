@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
-import {facilitador_check, get_dates} from "@/services/API.js";
+import {facilitador_check, get_dates, notifications_number} from "@/services/API.js";
 import { administrador } from "@/services/API.js";
+import {notifications} from "@/services/API.js";
 
 export const FODAPStore = defineStore('FODAP', {
     state: () => {
@@ -8,6 +9,8 @@ export const FODAPStore = defineStore('FODAP', {
             admin_user: null,
             if_facilitador: null,
             dates_enable: [],
+            notificaciones: [],
+            numero_notificaciones: null,
         }
     },
     getters: {
@@ -19,7 +22,14 @@ export const FODAPStore = defineStore('FODAP', {
         },
         si_dates(state){
             return state.dates_enable
-        }
+        },
+        set_notifications(state){
+            return state.notificaciones
+        },
+        get_number_notification(state){
+            return state.numero_notificaciones
+        },
+
     },
     actions: {
         admin_get(){
@@ -45,6 +55,26 @@ export const FODAPStore = defineStore('FODAP', {
         },
         update_enable_dates(dates){
           this.dates_enable = dates
+        },
+        notificaciones_catch(){
+            notifications().then(res => {
+                this.notificaciones = res
+            }).catch(err => {
+                console.log(err.response.data)
+            })
+        },
+        update_notifications(notifications){
+            this.notificaciones = notifications
+        },
+        get_number_notifications(){
+            notifications_number().then(r => {
+                this.numero_notificaciones = r
+            }).catch(err => {
+                console.log(err.response.data)
+            })
+        },
+        update_number_notifications(){
+            this.numero_notificaciones++
         }
     }
 })

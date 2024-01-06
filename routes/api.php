@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\v1\DataResponseController;
 use App\Http\Controllers\DesarrolloController;
 use App\Http\Controllers\Installer;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PDFController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,5 +34,6 @@ Route::middleware('auth')->prefix('v1')->group(function () {
     Route::get('/fechas-enable', [DataResponseController::class, 'if_enable_detecciones'])->name('v1.fechas');
     Route::get('/detecciones-academicos', [DataResponseController::class, 'deteccion_academicos'])->name('v1.detecciones.academicos');
     Route::get('/cursos-academicos', [DataResponseController::class, 'cursos_academicos'])->name('v1.cursos.academicos');
+    Route::get('/notifications-catch', [NotificationController::class, 'notifications_api'])->name('v1.notificaciones');
 });
 

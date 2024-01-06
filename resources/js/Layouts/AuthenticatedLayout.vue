@@ -16,8 +16,11 @@ const store = FODAPStore()
 const notificationObject = ref({});
 
 onMounted(() => {
+    store.notificaciones_catch()
+    store.get_number_notifications()
     window.Echo.private(`App.Models.User.${user.value.id}`).notification((notification) => {
-        notificationObject.value = notification
+        store.update_notifications(notification)
+        store.update_number_notifications()
     });
     store.get_is_facilitador(user.value.docente_id)
 });
@@ -103,7 +106,7 @@ onMounted(() => {
                                 <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
                                     Perfil
                                 </NavLink>
-                                <NavLink :href="route('logout')" method="post" :active="route().current('logout')">
+                                <NavLink :href="route('logout')" method="post" :active="route().current('logout')" as="button">
                                     Cerrar Sesión
                                 </NavLink>
                                 <v-btn class="mt-4" elevation="0">
@@ -124,21 +127,40 @@ onMounted(() => {
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <div class="hidden sm:flex sm:items-center sm:ml-6">
                                 <!-- Settings Dropdown -->
+<!--                                <div class="ml-3 relative">-->
+<!--                                    <v-badge-->
+<!--                                        color="red"-->
+<!--                                        :content="$page.props.auth.usernotifications"-->
+<!--                                    >-->
+<!--                                                <span class="inline-flex rounded-md">-->
+<!--                                                    <NavLink :href="route('index.notifications')" as="button">-->
+<!--                                                        <button-->
+<!--                                                            type="button"-->
+<!--                                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"-->
+<!--                                                        >-->
+<!--                                                            <v-icon icon="mdi-bell"></v-icon>-->
+<!--                                                        </button>-->
+<!--                                                    </NavLink>-->
+<!--                                                </span>-->
+<!--                                    </v-badge>-->
+<!--                                </div>-->
                                 <div class="ml-3 relative">
-                                    <v-badge
-                                        color="red"
-                                        :content="$page.props.auth.usernotifications"
-                                    >
-                                                <span class="inline-flex rounded-md">
-                                                    <NavLink :href="route('index.notifications')" as="button">
-                                                        <button
-                                                            type="button"
-                                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                                        >
-                                                            <v-icon icon="mdi-bell"></v-icon>
-                                                        </button>
-                                                    </NavLink>
-                                                </span>
+                                    <v-badge color="red" :content="store.get_number_notification">
+                                        <v-menu offset-y>
+                                            <template v-slot:activator="{ props }">
+                                                <v-btn v-bind="props" text>
+                                                    <v-icon>mdi-bell</v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <v-list>
+                                                <v-list-item
+                                                    v-for="(notification, index) in store.set_notifications"
+                                                    :key="index"
+                                                >
+                                                    <v-list-item-title>{{ notification }}</v-list-item-title>
+                                                </v-list-item>
+                                            </v-list>
+                                        </v-menu>
                                     </v-badge>
                                 </div>
                             </div>

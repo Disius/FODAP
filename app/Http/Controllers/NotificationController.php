@@ -18,6 +18,15 @@ class NotificationController extends Controller
         }
     }
 
+    public function notifications_api(){
+        if(auth()->user() != null){
+            $user = User::find(auth()->user()->id);
+            return response()->json([
+                'n' => $user->unreadNotifications,
+                'numberNotifications' => $user->unreadNotifications()->count()
+            ]);
+        }
+    }
     public function markNotifications(Request $request){
         auth()->user()->unreadNotifications
             ->when($request->id, function ($query) use ($request){
