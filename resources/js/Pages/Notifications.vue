@@ -47,46 +47,48 @@ onMounted(() => {
         <template v-if="props.notifications.length !== 0">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="pa-12 ma-6 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <div v-for="notification in props.notifications" :key="notification.id" class="pa-4">
-                        <v-card width="400" class="pa-4">
-                            <template v-slot:title>
-                                {{notification.data.email}}
-                            </template>
+                    <v-row justify="center">
+                        <v-col v-for="notification in props.notifications" :key="notification.id" class="pa-4">
+                            <v-card width="400" class="pa-4">
+                                <template v-slot:title>
+                                    {{notification.data.email}}
+                                </template>
 
-                            <template v-slot:subtitle>
+                                <template v-slot:subtitle>
 
-                            </template>
+                                </template>
 
-                            <template v-slot:text>
-                                <p class="text-start">{{notification.data.messegue}}</p>
-                            </template>
-                            <template v-slot:actions>
-                                <div class="d-flex justify-space-between px-4 pt-4">
-                                    <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                        <template v-if="props.auth.user.role !== 4">
-                                            <NavLink :href="notification.data.route + '/' + notification.data.id" type="button" as="button">
-                                                <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
-                                                    Ver notificacion
+                                <template v-slot:text>
+                                    <p class="text-start">{{notification.data.messegue}}</p>
+                                </template>
+                                <template v-slot:actions>
+                                    <div class="d-flex justify-space-between px-4 pt-4">
+                                        <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                            <template v-if="props.auth.user.role !== 4">
+                                                <NavLink :href="notification.data.route + '/' + notification.data.id" type="button" as="button">
+                                                    <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
+                                                        Ver notificacion
+                                                    </v-chip>
+                                                </NavLink>
+                                            </template>
+                                            <template v-if="props.auth.user.role === 4">
+                                                <NavLink :href="notification.data.route" type="button" as="button">
+                                                    <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
+                                                        Ver notificacion
+                                                    </v-chip>
+                                                </NavLink>
+                                            </template>
+                                            <NavLink :href="route('markNotification')" type="button" as="button" method="post" :data="{id: notification.id}">
+                                                <v-chip variant="flat" color="success" prepend-icon="mdi-check-circle">
+                                                    Leida
                                                 </v-chip>
                                             </NavLink>
-                                        </template>
-                                        <template v-if="props.auth.user.role === 4">
-                                            <NavLink :href="notification.data.route" type="button" as="button">
-                                                <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
-                                                    Ver notificacion
-                                                </v-chip>
-                                            </NavLink>
-                                        </template>
-                                        <NavLink :href="route('markNotification')" type="button" as="button" method="post" :data="{id: notification.id}">
-                                            <v-chip variant="flat" color="success" prepend-icon="mdi-check-circle">
-                                                Leida
-                                            </v-chip>
-                                        </NavLink>
+                                        </div>
                                     </div>
-                                </div>
-                            </template>
-                        </v-card>
-                    </div>
+                                </template>
+                            </v-card>
+                        </v-col>
+                    </v-row>
                     <div class="flex justify-end mt-12">
                         <template v-if="props.notifications.length !== 0">
                             <NavLink :href="route('markNotification')" method="post" as="button">
