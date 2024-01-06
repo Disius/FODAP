@@ -34,7 +34,7 @@ class NotificationController extends Controller
                 return $query->where('id', $request->input('id'));
             })->markAsRead();
 
-        event(new ReadNotification(auth()->user()->unreadNotifications));
+        event(new ReadNotification(true));
 
         return response()->noContent(200);
     }
