@@ -62,9 +62,14 @@ onMounted(() => {
                                     </NavLink>
                                 </template>
                                 <template v-if="user.role === 3">
-                                    <NavLink :href="route('detecciones.index')" :active="route().current('detecciones.index')">
-                                        Deteccion de Necesidades
-                                    </NavLink>
+                                    <v-tooltip text="Deteccion de Necesidades">
+                                        <template v-slot:activator="{ props }">
+                                            <!--                                                <v-btn v-bind="props">Tooltip</v-btn>-->
+                                            <NavLink :href="route('detecciones.index')" :active="route().current('detecciones.index')" v-bind="props">
+                                                DN
+                                            </NavLink>
+                                        </template>
+                                    </v-tooltip>
                                 </template>
                                 <template v-if="user.role === 3">
                                     <NavLink :href="route('index.cursos.academicos')" :active="route().current('index.cursos.academicos')">
