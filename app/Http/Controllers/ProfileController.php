@@ -88,31 +88,39 @@ class ProfileController extends Controller
     {
         try {
             $request->validate([
-                'rfc' => $request->rfc,
-                'curp' => $request->curp,
-                'nombre' => $request->nombre,
-                'apellidoPat' => $request->apellidoPat,
-                'apellidoMat' => $request->apellidoMat,
+                'rfc' => 'required',
+                'curp' => 'required',
+                'nombre' => 'required',
+                'apellidoPat' => 'required',
+                'apellidoMat' => 'required',
             ]);
 
-            $docente = Docente::where('nombre', $request->nombre)
+            $docente_find = Docente::where('nombre', $request->nombre)
                 ->where('apellidoPat', $request->apellidoPat)
                 ->where('apellidoMat', $request->apellidoMat)
                 ->where('curp', $request->curp)
                 ->where('rfc', $request->rfc)
                 ->first();
 
-            if ($docente){
+            if ($docente_find){
+                User::where('id', $request->id)->update([
+                    'docente_id' => $docente_find->id,
+                ]);
 
+                $docente_find->update([
+                    'user_id' => $request->id
+                ]);
+
+                $docente_find->save();
+            }else {
+                $docente = DocenteController::create_instance_docente($request);
+
+                $docente->save();
+
+                User::where('id', $request->id)->update([
+                    'docente_id' => $docente->id,
+                ]);
             }
-
-            $docente = AcademicosController::create_instance_docente($request);
-
-            $docente->save();
-
-            User::where('id', $request->id)->update([
-                'docente_id' => $docente->id,
-            ]);
             return Redirect::route('profile.edit');
 
         }catch (\Exception $exception){

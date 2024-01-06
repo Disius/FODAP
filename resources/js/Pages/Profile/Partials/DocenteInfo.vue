@@ -106,8 +106,10 @@ onMounted(() => {
             </div>
             <div class="flex justify-center mt-3">
                 <v-alert type="warning" title="Atención"
-                         text='Importante colocar rfc y curp en caso de estar registrado en el sistema' variant="tonal"
-                         :model-value="alert"></v-alert>
+                         text='Importante colocar RFC y CURP en caso de estar dado de alta en el sistema' variant="tonal"
+                         :model-value="alert"
+                            closable
+                ></v-alert>
             </div>
         <form class="mt-6 space-y-6" @submit.prevent="submit">
             <div>
