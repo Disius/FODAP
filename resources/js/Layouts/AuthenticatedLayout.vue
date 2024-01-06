@@ -169,7 +169,7 @@ onMounted(() => {
                                                                             </v-chip>
                                                                         </NavLink>
                                                                     </template>
-                                                                    <template v-if="props.auth.user.role === 4">
+                                                                    <template v-if="user.role === 4">
                                                                             <NavLink :href="notification.data.route" type="button" as="button">
                                                                                 <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
                                                                                     Ver notificacion
