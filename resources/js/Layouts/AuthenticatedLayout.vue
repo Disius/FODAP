@@ -174,24 +174,24 @@ onMounted(() => {
                                                             <v-col>
                                                                 <template v-if="user.role !== 4">
                                                                         <NavLink :href="notification.data.route + '/' + notification.data.id" type="button" as="button">
-                                                                            <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
+                                                                            <v-btn variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
                                                                                 Ver notificacion
-                                                                            </v-chip>
+                                                                            </v-btn>
                                                                         </NavLink>
                                                                     </template>
                                                                     <template v-if="user.role === 4">
                                                                             <NavLink :href="notification.data.route" type="button" as="button">
-                                                                                <v-chip variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
+                                                                                <v-btn variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
                                                                                     Ver notificacion
-                                                                                </v-chip>
+                                                                                </v-btn>
                                                                             </NavLink>
                                                                     </template>
                                                             </v-col>
                                                             <v-col>
                                                                 <NavLink :href="route('markNotification')" type="button" as="button" method="post" :data="{id: notification.id}">
-                                                                    <v-chip variant="flat" color="success" prepend-icon="mdi-check-circle">
+                                                                    <v-btn variant="flat" color="success" prepend-icon="mdi-check-circle">
                                                                         Leida
-                                                                    </v-chip>
+                                                                    </v-btn>
                                                                 </NavLink>
                                                             </v-col>
                                                         </v-row>
