@@ -26,6 +26,8 @@
     <div class="header">
         <img src="{{ public_path('/storage/Membretado/'.$year.'/logo_constancia_page_2.png') }}" alt="" class="logo">
     </div>
+
+
 </body>
 
 </html>

@@ -86,6 +86,7 @@ export const get_dates = () => {
 export const notifications = () => {
     return new Promise((response, reject) => {
         axios.get('/api/v1/notifications-catch').then(res => {
+            // console.log(res.data.test)
             response(res.data.n)
         }).catch(error => {
             reject(error)

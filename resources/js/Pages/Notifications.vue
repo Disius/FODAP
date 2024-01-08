@@ -15,7 +15,6 @@ const props = defineProps({
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
-        console.log(notification.data)
         switch (notification.type){
             case 'App\\Notifications\\NewDeteccionNotification':
                 props.auth.usernotifications++
@@ -48,7 +47,7 @@ onMounted(() => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="pa-12 ma-6 sm:p-8 bg-white shadow sm:rounded-lg">
                     <v-row justify="center">
-                        <v-col cols="4" v-for="notification in props.notifications" :key="notification.id" class="pa-4">
+                        <v-col cols="5" v-for="notification in props.notifications" :key="notification.id" class="pa-4">
                             <v-card width="400" class="pa-4">
                                 <template v-slot:title>
                                     {{notification.data.email}}

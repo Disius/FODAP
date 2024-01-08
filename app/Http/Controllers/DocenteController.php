@@ -267,8 +267,14 @@ class DocenteController extends Controller
 
     public static function facilitadores_permission($facilitadores){
         foreach ($facilitadores as $facilitador){
-            $docente = Docente::with('usuario')->find($facilitador->id);
-            return $docente->usuario->givePermissionTo('facilitador');
+            $docente = Docente::find($facilitador);
+            if ($docente->user_id){
+                $user = User::find($docente->user_id);
+                return $user->givePermissionTo('facilitador');
+            }else {
+                return response()->noContent();
+            }
+//            return $docente->usuario->givePermissionTo('facilitador');
         }
     }
 }

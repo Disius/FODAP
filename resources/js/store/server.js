@@ -64,7 +64,10 @@ export const FODAPStore = defineStore('FODAP', {
             })
         },
         update_notifications(notifications){
-            this.notificaciones = notifications
+            this.notificaciones.email = notifications.email
+            this.notificaciones.id = notifications.id
+            this.notificaciones.messegue = notifications.messegue
+            this.notificaciones.route = notifications.route
         },
         get_number_notifications(){
             notifications_number().then(r => {

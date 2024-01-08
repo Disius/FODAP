@@ -5,7 +5,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import {Link, usePage} from '@inertiajs/vue3';
+import {router, Link, usePage} from '@inertiajs/vue3';
 import {FODAPStore} from "@/store/server.js";
 
 
@@ -15,17 +15,31 @@ const user = computed(() => usePage().props.auth.user);
 const store = FODAPStore()
 const notificationObject = ref({});
 
+const submit_read_notification = () => {
+    router.reload()
+}
+
 onMounted(() => {
     store.notificaciones_catch()
     store.get_number_notifications()
-    window.Echo.private(`App.Models.User.${user.value.id}`).notification((notification) => {
-        store.update_notifications(notification)
-        store.update_number_notifications()
-    });
-    window.Echo.private('read-notifications').notification((notification) => {
-        store.notification_read()
-    });
-    store.get_is_facilitador(user.value.docente_id)
+    // window.Echo.private(`App.Models.User.${user.value.id}`).notification((notification) => {
+    //     // console.log(notification)
+    //     switch (notification.type){
+    //         case 'App\\Notifications\\NewDeteccionNotification':
+    //             props.auth.usernotifications++
+    //             break;
+    //         case 'App\\Notifications\\DeteccionEditadaNotification':
+    //             props.auth.usernotifications++
+    //             break;
+    //         case 'App\\Notifications\\AceptadoNotification':
+    //             props.auth.usernotifications++
+    //             break;
+    //         case 'App\\Notifications\\ObservacionNotification':
+    //             props.auth.usernotifications++
+    //             break;
+    //     }
+    // })
+    // store.get_is_facilitador(user.value.docente_id)
 });
 </script>
 
@@ -106,7 +120,12 @@ onMounted(() => {
                                         Mis Cursos
                                     </NavLink>
                                 </template>
-                                <template v-if="store.this_facilitador === true">
+<!--                                <template v-if="store.this_facilitador === true">-->
+<!--                                    <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">-->
+<!--                                        Facilitador-->
+<!--                                    </NavLink>-->
+<!--                                </template>                                -->
+                                <template v-if="$page.props.facilitador === true">
                                     <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">
                                         Facilitador
                                     </NavLink>
@@ -153,53 +172,13 @@ onMounted(() => {
 <!--                                    </v-badge>-->
 <!--                                </div>-->
                                 <div class="ml-3 relative">
-                                    <v-badge color="red" :content="store.get_number_notification">
-                                        <v-menu offset-y>
-                                            <template v-slot:activator="{ props }">
-                                                <v-btn v-bind="props" text>
-                                                    <v-icon>mdi-bell</v-icon>
-                                                </v-btn>
-                                            </template>
-                                            <v-list>
-                                                <v-list-item
-                                                    v-for="(notification, index) in store.set_notifications"
-                                                    :key="index"
-                                                >
-                                                    <v-list-item-title>{{ notification.data.email }}</v-list-item-title>
-                                                    <v-list-item-subtitle>
-                                                        {{notification.data.messegue}}
-                                                    </v-list-item-subtitle>
-                                                    <v-list-item-action>
-                                                        <v-row justify="center">
-                                                            <v-col>
-                                                                <template v-if="user.role !== 4">
-                                                                        <NavLink :href="notification.data.route + '/' + notification.data.id" type="button" as="button">
-                                                                            <v-btn variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
-                                                                                Ver notificacion
-                                                                            </v-btn>
-                                                                        </NavLink>
-                                                                    </template>
-                                                                    <template v-if="user.role === 4">
-                                                                            <NavLink :href="notification.data.route" type="button" as="button">
-                                                                                <v-btn variant="flat" color="info" prepend-icon="mdi-eye-arrow-right-outline">
-                                                                                    Ver notificacion
-                                                                                </v-btn>
-                                                                            </NavLink>
-                                                                    </template>
-                                                            </v-col>
-                                                            <v-col>
-                                                                <NavLink :href="route('markNotification')" type="button" as="button" method="post" :data="{id: notification.id}">
-                                                                    <v-btn variant="flat" color="success" prepend-icon="mdi-check-circle">
-                                                                        Leida
-                                                                    </v-btn>
-                                                                </NavLink>
-                                                            </v-col>
-                                                        </v-row>
-                                                    </v-list-item-action>
-                                                </v-list-item>
-                                            </v-list>
-                                        </v-menu>
-                                    </v-badge>
+                                    <NavLink :href="route('index.notifications')" as="button">
+                                        <v-btn class="text-none">
+                                            <v-badge color="red" :content="$page.props.auth.usernotifications">
+                                                <v-icon>mdi-bell</v-icon>
+                                            </v-badge>
+                                        </v-btn>
+                                    </NavLink>
                                 </div>
                             </div>
                             <!-- Settings Dropdown -->
