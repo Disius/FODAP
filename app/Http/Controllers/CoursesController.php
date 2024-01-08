@@ -81,6 +81,8 @@ class CoursesController extends Controller
 
         $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
 
+        DocenteController::facilitadores_permission($request->input('facilitadores'));
+
         $deteccion->update($request->validated());
 
         $deteccion->save();
