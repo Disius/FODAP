@@ -158,7 +158,7 @@ onMounted(() => {
                                         <template v-if="props.deteccion.tipo_actividad === 5">
                                             <span>SEMINARIO</span>
                                         </template>
-                                        <template v-if="props.curso.tipo_actividad === 6">
+                                        <template v-if="props.deteccion.tipo_actividad === 6">
                                             <span>DIPLOMADO</span>
                                         </template>
                                     </div>
