@@ -168,9 +168,9 @@
             <td class="titles">PERIODO DE REALIZACIÓN:</td>
             <td class="uline content w100">
                 @if($curso->periodo == 1)
-                    ENERO-JUNIO
+                    enero-junio
                 @else
-                    AGOSTO-DICIEMBRE
+                    agosto-diciembre
                 @endif
             </td>
         </tr>

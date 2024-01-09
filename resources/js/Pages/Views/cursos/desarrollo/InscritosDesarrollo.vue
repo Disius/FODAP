@@ -431,6 +431,9 @@ onMounted(() => {
                                 <template v-if="props.curso.tipo_actividad === 5">
                                     <span>SEMINARIO</span>
                                 </template>
+                                <template v-if="props.curso.tipo_actividad === 6">
+                                    <span>DIPLOMADO</span>
+                                </template>
                             </div>
                             <div class="flow-root ... pt-5">
                                 <strong>Tipo de solicitud: </strong>

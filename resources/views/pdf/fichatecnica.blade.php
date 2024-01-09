@@ -142,6 +142,8 @@
                 FORO
             @elseif($ficha->tipo_servicio == 5)
                 SEMINARIO
+            @elseif($ficha->tipo_servicio == 6)
+                DIPLOMADO
             @endif
         </p>
         <p>

@@ -54,11 +54,12 @@ const tipoCurso = ref([
     {value:2, text:"CURSO"},
     {value:3, text:"CURSO-TALLER"},
     {value:4, text:"FORO"},
-    {value:5, text:"SEMINARIO"}
+    {value:5, text:"SEMINARIO"},
+    {value:6, text:"DIPLOMADO"}
 ]);
 const period = ref([
-    {text: "ENERO-JUNIO", value: 1},
-    {text: "AGOSTO-DICIEMBRE", value: 2},
+    {text: "enero-junio", value: 1},
+    {text: "agosto-diciembre", value: 2},
 ]);
 
 const form = useForm({
