@@ -329,6 +329,34 @@ onMounted(() => {
                 </v-table>
             </div>
         </div>
+<!--        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">-->
+<!--            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">-->
+<!--                <v-card elevation="0">-->
+<!--                    <v-card-title class="text-center">Ficha Técnica</v-card-title>-->
+<!--                    <v-row justify="center">-->
+<!--                        <v-col cols="6" align="center">-->
+<!--                            <NavLink :href="route('crear.ficha', [props.facilitador.id, props.curso.id])">-->
+<!--                                <v-btn color="blue-darken-1">-->
+<!--                                    Crear ficha técnica-->
+<!--                                </v-btn>-->
+<!--                            </NavLink>-->
+<!--                        </v-col>-->
+<!--                        <v-col cols="6" align="center" class="mt-2">-->
+<!--                            <template v-if="props.ficha_tecnica === null">-->
+<!--                                <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box" @click="snackErrorActivator">-->
+<!--                                    Descargar PDF-->
+<!--                                </v-btn>-->
+<!--                            </template>-->
+<!--                            <template v-else>-->
+<!--                                <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box" @click="generar_ficha">-->
+<!--                                    Descargar PDF-->
+<!--                                </v-btn>-->
+<!--                            </template>-->
+<!--                        </v-col>-->
+<!--                    </v-row>-->
+<!--                </v-card>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="flex items-center">

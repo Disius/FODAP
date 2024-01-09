@@ -112,7 +112,9 @@ class DocenteController extends Controller
 
     public function facilitador_curso($facilitador, $id){
         $docente = Docente::find($facilitador);
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso'])->find($id);
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso'])
+
+            ->find($id);
         $ficha = $curso->ficha != null ? FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id) : null;
         $inscritos = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
@@ -168,17 +170,43 @@ class DocenteController extends Controller
         return redirect()->route('show.curso.facilitador', [$request->id_docente, $request->id_curso]);
     }
 
-    public function calificaciones(Request $request){
+//    public function calificaciones(Request $request){
+//        $request->validate([
+//            'docente_id' => 'required'
+//        ]);
+//        $this->add_calificacion($request);
+//
+//        $syncCalificacion = DesarrolloController::consult_to_sync($request->curso_id, $request->docente_id);
+//
+//        event(new CalificacionEvent($syncCalificacion));
+//
+//        return Redirect::route('show.curso.facilitador', [$request->docente_id, $request->curso_id]);
+//    }
+    public function calificaciones_facilitador(Request $request){
         $request->validate([
-            'docente_id' => 'required'
+            'docente_id' => 'required',
+            'calificacion' => 'required',
+            'curso_id' => 'required',
         ]);
+
         $this->add_calificacion($request);
 
         $syncCalificacion = DesarrolloController::consult_to_sync($request->curso_id, $request->docente_id);
-
         event(new CalificacionEvent($syncCalificacion));
 
         return Redirect::route('show.curso.facilitador', [$request->docente_id, $request->curso_id]);
+    }
+
+    public function update_calificaciones_facilitador(Request $request){
+        $request->validate([
+            'docente_id' => 'required',
+            'calificacion' => 'required',
+            'curso_id' => 'required',
+        ]);
+
+        $this->update_calificacion($request, $request->docente_id);
+        return Redirect::route('show.curso.facilitador', [$request->docente_id, $request->curso_id]);
+
     }
 
     public static function add_calificacion($payload){

@@ -21,6 +21,16 @@ const form = useForm({
     departamento_ads: null,
     role: Number(props.role),
 });
+const passwordMatch = [
+  (v) => {
+    if (form.password === form.password_confirmation) return true;
+
+    return 'La contraseña no coincide.';
+  },
+]
+// function checkPasswords() {
+//     passwordMatch.value = form.password === form.password_confirmation;
+// }
 const submit = () => {
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
@@ -64,7 +74,7 @@ watch(() => form.password,
     (newValue) => {
           calculatePasswordStrength(newValue)
           startProgress()
-      console.log(passwordStrength.value, )
+
 })
 
 const progressColor = ref("pink");
@@ -148,18 +158,18 @@ const startProgress = () => {
             <div class="mt-4">
                 <InputLabel for="password_confirmation" value="Confirmar contraseña" />
 
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
+                <v-text-field
+                v-model="form.password_confirmation"
+                :rules="passwordMatch"
+                type="password"
+                >
+
+                </v-text-field>
 
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
-
+<!--            <p v-if="passwordMatch === true">Las contraseñas coinciden</p>-->
+<!--            <p v-else-if="passwordMatch === false">Las contraseñas no coinciden</p>-->
             <div class="mt-4">
                 <InputLabel for="departamento_adscrito" value="Departamento adscrito" />
 

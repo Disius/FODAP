@@ -11,6 +11,7 @@ const curso_store = Curso()
 const props = defineProps({
   cursos: Object,
   auth: Object,
+  facilitadores: Array
 });
 
 

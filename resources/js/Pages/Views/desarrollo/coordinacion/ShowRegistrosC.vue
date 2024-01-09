@@ -100,6 +100,9 @@ onMounted(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Registro de todos los cursos que se llevaron acabo</h2>
+            <NavLink :href="route('index.desarrollo.cursos')" as="button">
+                <v-btn icon="mdi-arrow-left"></v-btn>
+            </NavLink>
         </template>
 
         <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">

@@ -89,6 +89,7 @@ class DesarrolloController extends Controller
 
         CoursesController::state_curso();
 
+
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'departamento', 'jefe'])
             ->where('aceptado', '=', 1)
             ->where(function($query) {
@@ -276,10 +277,19 @@ class DesarrolloController extends Controller
             ->where('inscripcion.curso_id', '=', $id)
             ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
             ->get();
+
+        $test = DB::table('deteccion_has_facilitadores')
+//            ->join('docente', 'deteccion_has_facilitadores.docente_id', '=', 'docente.id')
+            ->where('deteccion_id', '=', $curso->id)
+            ->select('deteccion_has_facilitadores.docente_id')
+            ->get();
+//        $test = User::with('docente')->permission('facilitador')->whereIn('docente_id', $test)->get();
+
         return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
             'curso' => $curso,
             'docente' => $docente,
-            'inscritos' => $inscritos
+            'inscritos' => $inscritos,
+//            'test' => $test
         ]);
     }
 
@@ -335,7 +345,7 @@ class DesarrolloController extends Controller
         return Inertia::render('Views/desarrollo/Docentes', [
             'docentes' => $docentes,
             'user' => $user,
-            'carrera' => $carrera->except(['13']),
+            'carrera' => $carrera->except(['13', '12', '11']),
             'departamento' => $departamento,
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,
@@ -386,8 +396,8 @@ class DesarrolloController extends Controller
     }
 
     public function update_docente(Request $request, $id){
-        $docente = DocenteController::updated_instance_docente($request, $id);
-        return Redirect::route('edit.docentes', ['id' => $docente->id]);
+        DocenteController::updated_instance_docente($request, $id);
+        return Redirect::route('index.docentes');
     }
     //revisar este otro metodo
     public function calificaciones_desarrollo(Request $request){

@@ -20,8 +20,8 @@ const submit_read_notification = () => {
 }
 
 onMounted(() => {
-    store.notificaciones_catch()
-    store.get_number_notifications()
+    // store.notificaciones_catch()
+    // store.get_number_notifications()
     // window.Echo.private(`App.Models.User.${user.value.id}`).notification((notification) => {
     //     // console.log(notification)
     //     switch (notification.type){
@@ -39,7 +39,7 @@ onMounted(() => {
     //             break;
     //     }
     // })
-    // store.get_is_facilitador(user.value.docente_id)
+    store.get_is_facilitador(user.value.docente_id)
 });
 </script>
 
@@ -120,16 +120,16 @@ onMounted(() => {
                                         Mis Cursos
                                     </NavLink>
                                 </template>
-<!--                                <template v-if="store.this_facilitador === true">-->
-<!--                                    <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">-->
-<!--                                        Facilitador-->
-<!--                                    </NavLink>-->
-<!--                                </template>                                -->
-                                <template v-if="$page.props.facilitador === true">
+                                <template v-if="store.this_facilitador === true">
                                     <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">
                                         Facilitador
                                     </NavLink>
                                 </template>
+<!--                                <template v-if="$page.props.facilitador === true">-->
+<!--                                    <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">-->
+<!--                                        Facilitador-->
+<!--                                    </NavLink>-->
+<!--                                </template>-->
                                 <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
                                     Perfil
                                 </NavLink>

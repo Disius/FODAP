@@ -163,7 +163,7 @@ const submit = () => {
                             <div>
                                 <div class="grid grid-cols-2">
                                     <div class="flex justify-start">
-                                        <InputLabel for="carrera_adscrito" value="Carrera adscrito" />
+                                        <InputLabel for="carrera_adscrito" value="Licenciatura en la que imparte la mayoría de las asignaturas" />
                                     </div>
                                     <div class="flex justify-center mb-3">
                                         <v-tooltip location="right">

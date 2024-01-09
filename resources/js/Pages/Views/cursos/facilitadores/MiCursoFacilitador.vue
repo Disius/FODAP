@@ -10,6 +10,8 @@ import {router, useForm} from "@inertiajs/vue3";
 import DangerButton from "@/Components/DangerButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import CustomSnackBar from "@/Components/CustomSnackBar.vue";
+import Calificaciones from "@/Components/Calificaciones.vue";
+import CalificacionesUpdate from "@/Components/CalificacionesUpdate.vue";
 
 const my_curso_store = Curso()
 const store = FODAPStore()
@@ -28,8 +30,43 @@ const dialog = ref(false);
 const loading = ref(false);
 const message = ref("")
 const color = ref("")
+const dialogCalificacion = ref(false);
+const curso_id = ref()
+const docente = ref()
+const dialogCalificacionUpdate = ref(false)
+const calificacion = ref()
+const docente_calificacion = (docente_id) => {
+    docente.value = docente_id
+    curso_id.value = props.curso.id
+    dialogCalificacion.value = true
+}
+const update_docente_calificacion = (docente_id, calification) => {
+    docente.value = docente_id
+    curso_id.value = props.curso.id
+    calificacion.value = calification
+    dialogCalificacionUpdate.value = true
+}
 
-
+const addCalificacion = (form) => {
+    form.post(route('calificaciones.facilitador.create'), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
+const updateCalificacion = (form) => {
+    form.put(route('calificaciones.facilitador.update'), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
 const formatFechaF = computed(() => {
     return new Date(props.curso.fecha_F).toLocaleDateString('es-MX');
 })
@@ -102,20 +139,7 @@ const fila_seleccionada = (id) => {
     dialog.value = true
 }
 
-const submitCalificacion = () => {
-    loading.value = true;
-    form.post(route('calificaciones.post'), {
-        onSuccess: () => {
-            loading.value = false
-            form.reset();
-            snackSuccessActivator()
-        },
-        onError: () => {
-            loading.value = false
-            snackErrorActivator()
-        },
-    })
-}
+
 
 
 onMounted(() => {
@@ -180,28 +204,32 @@ onMounted(() => {
                         <td class="text-center">{{inscrito.apellidoPat}}</td>
                         <td class="text-center">{{inscrito.apellidoMat}}</td>
                         <td class="text-center">
-                            <template v-if="inscrito.calificacion === null">
-                                <v-btn icon @click="fila_seleccionada(inscrito.id)">
-                                    <v-icon>mdi-pencil-plus</v-icon>
-                                </v-btn>
-                            </template>
-                            <template v-else-if="inscrito.calificacion === 0">
-                                <v-chip
-                                    class="ma-2"
-                                    color="red"
-                                    text-color="white"
-                                >
-                                    NO APROBADO
-                                </v-chip>
-                            </template>
-                            <template v-else-if="inscrito.calificacion === 1">
-                                <v-chip
-                                    class="ma-2"
-                                    color="success"
-                                    text-color="white"
-                                >
-                                    APROBADO
-                                </v-chip>
+                            <template v-if="props.curso.aceptado === 1">
+                                <template v-if="inscrito.calificacion === null">
+                                    <v-btn icon @click="docente_calificacion(inscrito.id)">
+                                        <v-icon>mdi-pencil-plus</v-icon>
+                                    </v-btn>
+                                </template>
+                                <template v-else-if="inscrito.calificacion === 0">
+                                    <v-chip
+                                        class="ma-2"
+                                        color="red"
+                                        text-color="white"
+                                        @click="update_docente_calificacion(inscrito.id, inscrito.calificacion)"
+                                    >
+                                        <p class="text-center">NO APROBADO</p>
+                                    </v-chip>
+                                </template>
+                                <template v-else-if="inscrito.calificacion === 1">
+                                    <v-chip
+                                        class="ma-2"
+                                        color="success"
+                                        text-color="white"
+                                        @click="update_docente_calificacion(inscrito.id, inscrito.calificacion)"
+                                    >
+                                        <p class="text-center">APROBADO</p>
+                                    </v-chip>
+                                </template>
                             </template>
                         </td>
                     </tr>
@@ -296,7 +324,7 @@ onMounted(() => {
                             </div>
                             <div class="flow-root ... pt-5">
                                 <strong>Fechas en las que se realizara la actividad o evento: </strong>
-                                <span>Del {{formatFechaI}} al {{formatFechaF}}</span>
+                                <span>Del {{props.curso.fecha_I}} al {{props.curso.fecha_F}}</span>
                             </div>
                             <div class="flow-root ... pt-5">
                                 <strong>Horarios en las que se realizara la actividad o evento: </strong>
@@ -347,59 +375,12 @@ onMounted(() => {
                     </v-card>
             </div>
         </div>
-        <v-dialog width="auto" v-model="dialog" persistent>
-            <v-card width="500" height="300">
-                <v-card-title>Añadir calificación</v-card-title>
-                <v-card-text>
-                    <v-row justify="center">
-                        <v-col cols="12">
-                            <InputLabel for="calificacion"
-                                        value="Unicamente SELECCIONAR si el docente esta APROBADO o NO APROBADO" />
-                        </v-col>
-                        <v-col cols="8" class="mt-5 ml-6" align="center">
-                            <v-chip-group
-                                v-model="form.calificacion"
-                                column
-                            >
-                                <v-chip color="error">NO APROBADO</v-chip>
-
-                                <v-chip color="success">APROBADO</v-chip>
-                            </v-chip-group>
-                        </v-col>
-                    </v-row>
-                </v-card-text>
-                <v-dialog width="auto" v-model="loading">
-                    <v-fade-transition leave-absolute>
-                        <v-progress-circular
-                            v-if="loading"
-                            color="info"
-                            :size="64"
-                            :width="7"
-                            indeterminate
-                        ></v-progress-circular>
-
-
-                    </v-fade-transition>
-                </v-dialog>
-                <v-card-actions>
-                    <v-row justify="center">
-                        <v-col cols="6" align="end" class="mr-16">
-                            <danger-button @click="dialog = false">
-                                Cerrar
-                            </danger-button>
-                        </v-col>
-                        <v-col cols="2" align="end" class="mr-16">
-                            <primary-button elevation="5" color="success" @click="submitCalificacion">
-                                Subir
-                            </primary-button>
-                        </v-col>
-                    </v-row>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
         <CustomSnackBar :message="message" :timeout="timeout" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event">
 
         </CustomSnackBar>
+        <Calificaciones v-model="dialogCalificacion" :curso="curso_id" :docente="docente" @form:Calificacion="addCalificacion" @update:modelValue="dialogCalificacion = $event"></Calificaciones>
+
+        <CalificacionesUpdate v-model="dialogCalificacionUpdate" :calificacion="calificacion" :curso="curso_id" :docente="docente" @update:Calificacion="updateCalificacion" @update:modelValue="dialogCalificacionUpdate = $event"></CalificacionesUpdate>
     </AuthenticatedLayout>
 </template>
 

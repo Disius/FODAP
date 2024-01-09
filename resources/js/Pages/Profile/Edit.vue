@@ -40,7 +40,7 @@ const props = defineProps({
     }
 });
 const user = computed(() => usePage().props.auth.user);
-console.log(props.permiso_to_edit)
+// console.log(props.permiso_to_edit)
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
