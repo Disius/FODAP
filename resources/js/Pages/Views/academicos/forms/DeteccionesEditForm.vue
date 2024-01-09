@@ -54,8 +54,8 @@ const tipoCurso = ref([
     {value:5, text:"SEMINARIO"}
 ]);
 const period = ref([
-    {text: "ENERO-JUNIO", value: 1},
-    {text: "AGOSTO-DICIEMBRE", value: 2},
+    {text: "enero-junio", value: 1},
+    {text: "agosto-diciembre", value: 2},
 ]);
 
 const carreraFilter = computed(() => {

@@ -393,7 +393,7 @@ onMounted(() => {
                 <form @submit.prevent="upload_constancia_2">
                     <div class="grid grid-cols-1">
                         <div class="flex justify-center">
-                            <v-file-input label="Constancia Imagen 2" variant="solo" @input="form_file_constancia_img_2.file = $event.target.files[0]"></v-file-input>
+                            <v-file-input label="Constancia imagen del reverso" variant="solo" @input="form_file_constancia_img_2.file = $event.target.files[0]"></v-file-input>
                             <div class="flex justify-end mt-2 ml-5 w-11">
                                 <v-btn type="submit" color="blue-darken-1" width="500" icon="mdi-content-save-check-outline"></v-btn>
                             </div>

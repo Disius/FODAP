@@ -78,18 +78,27 @@ const snackEventActivator = () => {
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
     timeout.value = 8000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 
 const submit = (inscripcion, id) => {

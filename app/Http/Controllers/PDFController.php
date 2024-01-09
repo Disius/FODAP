@@ -143,10 +143,18 @@ class PDFController extends Controller
     public function constancia_pdf(Request $request){
         $year = date('Y');
         $instituto = DB::table('nombre_instituto')->get();
-        $docente = Docente::with('inscrito')->find($request->id_docente);
-        $curso = DeteccionNecesidades::with('deteccion_facilitador',  'clave_curso', 'clave_validacion')->find($docente->inscrito[0]->id);
+        $docente = Docente::with('inscrito', 'posgrado', 'carrera', 'puesto')->find($request->id_docente);
+        $curso = DeteccionNecesidades::with('deteccion_facilitador',  'clave_curso', 'clave_validacion')->find($request->id);
+        $coordinacion = User::with('docente')->where('email', 'cformacion@tuxtla.tecnm.mx')->first();
+        $temas = FichaTecnica::with('temas')->where('id_curso', $curso->id)->first();
+
 
         $facilitador = $curso->deteccion_facilitador;
+
+        $actual_date = date('Y-m-d');
+        $day = date('d');
+        $anio = date('Y');
+        $month_get = $this->parse_date($actual_date);
 
         $fecha = $docente->inscrito[0]->fecha_I;
         $fecha2 = $docente->inscrito[0]->fecha_F;
@@ -160,7 +168,7 @@ class PDFController extends Controller
 
         $path = 'constancia1.pdf';
 
-        $pdf_2 = Pdf::loadView('pdf.constancia_2', compact('year'))
+        $pdf_2 = Pdf::loadView('pdf.constancia_2', compact('year', 'curso', 'docente', 'day', 'anio', 'month_get', 'coordinacion', 'temas'))
             ->setPaper('a4','landscape')
             ->output();
 
@@ -170,6 +178,9 @@ class PDFController extends Controller
         $this->save_file($pdf_2, $path_2);
 
         $this->merge_pdf('constancia1', 'constancia2');
+        return response()->json([
+            'test' => $temas
+        ]);
     }
 
     public static function merge_pdf($pdf1, $pdf2){
