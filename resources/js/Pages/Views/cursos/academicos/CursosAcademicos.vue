@@ -105,7 +105,7 @@ onMounted(() => {
                                     <v-list-item-action><strong>{{item.jefe.nombre_completo}}</strong></v-list-item-action>
                                 </div>
                                 <template v-slot:append>
-                                    <NavLink :href="route('show.Cdetecciones', item.id)" type="button" as="button">
+                                    <NavLink :href="route('show.inscritos.academicos', item.id)" type="button" as="button">
                                         <v-btn
                                             border
                                             flat
