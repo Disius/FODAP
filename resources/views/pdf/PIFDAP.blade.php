@@ -193,9 +193,13 @@
                     <td>{{$curso->hora_I}} A {{$curso->hora_F}}</td>
                     <td>{{$curso->total_horas}}</td>
                     <td>
-                        @foreach($curso->deteccion_facilitador as $facilitador)
-                            {{$facilitador->nombre_completo}}.
-                        @endforeach
+                        @if(count($curso->deteccion_facilitador) == 0)
+                            {{$curso->facilitador_externo}}
+                        @else
+                            @foreach($curso->deteccion_facilitador as $facilitador)
+                                {{$facilitador->nombre_completo}}.
+                            @endforeach
+                        @endif
                     </td>
                     <td>{{$curso->carrera->nameCarrera}}</td>
                     <td>{{$curso->observaciones}}</td>
@@ -327,9 +331,13 @@
                     <td>{{$curso->hora_I}} A {{$curso->hora_F}}</td>
                     <td>{{$curso->total_horas}}</td>
                     <td>
-                        @foreach($curso->deteccion_facilitador as $facilitador)
-                            {{$facilitador->nombre_completo}}.
-                        @endforeach
+                        @if(count($curso->deteccion_facilitador) == 0)
+                            {{$curso->facilitador_externo}}
+                        @else
+                             @foreach($curso->deteccion_facilitador as $facilitador)
+                                {{$facilitador->nombre_completo}}.
+                             @endforeach
+                        @endif
                     </td>
                     <td>{{$curso->carrera->nameCarrera}}</td>
                     <td>{{$curso->observaciones}}</td>
