@@ -16,7 +16,7 @@ const search = ref("")
 const header = [
     {key: "id", title: "ID"},
     {key: "nombreAula", title: "Nombre"},
-    {key: "disponible", title: "Disponibilidad"},
+    // {key: "disponible", title: "Disponibilidad"},
     {key: "options", title: "Opciones"},
 ];
 </script>
