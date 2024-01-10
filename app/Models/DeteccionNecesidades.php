@@ -78,8 +78,8 @@ class DeteccionNecesidades extends Model
         return $this->belongsToMany(Docente::class, 'inscripcion', 'curso_id', 'docente_id');
     }
 
-    public function lugar(): BelongsTo {
-        return $this->belongsTo(Lugar::class, 'id', 'id_lugar');
+    public function lugar(){
+        return $this->hasOne(Lugar::class, 'id', 'id_lugar');
     }
 
     public function ficha_tecnica(): HasOne {

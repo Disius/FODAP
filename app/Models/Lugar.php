@@ -17,8 +17,8 @@ class Lugar extends Model
       'nombreAula', 'ocupado'
     ];
 
-    public function curso(): HasOne {
-        return $this->hasOne(DeteccionNecesidades::class, 'id_lugar', 'id');
+    public function curso(){
+        return $this->belongsTo(DeteccionNecesidades::class, 'id_lugar', 'id');
     }
 
     public $timestamps = false;

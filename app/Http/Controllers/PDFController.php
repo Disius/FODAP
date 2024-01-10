@@ -36,14 +36,14 @@ class PDFController extends Controller
 
     public static function FD_request($data)
     {
-        return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'jefe', 'departamento'])
+        return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'jefe', 'departamento', 'lugar'])
             ->where('periodo', '=', $data->input('periodo'))
             ->where('tipo_FDoAP', '=', 1)
             ->whereYear('fecha_I', '=', $data->input('anio'))->get();
 
     }
     public static function AP_request($data){
-        return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'jefe', 'departamento'])
+        return DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'jefe', 'departamento', 'lugar'])
             ->where('periodo', '=', $data->input('periodo'))
             ->where('tipo_FDoAP', '=', 2)
             ->whereYear('fecha_I', '=', $data->input('anio'))->get();

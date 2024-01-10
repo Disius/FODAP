@@ -403,6 +403,15 @@ onMounted(() => {
                                 <span>{{props.curso.carrera.nameCarrera}}</span>
                             </div>
                             <div class="flow-root ... pt-5">
+                                <strong>Lugar en el que se realizara el curso: </strong>
+                                <template v-if="props.curso.lugar !== null">
+                                    <span>{{props.curso.lugar.nombreAula}}</span>
+                                </template>
+                                <template v-if="props.curso.lugar === null">
+                                    <span>A este curso no se le ha asignado una sala</span>
+                                </template>
+                            </div>
+                            <div class="flow-root ... pt-5">
                                 <strong>Facilitador(es): </strong>
                                 <div v-for="facilitador in props.curso.deteccion_facilitador">
                                     <span>{{facilitador.nombre}}  {{facilitador.apellidoPat}}  {{facilitador.apellidoMat}}</span>

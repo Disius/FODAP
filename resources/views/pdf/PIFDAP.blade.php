@@ -184,7 +184,13 @@
                     <td>{{$curso->nombreCurso}}</td>
                     <td>{{$curso->objetivoEvento}}</td>
                     <td>{{$curso->fecha_I}} A {{$curso->fecha_F}}</td>
-                    <td></td>
+                    <td>
+                        @if($curso->lugar !== null)
+                            {{$curso->lugar->nombreAula}}
+                        @else
+                            SIN ASIGNAR
+                        @endif
+                    </td>
                     <td>
                         @if($curso->modalidad == 1)
                             Virtual
@@ -326,7 +332,13 @@
                     <td>{{$curso->nombreCurso}}</td>
                     <td>{{$curso->objetivoEvento}}</td>
                     <td>{{$curso->fecha_I}} A {{$curso->fecha_F}}</td>
-                    <td></td>
+                    <td>
+                        @if($curso->lugar !== null)
+                            {{$curso->lugar->nombreAula}}
+                        @else
+                            SIN ASIGNAR
+                        @endif
+                    </td>
                     <td>
                         @if($curso->modalidad == 1)
                             Virtual

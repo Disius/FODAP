@@ -143,6 +143,7 @@ class DesarrolloController extends Controller
                 'id_departamento' => $departamento->departamento->id,
                 'facilitador_externo' =>  $request->facilitador_externo,
                 'observaciones' => $request->observaciones,
+                'id_lugar' => $request->id_lugar,
             ]);
 
         $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
@@ -185,6 +186,7 @@ class DesarrolloController extends Controller
         $curso->facilitador_externo = $request->facilitador_externo;
         $curso->observaciones = $request->observaciones;
         $curso->obs = $request->observaciones != null ? 1 : 0;
+        $curso->id_lugar = $request->id_lugar;
         $curso->deteccion_facilitador()->sync(
             $request->input('facilitadores', []),
             false
@@ -269,7 +271,7 @@ class DesarrolloController extends Controller
 
     public function index_curso_inscrito_desarrollo($id){
         $docente = Docente::orderBy('nombre', 'asc')->get();
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'clave_curso', 'clave_validacion'])->where('aceptado', '=', 1)
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'clave_curso', 'clave_validacion', 'lugar'])->where('aceptado', '=', 1)
             ->find($id);
         $inscritos = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
@@ -281,12 +283,7 @@ class DesarrolloController extends Controller
             ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
             ->get();
 
-        $test = DB::table('deteccion_has_facilitadores')
-//            ->join('docente', 'deteccion_has_facilitadores.docente_id', '=', 'docente.id')
-            ->where('deteccion_id', '=', $curso->id)
-            ->select('deteccion_has_facilitadores.docente_id')
-            ->get();
-//        $test = User::with('docente')->permission('facilitador')->whereIn('docente_id', $test)->get();
+
 
         return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
             'curso' => $curso,
