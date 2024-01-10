@@ -142,10 +142,10 @@ onMounted(() => {
                                     <div class="flow-root ... pt-5">
                                         <strong class="text-xl">Periodo en el que se requiere la formación o actualización (enero-junio o agosto diciembre): </strong>
                                         <template v-if="props.deteccion.periodo === 1">
-                                            <span>ENERO-JUNIO</span>
+                                            <span>enero-junio</span>
                                         </template>
                                         <template v-if="props.deteccion.periodo === 2  ">
-                                            <span>AGOSTO-DICIEMBRE</span>
+                                            <span>agosto-diciembre</span>
                                         </template>
                                     </div>
                                     <div class="flow-root ... pt-5">
