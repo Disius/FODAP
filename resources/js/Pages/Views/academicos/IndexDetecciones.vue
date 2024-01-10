@@ -71,10 +71,12 @@ onMounted(() => {
                 break;
         }
     })
-    store.if_enable_fechas()
+    // store.if_enable_fechas()
     detecciones_store.deteccionesAcademico();
     window.Echo.private('dates-enable').listen('DatesEnableEvent', (event) => {
+        // console.log(event.dates.fechas)
         store.update_enable_dates(event.dates.fechas)
+        localStorage.setItem('dates_enable', JSON.stringify(event.dates.fechas));
     });
     window.Echo.private('deteccion-observacion').listen('ObservacionEvent', (event) => {
         snackEventActivator()
@@ -82,6 +84,15 @@ onMounted(() => {
     window.Echo.private('delete-deteccion').listen('DeleteDeteccionEvent', (event) => {
         snackEventActivator()
     });
+
+    const storedDatesEnable = localStorage.getItem('dates_enable');
+    if (storedDatesEnable) {
+        // Si hay un valor en localStorage, conviértelo de nuevo a objeto JavaScript
+        const parsedDatesEnable = JSON.parse(storedDatesEnable);
+        // console.log(parsedDatesEnable)
+        // Usa parsedDatesEnable para inicializar el estado en tu store de Pinia
+        store.update_enable_dates(parsedDatesEnable);
+    }
 });
 </script>
 
