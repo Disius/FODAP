@@ -129,7 +129,8 @@
                 <th>Nombre de los Cursos</th>
                 <th>Objetivo</th>
                 <th>Fecha de realización</th>
-                <th>Lugar (presencial o virtual)</th>
+                <th>Lugar donde se realizara el curso</th>
+                <th>Modalidad (presencial o virtual)</th>
                 <th>Horario</th>
                 <th>No. de horas x curso</th>
                 <th>Facilitador (a)</th>
@@ -140,6 +141,7 @@
 
                 <tbody>
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -161,7 +163,8 @@
                 <th>Nombre de los Cursos</th>
                 <th>Objetivo</th>
                 <th>Fecha de realización</th>
-                <th>Lugar (presencial o virtual)</th>
+                <th>Lugar donde se realizara el curso</th>
+                <th>Modalidad (presencial o virtual)</th>
                 <th>Horario</th>
                 <th>No. de horas x curso</th>
                 <th>Facilitador (a)</th>
@@ -181,6 +184,7 @@
                     <td>{{$curso->nombreCurso}}</td>
                     <td>{{$curso->objetivoEvento}}</td>
                     <td>{{$curso->fecha_I}} A {{$curso->fecha_F}}</td>
+                    <td></td>
                     <td>
                         @if($curso->modalidad == 1)
                             Virtual
@@ -267,7 +271,8 @@
                 <th>Nombre de los Cursos</th>
                 <th>Objetivo</th>
                 <th>Fecha de realización</th>
-                <th>Lugar (presencial o virtual)</th>
+                <th>Lugar donde se realizara el curso</th>
+                <th>Modalidad (presencial o virtual)</th>
                 <th>Horario</th>
                 <th>No. de horas x curso</th>
                 <th>Facilitador (a)</th>
@@ -278,6 +283,7 @@
 
             <tbody>
             <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -299,7 +305,8 @@
                 <th>Nombre de los Cursos</th>
                 <th>Objetivo</th>
                 <th>Fecha de realización</th>
-                <th>Lugar (presencial o virtual)</th>
+                <th>Lugar donde se realizara el curso</th>
+                <th>Modalidad (presencial o virtual)</th>
                 <th>Horario</th>
                 <th>No. de horas x curso</th>
                 <th>Facilitador (a)</th>
@@ -319,6 +326,7 @@
                     <td>{{$curso->nombreCurso}}</td>
                     <td>{{$curso->objetivoEvento}}</td>
                     <td>{{$curso->fecha_I}} A {{$curso->fecha_F}}</td>
+                    <td></td>
                     <td>
                         @if($curso->modalidad == 1)
                             Virtual
