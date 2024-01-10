@@ -185,7 +185,10 @@ class DesarrolloController extends Controller
         $curso->facilitador_externo = $request->facilitador_externo;
         $curso->observaciones = $request->observaciones;
         $curso->obs = $request->observaciones != null ? 1 : 0;
-        $curso->deteccion_facilitador()->sync($request->input('facilitadores', []));
+        $curso->deteccion_facilitador()->sync(
+            $request->input('facilitadores', []),
+            false
+        );
         $curso->update($request->validated());
 
         $curso->save();

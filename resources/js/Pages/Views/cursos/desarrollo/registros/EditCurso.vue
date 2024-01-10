@@ -151,7 +151,9 @@ onMounted(() => {
     form.facilitador_externo = props.curso.facilitador_externo
     form.id_lugar = props.curso.id_lugar
     form.observaciones = props.curso.observaciones
-    form.facilitadores = idFacilitador.value
+    for (let i of props.curso.deteccion_facilitador){
+        form.facilitadores.push(i.id);
+    }
 })
 
 </script>

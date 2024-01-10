@@ -72,12 +72,10 @@ const carreraFilter = computed(() => {
 * exelente!!!
 * */
 const idFacilitador = computed(() => {
-   let facilitador = null
 
     for (let i of props.deteccion.deteccion_facilitador){
-        facilitador = i.id
+        form.facilitadores = i.id
     }
-    return facilitador
 });
 
 const maxCount = [
@@ -105,7 +103,10 @@ onMounted(() => {
     form.facilitador_externo = props.deteccion.facilitador_externo
     form.id_lugar = props.deteccion.id_lugar
     // !!!!
-    form.facilitadores = idFacilitador.value
+    // form.facilitadores = props.deteccion.deteccion_facilitador
+    for (let i of props.deteccion.deteccion_facilitador){
+        form.facilitadores.push(i.id);
+    }
 });
 </script>
 
