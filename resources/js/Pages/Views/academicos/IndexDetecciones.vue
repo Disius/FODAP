@@ -31,19 +31,28 @@ const snackEventActivator = () => {
     snackbar.value = true;
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
-    timeout.value = 8000
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -124,7 +133,7 @@ onMounted(() => {
                                 </strong>
                             </v-alert>
                         </template>
-                        <template v-else>
+                        <template v-if="store.si_dates[1].d > 1">
                             <v-alert
                                 color="info"
                                 icon="$info"

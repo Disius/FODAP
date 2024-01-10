@@ -185,38 +185,67 @@ class   GestionParametrosController extends Controller
     }
 
     public function dates_detecciones(Request $request){
-        $request->validate([
-            'fecha_Inicio' => 'required',
-            'fecha_Final' => 'required'
-        ]);
+        if ($request->fecha_Inicio <= $request->fecha_Final) {
+            try {
+                // Establecer la zona horaria aquí
+                date_default_timezone_set('America/Mexico_City'); // O la zona horaria deseada
 
-        $fecha_Inical = Carbon::parse($request->fecha_Inicio);
-        $fecha_final = Carbon::parse($request->fecha_Final);
+                $dates = ConfigDates::latest('id')->first();
 
-        $dates = ConfigDates::latest('id')->first();
+                if ($dates != null) {
+                    $dates->delete();
+                }
 
-        if ($dates != null){
-            $dates->delete();
-        }
+                $newDates = ConfigDates::create([
+                    'fecha_inicio' => $request->fecha_Inicio,
+                    'fecha_final' => $request->fecha_Final,
+                ]);
 
-        if ($fecha_Inical <= $fecha_final){
+                $newDates->save();
 
-            $dates = ConfigDates::create([
-                'fecha_inicio' => $request->fecha_Inicio,
-                'fecha_final' => $request->fecha_Final,
-            ]);
+                $fechas = DataResponseController::if_enable_detecciones();
 
-        $dates->save();
+                event(new DatesEnableEvent($fechas->original));
 
-        $fechas = DataResponseController::if_enable_detecciones();
-
-        event(new DatesEnableEvent($fechas->original));
-
-        return Redirect::route('parametros.edit');
-
-        }else{
+                return Redirect::route('parametros.edit');
+            } catch (\Exception $e) {
+                return back()->withErrors('Error al crear el registro'.$e->getMessage());
+            }
+        } else {
             return back()->withErrors('La fecha final no puede ser menor que la fecha inicial');
         }
+//        $request->validate([
+//            'fecha_Inicio' => 'required',
+//            'fecha_Final' => 'required'
+//        ]);
+//
+//        $fecha_Inical = Carbon::parse($request->fecha_Inicio);
+//        $fecha_final = Carbon::parse($request->fecha_Final);
+//
+//        $dates = ConfigDates::latest('id')->first();
+//
+//        if ($dates != null){
+//            $dates->delete();
+//        }
+//
+//        if ($fecha_Inical <= $fecha_final){
+//
+//            $dates = ConfigDates::create([
+//                'fecha_inicio' => $request->fecha_Inicio,
+//                'fecha_final' => $request->fecha_Final,
+//            ]);
+//
+//        $dates->save();
+//
+//        $fechas = DataResponseController::if_enable_detecciones();
+//
+//        event(new DatesEnableEvent($fechas->original));
+//
+//        return Redirect::route('parametros.edit');
+//
+//        }else{
+//            return back()->withErrors('La fecha final no puede ser menor que la fecha inicial');
+//        }
     }
 
     public function destoy_users(Request $request){
