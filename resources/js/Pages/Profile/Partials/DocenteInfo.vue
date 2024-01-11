@@ -211,7 +211,7 @@ onMounted(() => {
                     </div>
                 </div>
 
-                <template v-if="props.auth.role === 4">
+                <template v-if="props.auth.role !== 4">
                     <v-select variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"
                               v-model="form.carrera_id" disabled>
 
@@ -229,7 +229,7 @@ onMounted(() => {
             <div>
                 <InputLabel for="departamento_adscrito" value="Departamento adscrito" />
 
-                <template v-if="props.auth.role === 4">
+                <template v-if="props.auth.role !== 4">
                     <v-select variant="solo" :items="props.departamento" item-value="id" item-title="nameDepartamento"
                               v-model="form.departamento_id" disabled>
 
