@@ -211,20 +211,36 @@ onMounted(() => {
                     </div>
                 </div>
 
-                <v-select variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"
-                    v-model="form.carrera_id" >
+                <template v-if="props.auth.role === 4">
+                    <v-select variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"
+                              v-model="form.carrera_id" disabled>
 
-                </v-select>
+                    </v-select>
+                </template>
+                <template v-else>
+                    <v-select variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"
+                              v-model="form.carrera_id" >
+
+                    </v-select>
+                </template>
 
                 <InputError class="mt-2" />
             </div>
             <div>
                 <InputLabel for="departamento_adscrito" value="Departamento adscrito" />
 
-                <v-select variant="solo" :items="props.departamento" item-value="id" item-title="nameDepartamento"
-                    v-model="form.departamento_id" >
+                <template v-if="props.auth.role === 4">
+                    <v-select variant="solo" :items="props.departamento" item-value="id" item-title="nameDepartamento"
+                              v-model="form.departamento_id" disabled>
 
-                </v-select>
+                    </v-select>
+                </template>
+                <template v-else>
+                    <v-select variant="solo" :items="props.departamento" item-value="id" item-title="nameDepartamento"
+                              v-model="form.departamento_id" disabled>
+
+                    </v-select>
+                </template>
 
                 <InputError class="mt-2" />
             </div>
