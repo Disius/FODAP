@@ -57,7 +57,13 @@ const form = useForm({
 });
 const sex = [{ value: 1, text: "M" }, { value: 2, text: "F" }];
 
-
+function jefeA(){
+    if (prop.auth.role === 4){
+        return false
+    }else{
+        return true
+    }
+}
 function submit() {
     if (!props.docente) {
         form.post(route('docente.create'))
@@ -210,7 +216,7 @@ onMounted(() => {
                 </div>
 
                 <v-select variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"
-                    v-model="form.carrera_id" disabled>
+                    v-model="form.carrera_id" :disabled="jefeA">
 
                 </v-select>
 
@@ -220,7 +226,7 @@ onMounted(() => {
                 <InputLabel for="departamento_adscrito" value="Departamento adscrito" />
 
                 <v-select variant="solo" :items="props.departamento" item-value="id" item-title="nameDepartamento"
-                    v-model="form.departamento_id" disabled>
+                    v-model="form.departamento_id" :disabled="jefeA">
 
                 </v-select>
 
