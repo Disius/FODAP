@@ -212,7 +212,7 @@ onMounted(() => {
                 </div>
 
                 <v-select variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"
-                    v-model="form.carrera_id" :disabled="props.auth.role === 4">
+                    v-model="form.carrera_id" >
 
                 </v-select>
 
@@ -222,7 +222,7 @@ onMounted(() => {
                 <InputLabel for="departamento_adscrito" value="Departamento adscrito" />
 
                 <v-select variant="solo" :items="props.departamento" item-value="id" item-title="nameDepartamento"
-                    v-model="form.departamento_id" :disabled="props.auth.role === 4">
+                    v-model="form.departamento_id" >
 
                 </v-select>
 
