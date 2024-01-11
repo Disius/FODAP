@@ -58,11 +58,7 @@ const form = useForm({
 const sex = [{ value: 1, text: "M" }, { value: 2, text: "F" }];
 
 function jefeA(){
-    if (prop.auth.role === 4){
-        return false
-    }else{
-        return true
-    }
+    return props.auth.role !== 4;
 }
 function submit() {
     if (!props.docente) {
