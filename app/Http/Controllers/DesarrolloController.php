@@ -367,12 +367,35 @@ class DesarrolloController extends Controller
         ]);
     }
     public function store_docentes(Request $request){
-        $request->validate([
-           'nombre' => 'required',
-           'apellidoPat' => 'required',
-            'apellidoMat' => 'required'
-        ]);
-        DocenteController::create_instance_docente($request);
+//        $request->validate([
+//           'nombre' => 'required',
+//           'apellidoPat' => 'required',
+//            'apellidoMat' => 'required'
+//        ]);
+//        DocenteController::create_instance_docente($request);
+        try {
+            $request->validate([
+                'nombre' => 'required',
+                'apellidoPat' => 'required',
+                'apellidoMat' => 'required',
+            ]);
+
+            $docente_find = Docente::where('nombre', $request->nombre)
+                ->where('apellidoPat', $request->apellidoPat)
+                ->where('apellidoMat', $request->apellidoMat)
+                ->first();
+
+            if ($docente_find){
+                return redirect()->back()->withErrors('Este docente se encuentra registrado.');
+            }else {
+                DocenteController::create_instance_docente($request);
+            }
+            return Redirect::route('profile.edit');
+
+        }catch (\Exception $exception){
+            DB::rollBack();
+            return Redirect::route('profile.edit')->withErrors('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
+        }
     }
 
     public function delete_docente_desarrollo($id){

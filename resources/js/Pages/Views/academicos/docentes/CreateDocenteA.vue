@@ -43,12 +43,31 @@ const form = useForm({
     id_posgrado: null,
 });
 const sex = [{ value: 1, text: "M" }, { value: 2, text: "F" }];
+const phone_number_rules = [
+    value => {
+        if (value?.length <= 10 || value?.length <= 10) return true
 
+        return "Error en la logintud del número"
+    }
+];
 const snackbar = ref(false);
 const emit = defineEmits([
     'update:modelValue',
     'docenteAdd'
 ])
+const numeroTelefonoFormateado = ref('');
+const formatearTelefono = () => {
+    // Eliminar cualquier guión existente
+    form.telefono = form.telefono.replace(/-/g, '');
+
+    // Dividir el número de teléfono en segmentos y agregar guiones
+    const segmento1 = form.telefono.slice(0, 3);
+    const segmento2 = form.telefono.slice(3, 6);
+    const segmento3 = form.telefono.slice(6, 10);
+
+    // Crear el número de teléfono formateado
+    numeroTelefonoFormateado.value = `${segmento1}-${segmento2}-${segmento3}`;
+};
 const submit = () => {
     emit('docenteAdd', form)
 }
@@ -238,7 +257,8 @@ const submit = () => {
                                 <InputLabel for="telefono" value="Telefono celular" />
 
                                 <!-- <TextInput id="telefono" type="text" class="mt-1 rounded w-full" v-model="form.telefono" required /> -->
-                                <v-text-field v-model="form.telefono" ></v-text-field>
+                                <v-text-field v-model="form.telefono" :rules="phone_number_rules" @input="formatearTelefono" ></v-text-field>
+                                <v-text-field v-model="numeroTelefonoFormateado"></v-text-field>
                                 <!-- phone_number_rules -->
                                 <InputError class="mt-2" />
                             </div>

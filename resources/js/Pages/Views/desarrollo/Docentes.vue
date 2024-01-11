@@ -26,6 +26,7 @@ const props = defineProps({
     },
     carrera: Array,
     departamento: Array,
+    errors: null
 });
 
 const search = ref("");
@@ -77,7 +78,13 @@ async function submitDocente(form){
             },
             onError: () => {
                 loading.value = false
-                snackSuccessActivator()
+                if (props.errors[0]){
+                    color.value = 'error'
+                    message.value = props.errors
+                    snackErrorActivator()
+                }else {
+                    snackErrorActivator()
+                }
             }
         })
     }catch (e) {
@@ -201,7 +208,9 @@ onMounted(() => {
     v-model="snackbar"
     @update:modelValue="snackbar = $event"
     >
-
+        <template #mensaje>
+            {{$page.props.errors[0]}}
+        </template>
     </CustomSnackBar>
     <Loading v-model="loading" @update:modelValue="loading = $event">
         <v-fade-transition leave-absolute>

@@ -82,7 +82,7 @@ onMounted(() => {
                 </template>
                 <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                     <DocenteInfo :docente="docente" :carrera="carrera" :departamento="departamento"
-                    :puesto="puesto" :tipo_plaza="tipo_plaza" :posgrado="posgrado" class="max-w-xl"
+                    :puesto="puesto" :tipo_plaza="tipo_plaza" :posgrado="posgrado" class="max-w-xl" :auth="props.auth.user"
                     />
                 </div>
                 <template v-if="user.role === 1 || permiso_to_edit === true">

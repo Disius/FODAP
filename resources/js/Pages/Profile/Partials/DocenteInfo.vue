@@ -37,6 +37,7 @@ const props = defineProps({
     tipo_plaza: Array,
     puesto: Array,
     posgrado: Array,
+    auth: Object
 });
 const form = useForm({
     id: user.value.id,
@@ -78,7 +79,7 @@ const formatearTelefono = () => {
     numeroTelefonoFormateado.value = `${segmento1}-${segmento2}-${segmento3}`;
 };
 
-
+// console.log(props.auth.role)
 onMounted(() => {
     if (!props.docente) {
         return form
@@ -118,13 +119,15 @@ onMounted(() => {
                          closable
                          :model-value="alert"></v-alert>
             </div>
-            <div class="flex justify-center mt-3">
-                <v-alert type="warning" title="IMPORTANTE"
-                         text='Colocar RFC y CURP en caso de estar dado de alta en el sistema' variant="tonal"
-                         :model-value="alert"
-                            closable
-                ></v-alert>
-            </div>
+            <template v-if="props.auth.role === 4">
+                <div class="flex justify-center mt-3">
+                    <v-alert type="warning" title="IMPORTANTE"
+                             text='Colocar RFC y CURP en caso de estar dado de alta en el sistema' variant="tonal"
+                             :model-value="alert"
+                             closable
+                    ></v-alert>
+                </div>
+            </template>
         <form class="mt-6 space-y-6" @submit.prevent="submit">
             <div>
                 <InputLabel for="nombre" value="Nombre" />
@@ -147,44 +150,46 @@ onMounted(() => {
 
                 <InputError class="mt-2" />
             </div>
-            <div>
-                <InputLabel for="curp" value="CURP" />
+            <template v-if="props.auth.role === 4">
+                <div>
+                    <InputLabel for="curp" value="CURP" />
 
-                <!-- <TextInput
-                    id="CURP"
-                    type="text"
-                    class="mt-1 rounded w-full"
-                    v-model="form.curp"
-                    required
-                /> -->
-                <v-text-field v-model="form.curp" :rules="CURPValidator" required>
+                    <!-- <TextInput
+                        id="CURP"
+                        type="text"
+                        class="mt-1 rounded w-full"
+                        v-model="form.curp"
+                        required
+                    /> -->
+                    <v-text-field v-model="form.curp" :rules="CURPValidator" required>
 
-                </v-text-field>
+                    </v-text-field>
 
-                <InputError class="mt-2" />
-            </div>
-            <div>
-                <InputLabel for="rfc" value="RFC" />
+                    <InputError class="mt-2" />
+                </div>
+                <div>
+                    <InputLabel for="rfc" value="RFC" />
 
-                <!-- <TextInput
-                    id="RFC"
-                    type="text"
-                    class="mt-1 rounded w-full"
-                    v-model="form.rfc"
-                    required
-                /> -->
-                <v-text-field v-model="form.rfc" :rules="RFCValidator" required>
-                </v-text-field>
+                    <!-- <TextInput
+                        id="RFC"
+                        type="text"
+                        class="mt-1 rounded w-full"
+                        v-model="form.rfc"
+                        required
+                    /> -->
+                    <v-text-field v-model="form.rfc" :rules="RFCValidator" required>
+                    </v-text-field>
 
-                <InputError class="mt-2" />
-            </div>
-            <div>
-                <InputLabel for="sexo" value="Sexo" />
+                    <InputError class="mt-2" />
+                </div>
+                <div>
+                    <InputLabel for="sexo" value="Sexo" />
 
-                <v-select variant="solo" :items="sex" item-title="text" item-value="value" v-model="form.sexo">
+                    <v-select variant="solo" :items="sex" item-title="text" item-value="value" v-model="form.sexo">
 
-                </v-select>
-            </div>
+                    </v-select>
+                </div>
+            </template>
             <div>
                 <div class="grid grid-cols-2">
                     <div class="flex justify-start">
@@ -205,7 +210,7 @@ onMounted(() => {
                 </div>
 
                 <v-select variant="solo" :items="props.carrera" item-value="id" item-title="nameCarrera"
-                    v-model="form.carrera_id">
+                    v-model="form.carrera_id" disabled>
 
                 </v-select>
 
@@ -215,59 +220,61 @@ onMounted(() => {
                 <InputLabel for="departamento_adscrito" value="Departamento adscrito" />
 
                 <v-select variant="solo" :items="props.departamento" item-value="id" item-title="nameDepartamento"
-                    v-model="form.departamento_id">
+                    v-model="form.departamento_id" disabled>
 
                 </v-select>
 
                 <InputError class="mt-2" />
             </div>
-            <div>
-                <InputLabel for="puesto" value="Puesto" />
+            <template v-if="props.auth.role === 4">
+                <div>
+                    <InputLabel for="puesto" value="Puesto" />
 
-                <v-select variant="solo" :items="props.puesto" item-value="id" item-title="nombre" v-model="form.id_puesto">
+                    <v-select variant="solo" :items="props.puesto" item-value="id" item-title="nombre" v-model="form.id_puesto">
 
-                </v-select>
+                    </v-select>
 
-                <InputError class="mt-2" />
-            </div>
-            <div>
-                <InputLabel for="plaza" value="Plaza" />
+                    <InputError class="mt-2" />
+                </div>
+                <div>
+                    <InputLabel for="plaza" value="Plaza" />
 
-                <v-select variant="solo" :items="props.tipo_plaza" item-value="id" item-title="nombre"
-                    v-model="form.tipo_plaza">
+                    <v-select variant="solo" :items="props.tipo_plaza" item-value="id" item-title="nombre"
+                              v-model="form.tipo_plaza">
 
-                </v-select>
+                    </v-select>
 
-                <InputError class="mt-2" />
-            </div>
-            <div>
-                <v-alert v-model="alert" border="start" variant="tonal" closable close-label="Alerta" color="info"
-                    title="Alerta" class="mt-4">
-                    La licenciatura debe iniciar por mayusculas
-                </v-alert>
-                <InputLabel for="licenciatura" value="Licenciatura" class="mt-2" />
+                    <InputError class="mt-2" />
+                </div>
+                <div>
+                    <v-alert v-model="alert" border="start" variant="tonal" closable close-label="Alerta" color="info"
+                             title="Alerta" class="mt-4">
+                        La licenciatura debe iniciar por mayusculas
+                    </v-alert>
+                    <InputLabel for="licenciatura" value="Licenciatura" class="mt-2" />
 
-                <TextInput id="Licenciatura" type="text" class="mt-1 rounded w-full" v-model="form.licenciatura" required />
+                    <TextInput id="Licenciatura" type="text" class="mt-1 rounded w-full" v-model="form.licenciatura" required />
 
-                <InputError class="mt-2" />
-            </div>
-            <div>
-                <InputLabel for="posgrado" value="Ultimo grado de estudios" />
+                    <InputError class="mt-2" />
+                </div>
+                <div>
+                    <InputLabel for="posgrado" value="Ultimo grado de estudios" />
 
-                <v-select variant="solo" :items="props.posgrado" item-title="nombre" item-value="id"
-                    v-model="form.id_posgrado"></v-select>
+                    <v-select variant="solo" :items="props.posgrado" item-title="nombre" item-value="id"
+                              v-model="form.id_posgrado"></v-select>
 
-                <InputError class="mt-2" />
-            </div>
-            <div>
-                <InputLabel for="telefono" value="Telefono celular" />
+                    <InputError class="mt-2" />
+                </div>
+                <div>
+                    <InputLabel for="telefono" value="Telefono celular" />
 
-                <!-- <TextInput id="telefono" type="text" class="mt-1 rounded w-full" v-model="form.telefono" required /> -->
-                <v-text-field v-model="form.telefono" required :rules="phone_number_rules" @input="formatearTelefono" ></v-text-field>
-                <v-text-field v-model="numeroTelefonoFormateado" required ></v-text-field>
-                <!-- phone_number_rules -->
-                <InputError class="mt-2" />
-            </div>
+                    <!-- <TextInput id="telefono" type="text" class="mt-1 rounded w-full" v-model="form.telefono" required /> -->
+                    <v-text-field v-model="form.telefono" required :rules="phone_number_rules" @input="formatearTelefono" ></v-text-field>
+                    <v-text-field v-model="numeroTelefonoFormateado" required ></v-text-field>
+                    <!-- phone_number_rules -->
+                    <InputError class="mt-2" />
+                </div>
+            </template>
             <div class="flex items-center gap-4">
                 <PrimaryButton :disabled="form.processing">Guardar</PrimaryButton>
 

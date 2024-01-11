@@ -30,6 +30,7 @@ const emit = defineEmits([
             <v-btn color="white" text @click="emit('update:modelValue', false)">Cerrar</v-btn>
         </template>
         <slot name="reloadingbutton"/>
+        <slot name="mensaje"/>
     </v-snackbar>
 </template>
 

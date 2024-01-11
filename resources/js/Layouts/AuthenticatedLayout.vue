@@ -121,9 +121,9 @@ onMounted(() => {
                                     </NavLink>
                                 </template>
                                 <template v-if="store.this_facilitador === true">
-                                    <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">
-                                        Facilitador
-                                    </NavLink>
+                                        <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">
+                                            Facilitador
+                                        </NavLink>
                                 </template>
 <!--                                <template v-if="$page.props.facilitador === true">-->
 <!--                                    <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">-->
