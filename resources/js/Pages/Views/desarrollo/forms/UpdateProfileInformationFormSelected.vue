@@ -40,29 +40,12 @@ const form = useForm({
 });
 
 
-
+const emit = defineEmits([
+    'form:updateDocente'
+])
 
 const submit = () => {
-    form.patch(route('update.user', props.user.id), {
-        onSuccess: () => {
-            message.value = "Actualizado con exito"
-            color.value = "success"
-            timeout.value = 2000;
-            snackbarSuccess.value = true
-            setTimeout(() => {
-                snackbarSuccess.value = false;
-            }, timeout.value);
-        },
-        onError: () => {
-            message.value = "Error al actualizar este recurso"
-            color.value = "error"
-            timeout.value = 2000;
-            snackbarSuccess.value = true
-            setTimeout(() => {
-                snackbarSuccess.value = false;
-            }, timeout.value);
-        },
-    })
+    emit('form:updateDocente', form)
 }
 </script>
 

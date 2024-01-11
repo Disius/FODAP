@@ -278,15 +278,17 @@ class   GestionParametrosController extends Controller
         $request->validate([
             'docente_id' => ['required'],
             'departamento_id' => ['required'],
+            'role' => ['required']
         ]);
 
         $user = User::find($id);
-        $user->fill([
+        $user->update([
             'docente_id' => $request->docente_id,
-            'departamento_id' => $request->departamento_id
+            'departamento_id' => $request->departamento_id,
+            'role' => $request->role,
         ]);
 
-        Docente::where('id', $request->docente_id)->update([
+        Docente::where('id', $request->docente_id)->update([//actualiza el user id, es decir, que si cristina se logea
             'user_id' => $user->id
         ]);
         $rol = Role::where('id', $request->role)->first();

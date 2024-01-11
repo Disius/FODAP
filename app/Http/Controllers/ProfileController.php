@@ -131,7 +131,7 @@ class ProfileController extends Controller
 
     public function update_docente(Request $request, $id)
     {
-        $docente = AcademicosController::updated_instance_docente($request, $id);
+        $docente = DocenteController::updated_instance_docente($request, $id);
 
         $docente->save();
 

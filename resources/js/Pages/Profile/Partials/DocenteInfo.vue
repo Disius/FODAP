@@ -25,7 +25,7 @@ const RFCValidator = [
 ];
 const phone_number_rules = [
     value => {
-        if (value?.length <= 12 || value?.length <= 12) return true
+        if (value?.length <= 10 || value?.length <= 10) return true
 
         return "Error en la logintud del número"
     }
@@ -64,6 +64,19 @@ function submit() {
         form.put(route('update.docente', props.docente.id))
     }
 }
+const numeroTelefonoFormateado = ref('');
+const formatearTelefono = () => {
+    // Eliminar cualquier guión existente
+    form.telefono = form.telefono.replace(/-/g, '');
+
+    // Dividir el número de teléfono en segmentos y agregar guiones
+    const segmento1 = form.telefono.slice(0, 3);
+    const segmento2 = form.telefono.slice(3, 6);
+    const segmento3 = form.telefono.slice(6, 10);
+
+    // Crear el número de teléfono formateado
+    numeroTelefonoFormateado.value = `${segmento1}-${segmento2}-${segmento3}`;
+};
 
 
 onMounted(() => {
@@ -101,12 +114,13 @@ onMounted(() => {
         </header>
             <div class="flex justify-center">
                 <v-alert type="info" title="Atención"
-                         text='Nombres como apellidos deben comenzar con MAYÚSCULAS y seguido de MINUSCULAS' variant="tonal"
+                         text='Nombres como apellidos deben comenzar con MAYÚSCULAS y seguido de MINUSCULAS.' variant="tonal"
+                         closable
                          :model-value="alert"></v-alert>
             </div>
             <div class="flex justify-center mt-3">
-                <v-alert type="warning" title="Atención"
-                         text='Importante colocar RFC y CURP en caso de estar dado de alta en el sistema' variant="tonal"
+                <v-alert type="warning" title="IMPORTANTE"
+                         text='Colocar RFC y CURP en caso de estar dado de alta en el sistema' variant="tonal"
                          :model-value="alert"
                             closable
                 ></v-alert>
@@ -143,7 +157,7 @@ onMounted(() => {
                     v-model="form.curp"
                     required
                 /> -->
-                <v-text-field v-model="form.curp" :rules="CURPValidator">
+                <v-text-field v-model="form.curp" :rules="CURPValidator" required>
 
                 </v-text-field>
 
@@ -159,7 +173,7 @@ onMounted(() => {
                     v-model="form.rfc"
                     required
                 /> -->
-                <v-text-field v-model="form.rfc" :rules="RFCValidator">
+                <v-text-field v-model="form.rfc" :rules="RFCValidator" required>
                 </v-text-field>
 
                 <InputError class="mt-2" />
@@ -174,7 +188,7 @@ onMounted(() => {
             <div>
                 <div class="grid grid-cols-2">
                     <div class="flex justify-start">
-                        <InputLabel for="carrera_adscrito" value="Carrera adscrito" />
+                        <InputLabel for="carrera_adscrito" value="Licenciatura en la que imparte" />
                     </div>
                     <div class="flex justify-center mb-3">
                         <v-tooltip location="right">
@@ -249,7 +263,8 @@ onMounted(() => {
                 <InputLabel for="telefono" value="Telefono celular" />
 
                 <!-- <TextInput id="telefono" type="text" class="mt-1 rounded w-full" v-model="form.telefono" required /> -->
-                <v-text-field v-model="form.telefono" required :rules="phone_number_rules"></v-text-field>
+                <v-text-field v-model="form.telefono" required :rules="phone_number_rules" @input="formatearTelefono" ></v-text-field>
+                <v-text-field v-model="numeroTelefonoFormateado" required ></v-text-field>
                 <!-- phone_number_rules -->
                 <InputError class="mt-2" />
             </div>
