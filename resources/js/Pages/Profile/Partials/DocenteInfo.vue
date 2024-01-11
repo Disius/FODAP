@@ -237,7 +237,7 @@ onMounted(() => {
                 </template>
                 <template v-else>
                     <v-select variant="solo" :items="props.departamento" item-value="id" item-title="nameDepartamento"
-                              v-model="form.departamento_id" disabled>
+                              v-model="form.departamento_id">
 
                     </v-select>
                 </template>
