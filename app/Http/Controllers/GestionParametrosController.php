@@ -288,9 +288,9 @@ class   GestionParametrosController extends Controller
             'role' => $request->role,
         ]);
 
-        Docente::where('id', $request->docente_id)->update([//actualiza el user id, es decir, que si cristina se logea
-            'user_id' => $user->id
-        ]);
+//        Docente::where('id', $request->docente_id)->update([//actualiza el user id, es decir, que si cristina se logea
+//            'user_id' => $user->id
+//        ]);
         $rol = Role::where('id', $request->role)->first();
         $user->syncRoles([]);
         $user->assignRole($rol->name);

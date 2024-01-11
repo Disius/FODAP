@@ -98,8 +98,6 @@ class ProfileController extends Controller
             $docente_find = Docente::where('nombre', $request->nombre)
                 ->where('apellidoPat', $request->apellidoPat)
                 ->where('apellidoMat', $request->apellidoMat)
-                ->where('curp', $request->curp)
-                ->where('rfc', $request->rfc)
                 ->first();
 
             if ($docente_find){

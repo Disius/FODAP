@@ -32,7 +32,7 @@ function error_form() {
     timeout.value = 2000;
     snackbar.value = true
     setTimeout(() => {
-        snackbarSuccess.value = false;
+        snackbar.value = false;
     }, timeout.value);
 }
 
