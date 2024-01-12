@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import {
+    curso_data_get,
     cursos_academicos,
     cursos_desarrollo,
     inscritos_get,
@@ -15,6 +16,8 @@ export const Curso = defineStore('Curso', {
             inscritos_desarrollo: [],
             inscritos_academicos: [],
             inscritros_facilitador: [],
+
+            curso_info: {},
         }
     },
     getters: {
@@ -49,6 +52,9 @@ export const Curso = defineStore('Curso', {
         },
         inscritos_calificacion(state){
             return state.inscritos_desarrollo.every(inscrito => inscrito.calificacion !== null);
+        },
+        curso_Info(state){
+            return state.curso_info
         }
     },
     actions: {
@@ -117,5 +123,14 @@ export const Curso = defineStore('Curso', {
         curso_aceptado_update(curso){
             this.academicos_cursos.unshift(curso)
         },
+
+        infoCourse(id){
+            curso_data_get(id).then(res =>{
+                console.log(res)
+                this.curso_info = res
+            }).catch(err =>
+            console.log(err.data.response)
+            )
+        }
     }
 })

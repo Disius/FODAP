@@ -62,7 +62,7 @@ class DocenteController extends Controller
     public function misCursos(){
         CoursesController::state_curso();
 
-        $docente = Docente::with('inscrito', 'calificacion_docente')->where('id', '=', auth()->user()->docente_id)->first();
+        $docente = Docente::with('inscrito', 'calificacion_docente', )->where('id', '=', auth()->user()->docente_id)->first();
 
         $misCursos = DB::table('inscripcion')
             ->join('deteccion_necesidades', 'inscripcion.curso_id', '=', 'deteccion_necesidades.id')

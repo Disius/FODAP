@@ -1,11 +1,14 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {Head, router} from "@inertiajs/vue3";
 import TablaMisCursoDocente from "@/Pages/Views/cursos/tablas/TablaMisCursoDocente.vue";
 import NavLink from "@/Components/NavLink.vue";
 import CustomSnackBar from "@/Components/CustomSnackBar.vue";
+import InfoDialog from "@/Components/InfoDialog.vue";
+import {Curso} from "@/store/curso.js";
 
+const store = Curso()
 const props = defineProps({
     docente: Object,
     auth: Object,
@@ -13,29 +16,40 @@ const props = defineProps({
         type: Array
     }
 });
-
+let curso_selected = ref({})
+const dialogInfo = ref(false)
 const search = ref()
 const color = ref("")
 const message = ref("")
 const snackbar = ref(false)
 const timeout = ref(0)
+const id_ref = ref(null)
 const snackEventActivator = () => {
     snackbar.value = true;
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
-    timeout.value = 8000
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -58,6 +72,7 @@ onMounted(() => {
         snackEventActivator()
     })
 
+    // id_ref.value !== null ? store.get_curso_info(id_ref.value.id) : 0
 });
 
 const reloadPage = () => {
@@ -65,6 +80,15 @@ const reloadPage = () => {
     snackbar.value = false
 }
 
+function openDialog(curso){
+    curso_selected.value = curso
+    dialogInfo.value = true
+}
+watch(() => curso_selected.value, (newID) => {
+    id_ref.value = newID
+
+    store.infoCourse(id_ref.value.id)
+});
 </script>
 
 <template>
@@ -144,17 +168,18 @@ const reloadPage = () => {
                                                             </v-chip>
                                                         </template>
                                                     </div>
-<!--                                                    <NavLink :href="route('index.desarrollo.inscritos', item.raw.id)" type="button" as="button">-->
-<!--                                                        <v-btn-->
-<!--                                                            border-->
-<!--                                                            flat-->
-<!--                                                            size="small"-->
-<!--                                                            class="text-none"-->
-<!--                                                            text="Ver"-->
-<!--                                                            prepend-icon="mdi-eye-arrow-right-outline"-->
-<!--                                                        >-->
-<!--                                                        </v-btn>-->
-<!--                                                    </NavLink>-->
+
+                                                        <v-btn
+                                                            border
+                                                            flat
+                                                            size="large"
+                                                            class="text-none"
+                                                            text="Ver"
+                                                            prepend-icon="mdi-eye-arrow-right-outline"
+                                                            @click="openDialog(item.raw)"
+                                                        >
+                                                        </v-btn>
+
                                                 </div>
                                             </v-card>
                                         </v-col>
@@ -195,6 +220,7 @@ const reloadPage = () => {
                 </div>
             </template>
         </CustomSnackBar>
+        <InfoDialog v-model="dialogInfo" :curso="curso_selected" @update:modelValue="dialogInfo = $event"></InfoDialog>
     </AuthenticatedLayout>
 </template>
 

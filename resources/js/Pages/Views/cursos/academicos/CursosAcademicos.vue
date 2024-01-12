@@ -109,7 +109,7 @@ onMounted(() => {
                                         <v-btn
                                             border
                                             flat
-                                            size="small"
+                                            size="large"
                                             class="text-none"
                                             text="Ver"
                                             prepend-icon="mdi-eye-arrow-right-outline"

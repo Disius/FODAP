@@ -28,19 +28,28 @@ const snackEventActivator = () => {
     snackbar.value = true;
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
-    timeout.value = 8000
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 
 
@@ -104,7 +113,7 @@ onMounted(() => {
                                            md="6"
                                     >
                                         <v-card class="pb-3" border flat width="600">
-                                            <v-list-item class="mb-2" :subtitle="item.raw.asignaturaFA">
+                                            <v-list-item class="mb-2 text-black font-weight-black" :subtitle="item.raw.asignaturaFA">
                                                 <template v-slot:title>
                                                     <strong class="text-h6 mb-2">
                                                         {{item.raw.nombreCurso}}
@@ -138,7 +147,7 @@ onMounted(() => {
                                                     </div>
                                                 </div>
                                                 <div v-else>
-                                                    <primary-button @click="form.post(route('inscripcion.docente', curso.id), {
+                                                    <primary-button @click="form.post(route('inscripcion.docente', item.raw.id), {
                                                         onSuccess: () => {
                                                            snackSuccessActivator
                                                         }

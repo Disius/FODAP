@@ -102,3 +102,17 @@ export const notifications_number = () => {
         })
     })
 }
+export const curso_data_get = (id) => {
+    return new Promise((response, reject) => {
+        axios.get('/api/v1/curso-info', {
+            params: {
+                id: id
+            }
+        }).then(res =>{
+            // console.log(res)
+            response(res.data.curso)
+        }).catch(error => {
+            reject(error)
+        })
+    })
+}

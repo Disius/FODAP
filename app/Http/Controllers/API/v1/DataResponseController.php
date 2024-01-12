@@ -8,6 +8,7 @@ use App\Models\ConfigDates;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
 use Carbon\Carbon;
+use Illuminate\Database\Console\Migrations\ResetCommand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -126,5 +127,13 @@ class DataResponseController extends Controller
                 'fechas' => $fechas
             ]);
         }
+    }
+
+    public function curso_data(Request $request){
+        $curso = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'jefe', 'departamento', 'lugar')->find($request->id);
+
+        return response()->json([
+                'curso' => $curso,
+        ]);
     }
 }

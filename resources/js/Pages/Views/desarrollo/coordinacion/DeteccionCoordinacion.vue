@@ -72,19 +72,28 @@ const snackEventActivator = () => {
     snackbar.value = true;
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
-    timeout.value = 8000
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
     message.value = "No se pudo procesar la solicitud"
     color.value = "error"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
     timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
 };
 const reloadPage = () => {
     router.reload();
@@ -167,7 +176,7 @@ onMounted(() => {
                                         <v-btn
                                             border
                                             flat
-                                            size="small"
+                                            size="large"
                                             class="text-none"
                                             text="Ver"
                                             prepend-icon="mdi-eye-arrow-right-outline"

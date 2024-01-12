@@ -35,5 +35,6 @@ Route::middleware('auth')->prefix('v1')->group(function () {
     Route::get('/detecciones-academicos', [DataResponseController::class, 'deteccion_academicos'])->name('v1.detecciones.academicos');
     Route::get('/cursos-academicos', [DataResponseController::class, 'cursos_academicos'])->name('v1.cursos.academicos');
     Route::get('/notifications-catch', [NotificationController::class, 'notifications_api'])->name('v1.notificaciones');
+    Route::get('/curso-info', [DataResponseController::class, 'curso_data'])->name('v1.cursoInfo');
 });
 

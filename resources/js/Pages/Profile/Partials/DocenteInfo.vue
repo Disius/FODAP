@@ -288,7 +288,7 @@ onMounted(() => {
 
                     <!-- <TextInput id="telefono" type="text" class="mt-1 rounded w-full" v-model="form.telefono" required /> -->
                     <v-text-field v-model="form.telefono" required :rules="phone_number_rules" @input="formatearTelefono" ></v-text-field>
-                    <v-text-field v-model="numeroTelefonoFormateado" required ></v-text-field>
+                    <v-text-field v-model="numeroTelefonoFormateado" ></v-text-field>
                     <!-- phone_number_rules -->
                     <InputError class="mt-2" />
                 </div>
