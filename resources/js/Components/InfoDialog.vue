@@ -78,12 +78,22 @@ onMounted(() => {
 <!--                        <span>A este curso no se le ha asignado una sala</span>-->
 <!--                    </template>-->
 <!--                </div>-->
-                <div class="flow-root ... pt-5">
-                    <strong>Facilitador(es): </strong>
-                    <div v-for="facilitador in store.curso_Info.deteccion_facilitador">
-                        <span>{{facilitador.nombre}}  {{facilitador.apellidoPat}}  {{facilitador.apellidoMat}}</span>
+                <template v-if="store.curso_Info.deteccion_facilitador.length !== 0">
+                    <div class="flow-root ... pt-5">
+                        <strong>Facilitador(es): </strong>
+                        <div v-for="facilitador in store.curso_Info.deteccion_facilitador">
+                            <span>{{facilitador.nombre}}  {{facilitador.apellidoPat}}  {{facilitador.apellidoMat}}</span>
+                        </div>
                     </div>
-                </div>
+                </template>
+                <template v-if="store.curso_Info.facilitador_externo !== null">
+                    <div class="flow-root ... pt-5">
+                        <strong>Facilitador(es): </strong>
+<!--                        <div v-for="facilitador in store.curso_Info.deteccion_facilitador">-->
+                            <span>{{store.curso_Info.facilitador_externo}}</span>
+<!--                        </div>-->
+                    </div>
+                </template>
 <!--                <template v-if="props.curso.facilitador_externo != null">-->
 <!--                    <div class="flow-root ... pt-5">-->
 <!--                        <strong>Facilitador externo: </strong>-->

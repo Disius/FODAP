@@ -131,6 +131,7 @@ class CoursesController extends Controller
 
     public static function state_curso()
     {
+        date_default_timezone_set('America/Mexico_City');
         $cursos = DeteccionNecesidades::where('aceptado', 1)->get();
         $now = Carbon::now();
 
