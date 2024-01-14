@@ -86,7 +86,7 @@ class DesarrolloController extends Controller
     }
 
     public function desarrollo_cursos(){
-
+        date_default_timezone_set('America/Mexico_City');
         CoursesController::state_curso();
 
 
@@ -390,11 +390,11 @@ class DesarrolloController extends Controller
             }else {
                 DocenteController::create_instance_docente($request);
             }
-            return Redirect::route('profile.edit');
+            return Redirect::route('index.docentes');
 
         }catch (\Exception $exception){
             DB::rollBack();
-            return Redirect::route('profile.edit')->withErrors('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
+            return Redirect::route('index.docentes')->withErrors('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
         }
     }
 

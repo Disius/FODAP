@@ -427,4 +427,15 @@ class   GestionParametrosController extends Controller
 
         $instituto->save();
     }
+
+    public function upLogo(Request $request){
+        $request->file('file')->storeAs('/img/', 'logo.jpg', 'public');
+    }
+    public function upLogo_tecnm(Request $request){
+        $request->file('file')->storeAs('/img/', 'logoTecnm.jpg', 'public');
+    }
+    public function upLogo_educacion(Request $request): void
+    {
+        $request->file('file')->storeAs('/img/', 'educacion.jpg', 'public');
+    }
 }

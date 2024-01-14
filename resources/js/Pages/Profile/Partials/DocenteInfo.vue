@@ -9,6 +9,11 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 
 const user = computed(() => usePage().props.auth.user);
 const alert = ref(true)
+const snackbar = ref(false);
+const timeout = ref(0)
+const message = ref("");
+const color = ref("")
+
 const CURPValidator = [
     value => {
         if (value?.length <= 18 && /^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$/.test(value)) return true
@@ -30,6 +35,25 @@ const phone_number_rules = [
         return "Error en la logintud del número"
     }
 ];
+
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
+};
 const props = defineProps({
     docente: Object,
     carrera: Array,
@@ -57,14 +81,25 @@ const form = useForm({
 });
 const sex = [{ value: 1, text: "MASCULINO" }, { value: 2, text: "FEMENINO" }];
 
-// function jefeA(){
-//     return props.auth.role !== 4;
-// }
 function submit() {
     if (!props.docente) {
-        form.post(route('docente.create'))
+        form.post(route('docente.create'), {
+            onSuccess: () => {
+                snackSuccessActivator()
+            },
+            onError: () => {
+                snackErrorActivator()
+            }
+        })
     } else {
-        form.put(route('update.docente', props.docente.id))
+        form.put(route('update.docente', props.docente.id), {
+            onSuccess: () => {
+                snackSuccessActivator()
+            },
+            onError: () => {
+                snackErrorActivator()
+            }
+        })
     }
 }
 const numeroTelefonoFormateado = ref('');

@@ -21,6 +21,19 @@ const nameCards = ref([
     { flex: 4, name: "Jefes Academicos", user_rol: 3 },
     { flex: 4, name: "Docentes", user_rol: 4 },
 ]);
+const selectedCardIndex = ref(null);
+
+const selectCard = (index) => {
+    selectedCardIndex.value = index;
+};
+
+const isSelected = (index) => {
+    return selectedCardIndex.value === index;
+};
+
+const mouseLeave = () => {
+    selectedCardIndex.value = null
+}
 
 onMounted(() => {
 
@@ -29,11 +42,17 @@ onMounted(() => {
 
 <template>
     <WelcomeLayout>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div v-for="(card, index) in nameCards" :key="index" class="p-6 bg-white rounded-md shadow-md">
-                <h2 class="text-xl font-semibold mb-2 text-center">{{ card.name }}</h2>
-<!--                <p class="text-gray-700">{{ card.description }}</p>-->
-<!--                <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">Ver Detalles</button>-->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mt-4 mb-4">
+            <div v-for="(card, index) in nameCards" :key="index" :class="['p-8', isSelected(index) ? 'bg-blue-900 text-white' : 'bg-white', 'rounded-full', 'shadow-2xl'
+            , 'lg:h-64', 'flex', 'flex-col', 'justify-center',
+            ]"
+            @mouseover="selectCard(index)" @mouseleave="mouseLeave"
+            >
+                <Link href="/login" as="button" :data="{role: card.user_rol}">
+                    <div class="flex items-center justify-center">
+                        <h2 class="text-xl font-semibold mb-2 text-center lg:text-center">{{ card.name }}</h2>
+                    </div>
+                </Link>
             </div>
         </div>
     </WelcomeLayout>

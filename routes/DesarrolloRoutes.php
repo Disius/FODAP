@@ -98,5 +98,8 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::post('/subir/acta-calificaciones', [GestionParametrosController::class, 'subir_img_acta'])->name('subir.actacalificaciones');
     Route::post('/subir/constancia', [GestionParametrosController::class, 'subir_img_constancia'])->name('subir.constancia');
     Route::post('/subir/constancia-img-2', [GestionParametrosController::class, 'subir_img_constancia_2'])->name('subir.constancia.2');
+    Route::post('/subir/logotec', [GestionParametrosController::class, 'upLogo'])->name('subir.logoTec');
+    Route::post('/subir/logotecnm', [GestionParametrosController::class, 'upLogo_tecnm'])->name('subir.logoTecnm');
+    Route::post('/subir/logoeducacion', [GestionParametrosController::class, 'upLogo_educacion'])->name('subir.logoEducacion');
 
 });

@@ -87,6 +87,15 @@ const form_file_constancia_img = useForm({
 const form_file_constancia_img_2 = useForm({
     file: null,
 });
+const img_logo_ittg = useForm({
+    file: null,
+});
+const img_logo_tecnm = useForm({
+    file: null,
+});
+const img_logo_educacion = useForm({
+    file: null,
+});
 
 function submit(){
     form.post(route('config.dates'), {
@@ -141,6 +150,42 @@ const upload_constancia_2 = () => {
         forceFormData: true,
         onSuccess: () => {
             form_file_constancia_img_2.reset()
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
+const upload_logotec = () => {
+    img_logo_ittg.post(route('subir.logoTec'), {
+        forceFormData: true,
+        onSuccess: () => {
+            img_logo_ittg.reset()
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
+const upload_tecnm = () => {
+    img_logo_tecnm.post(route('subir.logoTecnm'), {
+        forceFormData: true,
+        onSuccess: () => {
+            img_logo_tecnm.reset()
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
+const upload_educacion = () => {
+    img_logo_educacion.post(route('subir.logoEducacion'), {
+        forceFormData: true,
+        onSuccess: () => {
+            img_logo_educacion.reset()
             snackSuccessActivator()
         },
         onError: () => {
@@ -401,7 +446,58 @@ onMounted(() => {
                     </div>
                 </form>
             </div>
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                <header>
+                    <h2 class="text-lg font-medium text-gray-900">Imagenes del sistema</h2>
+                    <v-row dense justify="center" class="pa-6">
+                        <v-col dense align="center" cols="6">
+                            <div class="d-flex justify-start mb-5">
+                                <v-tooltip location="right">
+                                    <template v-slot:activator="{ props }">
+                                        <v-btn icon color="blue-darken-1" v-bind="props" size="normal">
+                                            <v-icon>
+                                                mdi-help
+                                            </v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Los archivos deben ser JPG</span>
+                                </v-tooltip>
+                            </div>
+                            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                                <div class="grid grid-cols-1">
+                                    <div class="flex justify-center">
+                                        <v-file-input label="Ingresar logo del Instituto Tecnológico" variant="solo" @input="img_logo_ittg.file = $event.target.files[0]"></v-file-input>
+                                        <div class="flex justify-end mt-2 ml-5 w-11">
+                                            <v-btn @click="upload_logotec"  type="submit" color="blue-darken-1" width="500" icon="mdi-content-save-check-outline"></v-btn>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1">
+                                    <div class="flex justify-center">
+                                        <v-file-input label="Ingresar logo del Tecnm" variant="solo" @input="img_logo_tecnm.file = $event.target.files[0]"></v-file-input>
+                                        <div class="flex justify-end mt-2 ml-5 w-11">
+                                            <v-btn @click="upload_tecnm"  color="blue-darken-1" width="500" icon="mdi-content-save-check-outline"></v-btn>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1">
+                                    <div class="flex justify-center">
+                                        <v-file-input label="Ingresar logo de la SEP" variant="solo" @input="img_logo_educacion.file = $event.target.files[0]"></v-file-input>
+                                        <div class="flex justify-end mt-2 ml-5 w-11">
+                                            <v-btn @click="upload_educacion"  color="blue-darken-1" width="500" icon="mdi-content-save-check-outline"></v-btn>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </header>
+                <v-row dense justify="center">
+
+                </v-row>
+            </div>
         </div>
+
         <CustomSnackBar :message="message" :color="color" :timeout="timeout" v-model="snackbar" @update:modelValue="snackbar = $event"></CustomSnackBar>
     </AuthenticatedLayout>
 </template>

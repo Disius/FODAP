@@ -19,6 +19,7 @@ class AcademicosController extends Controller
 {
     public function index()
     {
+        date_default_timezone_set('America/Mexico_City');
         CoursesController::state_curso();
 
         $detecciones = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'departamento', 'jefe'])
@@ -101,6 +102,7 @@ class AcademicosController extends Controller
     public function index_cursos_academico()
     {
         //Actualiza el estado del curso
+        date_default_timezone_set('America/Mexico_City');
         CoursesController::state_curso();
 
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'departamento', 'jefe'])
@@ -123,6 +125,7 @@ class AcademicosController extends Controller
 
     public function index_cursos_inscritos($id)
     {
+        date_default_timezone_set('America/Mexico_City');
         CoursesController::state_curso();
 
 

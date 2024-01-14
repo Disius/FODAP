@@ -25,6 +25,7 @@ class DocenteController extends Controller
     public function index_cursos(){
 
         //Actualiza el estado del curso
+        date_default_timezone_set('America/Mexico_City');
         CoursesController::state_curso();
 
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
@@ -43,6 +44,7 @@ class DocenteController extends Controller
     }
 
     public function index_registros_docente(){
+        date_default_timezone_set('America/Mexico_City');
         CoursesController::state_curso();
         $docente = Docente::with('inscrito')->where('id', '=', auth()->user()->docente_id)->first();
         return Inertia::render('Views/cursos/docentes/RegistrosIndex', [
@@ -60,6 +62,7 @@ class DocenteController extends Controller
     }
 
     public function misCursos(){
+        date_default_timezone_set('America/Mexico_City');
         CoursesController::state_curso();
 
         $docente = Docente::with('inscrito', 'calificacion_docente', )->where('id', '=', auth()->user()->docente_id)->first();
