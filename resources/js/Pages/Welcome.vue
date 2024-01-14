@@ -2,6 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import {onMounted, ref} from "vue";
 import NavLink from "@/Components/NavLink.vue";
+import WelcomeLayout from "@/Layouts/WelcomeLayout.vue";
 
 defineProps({
     canLogin: {
@@ -27,61 +28,15 @@ onMounted(() => {
 </script>
 
 <template>
-    <v-container class="pt-5">
-        <v-row justify="center" class="pt-9 mt-9">
-            <v-col
-            v-for="card in nameCards"
-            :cols="card.flex"
-            class="mt-12 pt-12"
-            lg="6"
-            md="7"
-            sm="8"
-            xs="8"
-            xl="4"
-            >
-                <Link :href="route('login')"
-                      as="card"
-                      type="card"
-                      :data="{ role: card.user_rol }">
-                    <v-hover>
-                        <template v-slot:default="{ isHovering, props }">
-                            <v-card
-                                v-bind="props"
-                                :color="isHovering ? 'light-blue-darken-4' : undefined"
-                                height="250"
-                                width="500"
-                                class="d-flex justify-center align-center"
-                                link
-                                type="card"
-                                elevation="10"
-                            >
-                                <span class="text-h6 text-center">{{card.name}}</span>
-                            </v-card>
-                        </template>
-                    </v-hover>
-                </Link>
-            </v-col>
-        </v-row>
-    </v-container>
-    <template v-if="can_install">
-        <div class="grid grid-cols-2">
-            <div class="flex justify-center mt-10 ml-16">
-                <v-alert
-                    color="info"
-                    icon="$info"
-                >
-                    <p class="text-xl">Presiona instalar antes de iniciar sesión o usar el sistema</p>
-                </v-alert>
-            </div>
-            <div class="flex justify-start ml-10 mt-10">
-                <NavLink :href="route('login')" as="button" :data="{ administrator: true }">
-                    <v-btn size="x-large" color="info">
-                        Instalar
-                    </v-btn>
-                </NavLink>
+    <WelcomeLayout>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div v-for="(card, index) in nameCards" :key="index" class="p-6 bg-white rounded-md shadow-md">
+                <h2 class="text-xl font-semibold mb-2 text-center">{{ card.name }}</h2>
+<!--                <p class="text-gray-700">{{ card.description }}</p>-->
+<!--                <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md">Ver Detalles</button>-->
             </div>
         </div>
-    </template>
+    </WelcomeLayout>
 </template>
 
 <style>

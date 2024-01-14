@@ -73,11 +73,8 @@ const props = defineProps({
                                             </div>
                                             <div class="d-flex justify-space-between px-4">
                                                 <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-                                                    <template v-if="item.raw.estado === 0">
-                                                        <strong class="text-truncate">Curso por realizar</strong>
-                                                    </template>
-                                                    <template v-else>
-                                                        <strong class="text-truncate">En curso</strong>
+                                                    <template v-if="item.raw.estado === 2">
+                                                        <strong class="text-truncate">Finalizado</strong>
                                                     </template>
                                                 </div>
                                                 <NavLink :href="route('show.inscritos.academicos', item.raw.id)" type="button" as="button">

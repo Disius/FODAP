@@ -55,7 +55,7 @@ const form = useForm({
     licenciatura: "",
     id_posgrado: null,
 });
-const sex = [{ value: 1, text: "M" }, { value: 2, text: "F" }];
+const sex = [{ value: 1, text: "MASCULINO" }, { value: 2, text: "FEMENINO" }];
 
 // function jefeA(){
 //     return props.auth.role !== 4;
