@@ -134,19 +134,19 @@ onMounted(() => {
                                                 <div class="d-flex align-center text-caption text-medium-emphasis me-1">
 
                                                 </div>
-                                                <div v-if="item.raw.docente_inscrito.length > 0">
-                                                    <div v-for="inscrito in item.raw.docente_inscrito">
-                                                        <div v-if="inscrito.id === props.auth.user.docente_id">
-                                                            <v-alert
-                                                                variant="outlined"
-                                                                color="success"
-                                                            >
-                                                                <strong class=""> Inscrito </strong>
-                                                            </v-alert>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div v-else>
+<!--                                                <div v-if="item.raw.docente_inscrito.length > 0">-->
+<!--                                                    <div v-for="inscrito in item.raw.docente_inscrito">-->
+<!--                                                        <div v-if="inscrito.id === props.auth.user.docente_id">-->
+<!--                                                            <v-alert-->
+<!--                                                                variant="outlined"-->
+<!--                                                                color="success"-->
+<!--                                                            >-->
+<!--                                                                <strong class=""> Inscrito </strong>-->
+<!--                                                            </v-alert>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+                                                <div>
                                                     <primary-button @click="form.post(route('inscripcion.docente', item.raw.id), {
                                                         onSuccess: () => {
                                                            snackSuccessActivator
