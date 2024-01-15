@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const user = computed(() => usePage().props.auth.user);
 const alert = ref(true)
@@ -335,6 +336,7 @@ onMounted(() => {
                     <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Guardado.</p>
                 </Transition>
             </div>
+            <CustomSnackBar v-model="snackbar" :message="message" :color="color" :timeout="timeout" @update:modelValue="snackbar = $event"></CustomSnackBar>
         </form>
     </section>
 </template>
