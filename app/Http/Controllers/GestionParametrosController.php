@@ -256,8 +256,6 @@ class   GestionParametrosController extends Controller
         $user = User::find($request->id);
 
         $user->delete();
-        $user->docente->delete();
-
     }
 
     public function edit_users($id){
