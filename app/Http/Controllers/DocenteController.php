@@ -54,6 +54,9 @@ class DocenteController extends Controller
 
 
     public function inscripcion_docente(Request $request, $id){
+        $request->validate([
+            'id_docente' => 'required'
+        ]);
         $deteccion = DeteccionNecesidades::find($id);
         $deteccion->docente_inscrito()->attach($request->input('id_docente'));
         $syncDocente = DesarrolloController::consult_to_sync($id, $request->id_docente);

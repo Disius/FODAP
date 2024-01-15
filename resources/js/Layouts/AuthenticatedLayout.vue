@@ -258,7 +258,7 @@ onMounted(() => {
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            Tablero
                         </ResponsiveNavLink>
                     </div>
 
@@ -272,6 +272,66 @@ onMounted(() => {
                         </div>
 
                         <div class="mt-3 space-y-1">
+                            <template v-if="user.role === 1 || user.role === 2">
+                                <ResponsiveNavLink :href="route('parametros.edit')" :active="route().current('parametros.edit')">
+                                    Configuración
+                                </ResponsiveNavLink>
+                            </template>
+                            <template v-if="user.role === 1 || user.role === 2">
+                                <ResponsiveNavLink :href="route('index.docentes')" :active="route().current('index.docentes')">
+                                    Docentes
+                                </ResponsiveNavLink>
+                            </template>
+                            <template v-if="user.role === 3">
+                                <v-tooltip text="Deteccion de Necesidades">
+                                    <template v-slot:activator="{ props }">
+                                        <!--                                                <v-btn v-bind="props">Tooltip</v-btn>-->
+                                        <ResponsiveNavLink :href="route('detecciones.index')" :active="route().current('detecciones.index')" v-bind="props">
+                                            DN
+                                        </ResponsiveNavLink>
+                                    </template>
+                                </v-tooltip>
+                            </template>
+                            <template v-if="user.role === 3">
+                                <ResponsiveNavLink :href="route('index.cursos.academicos')" :active="route().current('index.cursos.academicos')">
+                                    Cursos
+                                </ResponsiveNavLink>
+                            </template>
+                            <template v-if="user.role === 3">
+                                <ResponsiveNavLink :href="route('index.docentes.academicos')" :active="route().current('index.docentes.academicos')">
+                                    Docentes
+                                </ResponsiveNavLink>
+                            </template>
+                            <template v-if="user.role === 1 || user.role === 2">
+                                <v-tooltip text="Deteccion de Necesidades">
+                                    <template v-slot:activator="{ props }">
+                                        <!--                                                <v-btn v-bind="props">Tooltip</v-btn>-->
+                                        <ResponsiveNavLink :href="route('index.detecciones')" :active="route().current('index.detecciones')" v-bind="props">
+                                            DN
+                                        </ResponsiveNavLink>
+                                    </template>
+                                </v-tooltip>
+                            </template>
+                            <template v-if="user.role === 1 || user.role === 2">
+                                <ResponsiveNavLink :href="route('index.desarrollo.cursos')" :active="route().current('index.desarrollo.cursos')">
+                                    Cursos
+                                </ResponsiveNavLink>
+                            </template>
+                            <template v-if="user.role === 4">
+                                <ResponsiveNavLink :href="route('index.cursos.docentes')" :active="route().current('index.cursos.docentes')">
+                                    Cursos
+                                </ResponsiveNavLink>
+                            </template>
+                            <template v-if="user.role === 4">
+                                <ResponsiveNavLink :href="route('index.misCursos')" :active="route().current('index.misCursos')">
+                                    Mis Cursos
+                                </ResponsiveNavLink>
+                            </template>
+                            <template v-if="store.this_facilitador === true">
+                                <ResponsiveNavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">
+                                    Facilitador
+                                </ResponsiveNavLink>
+                            </template>
                             <ResponsiveNavLink :href="route('profile.edit')"> Perfil </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Cerrar Sesión

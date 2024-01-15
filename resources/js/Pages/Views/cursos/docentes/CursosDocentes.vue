@@ -4,6 +4,7 @@ import {computed, onMounted, ref} from "vue";
 import {Head, useForm} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {FODAPStore} from "@/store/server.js";
+import NavLink from "@/Components/NavLink.vue";
 
 
 const store = FODAPStore();
@@ -52,6 +53,16 @@ const snackSuccessActivator = () => {
     }, timeout.value)
 };
 
+const submit = (item) => {
+    form.post(route('inscripcion.docente', item), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -86,80 +97,62 @@ onMounted(() => {
         <template v-if="props.cursos.length !== 0">
             <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <v-data-iterator
+                    <v-virtual-scroll
                         :items="props.cursos"
-                        item-value="nombreCurso"
-                        :search="search"
+                        height="300"
+                        item-height="50"
+                        class="mt-4"
+
                     >
-                        <template v-slot:header>
-                            <v-text-field
-                                v-model="search"
-                                clearable
-                                density="comfortable"
-                                hide-details
-                                placeholder="Buscar"
-                                prepend-inner-icon="mdi-magnify"
-                                style="max-width: 300px;"
-                                variant="solo"
-                            >
+                        <template v-slot:default="{ item }">
+                            <v-list-item>
+                                <template v-slot:prepend>
+                                    <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                        <template v-if="item.estado === 0">
+                                            <v-chip variant="flat" color="warning" prepend-icon="$info">
+                                                Curso por realizar
+                                            </v-chip>
+                                        </template>
+                                        <template v-else>
+                                            <v-chip variant="flat" color="success" prepend-icon="$info">
+                                                En curso
+                                            </v-chip>
+                                        </template>
+                                    </div>
+                                </template>
 
-                            </v-text-field>
+                                <div class="ml-8">
+                                    <v-list-item-title class="text-h5">{{ item.nombreCurso }}</v-list-item-title>
+                                    <v-list-item-subtitle class="text-h6">
+                                        {{item.objetivoEvento}}
+                                    </v-list-item-subtitle>
+                                    <v-list-item-action>
+<!--                                        <strong>{{item.jefe.nombre_completo}}</strong>-->
+                                    </v-list-item-action>
+                                </div>
+                                <div class="d-flex justify-space-between px-4 pt-4">
+                                    <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+
+                                    </div>
+                                    <div v-if="item.docente_inscrito.length > 0">
+                                        <div v-for="inscrito in item.docente_inscrito">
+                                            <div v-if="inscrito.id === props.auth.user.docente_id">
+                                                <v-alert
+                                                    variant="outlined"
+                                                    color="success"
+                                                >
+                                                    <strong class=""> Inscrito </strong>
+                                                </v-alert>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <primary-button @click="submit(item.id)">Inscribirse</primary-button>
+                                    </div>
+                                </div>
+                            </v-list-item>
                         </template>
-                        <template v-slot:default="{items}">
-                            <v-container class="pa-2 pt-15" fluid>
-                                <v-row dense>
-                                    <v-col v-for="item in items" :key="item.nameCarrera"
-                                           cols="auto"
-                                           md="6"
-                                    >
-                                        <v-card class="pb-3" border flat width="600">
-                                            <v-list-item class="mb-2 text-black font-weight-black" :subtitle="item.raw.asignaturaFA">
-                                                <template v-slot:title>
-                                                    <strong class="text-h6 mb-2">
-                                                        {{item.raw.nombreCurso}}
-                                                    </strong>
-                                                </template>
-                                            </v-list-item>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-space-between px-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-space-between px-4 pt-4">
-                                                <div class="d-flex align-center text-caption text-medium-emphasis me-1">
-
-                                                </div>
-<!--                                                <div v-if="item.raw.docente_inscrito.length > 0">-->
-<!--                                                    <div v-for="inscrito in item.raw.docente_inscrito">-->
-<!--                                                        <div v-if="inscrito.id === props.auth.user.docente_id">-->
-<!--                                                            <v-alert-->
-<!--                                                                variant="outlined"-->
-<!--                                                                color="success"-->
-<!--                                                            >-->
-<!--                                                                <strong class=""> Inscrito </strong>-->
-<!--                                                            </v-alert>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                </div>-->
-                                                <div>
-                                                    <primary-button @click="form.post(route('inscripcion.docente', item.raw.id), {
-                                                        onSuccess: () => {
-                                                           snackSuccessActivator
-                                                        }
-                                                    })">Inscribirse</primary-button>
-                                                </div>
-                                            </div>
-                                        </v-card>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </template>
-                    </v-data-iterator>
+                    </v-virtual-scroll>
                 </div>
             </div>
         </template>
