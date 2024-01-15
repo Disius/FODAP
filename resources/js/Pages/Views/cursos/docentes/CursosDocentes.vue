@@ -146,9 +146,11 @@ onMounted(() => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <primary-button @click="submit(item.id)">Inscribirse</primary-button>
-                                    </div>
+                                    <template v-else>
+                                        <div>
+                                            <primary-button @click="submit(item.id)">Inscribirse</primary-button>
+                                        </div>
+                                    </template>
                                 </div>
                             </v-list-item>
                         </template>
