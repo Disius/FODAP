@@ -5,6 +5,7 @@ import {Head, useForm} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {FODAPStore} from "@/store/server.js";
 import NavLink from "@/Components/NavLink.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 
 const store = FODAPStore();
@@ -36,7 +37,7 @@ const snackEventActivator = () => {
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
-    message.value = "No se pudo procesar la solicitud"
+    message.value = "Ops, algo salió mal. Por favor, debe revisar si actualizo sus datos."
     color.value = "error"
     timeout.value = 5000
     setTimeout(() => {
@@ -134,7 +135,7 @@ onMounted(() => {
                                     <div class="d-flex align-center text-caption text-medium-emphasis me-1">
 
                                     </div>
-                                    <template v-if="item.docente_inscrito.length > 0">
+                                    <!-- <template v-if="item.docente_inscrito.length > 0"> -->
                                         <div v-for="inscrito in item.docente_inscrito">
                                             <div v-if="inscrito.id === props.auth.user.docente_id">
                                                 <v-alert
@@ -143,16 +144,16 @@ onMounted(() => {
                                                 >
                                                     <strong class=""> Inscrito </strong>
                                                 </v-alert>
-                                                {{ console.log(item.docente_inscrito.length) }}
+                                                <!-- {{ console.log(item.docente_inscrito.length) }} -->
                                             </div>
                                         </div>
-                                    </template>
-                                    <template v-else>
+                                    <!-- </template> -->
+                                    <!-- <template v-else> -->
                                         <div>
-                                            <primary-button @click="submit(item.id)">Inscribirse</primary-button>
-                                            {{ console.log(item.docente_inscrito.length) }}
+                                            <v-btn type="submit" @click="submit(item.id)">Inscribirse</v-btn>
+                                            <!-- {{ console.log(item.docente_inscrito.length) }} -->
                                         </div>
-                                    </template>
+                                    <!-- </template> -->
                                 </div>
                             </v-list-item>
                         </template>
@@ -174,6 +175,9 @@ onMounted(() => {
                 </div>
             </div>
         </template>
+        <CustomSnackBar v-model="snackbar" :message="message" :color="color" @update:modelValue="snackbar = $event">
+
+        </CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 

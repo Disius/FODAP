@@ -57,11 +57,16 @@ class DocenteController extends Controller
         $request->validate([
             'id_docente' => 'required'
         ]);
-        $deteccion = DeteccionNecesidades::find($id);
-        $deteccion->docente_inscrito()->attach($request->input('id_docente'));
-        $syncDocente = DesarrolloController::consult_to_sync($id, $request->id_docente);
-        event(new CalificacionEvent($syncDocente));
-        return Redirect::route('index.cursos.docentes');
+        try {
+            $deteccion = DeteccionNecesidades::find($id);
+            $deteccion->docente_inscrito()->attach($request->input('id_docente'));
+            $syncDocente = DesarrolloController::consult_to_sync($id, $request->id_docente);
+            event(new CalificacionEvent($syncDocente));
+            return Redirect::route('index.cursos.docentes');
+
+        } catch (\Exception $exception){
+            return back()->withErrors('Registro no creado, el error es:'.$exception->getMessage());
+        }
     }
 
     public function misCursos(){
