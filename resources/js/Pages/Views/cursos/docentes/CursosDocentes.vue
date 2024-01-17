@@ -143,12 +143,14 @@ onMounted(() => {
                                                 >
                                                     <strong class=""> Inscrito </strong>
                                                 </v-alert>
+                                                {{ console.log(item.docente_inscrito.length) }}
                                             </div>
                                         </div>
                                     </div>
                                     <template v-else>
                                         <div>
                                             <primary-button @click="submit(item.id)">Inscribirse</primary-button>
+                                            {{ console.log(item.docente_inscrito.length) }}
                                         </div>
                                     </template>
                                 </div>

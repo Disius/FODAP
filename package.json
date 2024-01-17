@@ -7,7 +7,7 @@
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
-        "@mdi/font": "^7.2.96",
+        "@mdi/font": "^7.4.47",
         "@tailwindcss/forms": "^0.5.3",
         "@vitejs/plugin-vue": "^4.0.0",
         "autoprefixer": "^10.4.12",
@@ -26,7 +26,7 @@
         "laravel-vue-pagination": "^4.1.1",
         "pinia": "^2.1.6",
         "pusher-js": "^8.3.0",
-        "vuetify": "^3.3.8",
+        "vuetify": "^3.4.10",
         "zxcvbn": "^4.4.2"
     }
 }
