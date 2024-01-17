@@ -134,7 +134,7 @@ onMounted(() => {
                                     <div class="d-flex align-center text-caption text-medium-emphasis me-1">
 
                                     </div>
-                                    <div v-if="item.docente_inscrito.length > 0">
+                                    <template v-if="item.docente_inscrito.length > 0">
                                         <div v-for="inscrito in item.docente_inscrito">
                                             <div v-if="inscrito.id === props.auth.user.docente_id">
                                                 <v-alert
@@ -146,7 +146,7 @@ onMounted(() => {
                                                 {{ console.log(item.docente_inscrito.length) }}
                                             </div>
                                         </div>
-                                    </div>
+                                    </template>
                                     <template v-else>
                                         <div>
                                             <primary-button @click="submit(item.id)">Inscribirse</primary-button>
