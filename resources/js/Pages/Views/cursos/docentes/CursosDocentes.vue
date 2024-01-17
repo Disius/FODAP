@@ -46,7 +46,7 @@ const snackErrorActivator = () => {
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
-    message.value = "Procesado correctamente"
+    message.value = "¡Operación completada con éxito!"
     color.value = "success"
     timeout.value = 5000
     setTimeout(() => {
@@ -135,25 +135,15 @@ onMounted(() => {
                                     <div class="d-flex align-center text-caption text-medium-emphasis me-1">
 
                                     </div>
-                                    <!-- <template v-if="item.docente_inscrito.length > 0"> -->
-                                        <div v-for="inscrito in item.docente_inscrito">
-                                            <div v-if="inscrito.id === props.auth.user.docente_id">
-                                                <v-alert
-                                                    variant="outlined"
-                                                    color="success"
-                                                >
-                                                    <strong class=""> Inscrito </strong>
-                                                </v-alert>
-                                                <!-- {{ console.log(item.docente_inscrito.length) }} -->
-                                            </div>
-                                        </div>
-                                    <!-- </template> -->
-                                    <!-- <template v-else> -->
-                                        <div>
-                                            <v-btn type="submit" @click="submit(item.id)">Inscribirse</v-btn>
-                                            <!-- {{ console.log(item.docente_inscrito.length) }} -->
-                                        </div>
-                                    <!-- </template> -->
+                                    <div v-if="item.docente_inscrito.some(inscrito => inscrito.id === props.auth.user.docente_id)">
+                                        <v-alert variant="outlined" color="success">
+                                            <strong class=""> Inscrito </strong>
+                                        </v-alert>
+                                    </div>
+
+                                    <div v-else>
+                                        <v-btn type="submit" @click="submit(item.id)">Inscribirse</v-btn>
+                                    </div>
                                 </div>
                             </v-list-item>
                         </template>

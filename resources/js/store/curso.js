@@ -126,7 +126,6 @@ export const Curso = defineStore('Curso', {
 
         infoCourse(id){
             curso_data_get(id).then(res =>{
-                console.log(res)
                 this.curso_info = res
             }).catch(err =>
             console.log(err.data.response)

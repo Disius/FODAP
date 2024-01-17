@@ -170,7 +170,12 @@ onMounted(() => {
                                 <v-list-item-subtitle>
                                     {{item.departamento.nameDepartamento}}
                                 </v-list-item-subtitle>
-                                <v-list-item-action><strong>{{item.jefe.nombre_completo}}</strong></v-list-item-action>
+                                <template v-if="item.jefe !== null">
+                                    <v-list-item-action><strong>{{item.jefe.nombre_completo}}</strong></v-list-item-action>
+                                </template>
+                                <template v-else>
+                                    <v-list-item-action><strong>Usuario sin nombre</strong></v-list-item-action>
+                                </template>
                                 <template v-slot:append>
                                     <NavLink :href="route('show.Cdetecciones', item.id)" type="button" as="button">
                                         <v-btn
@@ -232,7 +237,12 @@ onMounted(() => {
                                 <v-list-item-subtitle>
                                     {{item.departamento.nameDepartamento}}
                                 </v-list-item-subtitle>
-                                <v-list-item-action><strong>{{item.jefe.nombre_completo}}</strong></v-list-item-action>
+                                <template v-if="item.jefe !== null">
+                                    <v-list-item-action><strong>{{item.jefe.nombre_completo}}</strong></v-list-item-action>
+                                </template>
+                                <template v-else>
+                                    <v-list-item-action><strong>Usuario sin nombre</strong></v-list-item-action>
+                                </template>
                                 <template v-slot:append>
                                     <NavLink :href="route('show.Cdetecciones', item.id)" type="button" as="button">
                                         <v-btn

@@ -154,7 +154,7 @@ class DesarrolloController extends Controller
     }
 
     public function edit_curso($id){
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])->find($id);
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'jefe', 'departamento'])->find($id);
         $carrera = Carrera::all();
         $docente = Docente::all();
         $departamento = Departamento::all();
@@ -180,9 +180,9 @@ class DesarrolloController extends Controller
         $departamento = $this->query_carrera($request->carrera_dirigido);
 
         $curso = DeteccionNecesidades::find($id);
-        $curso->id_jefe = $departamento->departamento->jefe_id;
+        $curso->id_jefe = $request->jefe;
         $curso->total_horas = $totalHoras;
-        $curso->id_departamento = $departamento->departamento->id;
+        $curso->id_departamento = $request->departamento;
         $curso->facilitador_externo = $request->facilitador_externo;
         $curso->observaciones = $request->observaciones;
         $curso->obs = $request->observaciones != null ? 1 : 0;

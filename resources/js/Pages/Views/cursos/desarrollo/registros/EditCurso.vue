@@ -81,6 +81,8 @@ const form = useForm({
     facilitador_externo: null,
     id_lugar: null,
     observaciones: null,
+    jefe: props.curso.jefe.id,
+    departamento: props.curso.departamento.id,
 });
 const filtroCarrera = computed(() => {
     let filtro = props.carrera.filter(e => {

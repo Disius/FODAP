@@ -31,6 +31,7 @@ class DocenteController extends Controller
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito'])
                 ->where('aceptado', '=', 1)
                 ->where('id_departamento', '=', auth()->user()->departamento_id)
+                ->orWhere('carrera_dirigido', '=', 13)
                 ->where(function($query) {
                     $query->where('estado', '=', 0)
                     ->orWhere('estado', '=', 1);
