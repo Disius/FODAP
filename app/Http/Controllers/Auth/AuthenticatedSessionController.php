@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Dcblogdev\MsGraph\Facades\MsGraph;
 
 class AuthenticatedSessionController extends Controller
 {
