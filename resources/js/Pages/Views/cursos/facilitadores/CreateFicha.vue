@@ -1,9 +1,9 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {useForm} from "@inertiajs/vue3";
-import InputLabel from "@/Components/InputLabel.vue";
 import {onMounted, reactive, ref} from "vue";
 import NavLink from "@/Components/NavLink.vue";
+import {FODAPStore} from "@/store/server.js";
 
 const props = defineProps({
     auth: Object,
@@ -11,7 +11,12 @@ const props = defineProps({
     curso: Object,
 })
 
-const snackbar = ref(false);
+const timeout = ref(0)
+const message = ref("")
+const color = ref("")
+const snackbar = ref(false)
+const store = FODAPStore()
+
 
 const rules = [
     v => v.length <= 250 || 'Maximo 250 caracteres'
@@ -48,17 +53,32 @@ const addRow = () => {
 const submit = () => {
     return form.post(route('store.ficha'))
 }
+
+onMounted(() => {
+    store.get_is_facilitador(props.auth.user.value.docente_id)
+    //
+    // console.log(store.this_facilitador)
+});
 </script>
 
 <template>
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Crear Ficha Técnica</h2>
-            <NavLink :href="route('show.curso.facilitador', [props.docente.id, props.curso.id])" as="button">
-                <v-btn icon="mdi-arrow-left">
+            <template v-if="store.this_facilitador === true">
+                <NavLink :href="route('show.curso.facilitador', [props.docente.id, props.curso.id])" as="button">
+                    <v-btn icon="mdi-arrow-left">
 
-                </v-btn>
-            </NavLink>
+                    </v-btn>
+                </NavLink>
+            </template>
+            <template v-else-if="store.this_facilitador === false">
+                <NavLink :href="route('index.desarrollo.inscritos', props.curso.id)" as="button">
+                    <v-btn icon="mdi-arrow-left">
+
+                    </v-btn>
+                </NavLink>
+            </template>
         </template>
         <div class="mt-5 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">

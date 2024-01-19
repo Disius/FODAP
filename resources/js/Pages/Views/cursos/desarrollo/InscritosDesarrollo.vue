@@ -148,9 +148,9 @@ const snackEventActivator = () => {
     message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
     color.value = "warning"
     timeout.value = 8000
-    setTimeout(()=>{
+    setTimeout(() => {
         snackbar.value = false
-    },timeout.value)
+    }, timeout.value)
 };
 const snackErrorActivator = () => {
     snackbar.value = true;
@@ -159,7 +159,7 @@ const snackErrorActivator = () => {
     timeout.value = 5000
     setTimeout(()=>{
         snackbar.value = false
-    },timeout.value)
+    }, timeout.value)
 };
 const snackSuccessActivator = () => {
     snackbar.value = true;
@@ -168,7 +168,7 @@ const snackSuccessActivator = () => {
     timeout.value = 5000
     setTimeout(()=>{
         snackbar.value = false
-    },timeout.value)
+    }, timeout.value)
 };
 
 onMounted(() => {
@@ -329,34 +329,38 @@ onMounted(() => {
                 </v-table>
             </div>
         </div>
-<!--        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">-->
-<!--            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">-->
-<!--                <v-card elevation="0">-->
-<!--                    <v-card-title class="text-center">Ficha Técnica</v-card-title>-->
-<!--                    <v-row justify="center">-->
-<!--                        <v-col cols="6" align="center">-->
-<!--                            <NavLink :href="route('crear.ficha', [props.facilitador.id, props.curso.id])">-->
-<!--                                <v-btn color="blue-darken-1">-->
-<!--                                    Crear ficha técnica-->
-<!--                                </v-btn>-->
-<!--                            </NavLink>-->
-<!--                        </v-col>-->
-<!--                        <v-col cols="6" align="center" class="mt-2">-->
-<!--                            <template v-if="props.ficha_tecnica === null">-->
-<!--                                <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box" @click="snackErrorActivator">-->
-<!--                                    Descargar PDF-->
-<!--                                </v-btn>-->
-<!--                            </template>-->
-<!--                            <template v-else>-->
-<!--                                <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box" @click="generar_ficha">-->
-<!--                                    Descargar PDF-->
-<!--                                </v-btn>-->
-<!--                            </template>-->
-<!--                        </v-col>-->
-<!--                    </v-row>-->
-<!--                </v-card>-->
-<!--            </div>-->
-<!--        </div>-->
+        <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
+            <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
+                <v-card elevation="0">
+                    <v-card-title class="text-center">Ficha Técnica</v-card-title>
+                    <v-row justify="center">
+                        <v-col cols="6" align="center">
+                            <v-tooltip location="left">
+                                <template v-slot:activator="{ props }">
+                                    <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
+                                        <v-icon>
+                                            mdi-help
+                                        </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Indicar el periodo en el que se requiere la formación docente o
+                                                    actualización profesiona (enero-junio o agosto-diciembre)</span>
+                            </v-tooltip>
+                            <NavLink :href="route('crear.ficha', [props.auth.user.id, props.curso.id])">
+                                <v-btn color="blue-darken-1">
+                                    Crear ficha técnica
+                                </v-btn>
+                            </NavLink>
+                        </v-col>
+                        <v-col cols="6" align="center" class="mt-2">
+                            <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box">
+                                Descargar PDF
+                            </v-btn>
+                        </v-col>
+                    </v-row>
+                </v-card>
+            </div>
+        </div>
         <div class=" mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="flex items-center">

@@ -34,6 +34,12 @@ return [
     */
 
     'mailers' => [
+//            'microsoft-graph' => [
+//            'transport' => 'microsoft-graph',
+//            'tenant' => env('MAIL_MSGRAPH_TENANT', 'common'),
+//            'client' => env('MAIL_MSGRAPH_CLIENT'),
+//            'secret' => env('MAIL_MSGRAPH_SECRET')
+//        ],
         'smtp' => [
             'transport' => 'smtp',
             'url' => env('MAIL_URL'),
@@ -99,8 +105,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreplydda@tuxtla.tecnm.mx'),
+        'name' => env('MAIL_FROM_NAME', ''),
     ],
 
     /*

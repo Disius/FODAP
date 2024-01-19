@@ -20,25 +20,6 @@ const submit_read_notification = () => {
 }
 
 onMounted(() => {
-    // store.notificaciones_catch()
-    // store.get_number_notifications()
-    // window.Echo.private(`App.Models.User.${user.value.id}`).notification((notification) => {
-    //     // console.log(notification)
-    //     switch (notification.type){
-    //         case 'App\\Notifications\\NewDeteccionNotification':
-    //             props.auth.usernotifications++
-    //             break;
-    //         case 'App\\Notifications\\DeteccionEditadaNotification':
-    //             props.auth.usernotifications++
-    //             break;
-    //         case 'App\\Notifications\\AceptadoNotification':
-    //             props.auth.usernotifications++
-    //             break;
-    //         case 'App\\Notifications\\ObservacionNotification':
-    //             props.auth.usernotifications++
-    //             break;
-    //     }
-    // })
     store.get_is_facilitador(user.value.docente_id)
 });
 </script>
@@ -125,11 +106,6 @@ onMounted(() => {
                                             Facilitador
                                         </NavLink>
                                 </template>
-<!--                                <template v-if="$page.props.facilitador === true">-->
-<!--                                    <NavLink :href="route('show.facilitadores' , user.docente_id)" :active="route().current('show.facilitadores')">-->
-<!--                                        Facilitador-->
-<!--                                    </NavLink>-->
-<!--                                </template>-->
                                 <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
                                     Perfil
                                 </NavLink>
@@ -144,33 +120,8 @@ onMounted(() => {
 
                             </div>
                         </div>
-<!--                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sm:pl-16 sm:ml-16">-->
-<!--                            <div class="flex justify-between h-16 sm:pl-16 sm:ml-16">-->
-<!--                                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex sm:pl-16">-->
-<!--                                    <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">Perfil</NavLink>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <div class="hidden sm:flex sm:items-center sm:ml-6">
-                                <!-- Settings Dropdown -->
-<!--                                <div class="ml-3 relative">-->
-<!--                                    <v-badge-->
-<!--                                        color="red"-->
-<!--                                        :content="$page.props.auth.usernotifications"-->
-<!--                                    >-->
-<!--                                                <span class="inline-flex rounded-md">-->
-<!--                                                    <NavLink :href="route('index.notifications')" as="button">-->
-<!--                                                        <button-->
-<!--                                                            type="button"-->
-<!--                                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"-->
-<!--                                                        >-->
-<!--                                                            <v-icon icon="mdi-bell"></v-icon>-->
-<!--                                                        </button>-->
-<!--                                                    </NavLink>-->
-<!--                                                </span>-->
-<!--                                    </v-badge>-->
-<!--                                </div>-->
                                 <div class="ml-3 relative">
                                     <NavLink :href="route('index.notifications')" as="button">
                                         <v-btn class="text-none">
@@ -181,41 +132,6 @@ onMounted(() => {
                                     </NavLink>
                                 </div>
                             </div>
-                            <!-- Settings Dropdown -->
-<!--                            <div class="ml-3 relative">-->
-<!--                                <Dropdown align="right" width="48">-->
-<!--                                    <template #trigger>-->
-<!--                                        <span class="inline-flex rounded-md">-->
-<!--                                            <button-->
-<!--                                                type="button"-->
-<!--                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"-->
-<!--                                            >-->
-
-
-<!--                                                <svg-->
-<!--                                                    class="ml-2 -mr-0.5 h-4 w-4"-->
-<!--                                                    xmlns="http://www.w3.org/2000/svg"-->
-<!--                                                    viewBox="0 0 20 20"-->
-<!--                                                    fill="currentColor"-->
-<!--                                                >-->
-<!--                                                    <path-->
-<!--                                                        fill-rule="evenodd"-->
-<!--                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"-->
-<!--                                                        clip-rule="evenodd"-->
-<!--                                                    />-->
-<!--                                                </svg>-->
-<!--                                            </button>-->
-<!--                                        </span>-->
-<!--                                    </template>-->
-
-<!--                                    <template #content>-->
-<!--                                        <DropdownLink :href="route('profile.edit')"> Perfil </DropdownLink>-->
-<!--                                        <DropdownLink :href="route('logout')" method="post" as="button">-->
-<!--                                            Cerrar Sesión-->
-<!--                                        </DropdownLink>-->
-<!--                                    </template>-->
-<!--                                </Dropdown>-->
-<!--                            </div>-->
                         </div>
 
                         <!-- Hamburger -->

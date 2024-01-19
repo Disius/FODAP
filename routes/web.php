@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AcademicosController;
 use App\Models\User;
+use Dcblogdev\MsGraph\Facades\MsGraph;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,8 +38,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
         'notifications' => auth()->user()->unreadNotifications,
+        'test' => MsGraph::get('me'),
     ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'MsGraphAuthenticated'])->name('dashboard');
 
 
 Route::middleware(['auth', 'role:Super Admin'])->group(function () {

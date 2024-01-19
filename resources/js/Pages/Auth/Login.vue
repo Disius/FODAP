@@ -147,12 +147,12 @@ onMounted(() => {
                 </Link>
             </div>
         </template>
-        <template v-if="props.role === 4">
+        <Link :href=('connect') as="button">
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 <div class="flex justify-center">
                     <v-btn append-icon="mid-microsoft">Iniciar sesión con Microsoft</v-btn>
                 </div>
             </div>
-        </template>
+        </Link>
     </GuestLayout>
 </template>

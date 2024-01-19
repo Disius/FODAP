@@ -28,6 +28,11 @@ class AuthenticatedSessionController extends Controller
         ]);
     }
 
+    public function connect()
+    {
+        return MsGraph::connect();
+    }
+
     /**
      * Handle an incoming authentication request.
      */
