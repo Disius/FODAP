@@ -113,12 +113,5 @@ onMounted(() => {
                 </Link>
             </div>
         </template>
-        <!-- <Link :href="route('connect')" as="button">
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                <div class="flex justify-center">
-                    <v-btn append-icon="mid-microsoft">Iniciar sesión con Microsoft</v-btn>
-                </div>
-            </div>
-        </Link> -->
     </GuestLayout>
 </template>
