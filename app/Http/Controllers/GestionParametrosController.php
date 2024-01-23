@@ -214,38 +214,6 @@ class   GestionParametrosController extends Controller
         } else {
             return back()->withErrors('La fecha final no puede ser menor que la fecha inicial');
         }
-//        $request->validate([
-//            'fecha_Inicio' => 'required',
-//            'fecha_Final' => 'required'
-//        ]);
-//
-//        $fecha_Inical = Carbon::parse($request->fecha_Inicio);
-//        $fecha_final = Carbon::parse($request->fecha_Final);
-//
-//        $dates = ConfigDates::latest('id')->first();
-//
-//        if ($dates != null){
-//            $dates->delete();
-//        }
-//
-//        if ($fecha_Inical <= $fecha_final){
-//
-//            $dates = ConfigDates::create([
-//                'fecha_inicio' => $request->fecha_Inicio,
-//                'fecha_final' => $request->fecha_Final,
-//            ]);
-//
-//        $dates->save();
-//
-//        $fechas = DataResponseController::if_enable_detecciones();
-//
-//        event(new DatesEnableEvent($fechas->original));
-//
-//        return Redirect::route('parametros.edit');
-//
-//        }else{
-//            return back()->withErrors('La fecha final no puede ser menor que la fecha inicial');
-//        }
     }
 
     public function destoy_users(Request $request){
@@ -352,9 +320,6 @@ class   GestionParametrosController extends Controller
     }
 
     public function subir_cvu(Request $request){
-        $request->validate([
-            'file' => ['required', 'mimes:application/pdf'],
-        ]);
         $request->file('file')->storeAs('/CVUdownload/', 'CVU_editable.docx', 'public');
         return redirect()->route('parametros.edit');
     }
