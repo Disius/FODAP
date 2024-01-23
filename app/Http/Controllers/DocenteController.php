@@ -179,7 +179,13 @@ class DocenteController extends Controller
             $criterio_evaluacion->save();
         }
 
-        return redirect()->route('show.curso.facilitador', [$request->id_docente, $request->id_curso]);
+        $user = auth()->user();
+
+        if($user->role == 1 || $user->role == 2){
+            return Redirect::route('index.desarrollo.inscritos', ['id' => $request->id_curso]);
+        }else {
+            return redirect()->route('show.curso.facilitador', [$request->id_docente, $request->id_curso]);
+        }
     }
 
 //    public function calificaciones(Request $request){

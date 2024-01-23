@@ -143,9 +143,14 @@ const snackSuccessActivator = () => {
                                               Curso por realizar
                                           </v-chip>
                                       </template>
-                                      <template v-else>
+                                      <template v-else-if="item.estado === 1">
                                           <v-chip variant="flat" color="success" prepend-icon="$info">
                                               En curso
+                                          </v-chip>
+                                      </template>
+                                      <template v-else-if="item.estado === 2">
+                                          <v-chip variant="flat" color="error" prepend-icon="mdi-cancel">
+                                              Finalizado
                                           </v-chip>
                                       </template>
                                   </div>

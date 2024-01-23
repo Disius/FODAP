@@ -4,7 +4,7 @@ import {useForm} from "@inertiajs/vue3";
 import {onMounted, reactive, ref} from "vue";
 import NavLink from "@/Components/NavLink.vue";
 import {FODAPStore} from "@/store/server.js";
-
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 const props = defineProps({
     auth: Object,
     docente: Object,
@@ -49,9 +49,33 @@ const addCol = () => {
 const addRow = () => {
     return form.temas.length === 18 ? snackbar.value = true : form.temas.push(['', '', ''])
 }
-
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+    setTimeout(()=>{
+        snackbar.value = false
+    }, timeout.value)
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+    setTimeout(()=>{
+        snackbar.value = false
+    }, timeout.value)
+};
 const submit = () => {
-    return form.post(route('store.ficha'))
+    return form.post(route('store.ficha'), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        }, 
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
 }
 
 onMounted(() => {
@@ -359,25 +383,9 @@ onMounted(() => {
                </form>
             </div>
         </div>
-        <v-snackbar
-            v-model="snackbar"
-            vertical
-            color="error"
-        >
-            <div class="text-subtitle-1 pb-2">Error</div>
+        <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:modelValue="snackbar = $event" :timeout="timeout">
 
-            <p>Se llego al maximo de filas</p>
-
-            <template v-slot:actions>
-                <v-btn
-                    color=""
-                    variant="text"
-                    @click="snackbar = false"
-                >
-                    Cerrar
-                </v-btn>
-            </template>
-        </v-snackbar>
+        </CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 
