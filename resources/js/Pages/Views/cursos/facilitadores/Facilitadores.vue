@@ -136,27 +136,22 @@ const snackSuccessActivator = () => {
                     >
                         <template v-slot:default="{ item }">
                             <v-list-item>
-<!--                                <template v-slot:prepend>-->
-<!--                                    <div class="d-flex align-center text-caption text-medium-emphasis me-1">-->
-<!--                                        <template v-if="item.estado === 0">-->
-<!--                                            <v-chip variant="flat" color="warning" prepend-icon="$info">-->
-<!--                                                Curso por realizar-->
-<!--                                            </v-chip>-->
-<!--                                        </template>-->
-<!--                                        <template v-else>-->
-<!--                                            <v-chip variant="flat" color="success" prepend-icon="$info">-->
-<!--                                                En curso-->
-<!--                                            </v-chip>-->
-<!--                                        </template>-->
-<!--                                    </div>-->
-<!--                                </template>-->
-
+                                <template v-slot:prepend>
+                                  <div class="d-flex align-center text-caption text-medium-emphasis me-1">
+                                      <template v-if="item.estado === 0">
+                                          <v-chip variant="flat" color="warning" prepend-icon="$info">
+                                              Curso por realizar
+                                          </v-chip>
+                                      </template>
+                                      <template v-else>
+                                          <v-chip variant="flat" color="success" prepend-icon="$info">
+                                              En curso
+                                          </v-chip>
+                                      </template>
+                                  </div>
+                              </template>
                                 <div class="ml-8">
                                     <v-list-item-title>{{ item.nombreCurso }}</v-list-item-title>
-<!--                                    <v-list-item-subtitle>-->
-<!--                                        {{item.departamento.nameDepartamento}}-->
-<!--                                    </v-list-item-subtitle>-->
-<!--                                    <v-list-item-action><strong>{{item.jefe.nombre_completo}}</strong></v-list-item-action>-->
                                 </div>
                                     <template v-slot:append>
                                         <NavLink :href="route('show.curso.facilitador', [props.docente.id, item.id,])" type="button" as="button">

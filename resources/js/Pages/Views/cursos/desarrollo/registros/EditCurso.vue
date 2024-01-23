@@ -6,7 +6,7 @@ import {computed, onMounted, ref} from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
 import CreateDocenteA from "@/Pages/Views/academicos/docentes/CreateDocenteA.vue";
-
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 const props = defineProps({
     auth: {
         type: Object
@@ -35,9 +35,13 @@ const props = defineProps({
     tipo_plaza: {
         type: Array,
     },
+    errors: Object
 });
 
-
+const snackbar = ref(false)
+const message = ref("")
+const timeout = ref()
+const color = ref("")
 const dialogDocente = ref(false)
 
 const tipoSolicitud = ref([
@@ -109,25 +113,29 @@ const fullYears = computed(() => {
 
     return years
 });
-const idFacilitador = computed(() => {
-    let facilitador = null
-
-    for (let i of props.curso.deteccion_facilitador){
-        facilitador = i.id
-    }
-    return facilitador
-});
 
 async function submitDocente(form){
     try {
         form.post(route('store.docentes'), {
             onSuccess: () => {
-                snackSuccessActivator()
+                message.value = "El recurso se actualizó con éxito."
+                 color.value = "success"
+                timeout.value = 5000
+                snackbar.value = true
+                setTimeout(() => {
+                snackbar.value = false
+                }, timeout.value)
                 form.reset()
                 dialogDocente.value = false
             },
             onError: () => {
-                snackErrorActivator()
+                message.value = props.errors[0]
+                 color.value = "error"
+                timeout.value = 5000
+                snackbar.value = true
+                setTimeout(() => {
+                    snackbar.value = false
+                },  timeout.value)
             }
         })
     }catch (e) {
@@ -801,6 +809,7 @@ onMounted(() => {
                 </div>
             </div>
         </div>
+        <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:model-value="snackbar = $event"></CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 
