@@ -19,16 +19,6 @@ const props = defineProps({
 });
 
 
-const form = useForm({
-    file: null,
-});
-
-
-const upload_file = () => {
-    form.post(route('store.installer'), {
-        forceFormData: true
-    })
-}
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
@@ -53,23 +43,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <template v-if="props.can_install === true">
-        <Instalar>
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-16 pt-16">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="flex justify-center">
-                        <v-file-input label="Ingresar logo del instituto" variant="solo" @input="form.file = $event.target.files[0]"></v-file-input>
-                    </div>
-                    <div class="flex justify-start">
-                        <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">
-                            Subir
-                        </v-btn>
-                    </div>
-                </div>
-            </div>
-        </Instalar>
-    </template>
-    <template v-if="props.can_install === false">
         <AuthenticatedLayout>
             <template #header>
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Inicio</h2>
@@ -165,5 +138,4 @@ onMounted(() => {
                 </template>
             </div>
         </AuthenticatedLayout>
-    </template>
 </template>

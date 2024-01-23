@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AcademicosController;
 use App\Models\User;
-use Dcblogdev\MsGraph\Facades\MsGraph;
 
 /*
 |--------------------------------------------------------------------------

@@ -19,7 +19,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|Coordinacion de FD y AP'])->group(function(){
+Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|Coordinacion de FD y AP|Super Admin'])->group(function(){
     Route::get('/configuracion', [GestionParametrosController::class, 'edit'])->name('parametros.edit');
 //    Rutas de carrera
     Route::get('/crear/carrera', [GestionParametrosController::class, 'create_carrera'])->name('create.carrera');

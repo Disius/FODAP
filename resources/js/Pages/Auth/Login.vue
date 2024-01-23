@@ -23,7 +23,8 @@ const props = defineProps({
     },
     administrator: {
         type: String
-    }
+    },
+    can_install: Boolean
 });
 const alert = ref(false);
 const transform_prop = computed(() => {
@@ -59,32 +60,6 @@ onMounted(() => {
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
-        <template v-if="transform_prop === true">
-            <div class="flex justify-end">
-                <v-tooltip location="left">
-                    <template v-slot:activator="{ props }">
-                        <v-btn icon v-bind="props" color="blue-darken-1" size="normal" @click="alert = !alert">
-                            <v-icon>
-                                mdi-help
-                            </v-icon>
-                        </v-btn>
-                    </template>
-                    <span>Presionar para acceder a datos de inicio de sesión e iniciar la instalacion</span>
-                </v-tooltip>
-            </div>
-            <div class="flex justify-center mt-3 mb-4">
-                <v-alert
-                    v-model="alert"
-                    variant="tonal"
-                    closable
-                    close-label="Cerrar"
-                    color="info"
-                    title="Inicio de sesión"
-                >
-                    <p>Usuario: admin@tuxtla.tecnm.mx</p> <br> <p>Contraseña: admin123</p>
-                </v-alert>
-            </div>
-        </template>
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="email" value="Correo Institucional" />

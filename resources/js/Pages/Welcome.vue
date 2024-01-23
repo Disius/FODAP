@@ -44,7 +44,7 @@ onMounted(() => {
     <WelcomeLayout>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mt-4 mb-4">
             <div v-for="(card, index) in nameCards" :key="index" :class="['p-8', isSelected(index) ? 'bg-blue-900 text-white' : 'bg-white', 'rounded-full', 'shadow-2xl'
-            , 'lg:h-64', 'flex', 'flex-col', 'justify-center',
+            , 'lg:h-64', 'flex', 'flex-col', 'justify-center', 'w-64', 'ma-16' ,
             ]"
             @mouseover="selectCard(index)" @mouseleave="mouseLeave"
             >
@@ -55,6 +55,7 @@ onMounted(() => {
                 </Link>
             </div>
         </div>
+
     </WelcomeLayout>
 </template>
 

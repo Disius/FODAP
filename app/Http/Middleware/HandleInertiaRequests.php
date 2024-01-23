@@ -59,7 +59,7 @@ class HandleInertiaRequests extends Middleware
                 'message' => fn () => $request->session()->get('message')
             ],
             'can_install' => Installer::can_install(),
-            'facilitador' => $request->user() ? $request->user()->hasPermissionTo('facilitador') : null
+            // 'facilitador' => $request->user() ? $request->user()->hasPermissionTo('facilitador') : null
         ]);
     }
 }
