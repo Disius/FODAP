@@ -162,6 +162,7 @@ class DesarrolloController extends Controller
         $posgrado = Posgrado::all();
         $puesto = Puesto::all();
         $tipoplaza = Plaza::all();
+        
         return Inertia::render('Views/cursos/desarrollo/registros/EditCurso', [
             'curso' => $curso,
             'carrera' => $carrera,
@@ -177,7 +178,8 @@ class DesarrolloController extends Controller
 
     public function update_curso(CursoRequest $request, $id){
         $totalHoras = CoursesController::total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
-        $departamento = $this->query_carrera($request->carrera_dirigido);
+        // $departamento = $this->query_carrera($request->carrera_dirigido);
+        $facilitadores = $request->input('facilitadores', []);
 
         $curso = DeteccionNecesidades::find($id);
         $curso->id_jefe = $request->jefe;
@@ -187,15 +189,23 @@ class DesarrolloController extends Controller
         $curso->observaciones = $request->observaciones;
         $curso->obs = $request->observaciones != null ? 1 : 0;
         $curso->id_lugar = $request->id_lugar;
-        $curso->deteccion_facilitador()->sync(
-            $request->input('facilitadores', []),
-            false
-        );
-        $curso->update($request->validated());
 
-        $curso->save();
+        $curso->deteccion_facilitador()->sync([]);
 
-        return Redirect::route('index.desarrollo.inscritos', ['id' => $curso->id]);
+        if(count($facilitadores) > 3){
+            return Redirect::back()->withErrors('Excede el limite de docentes');
+        }
+        else{
+            $curso->deteccion_facilitador()->sync(
+                $facilitadores,
+                false
+            );
+            $curso->update($request->validated());
+    
+            $curso->save();
+    
+            return Redirect::route('index.desarrollo.inscritos', ['id' => $curso->id]);
+        }
     }
 
     public static function query_carrera($query){
@@ -342,6 +352,8 @@ class DesarrolloController extends Controller
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
 
+
+
         return Inertia::render('Views/desarrollo/Docentes', [
             'docentes' => $docentes,
             'user' => $user,
@@ -358,6 +370,8 @@ class DesarrolloController extends Controller
         $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
+
+
         return Inertia::render('Views/desarrollo/docente/CreateDocente', [
             'carrera' => $carrera->except(['13']),
             'departamento' => $departamento,

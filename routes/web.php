@@ -38,9 +38,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
         'notifications' => auth()->user()->unreadNotifications,
-        'test' => MsGraph::get('me'),
     ]);
-})->middleware(['auth', 'verified', 'MsGraphAuthenticated'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 Route::middleware(['auth', 'role:Super Admin'])->group(function () {

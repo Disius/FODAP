@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
-use Dcblogdev\MsGraph\Facades\MsGraph;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -27,11 +26,6 @@ class AuthenticatedSessionController extends Controller
             'role' => $request->role,
             'administrator' => $request->administrator,
         ]);
-    }
-
-    public function connect()
-    {
-        return MsGraph::connect();
     }
 
     /**

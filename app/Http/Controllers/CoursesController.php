@@ -75,29 +75,35 @@ class CoursesController extends Controller
 
     public function update(CursoRequest $request, string $id)
     {
+        $facilitadores = $request->input('facilitadores', []);
         $deteccion = DeteccionNecesidades::where('id', $id)->first();
 
         $deteccion->total_horas = $this->total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
 
-        $deteccion->deteccion_facilitador()->sync(
-            $request->input('facilitadores', []),
-            false
-        );
+        $deteccion->deteccion_facilitador()->sync([]);
 
-//        DocenteController::facilitadores_permission($request->input('facilitadores'));
-
-        $deteccion->update($request->validated());
-
-        $deteccion->save();
-
-        event(new DeteccionEditadaEvent($deteccion));
-
-        User::role(['Coordinacion de FD y AP',  'Jefe del Departamento de Desarrollo Academico'])->each(function (User $user) use ($deteccion) {
-            $usuario = auth()->user() == null ? $user : auth()->user();
-            $user->notify(new DeteccionEditadaNotification($deteccion, $usuario));
-        });
-
-        return Redirect::route('detecciones.index');
+        if(count($facilitadores) > 3){
+            return Redirect::back()->withErrors('Excede el limite de facilitadores');
+        }
+        else{
+            $deteccion->deteccion_facilitador()->sync(
+                $facilitadores,
+                false
+            );
+    
+            $deteccion->update($request->validated());
+    
+            $deteccion->save();
+    
+            event(new DeteccionEditadaEvent($deteccion));
+    
+            User::role(['Coordinacion de FD y AP',  'Jefe del Departamento de Desarrollo Academico'])->each(function (User $user) use ($deteccion) {
+                $usuario = auth()->user() == null ? $user : auth()->user();
+                $user->notify(new DeteccionEditadaNotification($deteccion, $usuario));
+            });
+    
+            return Redirect::route('detecciones.index');
+        }
     }
 
 

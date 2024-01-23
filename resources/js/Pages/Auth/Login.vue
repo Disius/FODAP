@@ -89,15 +89,6 @@ onMounted(() => {
             <div>
                 <InputLabel for="email" value="Correo Institucional" />
 
-<!--                <TextInput-->
-<!--                    id="email"-->
-<!--                    type="email"-->
-<!--                    class="mt-1 block w-full"-->
-<!--                    v-model="form.email"-->
-<!--                    required-->
-<!--                    autofocus-->
-<!--                    autocomplete="username"-->
-<!--                />-->
                 <v-text-field v-model="form.email" :rules="email_rules">
 
                 </v-text-field>
@@ -147,12 +138,5 @@ onMounted(() => {
                 </Link>
             </div>
         </template>
-        <Link :href="route('connect')" as="button">
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                <div class="flex justify-center">
-                    <v-btn append-icon="mid-microsoft">Iniciar sesión con Microsoft</v-btn>
-                </div>
-            </div>
-        </Link>
     </GuestLayout>
 </template>

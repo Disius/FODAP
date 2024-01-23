@@ -3,6 +3,7 @@ import {computed, onMounted, ref} from "vue";
 import {useForm, usePage} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const props = defineProps({
     deteccion: Object,
@@ -11,9 +12,14 @@ const props = defineProps({
     lugar: {
         type: Array
     },
+    errors: Object,
 });
 
 const user = computed(() => usePage().props.auth.user);
+const snackbar = ref(false)
+const message = ref("")
+const timeout = ref()
+const color = ref("")
 let exist = ref(null)
 const dialog = ref(true);
 const form = useForm({
@@ -85,6 +91,29 @@ const maxCount = [
         return true;
     }
 ]
+
+const submit = () => {
+    form.put(route('update.detecciones', props.deteccion.id), {
+        onSuccess: () => {
+            message.value = "El recurso se actualizó con éxito."
+            color.value = "success"
+            timeout.value = 5000
+            snackbar.value = true
+            setTimeout(() => {
+                snackbar.value = false
+            }, timeout.value)
+        },
+        onError: () => {
+            message.value = props.errors[0]
+            color.value = "error"
+            timeout.value = 5000
+            snackbar.value = true
+            setTimeout(() => {
+                snackbar.value = false
+            }, timeout.value)
+        }
+    })
+}
 onMounted(() => {
     form.AsignaturasFA = props.deteccion.asignaturaFA
     form.ContenidoTFA = props.deteccion.contenidosTM
@@ -112,7 +141,7 @@ onMounted(() => {
 
 <template>
     <section>
-        <form @submit.prevent="form.put(route('update.detecciones', props.deteccion.id))">
+        <form @submit.prevent="submit">
             <v-container class="mt-5">
                 <v-row justify="center">
                     <template v-if="form.tipo === 1">
@@ -561,6 +590,7 @@ onMounted(() => {
                 </Transition>
             </div>
         </form>
+        <CustomSnackBar :message="message" :color="color" v-model="snackbar" @update:model-value="snackbar = $event"></CustomSnackBar>
     </section>
 </template>
 
