@@ -12,14 +12,14 @@ import ApplicationLogoEducacion from "@/Components/ApplicationLogoEducacion.vue"
                 <div class="flex items-center space-x-4">
                     <Link :href="route('main')">
                         <ApplicationLogo
-                            class="block h-40 w-44 fill-current text-gray-800 mb-5"
+                            class="block h-40 w-52 fill-current text-gray-800 mb-5"
                         />
                     </Link>
                 </div>
                 <div>
                     <Link :href="route('main')">
                         <ApplicationLogoTecNM
-                            class="block h-40 w-44 fill-current text-gray-800 mb-5"
+                            class="block h-40 w-52 fill-current text-gray-800 mb-5"
                         />
                     </Link>
                 </div>
