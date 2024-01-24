@@ -36,7 +36,7 @@ import ApplicationLogoEducacion from "@/Components/ApplicationLogoEducacion.vue"
             <div class="container mx-auto text-center">
                 <div class="flex items-center space-x-4">
                     <ApplicationLogoEducacion
-                        class="block h-20 w-40 fill-current text-gray-800 mb-5"
+                        class="block h-44 w-40 fill-current text-gray-800 mb-5"
                     />
                 </div>
             </div>
