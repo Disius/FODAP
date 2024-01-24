@@ -1,7 +1,7 @@
 <script setup>
 const bgimage = {
     backgroundImage:'url(/storage/img/educacion.jpg)',
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
 }
 
 </script>
