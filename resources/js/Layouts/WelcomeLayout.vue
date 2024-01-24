@@ -34,7 +34,7 @@ import ApplicationLogoEducacion from "@/Components/ApplicationLogoEducacion.vue"
 
         <footer class=" bg-white shadow-md py-6">
             <div class="container mx-auto text-center">
-                <div class="flex items-center space-x-4">
+                <div class="flex justify-center items-center space-x-4">
                     <ApplicationLogoEducacion
                         class="block h-36 w-60 fill-current text-gray-800 mb-5"
                     />
