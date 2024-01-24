@@ -12,7 +12,7 @@ import ApplicationLogoEducacion from "@/Components/ApplicationLogoEducacion.vue"
                 <div class="flex items-center space-x-4">
                     <Link :href="route('main')">
                         <ApplicationLogo
-                            class="block h-28 w-36 fill-current text-gray-800 mb-5"
+                            class="block h-32 w-36 fill-current text-gray-800 mb-5"
                         />
                     </Link>
                 </div>
