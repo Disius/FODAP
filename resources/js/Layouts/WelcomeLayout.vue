@@ -32,7 +32,7 @@ import ApplicationLogoEducacion from "@/Components/ApplicationLogoEducacion.vue"
             </main>
         </div>
 
-        <footer class=" bg-blue-600 shadow-md py-6">
+        <footer class=" bg-blue-900 shadow-md py-6">
             <div class="container mx-auto text-center">
                 <div class="flex justify-center items-center space-x-4">
                     <ApplicationLogoEducacion
