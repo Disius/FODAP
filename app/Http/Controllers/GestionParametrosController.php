@@ -329,7 +329,7 @@ class   GestionParametrosController extends Controller
         ]);
         $year = date('Y');
         $path = '/Membretado/'.$year;
-        $request->file('file')->storeAs($path, 'img_acta_calificaciones.png', 'public');
+        $request->file('file')->storeAs($path, 'img_acta_calificaciones.jpg', 'public');
         return redirect()->route('parametros.edit');
     }
     public function subir_img_constancia(Request $request){
@@ -338,7 +338,7 @@ class   GestionParametrosController extends Controller
         ]);
         $year = date('Y');
         $path = '/Membretado/'.$year;
-        $request->file('file')->storeAs($path, 'img_constancia.png', 'public');
+        $request->file('file')->storeAs($path, 'img_constancia.jpg', 'public');
         return redirect()->route('parametros.edit');
     }
     public function subir_img_constancia_2(Request $request){
