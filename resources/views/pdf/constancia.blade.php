@@ -277,9 +277,9 @@
     <div class="footer">
         <div class="director-signature" style="float: right;">
             <!-- Firma del director -->
-            @foreach($facilitador as $facilitadores)
-                <p>{{$facilitador->nombre_completo}}</p>
-            @endforeach
+{{--            @foreach($facilitador as $facilitadores)--}}
+{{--                <p>{{$facilitador->nombre_completo}}</p>--}}
+{{--            @endforeach--}}
             <p>FACILITADOR</p>
             <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->
         </div>
