@@ -170,26 +170,26 @@ class PDFController extends Controller
         $formatFechasF = explode("-", $fecha2);
         $director = Director::all();
         $month = $this->parse_date($fecha);
-
-        $pdf_1 = Pdf::loadView('pdf.constancia', compact('year', 'instituto', 'docente', 'formatFechasI', 'formatFechasF', 'month', 'facilitador', 'director'))
-            ->output();
-
-        $path = 'constancia1.pdf';
-
-        $pdf_2 = Pdf::loadView('pdf.constancia_2', compact('year', 'curso', 'docente', 'day', 'anio', 'month_get', 'coordinacion', 'temas'))
-            ->setPaper('a4','landscape')
-            ->output();
-
-        $path_2 = 'constancia2.pdf';
-
-        $this->save_file($pdf_1, $path);
-        $this->save_file($pdf_2, $path_2);
-
-        $this->merge_pdf('constancia1', 'constancia2');
+//
+//        $pdf_1 = Pdf::loadView('pdf.constancia', compact('year', 'instituto', 'docente', 'formatFechasI', 'formatFechasF', 'month', 'facilitador', 'director'))
+//            ->output();
+//
+//        $path = 'constancia1.pdf';
+//
+//        $pdf_2 = Pdf::loadView('pdf.constancia_2', compact('year', 'curso', 'docente', 'day', 'anio', 'month_get', 'coordinacion', 'temas'))
+//            ->setPaper('a4','landscape')
+//            ->output();
+//
+//        $path_2 = 'constancia2.pdf';
+//
+//        $this->save_file($pdf_1, $path);
+//        $this->save_file($pdf_2, $path_2);
+//
+//        $this->merge_pdf('constancia1', 'constancia2');
         return response()->json([
-            'docente' => $docente->nombre_completo,
+            'docente' => $docente,
             'year' => $year,
-            'facilitador' => $facilitador[0]->nombre_completo,
+            'facilitador' => $facilitador,
             'coordinacion' => $coordinacion,
         ]);
     }
