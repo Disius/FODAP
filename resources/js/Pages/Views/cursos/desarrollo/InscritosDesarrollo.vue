@@ -23,6 +23,7 @@ const props = defineProps({
     auth: Object,
     docente: Array,
     inscritos: Array,
+    ficha_tecnica: Object
 });
 const timeout = ref(0);
 

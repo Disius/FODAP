@@ -14,6 +14,7 @@ use App\Models\ClaveCurso;
 use App\Models\Departamento;
 use App\Models\DeteccionNecesidades;
 use App\Models\Docente;
+use App\Models\FichaTecnica;
 use App\Models\Lugar;
 use App\Models\Plaza;
 use App\Models\Posgrado;
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+
 
 class DesarrolloController extends Controller
 {
@@ -293,13 +295,14 @@ class DesarrolloController extends Controller
             ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
             ->get();
 
+        $ficha = $curso->ficha_tecnica != null ? FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id) : null;    
 
 
         return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
             'curso' => $curso,
             'docente' => $docente,
             'inscritos' => $inscritos,
-//            'test' => $test
+            'ficha_tecnica' => $ficha,
         ]);
     }
 
