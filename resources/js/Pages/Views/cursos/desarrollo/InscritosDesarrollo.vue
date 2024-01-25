@@ -105,6 +105,9 @@ const submit = (inscripcion, id) => {
 
 const generar_ficha = () => {
     loading.value = true
+    setTimeout(() => {
+        loading.value = false
+    }, 5000)
     axios.get(route('pdf.ficha.tecnica'), {
         params: {
             id_ficha: props.curso.ficha_tecnica.id
@@ -384,20 +387,30 @@ onMounted(() => {
                                     Ver ficha técnica
                                 </v-btn>
                             <Modal :show="show_ficha" @close="closeModal">
-                                <div class="grid grid-rows-3">
-                                    <div class="flex justify-center items-center pa-4">
-                                        {{props.curso.ficha_tecnica.competencias_desarrollar}}
+                                <template v-if="props.curso.ficha_tecnica">
+                                    <div class="grid grid-rows-3">
+                                        <div class="flex justify-center items-center pa-4">
+                                            {{props.curso.ficha_tecnica.competencias_desarrollar}}
+                                        </div>
+                                        <div class="flex justify-center items-center pa-4">
+                                            {{props.curso.ficha_tecnica.descripcion_servicio}}
+                                        </div>
+                                        <div class="flex justify-center items-center pa-4">
+                                            {{props.curso.ficha_tecnica.objetivo_general}}
+                                        </div>
+                                        <div class="flex justify-end items-center pa-4">
+                                            <SecondaryButton @click="show_ficha = false">Cerrar</SecondaryButton>
+                                        </div>
                                     </div>
-                                    <div class="flex justify-center items-center pa-4">
-                                        {{props.curso.ficha_tecnica.descripcion_servicio}}
-                                    </div>
-                                    <div class="flex justify-center items-center pa-4">
-                                        {{props.curso.ficha_tecnica.objetivo_general}}
-                                    </div>
-                                    <div class="flex justify-end items-center pa-4">
-                                        <SecondaryButton @click="show_ficha = false">Cerrar</SecondaryButton>
-                                    </div>
-                                </div>
+                                </template>
+                                <template v-else-if="props.curso.ficha_tecnica === null">
+                                    <v-alert
+                                        density="compact"
+                                        type="warning"
+                                        title="Alerta"
+                                        text="Este curso no posee una ficha tecnica"
+                                    ></v-alert>
+                                </template>
                             </Modal>
                         </v-col>
                         <v-col cols="6" align="center">
