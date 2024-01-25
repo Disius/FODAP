@@ -63,6 +63,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/upload/cvu', [DocenteController::class, 'upload_cvu'])->name('upload.cvu');
     Route::get('/crear/ficha/{facilitador}/curso/{id}', [DocenteController::class, 'crear_ficha_tecnica'])->name('crear.ficha');
     Route::post('/guardar/ficha-tecnica', [DocenteController::class, 'store_ficha_tecnica'])->name('store.ficha');
+    Route::get('/editar-ficha/{facilitador}/curso/{id}', [DocenteController::class, 'edit_ficha'])->name('edit.ficha');
+
+
     Route::post('/facilitador/calificaciones/create', [DocenteController::class, 'calificaciones_facilitador'])->name('calificaciones.facilitador.create');
     Route::put('/facilitador/calificaciones/update', [DocenteController::class, 'update_calificaciones_facilitador'])->name('calificaciones.facilitador.update');
 

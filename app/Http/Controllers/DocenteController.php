@@ -188,18 +188,15 @@ class DocenteController extends Controller
         }
     }
 
-//    public function calificaciones(Request $request){
-//        $request->validate([
-//            'docente_id' => 'required'
-//        ]);
-//        $this->add_calificacion($request);
-//
-//        $syncCalificacion = DesarrolloController::consult_to_sync($request->curso_id, $request->docente_id);
-//
-//        event(new CalificacionEvent($syncCalificacion));
-//
-//        return Redirect::route('show.curso.facilitador', [$request->docente_id, $request->curso_id]);
-//    }
+    public function edit_ficha($facilitador, $id){
+        $docente = Docente::find($facilitador);
+        $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($id);
+        return Inertia::render('Views/cursos/facilitadores/EditFicha', [
+            'docente' => $docente,
+            'curso' => $curso
+        ]);
+    }
+
     public function calificaciones_facilitador(Request $request){
         $request->validate([
             'docente_id' => 'required',
