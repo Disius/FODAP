@@ -16,15 +16,15 @@ class CreateFichaTecnicaTable extends Migration
         Schema::create('ficha_tecnica', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_curso');
-            $table->string('introduccion');
-            $table->string('justificacion');
-            $table->string('objetivo_general');
-            $table->string('descripcion_servicio');
+            $table->longText('introduccion');
+            $table->longText('justificacion');
+            $table->longText('objetivo_general');
+            $table->longText('descripcion_servicio');
             $table->integer('tipo_servicio');
             $table->integer('duracion');
-            $table->string('elementos_didacticos');
-            $table->string('competencias_desarrollar');
-            $table->string('fuentes_informacion');
+            $table->longText('elementos_didacticos');
+            $table->longText('competencias_desarrollar');
+            $table->longText('fuentes_informacion');
             $table->timestamps();
         });
     }
