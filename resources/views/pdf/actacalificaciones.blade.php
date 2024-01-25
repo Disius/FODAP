@@ -10,7 +10,7 @@
             margin: 0;
         }
         body {
-            background-image: url({{ public_path('/storage/Membretado/'.$year.'/img_acta_calificaciones.png') }});
+            background-image: url({{ public_path('/storage/Membretado/'.$year.'/img_acta_calificaciones.jpg') }});
             background-size: cover; /* O ajusta según tus necesidades (p. ej., contain) */
             background-position: center; /* Ajusta según tus necesidades */
             background-repeat: no-repeat;
