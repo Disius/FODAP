@@ -163,7 +163,7 @@ onMounted(() => {
                            </v-tooltip>
                        </div>
                        <div class="flex justify-center mt-2">
-                           <v-textarea clearable variant="solo" v-model="form.objetivo_general" :counter="250" :rules="rules"></v-textarea>
+                           <v-textarea clearable variant="solo" v-model="form.objetivo_general" :counter="800"></v-textarea>
                        </div>
                    </div>
                    <div class="grid grid-cols-1 justify-center">
