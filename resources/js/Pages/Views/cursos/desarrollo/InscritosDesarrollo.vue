@@ -13,6 +13,8 @@ import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 import Loading from "@/Components/Loading.vue";
 import Calificaciones from "@/Components/Calificaciones.vue";
 import CalificacionesUpdate from "@/Components/CalificacionesUpdate.vue";
+import Modal from "@/Components/Modal.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 const store = Curso();
 
@@ -36,6 +38,7 @@ const message = ref("")
 const curso_id = ref()
 const docente = ref()
 const dialogCalificacionUpdate = ref(false)
+const show_ficha = ref(false)
 
 const reloadPage = () => {
     router.reload();
@@ -114,13 +117,11 @@ const generar_ficha = () => {
         link.setAttribute('download', 'ficha.pdf');
         document.body.appendChild(link);
         link.click();
-        console.log(res.data)
         snackSuccessActivator()
     }).catch(error => {
         loading.value = false
         snackErrorActivator()
         // alert(`El inconveniente es: ${error}`)
-        console.log(error)
     })
 
 };
@@ -193,7 +194,9 @@ const snackSuccessActivator = () => {
         snackbar.value = false
     }, timeout.value)
 };
-
+const closeModal = () => {
+    show_ficha.value = false;
+};
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {
         switch (notification.type){
@@ -377,9 +380,25 @@ onMounted(() => {
                         </v-col>
                         <v-col cols="6" align="center">
 <!--                            :href="route('edit.ficha', [props.auth.user.id, props.curso.id])"-->
-                                <v-btn color="blue-darken-1">
+                                <v-btn color="blue-darken-1" @click="show_ficha = true">
                                     Ver ficha técnica
                                 </v-btn>
+                            <Modal :show="show_ficha" @close="closeModal">
+                                <div class="grid grid-rows-3">
+                                    <div class="flex justify-center items-center pa-4">
+                                        {{props.curso.ficha_tecnica.competencias_desarrollar}}
+                                    </div>
+                                    <div class="flex justify-center items-center pa-4">
+                                        {{props.curso.ficha_tecnica.descripcion_servicio}}
+                                    </div>
+                                    <div class="flex justify-center items-center pa-4">
+                                        {{props.curso.ficha_tecnica.objetivo_general}}
+                                    </div>
+                                    <div class="flex justify-end items-center pa-4">
+                                        <SecondaryButton @click="show_ficha = false">Cerrar</SecondaryButton>
+                                    </div>
+                                </div>
+                            </Modal>
                         </v-col>
                         <v-col cols="6" align="center">
 <!--                            :href="route('edit.ficha', [props.auth.user.id, props.curso.id])"-->
