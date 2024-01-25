@@ -101,11 +101,13 @@ const submit = (inscripcion, id) => {
 }
 
 const generar_ficha = () => {
+    loading.value = true
     axios.get(route('pdf.ficha.tecnica'), {
         params: {
             id_ficha: props.curso.ficha_tecnica.id
         }
     }).then(res => {
+        loading.value = false
         const url = '/storage/ficha.pdf';
         const link = document.createElement('a');
         link.href = url;
@@ -114,6 +116,7 @@ const generar_ficha = () => {
         link.click();
         snackSuccessActivator()
     }).catch(error => {
+        loading.value = false
         snackErrorActivator()
     })
 };
