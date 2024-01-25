@@ -124,10 +124,10 @@ class DocenteController extends Controller
 
     public function facilitador_curso($facilitador, $id){
         $docente = Docente::find($facilitador);
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso'])
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso', 'ficha_tecnica'])
 
             ->find($id);
-        $ficha = $curso->ficha_tecnica != null ? FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id) : null;
+//        $ficha = $curso->ficha_tecnica != null ? FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id) : null;
         $inscritos = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
             ->leftJoin('calificaciones', function ($join) {
@@ -140,7 +140,7 @@ class DocenteController extends Controller
         return Inertia::render('Views/cursos/facilitadores/MiCursoFacilitador', [
             'curso' => $curso,
             'facilitador' => $docente,
-            'ficha_tecnica' => $ficha,
+//            'ficha_tecnica' => $ficha,
             'inscritos' => $inscritos,
         ]);
     }

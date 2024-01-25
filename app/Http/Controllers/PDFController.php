@@ -186,9 +186,12 @@ class PDFController extends Controller
         $this->save_file($pdf_2, $path_2);
 
         $this->merge_pdf('constancia1', 'constancia2');
-        return response()->json([
-            'test' => $temas
-        ]);
+//        return response()->json([
+//            'test' => $temas,
+//            'docente' => $docente->nombre_completo,
+//            'year' => $year,
+//            'facilitador' => $facilitador[0]->nombre_completo
+//        ]);
     }
 
     public static function merge_pdf($pdf1, $pdf2){

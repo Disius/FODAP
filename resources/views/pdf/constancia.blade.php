@@ -253,7 +253,7 @@
     <diV class="text-4">A</diV>
 
     <div class="text-5">
-        {{$docente->nombre_completo}}
+        {{$docente}}
     </div>
     <div class="text-6">
         Por su destacada participación en el Curso/taller:

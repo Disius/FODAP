@@ -84,7 +84,7 @@ const submit = () => {
 }
 
 onMounted(() => {
-    store.get_is_facilitador(props.auth.user.value.docente_id)
+    // store.get_is_facilitador(props.auth.user.value.docente_id)
     //
     // console.log(store.this_facilitador)
 });
