@@ -100,6 +100,23 @@ const submit = (inscripcion, id) => {
     })
 }
 
+const generar_ficha = () => {
+    axios.get(route('pdf.ficha.tecnica'), {
+        params: {
+            id_ficha: props.curso.ficha_tecnica.id
+        }
+    }).then(res => {
+        const url = '/storage/ficha.pdf';
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'ficha.pdf');
+        document.body.appendChild(link);
+        link.click();
+        snackSuccessActivator()
+    }).catch(error => {
+        snackErrorActivator()
+    })
+};
 const submitActa = () => {
     loading.value = true
     axios.get(route('pdf.acta.calificaciones'), {
