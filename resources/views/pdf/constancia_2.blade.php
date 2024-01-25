@@ -163,7 +163,7 @@
             </table>
             <table class="w100" style="margin-top: 35px;">
                 <tr>
-                    <td class="titles content center">Lic. {{$coordinacion->docente->nombre_completo}}</td>
+                    <td class="titles content center">Lic. {{$coordinacion}}</td>
                 </tr>
             </table>
             <table class="w100">
