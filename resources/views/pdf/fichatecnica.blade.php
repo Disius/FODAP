@@ -111,7 +111,14 @@
     <div class="text-init">
         <p><b>Instituto Tecnológico o Centro o Unidad:</b> {{$name_instituto[0]->name}}</p>
         <p><b>Nombre del Curso:</b> {{$ficha->curso_ficha->nombreCurso}}</p>
-        <p><b>Instructor(a):</b> {{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>
+        @if(count($ficha->curso_ficha->deteccion_facilitador) == 0)
+            <p><b>Instructor(a):</b> Sin asignar</p>
+        @elseif(count($ficha->curso_ficha->deteccion_facilitador) > 0)
+            <p><b>Instructor(a):</b> {{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>   
+        @elseif($ficha->curso_ficha->facilitador_externo != null)
+        <p><b>Instructor(a):</b> {{$ficha->curso_ficha->facilitador_externo}}</p>
+        @else
+        <p><b>Instructor(a):</b> Sin asignar</p>
     </div>
     <div class="text-middle">
         <p class="title">• Introducción</p>
