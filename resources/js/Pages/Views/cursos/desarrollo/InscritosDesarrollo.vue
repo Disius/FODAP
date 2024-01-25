@@ -383,7 +383,7 @@ onMounted(() => {
                             </NavLink>
                         </v-col>
                         <v-col cols="6" align="center" class="mt-2">
-                            <v-btn color="blue-darken-1" prepend-icon="mdi-file-pdf-box">
+                            <v-btn @click="generar_ficha" color="blue-darken-1" prepend-icon="mdi-file-pdf-box">
                                 Descargar PDF
                             </v-btn>
                         </v-col>
