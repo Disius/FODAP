@@ -171,10 +171,11 @@
         }
         .footer {
             position: fixed;
-            bottom: 230px;
+            bottom: 220px;
             width: 100%;
             text-align: center;
             padding: 10px;;
+
         }
 
         .director-signature {
