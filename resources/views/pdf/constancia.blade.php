@@ -253,7 +253,7 @@
     <diV class="text-4">A</diV>
 
     <div class="text-5">
-        {{$docente}}
+        {{$docente->nombre_completo}}
     </div>
     <div class="text-6">
         Por su destacada participación en el Curso/taller:
@@ -278,7 +278,7 @@
         <div class="director-signature" style="float: right;">
             <!-- Firma del director -->
             @foreach($facilitador as $facilitadores)
-                <p>{{$facilitador}}</p>
+                <p>{{$facilitador->nombre_completo}}</p>
             @endforeach
             <p>FACILITADOR</p>
             <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->
