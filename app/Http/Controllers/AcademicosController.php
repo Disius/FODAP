@@ -156,7 +156,13 @@ class AcademicosController extends Controller
 
 
 
-            (new DesarrolloController)->itareble_inscritos($request->id_docente, $deteccion);
+            foreach ($request->id_docente as $docente){
+                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
+                    $deteccion->docente_inscrito()->attach($docente);
+                }else{
+                    return back()->withErrors('Este docente ya esta inscrito');
+                }
+            }
 
 
 

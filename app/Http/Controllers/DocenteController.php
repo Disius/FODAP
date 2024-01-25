@@ -189,11 +189,11 @@ class DocenteController extends Controller
     }
 
     public function edit_ficha($facilitador, $id){
-        $docente = Docente::find($facilitador);
-        $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($id);
+//        $docente = Docente::find($facilitador);
+//        $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($id);
+        $ficha = FichaTecnica::with( 'temas', 'evaluacion_criterio')->where('id_curso', '=', $id);
         return Inertia::render('Views/cursos/facilitadores/EditFicha', [
-            'docente' => $docente,
-            'curso' => $curso
+            'ficha' => $ficha
         ]);
     }
 

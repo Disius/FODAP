@@ -9,6 +9,7 @@ const props = defineProps({
     auth: Object,
     docente: Object,
     curso: Object,
+    ficha: Object,
 })
 
 const timeout = ref(0)
@@ -71,7 +72,7 @@ const submit = () => {
     return form.post(route('store.ficha'), {
         onSuccess: () => {
             snackSuccessActivator()
-        }, 
+        },
         onError: () => {
             snackErrorActivator()
         }
