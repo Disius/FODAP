@@ -114,11 +114,11 @@
         @if(count($ficha->curso_ficha->deteccion_facilitador) == 0)
             <p><b>Instructor(a):</b> Sin asignar</p>
         @elseif(count($ficha->curso_ficha->deteccion_facilitador) > 0)
-            <p><b>Instructor(a):</b> {{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>   
+            <p><b>Instructor(a):</b> {{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>
         @elseif($ficha->curso_ficha->facilitador_externo != null)
         <p><b>Instructor(a):</b> {{$ficha->curso_ficha->facilitador_externo}}</p>
         @else
-        <p><b>Instructor(a):</b> Sin asignar</p>
+        @endif
     </div>
     <div class="text-middle">
         <p class="title">• Introducción</p>

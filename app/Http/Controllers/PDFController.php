@@ -120,7 +120,7 @@ class PDFController extends Controller
     }
 
     public function ficha_tecnica_pdf(Request $request){
-        $ficha = FichaTecnica::with(['temas', 'evaluacion_criterio', 'curso_ficha'])->find($request->id_ficha);
+        $ficha = FichaTecnica::find($request->id_ficha);
         $name_instituto = NombreInstituto::all();
         $departamento = Departamento::with( 'jefe_docente')->where('nameDepartamento', '=','Departamento de Desarrollo Académico')->first();
         $pdf = Pdf::loadView('pdf.fichatecnica', compact('ficha', 'name_instituto', 'departamento'))
@@ -129,6 +129,14 @@ class PDFController extends Controller
         $path = 'ficha.pdf';
 
         return $this->save_file($pdf, $path);
+
+//        return response()->json([
+//            'ficha' => $ficha,
+//            'id' => $request->id_ficha,
+//            'i' => $name_instituto,
+//            'departamento' => $departamento,
+//            'pdf' => $pdf
+//        ]);
     }
     public function acta_calificaciones_pdf(Request $request){
         $year = date('Y');

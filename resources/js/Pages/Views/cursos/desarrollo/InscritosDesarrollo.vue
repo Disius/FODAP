@@ -114,11 +114,15 @@ const generar_ficha = () => {
         link.setAttribute('download', 'ficha.pdf');
         document.body.appendChild(link);
         link.click();
+        console.log(res.data)
         snackSuccessActivator()
     }).catch(error => {
         loading.value = false
         snackErrorActivator()
+        // alert(`El inconveniente es: ${error}`)
+        console.log(error)
     })
+
 };
 const submitActa = () => {
     loading.value = true
