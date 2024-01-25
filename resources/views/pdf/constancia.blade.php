@@ -171,7 +171,7 @@
         }
         .footer {
             position: fixed;
-            bottom: 220px;
+            bottom: 250px;
             width: 100%;
             text-align: center;
             padding: 10px;;
