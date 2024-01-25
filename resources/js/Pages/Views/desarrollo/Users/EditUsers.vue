@@ -5,6 +5,7 @@ import UpdateProfileInformationFormSelected
 import UpdatePasswordFormSelected from "@/Pages/Views/desarrollo/forms/UpdatePasswordFormSelected.vue";
 import NavLink from "@/Components/NavLink.vue";
 import {ref} from "vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const props = defineProps({
     user: Object,
@@ -68,6 +69,7 @@ const submit = (form) => {
                 <UpdatePasswordFormSelected :user="props.user"></UpdatePasswordFormSelected>
             </div>
         </div>
+        <CustomSnackBar v-model="snackbar" :message="message" :color="color" @update:modelValue="snackbar = $event"></CustomSnackBar>
     </AuthenticatedLayout>
 </template>
 
