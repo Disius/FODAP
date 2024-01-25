@@ -1,7 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {computed, onMounted, watch} from "vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import NavLink from "@/Components/NavLink.vue";
 import Inscripcion from "../../dialogs/Inscripcion.vue";
 import {ref} from 'vue';
@@ -9,7 +8,6 @@ import {Curso} from "@/store/curso.js";
 import DangerButton from "@/Components/DangerButton.vue";
 import EliminarDeteccionConfirmation from "@/Pages/Views/dialogs/EliminarDeteccionConfirmation.vue";
 import {router, useForm} from "@inertiajs/vue3";
-import InputLabel from "@/Components/InputLabel.vue";
 import axios from 'axios'
 import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 import Loading from "@/Components/Loading.vue";
