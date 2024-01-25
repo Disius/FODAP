@@ -20,6 +20,7 @@ class FichaTecnica extends Model
         'duracion'
     ];
 
+    protected $with = ['temas', 'evaluacion_criterio', 'curso_ficha'];
     public function curso_ficha(): BelongsTo {
         return $this->belongsTo(DeteccionNecesidades::class, 'id_curso');
     }

@@ -7,7 +7,7 @@ import ApplicationLogoEducacion from "@/Components/ApplicationLogoEducacion.vue"
 
 <template>
     <div>
-        <div class="bg-white shadow-md">
+        <div class="bg-white shadow-2xl">
             <div class="container mx-auto px-4 py-6 flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     <Link :href="route('main')">
@@ -27,12 +27,12 @@ import ApplicationLogoEducacion from "@/Components/ApplicationLogoEducacion.vue"
         </div>
         <div class="relative h-screen">
             <!-- Main con el contenido -->
-            <main class="absolute inset-0 flex items-center justify-center">
+            <main class="absolute inset-0 flex items-center justify-center mb-16">
                 <slot/>
             </main>
         </div>
 
-        <footer class=" bg-blue-900 shadow-md py-6">
+        <footer class="bg-white shadow-2xl ">
             <div class="container mx-auto text-center">
                 <div class="flex justify-center items-center space-x-4">
                     <ApplicationLogoEducacion

@@ -164,7 +164,7 @@ class DesarrolloController extends Controller
         $posgrado = Posgrado::all();
         $puesto = Puesto::all();
         $tipoplaza = Plaza::all();
-        
+
         return Inertia::render('Views/cursos/desarrollo/registros/EditCurso', [
             'curso' => $curso,
             'carrera' => $carrera,
@@ -203,9 +203,9 @@ class DesarrolloController extends Controller
                 false
             );
             $curso->update($request->validated());
-    
+
             $curso->save();
-    
+
             return Redirect::route('index.desarrollo.inscritos', ['id' => $curso->id]);
         }
     }
@@ -283,8 +283,7 @@ class DesarrolloController extends Controller
 
     public function index_curso_inscrito_desarrollo($id){
         $docente = Docente::orderBy('nombre', 'asc')->get();
-        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'clave_curso', 'clave_validacion', 'lugar'])->where('aceptado', '=', 1)
-            ->find($id);
+        $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'clave_curso', 'clave_validacion', 'lugar', 'ficha_tecnica'])->find($id);
         $inscritos = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
             ->leftJoin('calificaciones', function ($join) {
@@ -295,14 +294,13 @@ class DesarrolloController extends Controller
             ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
             ->get();
 
-        $ficha = $curso->ficha_tecnica != null ? FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id) : null;    
+
 
 
         return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
             'curso' => $curso,
             'docente' => $docente,
             'inscritos' => $inscritos,
-            'ficha_tecnica' => $ficha,
         ]);
     }
 

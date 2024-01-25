@@ -40,11 +40,16 @@ const form = useForm({
     duracion: props.curso.total_horas
 });
 
-const addCol = () => {
-    matrix.value.forEach(row => {
-        row.push('');
-    });
-}
+// const addCol = () => {
+//     matrix.value.forEach(row => {
+//         row.push('');
+//     });
+// }
+// const  = () => {
+//     matrix.value.forEach(row => {
+//         row.push('');
+//     });
+// }
 
 const addRow = () => {
     return form.temas.length === 18 ? snackbar.value = true : form.temas.push(['', '', ''])
@@ -71,7 +76,7 @@ const submit = () => {
     return form.post(route('store.ficha'), {
         onSuccess: () => {
             snackSuccessActivator()
-        }, 
+        },
         onError: () => {
             snackErrorActivator()
         }

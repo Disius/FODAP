@@ -352,7 +352,14 @@ onMounted(() => {
                             </NavLink>
                         </v-col>
                         <v-col cols="6" align="center">
-                            <NavLink :href="route('edit.ficha', [props.auth.user.id, props.curso.id])">
+<!--                            :href="route('edit.ficha', [props.auth.user.id, props.curso.id])"-->
+                                <v-btn color="blue-darken-1">
+                                    Ver ficha técnica
+                                </v-btn>
+                        </v-col>
+                        <v-col cols="6" align="center">
+<!--                            :href="route('edit.ficha', [props.auth.user.id, props.curso.id])"-->
+                            <NavLink href="#">
                                 <v-btn color="blue-darken-1">
                                     Editar ficha técnica
                                 </v-btn>
