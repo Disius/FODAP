@@ -127,6 +127,7 @@
             margin-right: 50px;
             font-family: 'Montserrat';
             font-size: 17pt;
+            margin-left: 50px;
         }
         .text-8 {
             display: flex;
