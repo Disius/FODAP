@@ -174,7 +174,7 @@ const id_curso = useForm({
     curso: props.curso.id
 })
 const desinscribir = (id) => {
-    id_curso.post(route('delete.inscripcion.desarrollo', id), {
+    id_curso.post(`/docente/desinscribir/${id}`, {
         onSuccess: () => {
             snackSuccessActivator()
         },
