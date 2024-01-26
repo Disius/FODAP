@@ -212,6 +212,20 @@ class DocenteController extends Controller
         ]);
     }
 
+    public function delete_ficha($id){
+        $criterios = CriteriosEvaluacion::where('ficha_id', $id)->get();
+        foreach ($criterios as $criterio){
+            $criterio->delete();
+        }
+        $temas = Temas::where('ficha_id', $id)->get();
+        foreach ($temas as $tema){
+            $tema->delete();
+        }
+        $ficha = FichaTecnica::find($id);
+        $ficha->delete();
+
+
+    }
     public function calificaciones_facilitador(Request $request){
         $request->validate([
             'docente_id' => 'required',

@@ -431,7 +431,16 @@ const custom_snackbar = (snack) => {
                                             {{props.curso.ficha_tecnica.objetivo_general}}
                                         </div>
                                         <div class="flex justify-end items-center pa-4">
-                                            <SecondaryButton @click="show_ficha = false">Cerrar</SecondaryButton>
+                                            <div class="grid grid-cols-2">
+                                                <div class="flex justify-center">
+                                                    <SecondaryButton @click="show_ficha = false">Cerrar</SecondaryButton>
+                                                </div>
+                                                <div class="flex justify-center">
+                                                    <NavLink :href="route('eliminar.ficha', props.curso.ficha_tecnica.id)" as="button" method="delete">
+                                                        <danger-button>Eliminar</danger-button>
+                                                    </NavLink>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </template>
