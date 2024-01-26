@@ -52,6 +52,7 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::put('/desarrollo/actualizado/curso/{id}', [DesarrolloController::class, 'update_curso'])->name('update.curso');
 //inscripciones
     Route::post('/docente/inscribir/{id}', [DesarrolloController::class, 'inscripcion_por_desarrollo'])->name('inscribir.docente');
+    Route::post('/docente/desinscribir/{docente}', [DesarrolloController::class, 'desinscribirse'])->name('delete.inscripcion');
 
 
 //detecciones de necesidades

@@ -157,10 +157,10 @@ class AcademicosController extends Controller
 
 
             foreach ($request->id_docente as $docente){
-                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
-                    $deteccion->docente_inscrito()->attach($docente);
-                }else{
+                if($deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
                     return back()->withErrors('Este docente ya esta inscrito');
+                }else{
+                    $deteccion->docente_inscrito()->attach($docente);
                 }
             }
 

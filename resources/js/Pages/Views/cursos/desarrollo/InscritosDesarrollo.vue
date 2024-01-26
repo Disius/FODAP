@@ -23,7 +23,8 @@ const props = defineProps({
     auth: Object,
     docente: Array,
     inscritos: Array,
-    ficha_tecnica: Object
+    ficha_tecnica: Object,
+    errors: Object
 });
 const timeout = ref(0);
 
@@ -169,6 +170,19 @@ const submitConstancia = (docente_id) => {
         snackErrorActivator()
     })
 }
+const id_curso = useForm({
+    curso: props.curso.id
+})
+const desinscribir = (id) => {
+    id_curso.post(route('delete.inscripcion', id), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
 
 const snackEventActivator = () => {
     snackbar.value = true;
@@ -226,6 +240,14 @@ onMounted(() => {
     store.inscritos_curso_desarrollo(props.curso.id)
 });
 
+const custom_snackbar = (snack) => {
+    snackbar.value = snack
+    message.value = props.errors[0]
+    color.value = 'error'
+    setTimeout(() => {
+        snackbar.value = false
+    }, 5000)
+}
 </script>
 
 <template>
@@ -285,7 +307,7 @@ onMounted(() => {
                     <div class="flex justify-end items-end mt-2">
                         <v-btn @click="dialog_inscripcion = true" block size="large" color="blue-darken-1">Inscribir</v-btn>
                     </div>
-                    <Inscripcion :errors="$page.props.errors" :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
+                    <Inscripcion :errors="$page.props.errors" :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event" @custom:snackbar="custom_snackbar"></Inscripcion>
                 </div>
                 <div class="flex justify-end mb-10">
                     <template v-if="props.inscritos.length !== 0">
@@ -299,6 +321,7 @@ onMounted(() => {
                         <th class="text-center">Apellido Paterno</th>
                         <th class="text-center">Apellido Materno</th>
                         <th class="text-center">CÉDULA DE INSCRIPCIÓN</th>
+                        <th class="text-center">Desinscribir</th>
                         <th class="text-center">CALIFICACIÓN</th>
                         <th class="text-center">Constancia</th>
                     </tr>
@@ -317,6 +340,15 @@ onMounted(() => {
                                 <v-btn prepend-icon="mdi-file-pdf-box" color="blue-darken-1" @click="submit(inscrito.id, props.curso.id)">
                                     GENERAR PDF
                                 </v-btn>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex justify-center items-center">
+<!--                                <NavLink :href="route('delete.inscripcion', inscrito.id)" as="button">-->
+                                    <v-btn icon="mdi-account-arrow-left" color="blue-darken-1" @click="desinscribir(inscrito.id)">
+
+                                    </v-btn>
+<!--                                </NavLink>-->
                             </div>
                         </td>
                         <td class="text-center">

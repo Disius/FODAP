@@ -18,13 +18,15 @@ const props = defineProps({
     errors: Object,
 });
 
+
 const teacherSelected = ref([]);
 const search = ref("");
 const snackbar = ref(false);
 const timeout = ref(4000);
 
 const emit = defineEmits([
-    'update:modelValue'
+    'update:modelValue',
+    'custom:snackbar'
 ]);
 
 const form = useForm({
@@ -51,7 +53,7 @@ function addTeachers(teacher){
                     form.reset()
                 },
                 onError: () => {
-
+                    emit('custom:snackbar', true)
                     form.reset()
                 },
             })
@@ -61,7 +63,7 @@ function addTeachers(teacher){
                     form.reset()
                 },
                 onError: () => {
-                    snackbar.value = true;
+                    emit('custom:snackbar', true)
                     form.reset()
                 }
             })

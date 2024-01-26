@@ -14,6 +14,7 @@ const props = defineProps({
     auth: Object,
     docente: Array,
     inscritos: Array,
+    errors: Object
 });
 
 
@@ -51,7 +52,15 @@ const snackSuccessActivator = () => {
     color.value = "success"
     timeout.value = 5000
 };
-
+const custom_snackbar = (snack) => {
+    console.log(snack)
+    snackbar.value = snack
+    message.value = props.errors[0]
+    color.value = 'error'
+    setTimeout(() => {
+        snackbar.value = false
+    }, 5000)
+}
 const reloadPage = () => {
     router.reload();
     snackbar.value = false
@@ -94,7 +103,7 @@ onMounted(() => {
             <div class="p-4 mt-7 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="flex justify-start">
                     <v-btn @click="dialog_inscripcion = true" size="large" color="blue-darken-1">Inscribir Docentes a Este Curso</v-btn>
-                    <Inscripcion :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
+                    <Inscripcion @custom:snackbar="custom_snackbar" :auth="props.auth.user" :curso="props.curso" :docente="props.docente" v-model="dialog_inscripcion"  @update:modelValue="dialog_inscripcion = $event"></Inscripcion>
                 </div>
                 <v-table fixed-header height="500px" hover>
                     <thead>

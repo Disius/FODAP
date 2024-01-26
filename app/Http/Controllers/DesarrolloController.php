@@ -285,6 +285,7 @@ class DesarrolloController extends Controller
         $docente = Docente::orderBy('nombre', 'asc')->get();
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'clave_curso', 'clave_validacion', 'lugar', 'ficha_tecnica'])->find($id);
         $inscritos = DB::table('docente')
+            ->orderBy('nombre', 'asc')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
             ->leftJoin('calificaciones', function ($join) {
                 $join->on('calificaciones.docente_id', '=', 'docente.id')
@@ -293,8 +294,6 @@ class DesarrolloController extends Controller
             ->where('inscripcion.curso_id', '=', $id)
             ->select('docente.*', 'calificaciones.calificacion', 'inscripcion.curso_id AS inscripcion_curso_id')
             ->get();
-
-
 
 
         return Inertia::render('Views/cursos/desarrollo/InscritosDesarrollo', [
@@ -329,10 +328,10 @@ class DesarrolloController extends Controller
 
 
             foreach ($request->id_docente as $docente){
-                if(!$deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
-                    $deteccion->docente_inscrito()->attach($docente);
-                }else{
+                if($deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
                     return back()->withErrors('Este docente ya esta inscrito');
+                }else{
+                    $deteccion->docente_inscrito()->attach($docente);
                 }
             }
 
@@ -343,6 +342,16 @@ class DesarrolloController extends Controller
         }
     }
 
+    public function desinscribirse(Request $request, $docente){
+        $curso = $request->curso;
+        $teacher = Docente::with(['inscrito' => function($query) use ($curso){
+            $query->where('inscripcion.curso_id', '=', $curso);
+        }])->find($docente);
+
+        $teacher->inscrito()->sync([]);
+
+        return redirect()->route('index.desarrollo.inscritos', ['id' => $curso])->with('message', 'Docente eliminado del curso');
+    }
 
     public function docentes(){
         $docentes = Docente::with('usuario')->orderBy('nombre')->get();

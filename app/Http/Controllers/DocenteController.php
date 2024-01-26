@@ -70,6 +70,21 @@ class DocenteController extends Controller
         }
     }
 
+    public function desinscribirme(Request $request, $docente){
+        try {
+            $curso = $request->curso;
+            $teacher = Docente::with(['inscrito' => function($query) use ($curso){
+                $query->where('inscripcion.curso_id', '=', $curso);
+            }])->find($docente);
+
+            $teacher->inscrito()->sync([]);
+
+            return redirect()->route('index.cursos.docentes')->with('message', 'Docente eliminado del curso');
+
+        } catch (\Exception $exception){
+            return back()->withErrors('Registro no creado, el error es:'.$exception->getMessage());
+        }
+    }
     public function misCursos(){
         date_default_timezone_set('America/Mexico_City');
         CoursesController::state_curso();

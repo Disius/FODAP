@@ -6,6 +6,8 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {FODAPStore} from "@/store/server.js";
 import NavLink from "@/Components/NavLink.vue";
 import CustomSnackBar from "@/Components/CustomSnackBar.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
 
 
 const store = FODAPStore();
@@ -24,7 +26,6 @@ const color = ref("")
 const message = ref("")
 const snackbar = ref(false)
 const timeout = ref(0);
-
 
 const snackEventActivator = () => {
     snackbar.value = true;
@@ -56,6 +57,20 @@ const snackSuccessActivator = () => {
 
 const submit = (item) => {
     form.post(route('inscripcion.docente', item), {
+        onSuccess: () => {
+            snackSuccessActivator()
+        },
+        onError: () => {
+            snackErrorActivator()
+        }
+    })
+}
+const id_curso = useForm({
+    curso: null
+})
+const desinscribirme = (id, item) => {
+    id_curso.curso = item
+    id_curso.post(route('mi.desinscrito', id), {
         onSuccess: () => {
             snackSuccessActivator()
         },
@@ -127,8 +142,10 @@ onMounted(() => {
                                     <v-list-item-subtitle class="text-h6">
                                         {{item.objetivoEvento}}
                                     </v-list-item-subtitle>
-                                    <v-list-item-action>
-<!--                                        <strong>{{item.jefe.nombre_completo}}</strong>-->
+                                    <v-list-item-action class="mt-5">
+                                        <div v-if="item.docente_inscrito.some(inscrito => inscrito.id === props.auth.user.docente_id)">
+                                            <danger-button @click="desinscribirme(props.auth.user.docente_id, item.id)">Desinscribirme</danger-button>
+                                        </div>
                                     </v-list-item-action>
                                 </div>
                                 <div class="d-flex justify-space-between px-4 pt-4">
@@ -136,13 +153,14 @@ onMounted(() => {
 
                                     </div>
                                     <div v-if="item.docente_inscrito.some(inscrito => inscrito.id === props.auth.user.docente_id)">
-                                        <v-alert variant="outlined" color="success">
-                                            <strong class=""> Inscrito </strong>
-                                        </v-alert>
+                                                <v-alert variant="outlined" color="success">
+                                                    <strong class=""> Inscrito </strong>
+                                                </v-alert>
+
                                     </div>
 
                                     <div v-else>
-                                        <v-btn type="submit" @click="submit(item.id)">Inscribirse</v-btn>
+                                        <secondary-button type="submit" @click="submit(item.id)">Inscribirse</secondary-button>
                                     </div>
                                 </div>
                             </v-list-item>
