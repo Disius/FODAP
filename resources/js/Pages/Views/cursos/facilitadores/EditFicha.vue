@@ -20,7 +20,7 @@ const store = FODAPStore()
 
 
 const rules = [
-    v => v.length <= 250 || 'Maximo 250 caracteres'
+    v => v.length <= 250 || 'Este texto contiene mas de 250 caracteres'
 ]
 const matrix = ref( [ ['', '', ''], ['', '', ''], ['', '', ''] ]);
 const c_eval = ref( [ ['', '', ''], ['', '', ''], ['', '', ''] ]);
@@ -137,7 +137,7 @@ onMounted(() => {
                            </v-tooltip>
                        </div>
                        <div class="flex justify-center mt-2">
-                           <v-textarea clearable variant="solo" v-model="form.introduccion" :counter="250" :rules="rules"></v-textarea>
+                           <v-textarea clearable variant="solo" v-model="form.introduccion" :counter="250"></v-textarea>
                        </div>
                    </div>
                    <div class="grid grid-cols-1">
@@ -173,7 +173,7 @@ onMounted(() => {
                            </v-tooltip>
                        </div>
                        <div class="flex justify-center mt-2">
-                           <v-textarea clearable variant="solo" v-model="form.objetivo_general" :counter="250" :rules="rules"></v-textarea>
+                           <v-textarea clearable variant="solo" v-model="form.objetivo_general" :counter="250"></v-textarea>
                        </div>
                    </div>
                    <div class="grid grid-cols-1 justify-center">
@@ -191,7 +191,7 @@ onMounted(() => {
                            </v-tooltip>
                        </div>
                        <div class="flex justify-center mt-2">
-                           <v-textarea clearable variant="solo" v-model="form.descripcion_servicio" :counter="250" :rules="rules"></v-textarea>
+                           <v-textarea clearable variant="solo" v-model="form.descripcion_servicio" :counter="250" ></v-textarea>
                        </div>
                    </div>
                    <div class="flex justify-start">
@@ -278,7 +278,7 @@ onMounted(() => {
                            </v-tooltip>
                        </div>
                        <div class="flex justify-center mt-2">
-                           <v-textarea clearable variant="solo" v-model="form.elementos_didacticos" :counter="250" :rules="rules"></v-textarea>
+                           <v-textarea clearable variant="solo" v-model="form.elementos_didacticos" :counter="250"></v-textarea>
                        </div>
                    </div>
                    <div class="grid grid-cols-1">
@@ -322,7 +322,7 @@ onMounted(() => {
                                                    </v-icon>
                                                </v-btn>
                                            </template>
-                                           <span>Porcentaje asignado a cada criterio de evaluación.</span>
+                                           <span>Porcentaje asignado a cada criterio de evaluación. No es necesario asignar el simbolo de PORCENTAJE</span>
                                        </v-tooltip>
                                    </div>
                                    <strong class="text-lg">Valor</strong>

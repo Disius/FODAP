@@ -219,7 +219,7 @@ onMounted(() => {
                                                </v-icon>
                                            </v-btn>
                                        </template>
-                                       <span>Colocar el tiempo destinado para cada tema en horas.</span>
+                                       <span>Colocar el tiempo destinado para cada tema en horas. Solo incluir el numero de horas</span>
                                    </v-tooltip>
                                </div>
                                <strong class="text-lg">Tiempo Programado (Hrs) </strong>
@@ -312,7 +312,7 @@ onMounted(() => {
                                                    </v-icon>
                                                </v-btn>
                                            </template>
-                                           <span>Porcentaje asignado a cada criterio de evaluación. No es necesario asignar el simbolo de porcentaje</span>
+                                           <span>Porcentaje asignado a cada criterio de evaluación. No es necesario asignar el simbolo de PORCENTAJE</span>
                                        </v-tooltip>
                                    </div>
                                    <strong class="text-lg">Valor</strong>
