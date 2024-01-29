@@ -219,7 +219,7 @@ onMounted(() => {
                                                </v-icon>
                                            </v-btn>
                                        </template>
-                                       <span>Colocar el tiempo destinado para cada tema en horas. Solo incluir el numero de horas</span>
+                                       <span>Colocar el tiempo destinado para cada tema en horas. Solo incluir NÚMERO</span>
                                    </v-tooltip>
                                </div>
                                <strong class="text-lg">Tiempo Programado (Hrs) </strong>
