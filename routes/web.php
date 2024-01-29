@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/crear/ficha/{facilitador}/curso/{id}', [DocenteController::class, 'crear_ficha_tecnica'])->name('crear.ficha');
     Route::post('/guardar/ficha-tecnica', [DocenteController::class, 'store_ficha_tecnica'])->name('store.ficha');
     Route::get('/editar-ficha/{facilitador}/curso/{id}', [DocenteController::class, 'edit_ficha'])->name('edit.ficha');
+    Route::put('/ficha/editada/{id}', [DocenteController::class, 'update_ficha'])->name('update.ficha');
     Route::delete('/eliminar-ficha/{id}', [DocenteController::class, 'delete_ficha'])->name('eliminar.ficha');
 
 

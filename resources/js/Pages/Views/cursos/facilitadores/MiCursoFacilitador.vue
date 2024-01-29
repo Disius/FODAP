@@ -122,10 +122,10 @@ const submit = (inscripcion, id) => {
 
 const generar_ficha = () => {
     loading.value = true
-    setTimeout(() => {
-        loading.value = false
-        snackErrorActivator()
-    }, 4000)
+    // setTimeout(() => {
+    //     loading.value = false
+    //     snackErrorActivator()
+    // }, 10000)
     axios.get(route('pdf.ficha.tecnica'), {
         params: {
             id_ficha: props.curso.ficha_tecnica.id
@@ -175,7 +175,7 @@ onMounted(() => {
                 break;
         }
     });
-
+    console.log(props.curso.ficha_tecnica.id)
     window.Echo.private('inscritos-chanel').listen('InscripcionEvent', (event) => {
         // my_curso_store.update_inscritos(event.inscritos)
         snackEventActivator()
@@ -270,7 +270,7 @@ onMounted(() => {
                                 <span>Indicar el periodo en el que se requiere la formación docente o
                                                     actualización profesiona (enero-junio o agosto-diciembre)</span>
                             </v-tooltip>
-                            <NavLink :href="route('crear.ficha', [props.auth.user.id, props.curso.id])">
+                            <NavLink :href="route('crear.ficha', [props.auth.user.docente_id, props.curso.id])">
                                 <v-btn color="blue-darken-1">
                                     Crear ficha técnica
                                 </v-btn>
@@ -310,7 +310,7 @@ onMounted(() => {
                         </v-col>
                         <v-col cols="6" align="center">
                             <!--                            :href="route('edit.ficha', [props.auth.user.id, props.curso.id])"-->
-                            <NavLink href="#">
+                            <NavLink :href="route('edit.ficha', [props.auth.user.docente_id, props.curso.id])">
                                 <v-btn color="blue-darken-1">
                                     Editar ficha técnica
                                 </v-btn>

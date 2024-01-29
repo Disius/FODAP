@@ -23,7 +23,6 @@ const props = defineProps({
     auth: Object,
     docente: Array,
     inscritos: Array,
-    ficha_tecnica: Object,
     errors: Object
 });
 const timeout = ref(0);
@@ -57,6 +56,33 @@ const update_docente_calificacion = (docente_id, calification) => {
     dialogCalificacionUpdate.value = true
 }
 
+const snackEventActivator = () => {
+    snackbar.value = true;
+    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
+    color.value = "warning"
+    timeout.value = 8000
+    setTimeout(() => {
+        snackbar.value = false
+    }, timeout.value)
+};
+const snackErrorActivator = () => {
+    snackbar.value = true;
+    message.value = "No se pudo procesar la solicitud"
+    color.value = "error"
+    timeout.value = 5000
+    setTimeout(()=>{
+        snackbar.value = false
+    }, timeout.value)
+};
+const snackSuccessActivator = () => {
+    snackbar.value = true;
+    message.value = "Procesado correctamente"
+    color.value = "success"
+    timeout.value = 5000
+    setTimeout(()=>{
+        snackbar.value = false
+    }, timeout.value)
+};
 const addCalificacion = (form) => {
     form.post(route('add.calificacion.desarrollo'), {
         onSuccess: () => {
@@ -106,9 +132,6 @@ const submit = (inscripcion, id) => {
 
 const generar_ficha = () => {
     loading.value = true
-    setTimeout(() => {
-        loading.value = false
-    }, 5000)
     axios.get(route('pdf.ficha.tecnica'), {
         params: {
             id_ficha: props.curso.ficha_tecnica.id
@@ -125,7 +148,6 @@ const generar_ficha = () => {
     }).catch(error => {
         loading.value = false
         snackErrorActivator()
-        // alert(`El inconveniente es: ${error}`)
     })
 
 };
@@ -184,33 +206,7 @@ const desinscribir = (id) => {
     })
 }
 
-const snackEventActivator = () => {
-    snackbar.value = true;
-    message.value = "Parece que los recursos se han actualizado, por favor recarga la pagina"
-    color.value = "warning"
-    timeout.value = 8000
-    setTimeout(() => {
-        snackbar.value = false
-    }, timeout.value)
-};
-const snackErrorActivator = () => {
-    snackbar.value = true;
-    message.value = "No se pudo procesar la solicitud"
-    color.value = "error"
-    timeout.value = 5000
-    setTimeout(()=>{
-        snackbar.value = false
-    }, timeout.value)
-};
-const snackSuccessActivator = () => {
-    snackbar.value = true;
-    message.value = "Procesado correctamente"
-    color.value = "success"
-    timeout.value = 5000
-    setTimeout(()=>{
-        snackbar.value = false
-    }, timeout.value)
-};
+
 const closeModal = () => {
     show_ficha.value = false;
 };
@@ -407,7 +403,7 @@ const custom_snackbar = (snack) => {
                                 <span>Indicar el periodo en el que se requiere la formación docente o
                                                     actualización profesiona (enero-junio o agosto-diciembre)</span>
                             </v-tooltip>
-                            <NavLink :href="route('crear.ficha', [props.auth.user.id, props.curso.id])">
+                            <NavLink :href="route('crear.ficha', [props.auth.user.docente_id, props.curso.id])" as="button">
                                 <v-btn color="blue-darken-1">
                                     Crear ficha técnica
                                 </v-btn>
@@ -456,7 +452,7 @@ const custom_snackbar = (snack) => {
                         </v-col>
                         <v-col cols="6" align="center">
 <!--                            :href="route('edit.ficha', [props.auth.user.id, props.curso.id])"-->
-                            <NavLink href="#">
+                            <NavLink :href="route('edit.ficha', [props.auth.user.docente_id, props.curso.id])">
                                 <v-btn color="blue-darken-1">
                                     Editar ficha técnica
                                 </v-btn>

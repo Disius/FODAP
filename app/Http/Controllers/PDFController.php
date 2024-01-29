@@ -125,17 +125,16 @@ class PDFController extends Controller
         $departamento = Departamento::with( 'jefe_docente')->where('nameDepartamento', '=','Departamento de Desarrollo Académico')->first();
         $pdf = Pdf::loadView('pdf.fichatecnica', compact('ficha', 'name_instituto', 'departamento'))
             ->output();
-
+//
         $path = 'ficha.pdf';
 
         return $this->save_file($pdf, $path);
 
 //        return response()->json([
-//            'ficha' => $ficha,
-//            'id' => $request->id_ficha,
-//            'i' => $name_instituto,
-//            'departamento' => $departamento,
-//            'pdf' => $pdf
+//            'chinga tu puta madre' => $ficha,
+//            'ya me tienes hasta la verga' => $name_instituto,
+//            'hijo de tu puta madre' => $departamento,
+////            'pdf' => $pdf
 //        ]);
     }
     public function acta_calificaciones_pdf(Request $request){

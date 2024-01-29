@@ -77,9 +77,12 @@ class DocenteController extends Controller
                 $query->where('inscripcion.curso_id', '=', $curso);
             }])->find($docente);
 
-            $teacher->inscrito()->sync([]);
+            $teacher->inscrito()->detach($curso);
 
             return redirect()->route('index.cursos.docentes')->with('message', 'Docente eliminado del curso');
+//            return response()->json([
+//                'teacher' => $teacher,
+//            ]);
 
         } catch (\Exception $exception){
             return back()->withErrors('Registro no creado, el error es:'.$exception->getMessage());
@@ -140,7 +143,6 @@ class DocenteController extends Controller
     public function facilitador_curso($facilitador, $id){
         $docente = Docente::find($facilitador);
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso', 'ficha_tecnica'])
-
             ->find($id);
 //        $ficha = $curso->ficha_tecnica != null ? FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id) : null;
         $inscritos = DB::table('docente')
@@ -155,7 +157,6 @@ class DocenteController extends Controller
         return Inertia::render('Views/cursos/facilitadores/MiCursoFacilitador', [
             'curso' => $curso,
             'facilitador' => $docente,
-//            'ficha_tecnica' => $ficha,
             'inscritos' => $inscritos,
         ]);
     }
@@ -170,6 +171,7 @@ class DocenteController extends Controller
     }
 
     public function store_ficha_tecnica(FichaTecnicaRequest $request){
+       $user = auth()->user();
        $ficha_tecnica = FichaTecnica::create($request->validated());
 
        $ficha_tecnica->save();
@@ -194,7 +196,6 @@ class DocenteController extends Controller
             $criterio_evaluacion->save();
         }
 
-        $user = auth()->user();
 
         if($user->role == 1 || $user->role == 2){
             return Redirect::route('index.desarrollo.inscritos', ['id' => $request->id_curso]);
@@ -204,14 +205,44 @@ class DocenteController extends Controller
     }
 
     public function edit_ficha($facilitador, $id){
-//        $docente = Docente::find($facilitador);
-//        $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($id);
-        $ficha = FichaTecnica::with( 'temas', 'evaluacion_criterio')->where('id_curso', '=', $id);
+        $docente = Docente::find($facilitador);
+        $curso = DeteccionNecesidades::with('deteccion_facilitador')->find($id);
+        $ficha = FichaTecnica::where('id_curso', $id)->first();
         return Inertia::render('Views/cursos/facilitadores/EditFicha', [
-            'ficha' => $ficha
+            'ficha' => $ficha,
+            'docente' => $docente,
+            'curso' => $curso
         ]);
     }
 
+    public function update_ficha(FichaTecnicaRequest $request, $id){
+        $user = auth()->user();
+        $ficha_tecnica = FichaTecnica::find($id);
+        $ficha_tecnica->update($request->validated());
+        foreach($request->input('temas') as $item){
+            Temas::where('ficha_id', $ficha_tecnica->id)
+                    ->update([
+                        'name_tema' => $item[0],
+                        'tiempo_programado' => $item[1],
+                        'act_aprendizaje' => $item[2]
+                    ]);
+
+            foreach($request->input('criterio_eval') as $element){
+                CriteriosEvaluacion::where('ficha_id', $ficha_tecnica->id)
+                    ->update([
+                        'criterio' => $element[0],
+                        'valor' => $element[1],
+                        'instrumento_evaluacion' => $element[2],
+                    ]);
+            }
+
+            if($user->role == 1 || $user->role == 2){
+                return Redirect::route('index.desarrollo.inscritos', ['id' => $request->id_curso]);
+            }else {
+                return redirect()->route('show.curso.facilitador', [$request->id_docente, $request->id_curso]);
+            }
+        }
+    }
     public function delete_ficha($id){
         $criterios = CriteriosEvaluacion::where('ficha_id', $id)->get();
         foreach ($criterios as $criterio){

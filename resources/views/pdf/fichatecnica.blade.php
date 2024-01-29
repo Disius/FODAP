@@ -111,13 +111,10 @@
     <div class="text-init">
         <p><b>Instituto Tecnológico o Centro o Unidad:</b> {{$name_instituto[0]->name}}</p>
         <p><b>Nombre del Curso:</b> {{$ficha->curso_ficha->nombreCurso}}</p>
-        @if(count($ficha->curso_ficha->deteccion_facilitador) == 0)
-            <p><b>Instructor(a):</b> Sin asignar</p>
-        @elseif(count($ficha->curso_ficha->deteccion_facilitador) > 0)
+        @if(count($ficha->curso_ficha->deteccion_facilitador) > 0)
             <p><b>Instructor(a):</b> {{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>
         @elseif($ficha->curso_ficha->facilitador_externo != null)
-        <p><b>Instructor(a):</b> {{$ficha->curso_ficha->facilitador_externo}}</p>
-        @else
+            <p><b>Instructor(a):</b> {{$ficha->curso_ficha->facilitador_externo}}</p>
         @endif
     </div>
     <div class="text-middle">
@@ -228,7 +225,11 @@
 
     <div class="final_part">
         <div style="float: left;">
-            <p class="uline firmas">{{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>
+            @if(count($ficha->curso_ficha->deteccion_facilitador) > 0)
+                <p class="uline firmas">{{$ficha->curso_ficha->deteccion_facilitador[0]->nombre_completo}}</p>
+            @elseif($ficha->curso_ficha->facilitador_externo != null)
+                <p class="uline firmas">{{$ficha->curso_ficha->facilitador_externo}}</p>
+            @endif
             <p class="firmas words_strong">Nombre y Firma del Facilitador(a)</p>
         </div>
         <div style="float: right;" class="margen-izquierdo">

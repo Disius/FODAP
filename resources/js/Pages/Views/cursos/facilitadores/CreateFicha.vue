@@ -73,7 +73,7 @@ const snackSuccessActivator = () => {
     }, timeout.value)
 };
 const submit = () => {
-    return form.post(route('store.ficha'), {
+    form.post(route('store.ficha'), {
         onSuccess: () => {
             snackSuccessActivator()
         },
@@ -84,7 +84,7 @@ const submit = () => {
 }
 
 onMounted(() => {
-    // store.get_is_facilitador(props.auth.user.value.docente_id)
+    store.get_is_facilitador(props.auth.user.docente_id)
     //
     // console.log(store.this_facilitador)
 });
@@ -94,20 +94,20 @@ onMounted(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Crear Ficha Técnica</h2>
-            <template v-if="store.this_facilitador === true">
-                <NavLink :href="route('show.curso.facilitador', [props.docente.id, props.curso.id])" as="button">
-                    <v-btn icon="mdi-arrow-left">
+<!--            <template v-if="store.this_facilitador === true">-->
+<!--                <NavLink :href="route('show.curso.facilitador', [props.docente.id, props.curso.id])" as="button">-->
+<!--                    <v-btn icon="mdi-arrow-left">-->
 
-                    </v-btn>
-                </NavLink>
-            </template>
-            <template v-else-if="store.this_facilitador === false">
-                <NavLink :href="route('index.desarrollo.inscritos', props.curso.id)" as="button">
-                    <v-btn icon="mdi-arrow-left">
+<!--                    </v-btn>-->
+<!--                </NavLink>-->
+<!--            </template>-->
+<!--            <template v-else-if="store.this_facilitador === false">-->
+<!--                <NavLink :href="route('index.desarrollo.inscritos', props.curso.id)" as="button">-->
+<!--                    <v-btn icon="mdi-arrow-left">-->
 
-                    </v-btn>
-                </NavLink>
-            </template>
+<!--                    </v-btn>-->
+<!--                </NavLink>-->
+<!--            </template>-->
         </template>
         <div class="mt-5 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -312,7 +312,7 @@ onMounted(() => {
                                                    </v-icon>
                                                </v-btn>
                                            </template>
-                                           <span>Porcentaje asignado a cada criterio de evaluación.</span>
+                                           <span>Porcentaje asignado a cada criterio de evaluación. No es necesario asignar el simbolo de porcentaje</span>
                                        </v-tooltip>
                                    </div>
                                    <strong class="text-lg">Valor</strong>

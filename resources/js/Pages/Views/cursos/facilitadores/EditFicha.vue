@@ -69,7 +69,7 @@ const snackSuccessActivator = () => {
     }, timeout.value)
 };
 const submit = () => {
-    return form.post(route('store.ficha'), {
+    return form.put(route('update.ficha', props.ficha.id), {
         onSuccess: () => {
             snackSuccessActivator()
         },
@@ -79,31 +79,45 @@ const submit = () => {
     })
 }
 
+// const temas_de_base = () => {
+//     matrix.value = props.ficha.temas.map(tema => [tema.name_tema, tema.tiempo_programado, tema.act_aprendizaje])
+//     console.log(matrix.value)
+// }
 onMounted(() => {
-    store.get_is_facilitador(props.auth.user.value.docente_id)
-    //
-    // console.log(store.this_facilitador)
+    store.get_is_facilitador(props.auth.user.docente_id)
+    // temas_de_base()
+
+    form.introduccion = props.ficha.introduccion !== null ? props.ficha.introduccion : form.introduccion
+    form.justificacion = props.ficha.justificacion !== null ? props.ficha.justificacion : form.justificacion
+    form.objetivo_general = props.ficha.objetivo_general !== null ? props.ficha.objetivo_general : form.objetivo_general
+    form.descripcion_servicio = props.ficha.descripcion_servicio !== null ? props.ficha.descripcion_servicio : form.descripcion_servicio
+    form.temas = props.ficha.temas.length !== 0 ? props.ficha.temas.map(tema => [tema.name_tema, tema.tiempo_programado, tema.act_aprendizaje]) : form.temas
+    form.elementos_didacticos = props.ficha.elementos_didacticos !== null ? props.ficha.elementos_didacticos : form.elementos_didacticos
+    form.criterio_eval = props.ficha.evaluacion_criterio.length !== 0 ? props.ficha.evaluacion_criterio.map(evaluacion => [evaluacion.criterio, evaluacion.valor, evaluacion.instrumento_evaluacion]) : form.criterio_eval
+    form.elementos_didacticos = props.ficha.elementos_didacticos !== null ? props.ficha.elementos_didacticos : form.elementos_didacticos
+    form.competencias_desarrollar = props.ficha.competencias_desarrollar !== null ? props.ficha.competencias_desarrollar : form.competencias_desarrollar
+    form.fuentes_informacion = props.ficha.fuentes_informacion !== null ? props.ficha.fuentes_informacion : form.fuentes_informacion
 });
 </script>
 
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-lg font-medium text-gray-900">Crear Ficha Técnica</h2>
-            <template v-if="store.this_facilitador === true">
-                <NavLink :href="route('show.curso.facilitador', [props.docente.id, props.curso.id])" as="button">
-                    <v-btn icon="mdi-arrow-left">
+            <h2 class="text-lg font-medium text-gray-900">Editar Ficha Técnica</h2>
+<!--            <template v-if="store.this_facilitador === true">-->
+<!--                <NavLink :href="route('show.curso.facilitador', [props.docente.id, props.curso.id])" as="button">-->
+<!--                    <v-btn icon="mdi-arrow-left">-->
 
-                    </v-btn>
-                </NavLink>
-            </template>
-            <template v-else-if="store.this_facilitador === false">
-                <NavLink :href="route('index.desarrollo.inscritos', props.curso.id)" as="button">
-                    <v-btn icon="mdi-arrow-left">
+<!--                    </v-btn>-->
+<!--                </NavLink>-->
+<!--            </template>-->
+<!--            <template v-else-if="store.this_facilitador === false">-->
+<!--                <NavLink :href="route('index.desarrollo.inscritos', props.curso.id)" as="button">-->
+<!--                    <v-btn icon="mdi-arrow-left">-->
 
-                    </v-btn>
-                </NavLink>
-            </template>
+<!--                    </v-btn>-->
+<!--                </NavLink>-->
+<!--            </template>-->
         </template>
         <div class="mt-5 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">

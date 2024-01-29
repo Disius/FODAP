@@ -90,18 +90,18 @@ class CoursesController extends Controller
                 $facilitadores,
                 false
             );
-    
+
             $deteccion->update($request->validated());
-    
+
             $deteccion->save();
-    
+
             event(new DeteccionEditadaEvent($deteccion));
-    
+
             User::role(['Coordinacion de FD y AP',  'Jefe del Departamento de Desarrollo Academico'])->each(function (User $user) use ($deteccion) {
                 $usuario = auth()->user() == null ? $user : auth()->user();
                 $user->notify(new DeteccionEditadaNotification($deteccion, $usuario));
             });
-    
+
             return Redirect::route('detecciones.index');
         }
     }
@@ -137,10 +137,10 @@ class CoursesController extends Controller
 
     public static function state_curso()
     {
-        date_default_timezone_set('America/Mexico_City');
+
         $cursos = DeteccionNecesidades::where('aceptado', 1)->get();
         $now = Carbon::now();
-
+        date_default_timezone_set('America/Mexico_City');
         foreach ($cursos as $curso) {
             if ($now < $curso->fecha_I) {
                 $curso->estado = 0;
