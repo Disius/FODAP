@@ -166,7 +166,7 @@ onMounted(() => {
                            <v-textarea clearable variant="solo" v-model="form.objetivo_general" :counter="800"></v-textarea>
                        </div>
                    </div>
-                   <div class="grid grid-cols-1 justify-center">
+                   <!-- <div class="grid grid-cols-1 justify-center">
                        <strong class="text-xl">Descripción del curso: </strong>
                        <div class="d-flex justify-start mb-5 ml-3">
                            <v-tooltip location="right">
@@ -183,7 +183,7 @@ onMounted(() => {
                        <div class="flex justify-center mt-2">
                            <v-textarea clearable variant="solo" v-model="form.descripcion_servicio" :counter="250" :rules="rules"></v-textarea>
                        </div>
-                   </div>
+                   </div> -->
                    <div class="flex justify-start">
                        <strong class="text-xl">Contenido temático del curso: </strong>
                    </div>
