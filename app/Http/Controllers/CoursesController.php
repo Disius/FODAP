@@ -153,6 +153,10 @@ class CoursesController extends Controller
         }
     }
 
+    public function assign_clave(){
+
+    }
+
     public static function clave_generar($curso_id){
         $curso = DeteccionNecesidades::find($curso_id);
         $anio = explode("-", $curso->fecha_F);

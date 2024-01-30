@@ -288,9 +288,6 @@ onMounted(() => {
                                             {{props.curso.ficha_tecnica.competencias_desarrollar}}
                                         </div>
                                         <div class="flex justify-center items-center pa-4">
-                                            {{props.curso.ficha_tecnica.descripcion_servicio}}
-                                        </div>
-                                        <div class="flex justify-center items-center pa-4">
                                             {{props.curso.ficha_tecnica.objetivo_general}}
                                         </div>
                                         <div class="flex justify-end items-center pa-4">
