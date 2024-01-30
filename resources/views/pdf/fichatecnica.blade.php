@@ -131,7 +131,6 @@
     </div>
     <div class="text-middle">
         <p class="title">• 	Descripción del curso</p>
-        <p class="text-middle">{{$ficha->descripcion_servicio}}</p>
     </div>
     <div class="words_minus">
         <p>

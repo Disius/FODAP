@@ -19,7 +19,7 @@ class CreateFichaTecnicaTable extends Migration
             $table->longText('introduccion');
             $table->longText('justificacion');
             $table->longText('objetivo_general');
-            $table->longText('descripcion_servicio');
+            $table->longText('descripcion_servicio')->nullable();
             $table->integer('tipo_servicio');
             $table->integer('duracion');
             $table->longText('elementos_didacticos');

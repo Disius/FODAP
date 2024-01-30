@@ -26,7 +26,6 @@ class FichaTecnicaRequest extends FormRequest
             'introduccion' => 'required',
             'justificacion' => 'required',
             'objetivo_general' => 'required',
-            'descripcion_servicio' => 'required',
             'elementos_didacticos' => 'required',
             'competencias_desarrollar' => 'required',
             'fuentes_informacion' => 'required',
