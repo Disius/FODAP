@@ -132,26 +132,34 @@ class DesarrolloController extends Controller
     }
     public function store_cursos(CursoRequest $request)
     {
-
-        $totalHoras = CoursesController::total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
-
         $departamento = $this->query_carrera($request->carrera_dirigido);
+        $totalHoras = CoursesController::total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
+        if($departamento->nameCarrera == 'Todas las carreras'){
+            $deteccion = DeteccionNecesidades::create($request->validated() + [
+                    'aceptado' => 1,
+                    'obs' => $request->observaciones != null ? 1 : 0,
+                    'total_horas' => $totalHoras,
+                    'facilitador_externo' =>  $request->facilitador_externo,
+                    'observaciones' => $request->observaciones,
+                    'id_lugar' => $request->id_lugar,
+                ]);
 
-        $deteccion = DeteccionNecesidades::create($request->validated() + [
-                'id_jefe' => $departamento->departamento->jefe_id,
-                'aceptado' => 1,
-                'obs' => $request->observaciones != null ? 1 : 0,
-                'total_horas' => $totalHoras,
-                'id_departamento' => $departamento->departamento->id,
-                'facilitador_externo' =>  $request->facilitador_externo,
-                'observaciones' => $request->observaciones,
-                'id_lugar' => $request->id_lugar,
-            ]);
+        } else {
+//            $departamento = $this->query_carrera($request->carrera_dirigido);
+            $deteccion = DeteccionNecesidades::create($request->validated() + [
+                    'id_jefe' => $departamento->departamento->jefe_id,
+                    'aceptado' => 1,
+                    'obs' => $request->observaciones != null ? 1 : 0,
+                    'total_horas' => $totalHoras,
+                    'id_departamento' => $departamento->departamento->id,
+                    'facilitador_externo' =>  $request->facilitador_externo,
+                    'observaciones' => $request->observaciones,
+                    'id_lugar' => $request->id_lugar,
+                ]);
 
+        }
         $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
-
         $deteccion->save();
-
         return Redirect::route('index.desarrollo.cursos');
     }
 
