@@ -218,30 +218,35 @@ class DocenteController extends Controller
     public function update_ficha(FichaTecnicaRequest $request, $id){
         $user = auth()->user();
         $ficha_tecnica = FichaTecnica::find($id);
-        $ficha_tecnica->update($request->validated());
-        foreach($request->input('temas') as $item){
-            Temas::where('ficha_id', $ficha_tecnica->id)
-                    ->update([
-                        'name_tema' => $item[0],
-                        'tiempo_programado' => $item[1],
-                        'act_aprendizaje' => $item[2]
-                    ]);
+        $criterios = CriteriosEvaluacion::where('ficha_id', $ficha_tecnica->id)->get();
+        $temas = Temas::where('ficha_id', $ficha_tecnica->id)->get();
 
-            foreach($request->input('criterio_eval') as $element){
-                CriteriosEvaluacion::where('ficha_id', $ficha_tecnica->id)
-                    ->update([
-                        'criterio' => $element[0],
-                        'valor' => $element[1],
-                        'instrumento_evaluacion' => $element[2],
-                    ]);
+        foreach($request->input('temas', []) as $index => $item){
+            // Verifica si hay un tema correspondiente en la base de datos
+            if(isset($temas[$index])) {
+                // Actualiza el tema con los valores proporcionados en la solicitud
+                $temas[$index]->name_tema = $item[0];
+                $temas[$index]->tiempo_programado = $item[1];
+                $temas[$index]->act_aprendizaje = $item[2];
+                $temas[$index]->save();
             }
-
+        }
+        foreach($request->input('criterio_eval', []) as $index => $item){
+            // Verifica si hay un tema correspondiente en la base de datos
+            if(isset($criterios[$index])) {
+                // Actualiza el tema con los valores proporcionados en la solicitud
+                $criterios[$index]->criterio = $item[0];
+                $criterios[$index]->valor = $item[1];
+                $criterios[$index]->instrumento_evaluacion = $item[2];
+                $criterios[$index]->save();
+            }
+        }
+            $ficha_tecnica->update($request->validated());
             if($user->role == 1 || $user->role == 2){
                 return Redirect::route('index.desarrollo.inscritos', ['id' => $request->id_curso]);
             }else {
                 return redirect()->route('show.curso.facilitador', [$request->id_docente, $request->id_curso]);
             }
-        }
     }
     public function delete_ficha($id){
         $criterios = CriteriosEvaluacion::where('ficha_id', $id)->get();
