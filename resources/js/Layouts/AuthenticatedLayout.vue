@@ -106,6 +106,12 @@ onMounted(() => {
                                             Facilitador
                                         </NavLink>
                                 </template>
+                                <template v-if="user.role === 1 || user.role === 2">
+<!--                                    :active="route().current('index.desarrollo.cursos')"-->
+                                    <NavLink href="#">
+                                        Estadisticas
+                                    </NavLink>
+                                </template>
                                 <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
                                     Perfil
                                 </NavLink>
