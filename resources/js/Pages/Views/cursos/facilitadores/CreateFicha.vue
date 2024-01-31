@@ -183,7 +183,7 @@ onMounted(() => {
                            icon="$info"
                            color="info"
                        >
-                           <div class="text-2xl">Deben ser maxino 14 y solo debe indicar el tema</div>
+                           <div class="text-2xl">Deben ser maximo 14 y solo debe indicar el tema</div>
                        </v-alert>
                    </div>
                        <v-row justify="center" class="mt-2">
