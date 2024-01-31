@@ -221,14 +221,39 @@ class DocenteController extends Controller
         $criterios = CriteriosEvaluacion::where('ficha_id', $ficha_tecnica->id)->get();
         $temas = Temas::where('ficha_id', $ficha_tecnica->id)->get();
 
-        foreach($request->input('temas', []) as $index => $item){
-            // Verifica si hay un tema correspondiente en la base de datos
-            if(isset($temas[$index])) {
-                // Actualiza el tema con los valores proporcionados en la solicitud
+//        foreach($request->input('temas', []) as $index => $item){
+//            // Verifica si hay un tema correspondiente en la base de datos
+//            if(isset($temas[$index])) {
+//                // Actualiza el tema con los valores proporcionados en la solicitud
+//                $temas[$index]->name_tema = $item[0];
+//                $temas[$index]->tiempo_programado = $item[1];
+//                $temas[$index]->act_aprendizaje = $item[2];
+//                $temas[$index]->save();
+//            }
+//        }
+        foreach ($request->input('temas', []) as $index => $item) {
+            if (isset($temas[$index])) {
                 $temas[$index]->name_tema = $item[0];
                 $temas[$index]->tiempo_programado = $item[1];
                 $temas[$index]->act_aprendizaje = $item[2];
                 $temas[$index]->save();
+            }
+        }
+
+// Verifica si hay nuevos temas para agregar
+        $numTemasExistente = count($temas);
+        $maxTemas = 18; // Máximo total de temas permitidos
+
+        if ($numTemasExistente < $maxTemas) {
+            $numTemasParaAgregar = min($maxTemas - $numTemasExistente, count($request->input('temas', [])) - $numTemasExistente);
+
+            for ($i = $numTemasExistente; $i < $numTemasExistente + $numTemasParaAgregar; $i++) {
+                $nuevoTema = new Temas();
+                $nuevoTema->ficha_id = $ficha_tecnica->id;
+                $nuevoTema->name_tema = $request->input('temas')[$i][0];
+                $nuevoTema->tiempo_programado = $request->input('temas')[$i][1];
+                $nuevoTema->act_aprendizaje = $request->input('temas')[$i][2];
+                $nuevoTema->save();
             }
         }
         foreach($request->input('criterio_eval', []) as $index => $item){
