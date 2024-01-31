@@ -157,6 +157,20 @@ class CoursesController extends Controller
 
     }
 
+    public function count_generate_curso_clave(){
+        $anio = date('Y');
+        $cursos = DeteccionNecesidades::whereYear('fecha_F', '=', $anio)
+            ->count();
+        for ($i = 1; $i <= $cursos; $i++) {
+            $claveCurso = 'TNM-021-' . $i . '-' . $anio;
+            $clave = ClaveCurso::create([
+                'curso_id' => $cursos[$i]->id,
+                'clave' => $claveCurso,
+            ]);
+            $clave->save();
+        }
+    }
+
     public static function clave_generar($curso_id){
         $curso = DeteccionNecesidades::find($curso_id);
         $anio = explode("-", $curso->fecha_F);

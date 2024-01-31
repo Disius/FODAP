@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\v1\DataResponseController;
+use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\DesarrolloController;
 use App\Http\Controllers\Installer;
 use App\Http\Controllers\NotificationController;
@@ -36,5 +37,6 @@ Route::middleware('auth')->prefix('v1')->group(function () {
     Route::get('/cursos-academicos', [DataResponseController::class, 'cursos_academicos'])->name('v1.cursos.academicos');
     Route::get('/notifications-catch', [NotificationController::class, 'notifications_api'])->name('v1.notificaciones');
     Route::get('/curso-info', [DataResponseController::class, 'curso_data'])->name('v1.cursoInfo');
+
 });
 

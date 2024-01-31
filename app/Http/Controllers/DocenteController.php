@@ -242,7 +242,7 @@ class DocenteController extends Controller
 
 // Verifica si hay nuevos temas para agregar
         $numTemasExistente = count($temas);
-        $maxTemas = 18; // Máximo total de temas permitidos
+        $maxTemas = 14; // Máximo total de temas permitidos
 
         if ($numTemasExistente < $maxTemas) {
             $numTemasParaAgregar = min($maxTemas - $numTemasExistente, count($request->input('temas', [])) - $numTemasExistente);

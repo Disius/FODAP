@@ -52,7 +52,7 @@ const form = useForm({
 // }
 
 const addRow = () => {
-    return form.temas.length === 18 ? snackbar.value = true : form.temas.push(['', '', ''])
+    return form.temas.length === 14 ? snacktemas() : form.temas.push(['', '', ''])
 }
 const snackErrorActivator = () => {
     snackbar.value = true;
@@ -67,6 +67,15 @@ const snackSuccessActivator = () => {
     snackbar.value = true;
     message.value = "Procesado correctamente"
     color.value = "success"
+    timeout.value = 5000
+    setTimeout(()=>{
+        snackbar.value = false
+    }, timeout.value)
+};
+const snacktemas = () => {
+    snackbar.value = true;
+    message.value = "Maxino de temas alcanzados"
+    color.value = "warning"
     timeout.value = 5000
     setTimeout(()=>{
         snackbar.value = false
@@ -166,24 +175,6 @@ onMounted(() => {
                            <v-textarea clearable variant="solo" v-model="form.objetivo_general" :counter="800"></v-textarea>
                        </div>
                    </div>
-                   <!-- <div class="grid grid-cols-1 justify-center">
-                       <strong class="text-xl">Descripción del curso: </strong>
-                       <div class="d-flex justify-start mb-5 ml-3">
-                           <v-tooltip location="right">
-                               <template v-slot:activator="{ props }">
-                                   <v-btn icon v-bind="props" color="blue-darken-1" size="normal">
-                                       <v-icon>
-                                           mdi-help
-                                       </v-icon>
-                                   </v-btn>
-                               </template>
-                               <span>Describir brevemente el curso.</span>
-                           </v-tooltip>
-                       </div>
-                       <div class="flex justify-center mt-2">
-                           <v-textarea clearable variant="solo" v-model="form.descripcion_servicio" :counter="250" :rules="rules"></v-textarea>
-                       </div>
-                   </div> -->
                    <div class="flex justify-start">
                        <strong class="text-xl">Contenido temático del curso: </strong>
                    </div>
@@ -191,7 +182,9 @@ onMounted(() => {
                        <v-alert
                            icon="$info"
                            color="info"
-                       >Debe indicar unicamente el tema</v-alert>
+                       >
+                           <div class="text-2xl">Deben ser maxino 14 y solo debe indicar el tema</div>
+                       </v-alert>
                    </div>
                        <v-row justify="center" class="mt-2">
                            <v-col cols="3" align="center" class="mr-10">

@@ -50,6 +50,7 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::post('/desarrollo/guardar/curso', [DesarrolloController::class, 'store_cursos'])->name('store.curso.add');
     Route::get('/desarrollo/editar/curso/{id}', [DesarrolloController::class, 'edit_curso'])->name('curso.editar');
     Route::put('/desarrollo/actualizado/curso/{id}', [DesarrolloController::class, 'update_curso'])->name('update.curso');
+    Route::post('/cursos-cuenta', [CoursesController::class, 'count_generate_curso_clave'])->name('count.cursos');
 //inscripciones
     Route::post('/docente/inscribir/{id}', [DesarrolloController::class, 'inscripcion_por_desarrollo'])->name('inscribir.docente');
     Route::post('/docente/desinscribir/{docente}', [DesarrolloController::class, 'desinscribirse'])->name('delete.inscripcion.desarrollo');

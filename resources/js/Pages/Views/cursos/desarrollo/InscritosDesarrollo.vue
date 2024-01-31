@@ -234,6 +234,11 @@ onMounted(() => {
         snackEventActivator()
     })
     store.inscritos_curso_desarrollo(props.curso.id)
+    axios.get(route('count.cursos')).then(res => {
+        console.log(res.data)
+    }).catch(err => {
+        console.log(err.response.data)
+    })
 });
 
 const custom_snackbar = (snack) => {

@@ -119,7 +119,7 @@ class ProfileController extends Controller
                     'docente_id' => $docente->id,
                 ]);
             }
-            return Redirect::route('profile.edit');
+            return Redirect::route('dashboard');
 
         }catch (\Exception $exception){
             DB::rollBack();
