@@ -103,20 +103,6 @@ onMounted(() => {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-lg font-medium text-gray-900">Crear Ficha Técnica</h2>
-<!--            <template v-if="store.this_facilitador === true">-->
-<!--                <NavLink :href="route('show.curso.facilitador', [props.docente.id, props.curso.id])" as="button">-->
-<!--                    <v-btn icon="mdi-arrow-left">-->
-
-<!--                    </v-btn>-->
-<!--                </NavLink>-->
-<!--            </template>-->
-<!--            <template v-else-if="store.this_facilitador === false">-->
-<!--                <NavLink :href="route('index.desarrollo.inscritos', props.curso.id)" as="button">-->
-<!--                    <v-btn icon="mdi-arrow-left">-->
-
-<!--                    </v-btn>-->
-<!--                </NavLink>-->
-<!--            </template>-->
         </template>
         <div class="mt-5 mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">

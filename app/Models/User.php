@@ -41,6 +41,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected $with = [
+        'roles'
+    ];
+
     public function docente(){
         return $this->hasOne(Docente::class, 'id', 'docente_id');
     }

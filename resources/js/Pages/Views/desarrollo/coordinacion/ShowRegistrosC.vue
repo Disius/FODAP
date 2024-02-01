@@ -10,15 +10,23 @@ const props = defineProps({
    cursos_fd: Array,
    auth: Object,
    cursos_ap: Array,
+   departamento: Array,
+   carrera: Array
 });
 const search = ref("");
 const search_ap = ref("")
 const anio_filter_fd = ref()
 const anio_filter_ap = ref()
+const departamento_filtro_fd = ref()
+const departamento_filtro_ap = ref()
+const carrera_fd = ref()
+const carrera_ap = ref()
 
 const filterCursoFD = computed(() => {
     const busqueda = search.value.toLowerCase().trim();
     const anio = anio_filter_fd.value;
+    const departamento = departamento_filtro_fd.value
+    const carrera = carrera_fd.value
 
     let cursosFiltrados = [...props.cursos_fd];
 
@@ -34,6 +42,16 @@ const filterCursoFD = computed(() => {
             return parse_anio === anio
         });
     }
+    if (departamento) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            return item.id_departamento === departamento
+        });
+    }
+    if (carrera) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            return item.carrera_dirigido === carrera
+        });
+    }
 
     return cursosFiltrados;
 });
@@ -41,7 +59,8 @@ const filterCursoFD = computed(() => {
 const filterCursoAP = computed(() => {
     const busqueda = search_ap.value.toLowerCase().trim();
     const anio = anio_filter_ap.value;
-
+    const departamento = departamento_filtro_ap.value
+    const carrera = carrera_ap.value
 
 
     let cursosFiltrados = [...props.cursos_ap];
@@ -56,6 +75,16 @@ const filterCursoAP = computed(() => {
         cursosFiltrados = cursosFiltrados.filter(item => {
             const parse_anio = new Date(item.fecha_I).getFullYear()
             return parse_anio === anio
+        });
+    }
+    if (departamento) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            return item.id_departamento === departamento
+        });
+    }
+    if (carrera) {
+        cursosFiltrados = cursosFiltrados.filter(item => {
+            return item.carrera_dirigido === carrera
         });
     }
 
@@ -118,6 +147,16 @@ onMounted(() => {
                                 <v-select variant="solo" v-model="anio_filter_fd" :items="fullYears" label="Filtrar por año"></v-select>
                             </div>
                         </div>
+                        <div class="flex justify-center">
+                            <div class="flex justify-center w-50 mt-6">
+                                <v-select variant="solo" v-model="departamento_filtro_fd" :items="props.departamento" label="Filtrar por departamento" item-value="id" item-title="nameDepartamento"></v-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-start">
+                        <div class="flex justify-center w-50 mt-6">
+                            <v-select variant="solo" v-model="carrera_fd" :items="props.carrera" label="Filtrar por carrera" item-value="id" item-title="nameCarrera"></v-select>
+                        </div>
                     </div>
                     <v-virtual-scroll
                         :items="filterCursoFD"
@@ -170,7 +209,7 @@ onMounted(() => {
             <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">Cursos de Actualización Profesional</h2>
                 <template v-if="props.cursos_ap !== null">
-                    <div class="grid grid-cols-2">
+                    <div class="grid grid-cols-3">
                         <div class="flex justify-center w-50 mt-6">
                             <v-text-field variant="solo" v-model="search_ap" label="Buscar por nombre de curso"></v-text-field>
                         </div>
@@ -178,6 +217,16 @@ onMounted(() => {
                             <div class="flex justify-center w-50 mt-6">
                                 <v-select variant="solo" v-model="anio_filter_ap" :items="fullYears" label="Filtrar por año"></v-select>
                             </div>
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="flex justify-center w-50 mt-6">
+                                <v-select variant="solo" v-model="departamento_filtro_ap" :items="props.departamento" label="Filtrar por departamento" item-value="id" item-title="nameDepartamento"></v-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-start">
+                        <div class="flex justify-center w-50 mt-6">
+                            <v-select variant="solo" v-model="carrera_ap" :items="props.carrera" label="Filtrar por carrera" item-value="id" item-title="nameCarrera"></v-select>
                         </div>
                     </div>
                     <v-virtual-scroll

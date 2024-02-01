@@ -317,23 +317,6 @@ onMounted(() => {
                     </strong>
                 </div>
                 <TablaUsuariosCoordinacion :users="props.users"></TablaUsuariosCoordinacion>
-
-                <div class="grid grid-cols-2 mt-9">
-                    <div class="flex justify-start">
-                        <strong class="text-lg text-gray-600 mb-3">
-                            Docentes.
-                        </strong>
-                    </div>
-<!--                    <div class="flex justify-center">-->
-<!--                        <v-text-field label="Buscar" variant="solo" v-model="search"></v-text-field>-->
-<!--                    </div>-->
-                </div>
-                <TablaUsuariosDocente :auth="props.auth" :users="props.users"></TablaUsuariosDocente>
-                <div class="flex justify-end mt-8 mr-12 items-center">
-<!--&lt;!&ndash;                    <NavLink :href="route('create.lugar')" as="button">&ndash;&gt;-->
-<!--                    <primary-button>Crear</primary-button>-->
-<!--&lt;!&ndash;                    </NavLink>&ndash;&gt;-->
-                </div>
             </div>
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

@@ -81,16 +81,20 @@ class DesarrolloController extends Controller
             ->orderByRaw('deteccion_necesidades.estado ASC, ABS(DATEDIFF(NOW(), deteccion_necesidades.fecha_I)) ASC')
             ->get();
 
+        $departamento = Departamento::all();
+        $carrera = Carrera::all();
+
         return Inertia::render('Views/desarrollo/coordinacion/ShowRegistrosC', [
             'cursos_fd' => $cursos_fd,
             'cursos_ap' => $cursos_ap,
+            'departamento' => $departamento,
+            'carrera' => $carrera,
         ]);
     }
 
     public function desarrollo_cursos(){
-        date_default_timezone_set('America/Mexico_City');
         CoursesController::state_curso();
-
+        date_default_timezone_set('America/Mexico_City');
 
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'departamento', 'jefe'])
             ->where('aceptado', '=', 1)
@@ -399,12 +403,6 @@ class DesarrolloController extends Controller
         ]);
     }
     public function store_docentes(Request $request){
-//        $request->validate([
-//           'nombre' => 'required',
-//           'apellidoPat' => 'required',
-//            'apellidoMat' => 'required'
-//        ]);
-//        DocenteController::create_instance_docente($request);
         try {
             $request->validate([
                 'nombre' => 'required',
@@ -438,7 +436,7 @@ class DesarrolloController extends Controller
         $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
-        $docente = Docente::with('carrera', 'plaza', 'puesto', 'departamento', 'posgrado')->find($id);
+        $docente = Docente::with('carrera', 'plaza', 'puesto', 'departamento', 'posgrado', 'usuario')->find($id);
         $departamento = Departamento::select('nameDepartamento', 'id')->get();
         return Inertia::render('Views/desarrollo/docente/EditDocente', [
             'carrera' => $carrera->except(['13']),

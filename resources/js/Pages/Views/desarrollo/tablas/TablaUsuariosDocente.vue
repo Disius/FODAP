@@ -88,64 +88,6 @@ const wich_user = (user) => {
     </template>
 
     </v-data-table>
-<!--    <v-table-->
-<!--        fixed-header-->
-<!--        height="300px"-->
-<!--        hover-->
-<!--    >-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th class="text-center">Correo Institucional</th>-->
-<!--            <th class="text-center">Nombre del usuario</th>-->
-<!--            <th class="text-center">Usuario adscrito a</th>-->
-<!--            <th class="text-center">Editar usuario</th>-->
-<!--            <th class="text-center">Eliminar usuario</th>-->
-<!--            <th class="text-center">Permitir actualizar correo institucional u contraseña</th>-->
-<!--            <th class="text-center">Revocar permisos</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr-->
-<!--            v-for="u in usersA"-->
-<!--            :key="u.id"-->
-<!--        >-->
-<!--            <td class="text-center">{{u.email}}</td>-->
-<!--            <template v-if="u.docente !== null">-->
-<!--                <td class="text-center">{{u.docente.nombre_completo}}</td>-->
-<!--            </template>-->
-<!--            <template v-else>-->
-<!--                <td></td>-->
-<!--            </template>-->
-<!--            <td class="text-center">{{u.departamento.nameDepartamento}}</td>-->
-<!--            <td class="text-center">-->
-<!--                <NavLink :href="route('edit.user', u.id)" as="button">-->
-<!--                    <primary-button>-->
-<!--                        <v-icon>mdi-pencil</v-icon>-->
-<!--                    </primary-button>-->
-<!--                </NavLink>-->
-<!--            </td>-->
-<!--            <td class="text-center">-->
-<!--                <DeleteUserSelectForm :user="wich_user(u)"></DeleteUserSelectForm>-->
-<!--            </td>-->
-<!--            <td class="text-center">-->
-<!--                <NavLink :href="route('permiso.edit', u.id)" as="button" method="post">-->
-<!--                    <v-btn width="150" height="35" color="info">-->
-<!--                        <v-icon>mdi-check</v-icon>-->
-<!--                    </v-btn>-->
-<!--                </NavLink>-->
-<!--            </td>-->
-<!--            <template v-if="u.permissions.length > 0">-->
-<!--                <td class="text-center">-->
-<!--                    <NavLink :href="route('permiso.revoke', u.id)" as="button" method="post">-->
-<!--                        <v-btn width="250" height="35" color="error">-->
-<!--                            <v-icon>mdi-cancel</v-icon>-->
-<!--                        </v-btn>-->
-<!--                    </NavLink>-->
-<!--                </td>-->
-<!--            </template>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </v-table>-->
 </template>
 
 

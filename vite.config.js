@@ -11,6 +11,9 @@ export default defineConfig({
             input: '/resources/js/app.js',
         },
     },
+    server: {
+        host: 'localhost'
+    },
     plugins: [
         laravel({
             input: 'resources/js/app.js',

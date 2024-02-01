@@ -7,6 +7,9 @@ import TextInput from "@/Components/TextInput.vue";
 import {useForm} from "@inertiajs/vue3";
 import {onMounted, ref} from "vue";
 import NavLink from "@/Components/NavLink.vue";
+import UpdatePasswordFormSelected from "@/Pages/Views/desarrollo/forms/UpdatePasswordFormSelected.vue";
+import UpdateProfileInformationFormSelected
+    from "@/Pages/Views/desarrollo/forms/UpdateProfileInformationFormSelected.vue";
 
 const props = defineProps({
     departamento: {
@@ -48,7 +51,7 @@ const form = useForm({
     licenciatura: "",
     id_posgrado: null,
 });
-const sex = [{ value: 1, text: "M" }, { value: 2, text: "F" }];
+const sex = [{ value: 1, text: "MASCULINO" }, { value: 2, text: "FEMENINO" }];
 
 const snackSuccess = ref(false);
 
@@ -58,6 +61,34 @@ const submit = () => {
           snackSuccess.value = true
         },
     })
+}
+function suceess(){
+    message.value = "Actualizado con exito"
+    color.value = "success"
+    timeout.value = 2000;
+    snackbar.value = true
+    setTimeout(() => {
+        snackbarSuccess.value = false;
+    }, timeout.value);
+}
+function error_form() {
+    message.value = "Error al actualizar este recurso"
+    color.value = "error"
+    timeout.value = 2000;
+    snackbar.value = true
+    setTimeout(() => {
+        snackbar.value = false;
+    }, timeout.value);
+}
+
+const formUser = useForm({
+    email: "",
+    docente_id: null,
+    departamento_id: null,
+    role: null,
+})
+const submitUser = () => {
+
 }
 
 
@@ -79,6 +110,8 @@ onMounted(() => {
         props.docente.tipo_plaza !== null ? form.tipo_plaza = props.docente.tipo_plaza : form.tipo_plaza
         props.docente.licenciatura !== null ? form.licenciatura = props.docente.licenciatura : form.licenciatura
         props.docente.id_posgrado !== null ? form.id_posgrado = props.docente.id_posgrado : form.id_posgrado
+        // props.docente.usuario !== null ? props.docente.usuario = formUser.email : formUser.email
+        // console.log(formUser.email)
     }
 })
 </script>
@@ -115,6 +148,25 @@ onMounted(() => {
                         </v-tooltip>
                 </p>
             </header>
+<!--            <div v-if="props.docente.usuario">-->
+                <div>
+                    <div>
+                        <InputLabel for="email" value="Correo Institucional" />
+
+                        <TextInput
+                            id="email"
+                            type="email"
+                            class="mt-1 block w-full"
+                            v-model="formUser.email"
+                            disabled
+                            required
+                            autocomplete="username"
+                        />
+
+                        <InputError class="mt-2" :message="formUser.errors.email" />
+                    </div>
+                </div>
+<!--            </div>-->
             <form class="mt-6 space-y-6" @submit.prevent="submit">
                 <div class="flex justify-center">
                     <v-alert type="info" title="Atención"
