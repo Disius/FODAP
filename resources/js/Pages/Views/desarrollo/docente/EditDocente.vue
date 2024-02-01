@@ -110,8 +110,12 @@ onMounted(() => {
         props.docente.tipo_plaza !== null ? form.tipo_plaza = props.docente.tipo_plaza : form.tipo_plaza
         props.docente.licenciatura !== null ? form.licenciatura = props.docente.licenciatura : form.licenciatura
         props.docente.id_posgrado !== null ? form.id_posgrado = props.docente.id_posgrado : form.id_posgrado
-        // props.docente.usuario !== null ? props.docente.usuario = formUser.email : formUser.email
-        // console.log(formUser.email)
+        props.docente.usuario.email !== null ? formUser.email = props.docente.usuario.email : formUser.email
+        // if (props.docente.usuario !== null){
+        //     props.docente.usuario.email = formUser.email
+        // }else{
+        //     console.log("Usuario registrado no existe")
+        // }
     }
 })
 </script>
@@ -149,7 +153,7 @@ onMounted(() => {
                 </p>
             </header>
 <!--            <div v-if="props.docente.usuario">-->
-                <div>
+                <div class="mt-5">
                     <div>
                         <InputLabel for="email" value="Correo Institucional" />
 
