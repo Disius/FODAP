@@ -200,7 +200,7 @@
                     <td>{{ ($i < count($ficha->temas)) ? $i + 1 : '' }}</td>
                     <td>{{ ($i < count($ficha->temas)) ? $ficha->temas[$i]->name_tema : '' }}</td>
                     <td>{{ ($i < count($ficha->temas)) ? $i + 5 : '' }}</td>
-                    <td>{{ ($i < count($ficha->temas)) ? ' ' . ($i + 5) : '' }}</td>
+                    <td>{{ ($i < count($ficha->temas)) ? ' ' : '' }}</td>
                 </tr>
             @endfor
         </table>
