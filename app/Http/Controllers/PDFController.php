@@ -153,7 +153,7 @@ class PDFController extends Controller
         $docente = Docente::with('inscrito', 'posgrado', 'carrera', 'puesto')->find($request->id_docente);
         $curso = DeteccionNecesidades::with('deteccion_facilitador',  'clave_curso', 'clave_validacion')->find($request->id);
         $coordinacion = User::with('docente')->where('email', 'cformacion@tuxtla.tecnm.mx')->first();
-        $temas = FichaTecnica::with('temas')->where('id_curso', $curso->id)->first();
+        $temas = FichaTecnica::where('id_curso', $curso->id)->first();
 
 
         $facilitador = $curso->deteccion_facilitador;

@@ -195,7 +195,7 @@
             @for($i = 1; $i <= 10; $i++)
                 <tr>
                     <td>{{ $i }}</td>
-                    <td>Temario {{ $i }}</td>
+                    <td>{{$temas->temas[$i]->name_tema}}</td>
                     <td>{{ $i + 4 }}</td>
                     <td>Temario {{ $i + 4 }}</td>
                 </tr>
