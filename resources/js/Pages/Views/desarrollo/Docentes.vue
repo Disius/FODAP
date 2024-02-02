@@ -172,10 +172,14 @@ onMounted(() => {
             >
                 <template v-slot:item.email="{item}">
                     <template v-if="item.usuario">
-                        {{item.usuario.email}}
+                        <v-chip color="success">
+                            {{item.usuario.email}}
+                        </v-chip>
                     </template>
                     <template v-if="!item.usuario">
-                        SIN REGISTRAR
+                        <v-chip color="warning">
+                            SIN REGISTRAR
+                        </v-chip>
                     </template>
                 </template>
                 <template v-slot:item.options="{item}">
