@@ -122,27 +122,27 @@ const submit = (inscripcion, id) => {
 
 const generar_ficha = () => {
     loading.value = true
-    // setTimeout(() => {
-    //     loading.value = false
-    //     snackErrorActivator()
-    // }, 10000)
-    axios.get(route('pdf.ficha.tecnica'), {
-        params: {
-            id_ficha: props.curso.ficha_tecnica.id
-        }
-    }).then(res => {
-        loading.value = false
-        const url = '/storage/ficha.pdf';
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'ficha.pdf');
-        document.body.appendChild(link);
-        link.click();
-        snackSuccessActivator()
-    }).catch(error => {
-        loading.value = false
+    try{
+        axios.get(route('pdf.ficha.tecnica'), {
+            params: {
+                id_ficha: props.curso.ficha_tecnica.id
+            }
+        }).then(res => {
+            loading.value = false
+            const url = '/storage/ficha.pdf';
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'ficha.pdf');
+            document.body.appendChild(link);
+            link.click();
+            snackSuccessActivator()
+        }).catch(error => {
+            loading.value = false
+            snackErrorActivator()
+        })
+    }catch (e) {
         snackErrorActivator()
-    })
+    }
 };
 
 const form = useForm({

@@ -10,6 +10,11 @@ import NavLink from "@/Components/NavLink.vue";
 import UpdatePasswordFormSelected from "@/Pages/Views/desarrollo/forms/UpdatePasswordFormSelected.vue";
 import UpdateProfileInformationFormSelected
     from "@/Pages/Views/desarrollo/forms/UpdateProfileInformationFormSelected.vue";
+import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import Modal from "@/Components/Modal.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import CustomSnackBar from "@/Components/CustomSnackBar.vue";
 
 const props = defineProps({
     departamento: {
@@ -52,16 +57,26 @@ const form = useForm({
     id_posgrado: null,
 });
 const sex = [{ value: 1, text: "MASCULINO" }, { value: 2, text: "FEMENINO" }];
-
-const snackSuccess = ref(false);
+const show_update_password = ref(false)
+const message = ref()
+const color = ref()
+const timeout = ref()
+const snackbar = ref()
 
 const submit = () => {
     form.put(route('update.docentes', props.docente.id), {
         onSuccess: () => {
-          snackSuccess.value = true
+          suceess()
         },
+        onError: () => {
+            error_form()
+        }
     })
 }
+
+const closeModal = () => {
+    show_update_password.value = false;
+};
 function suceess(){
     message.value = "Actualizado con exito"
     color.value = "success"
@@ -83,12 +98,16 @@ function error_form() {
 
 const formUser = useForm({
     email: "",
-    docente_id: null,
-    departamento_id: null,
-    role: null,
 })
 const submitUser = () => {
-
+    formUser.post(route('editar.email', props.docente.usuario.id), {
+        onSuccess: () => {
+            suceess()
+        },
+        onError: () => {
+            error_form()
+        }
+    })
 }
 
 
@@ -154,22 +173,47 @@ onMounted(() => {
             </header>
 <!--            <div v-if="props.docente.usuario">-->
                 <div class="mt-5">
-                    <div>
-                        <InputLabel for="email" value="Correo Institucional" />
+                    <form @submit.prevent="submitUser">
+                        <div class="grid grid-cols-2">
+                            <div>
+                                <InputLabel for="email" value="Correo Institucional" />
 
-                        <TextInput
-                            id="email"
-                            type="email"
-                            class="mt-1 block w-full"
-                            v-model="formUser.email"
-                            disabled
-                            required
-                            autocomplete="username"
-                        />
+                                <TextInput
+                                    id="email"
+                                    type="email"
+                                    class="mt-1 block w-full"
+                                    v-model="formUser.email"
+                                    required
+                                    autocomplete="username"
+                                />
 
-                        <InputError class="mt-2" :message="formUser.errors.email" />
-                    </div>
+                                <InputError class="mt-2" :message="formUser.errors.email" />
+                            </div>
+                            <template v-if="props.docente.usuario">
+                                <div class="flex justify-center">
+                                    <primary-button type="submit">Actualizar email</primary-button>
+                                </div>
+                            </template>
+                        </div>
+                    </form>
                 </div>
+            <div class="mt-5">
+                <div>
+                    <secondary-button @click="show_update_password = true">Actualizar contraseña</secondary-button>
+                    <Modal :show="show_update_password" @close="closeModal">
+                        <div class="grid grid-rows-1">
+                            <div class="flex justify-start relative ma-5">
+                                <secondary-button @click="show_update_password = false"><v-icon>mdi-close</v-icon></secondary-button>
+                            </div>
+                        </div>
+                        <div class="container mx-auto">
+                            <div class="flex justify-center items-center mb-5">
+                                <UpdatePasswordFormSelected :user="props.docente.usuario"></UpdatePasswordFormSelected>
+                            </div>
+                        </div>
+                    </Modal>
+                </div>
+            </div>
 <!--            </div>-->
             <form class="mt-6 space-y-6" @submit.prevent="submit">
                 <div class="flex justify-center">
@@ -328,24 +372,7 @@ onMounted(() => {
             </form>
         </div>
     </div>
-    <v-snackbar
-        v-model="snackSuccess"
-        vertical
-    >
-        <div class="text-subtitle-1 pb-2">¡Exito!</div>
-
-        <p>Se edito el docente con exito</p>
-
-        <template v-slot:actions>
-            <v-btn
-                color="indigo"
-                variant="text"
-                @click="snackSuccess = false"
-            >
-                Cerrar
-            </v-btn>
-        </template>
-    </v-snackbar>
+    <CustomSnackBar :message="message" :color="color" @update:modelValue="snackbar = $event" v-model="snackbar"></CustomSnackBar>
 </AuthenticatedLayout>
 </template>
 

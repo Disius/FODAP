@@ -143,6 +143,7 @@ class DocenteController extends Controller
     public function facilitador_curso($facilitador, $id){
         $docente = Docente::find($facilitador);
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'ficha_tecnica', 'calificaciones_curso', 'ficha_tecnica'])
+            ->orderBy('id', 'desc')
             ->find($id);
 //        $ficha = $curso->ficha_tecnica != null ? FichaTecnica::with( 'temas', 'evaluacion_criterio')->find($curso->ficha_tecnica->id) : null;
         $inscritos = DB::table('docente')

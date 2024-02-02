@@ -77,6 +77,7 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::delete('/eliminar/usuario', [GestionParametrosController::class, 'destoy_users'])->name('destroy.users');
     Route::post('/permiso/{id}', [GestionParametrosController::class, 'set_permission'])->name('permiso.edit');
     Route::post('/revocar/permiso/{id}', [GestionParametrosController::class, 'revoke_permissions'])->name('permiso.revoke');
+    Route::post('/email/edit/{id}', [GestionParametrosController::class, 'edit_email'])->name('editar.email');
 
 
 //    crear o actualizar subdireccion

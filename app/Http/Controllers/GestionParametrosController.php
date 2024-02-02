@@ -239,7 +239,20 @@ class   GestionParametrosController extends Controller
             'rol' => $roles,
         ]);
     }
+    public function edit_email(Request $request, $id){
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
 
+        $user = User::find($id);
+        $user->update([
+            'email' => $request->email
+        ]);
+
+        $user->save();
+
+        return redirect()->route('edit.docentes', ['id' => $user->docente_id]);
+    }
     public function update_user(Request $request, $id){
         $request->validate([
             'docente_id' => ['required'],
@@ -270,7 +283,6 @@ class   GestionParametrosController extends Controller
     public function update_password(Request $request, $id)
     {
         $request->validate([
-
             'password' => [Password::defaults(), 'confirmed', 'required'],
         ]);
 

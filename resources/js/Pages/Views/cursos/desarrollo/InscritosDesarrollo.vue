@@ -39,7 +39,7 @@ const curso_id = ref()
 const docente = ref()
 const dialogCalificacionUpdate = ref(false)
 const show_ficha = ref(false)
-
+const color_ficha = ref("")
 const reloadPage = () => {
     router.reload();
     snackbar.value = false
@@ -132,23 +132,28 @@ const submit = (inscripcion, id) => {
 
 const generar_ficha = () => {
     loading.value = true
-    axios.get(route('pdf.ficha.tecnica'), {
-        params: {
-            id_ficha: props.curso.ficha_tecnica.id
-        }
-    }).then(res => {
-        loading.value = false
-        const url = '/storage/ficha.pdf';
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'ficha.pdf');
-        document.body.appendChild(link);
-        link.click();
-        snackSuccessActivator()
-    }).catch(error => {
+    try{
+        axios.get(route('pdf.ficha.tecnica'), {
+            params: {
+                id_ficha: props.curso.ficha_tecnica.id
+            }
+        }).then(res => {
+            loading.value = false
+            const url = '/storage/ficha.pdf';
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'ficha.pdf');
+            document.body.appendChild(link);
+            link.click();
+            snackSuccessActivator()
+        }).catch(error => {
+            loading.value = false
+            snackErrorActivator()
+        })
+    }catch (e){
         loading.value = false
         snackErrorActivator()
-    })
+    }
 
 };
 const submitActa = () => {
@@ -239,6 +244,11 @@ onMounted(() => {
     }).catch(err => {
         console.log(err.response.data)
     })
+    if (props.curso.ficha_tecnica){
+        color_ficha.value = "success"
+    }else{
+        color_ficha.value = "error"
+    }
 });
 
 const custom_snackbar = (snack) => {
@@ -269,7 +279,7 @@ const custom_snackbar = (snack) => {
                     </div>
                 </template>
             </div>
-            <div class="grid grid-cols-3">
+            <div class="grid grid-cols-4">
                 <template v-if="props.curso.estado === 0 || props.curso.estado === 1">
                     <div class="flex justify-start">
                         <NavLink :href="route('index.desarrollo.cursos')" as="button" type="button">
@@ -296,6 +306,21 @@ const custom_snackbar = (snack) => {
                 <div class="flex justify-start mr-16 pr-16">
                     <DangerButton @click="dialog = true" class="mt-5">Eliminar curso</DangerButton>
                     <EliminarDeteccionConfirmation v-model="dialog" :curso="props.curso.id" @update:modelValue="dialog = $event"></EliminarDeteccionConfirmation>
+                </div>
+                <div class="flex justify-center ma-3">
+                    <v-tooltip location="right">
+                        <template v-slot:activator="{ props }">
+                            <v-btn icon="mdi-file" :color="color_ficha" v-bind="props" size="large">
+
+                            </v-btn>
+                        </template>
+                        <template v-if="color_ficha === 'success'">
+                            <span>Este curso cuenta con su ficha técnica.</span>
+                        </template>
+                        <template v-if="color_ficha === 'error'">
+                            <span>Este curso no cuenta con su ficha técnica.</span>
+                        </template>
+                    </v-tooltip>
                 </div>
             </div>
         </template>

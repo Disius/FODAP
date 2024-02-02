@@ -104,21 +104,21 @@ const snackSuccessActivator = () => {
                     <v-btn block height="50" color="blue-darken-1" @click="download_cvu">Descargar para editar</v-btn>
                 </div>
 
-                <div class="grid grid-cols-2">
-                    <div class="flex justify-start mt-12">
-                        <v-file-input label="Ingresar CVU" variant="solo" @input="form.file = $event.target.files[0]"></v-file-input>
-                    </div>
-                    <div class="flex justify-center mt-12">
-                        <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">
-                            Subir
-                        </v-btn>
-                    </div>
-                </div>
-                <template v-if="props.docente.cvu != null">
-                    <div class="flex justify-start mt-5">
-                        <v-btn color="blue-darken-1" width="500" @click="download_cvu_editado">DESCARGAR MI CVU</v-btn>
-                    </div>
-                </template>
+<!--                <div class="grid grid-cols-2">-->
+<!--                    <div class="flex justify-start mt-12">-->
+<!--                        <v-file-input label="Ingresar CVU" variant="solo" @input="form.file = $event.target.files[0]"></v-file-input>-->
+<!--                    </div>-->
+<!--                    <div class="flex justify-center mt-12">-->
+<!--                        <v-btn color="blue-darken-1" @click="upload_file" width="500" height="50">-->
+<!--                            Subir-->
+<!--                        </v-btn>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <template v-if="props.docente.cvu != null">-->
+<!--                    <div class="flex justify-start mt-5">-->
+<!--                        <v-btn color="blue-darken-1" width="500" @click="download_cvu_editado">DESCARGAR MI CVU</v-btn>-->
+<!--                    </div>-->
+<!--                </template>-->
             </div>
         </div>
         <div class="mt-5 mx-auto sm:px-6 lg:px-8 space-y-6">
