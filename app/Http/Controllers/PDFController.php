@@ -153,7 +153,7 @@ class PDFController extends Controller
         $docente = Docente::with('inscrito', 'posgrado', 'carrera', 'puesto')->find($request->id_docente);
         $curso = DeteccionNecesidades::with('deteccion_facilitador',  'clave_curso', 'clave_validacion')->find($request->id);
         $coordinacion = User::with('docente')->where('email', 'cformacion@tuxtla.tecnm.mx')->first();
-        $temas = FichaTecnica::where('id_curso', $curso->id)->first();
+        $ficha = FichaTecnica::where('id_curso', $curso->id)->first();
 
 
         $facilitador = $curso->deteccion_facilitador;
@@ -175,7 +175,7 @@ class PDFController extends Controller
 
         $path = 'constancia1.pdf';
 
-        $pdf_2 = Pdf::loadView('pdf.constancia_2', compact('year', 'curso', 'docente', 'day', 'anio', 'month_get', 'coordinacion', 'temas'))
+        $pdf_2 = Pdf::loadView('pdf.constancia_2', compact('year', 'curso', 'docente', 'day', 'anio', 'month_get', 'coordinacion', 'ficha'))
             ->setPaper('a4','landscape')
             ->output();
 

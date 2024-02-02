@@ -192,12 +192,15 @@
                 <th>No.</th>
                 <th>Temas</th>
             </tr>
-            @for($i = 1; $i <= 10; $i++)
+            @php
+                $maxTemas = 14;
+            @endphp
+            @for($i = 0; $i < $maxTemas; $i++)
                 <tr>
-                    <td>{{ $i }}</td>
-                    <td>{{$temas->temas[$i]->name_tema}}</td>
-                    <td>{{ $i + 4 }}</td>
-                    <td>Temario {{ $i + 4 }}</td>
+                    <td>{{ ($i < count($ficha->temas)) ? $i + 1 : '' }}</td>
+                    <td>{{ ($i < count($ficha->temas)) ? $ficha->temas[$i] : '' }}</td>
+                    <td>{{ ($i < count($ficha->temas)) ? $i + 5 : '' }}</td>
+                    <td>{{ ($i < count($ficha->temas)) ? 'Temario ' . ($i + 5) : '' }}</td>
                 </tr>
             @endfor
         </table>
