@@ -198,9 +198,9 @@
             @for($i = 0; $i < $maxTemas; $i++)
                 <tr>
                     <td>{{ ($i < count($ficha->temas)) ? $i + 1 : '' }}</td>
-                    <td>{{ ($i < count($ficha->temas)) ? $ficha->temas[$i] : '' }}</td>
+                    <td>{{ ($i < count($ficha->temas)) ? $ficha->temas[$i]->name_tema : '' }}</td>
                     <td>{{ ($i < count($ficha->temas)) ? $i + 5 : '' }}</td>
-                    <td>{{ ($i < count($ficha->temas)) ? 'Temario ' . ($i + 5) : '' }}</td>
+                    <td>{{ ($i < count($ficha->temas)) ? ' ' . ($i + 5) : '' }}</td>
                 </tr>
             @endfor
         </table>
