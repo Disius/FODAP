@@ -44,6 +44,7 @@ const header = [
     {key: "nombre", title: "Nombre"},
     {key: "apellidoPat", title: "Apellido Paterno"},
     {key: "apellidoMat", title: "Apellido Materno"},
+    {key: "email", title: "Correo institucional"},
     {key: "options", title: "Editar"},
     {key: "delete", title: "Eliminar"},
 ];
@@ -169,6 +170,14 @@ onMounted(() => {
                           items-per-page="5"
                           items-per-page-text="Paginas"
             >
+                <template v-slot:item.email="{item}">
+                    <template v-if="item.usuario">
+                        {{item.usuario.email}}
+                    </template>
+                    <template v-if="!item.usuario">
+                        SIN REGISTRAR
+                    </template>
+                </template>
                 <template v-slot:item.options="{item}">
                     <NavLink :href="route('edit.docentes', item.id)" as="button">
                         <v-btn icon size="large" elevation="0">
