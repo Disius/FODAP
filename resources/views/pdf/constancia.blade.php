@@ -280,25 +280,19 @@
         <div class="director-signature" style="float: right;">
             <!-- Firma del director -->
             @foreach($facilitador as $facilitadores)
-                <p>{{$facilitadores->nombre_completo}}</p>
+{{--                <p>{{$facilitadores->nombre_completo}}</p>--}}
+                @if ($facilitador->isEmpty())
+                    <p>No hay facilitadores disponibles</p>
+                @elseif ($facilitador->count() == 1)
+                    <p>{{$facilitador[0]->nombre_completo}}</p>
+                @elseif ($facilitador->count() == 2)
+                        <p>{{$facilitadores->nombre_completo}}</p>
+                @else
+{{--                    @foreach($facilitador as $facilitadores)--}}
+{{--                        <p>{{$facilitadores->nombre_completo}}</p>--}}
+{{--                    @endforeach--}}
+                @endif
             @endforeach
-
-            @if ($facilitador->isEmpty())
-                <p>No hay facilitadores disponibles</p>
-            @elseif ($facilitador->count() == 1)
-                <p>Solo hay un facilitador:</p>
-                <p>{{$facilitador[0]->nombre_completo}}</p>
-            @elseif ($facilitador->count() == 2)
-                <p>Los facilitadores son:</p>
-                @foreach($facilitador as $facilitadores)
-                    <p>{{$facilitadores->nombre_completo}}</p>
-                @endforeach
-            @else
-                <p>Hay varios facilitadores:</p>
-                @foreach($facilitador as $facilitadores)
-                    <p>{{$facilitadores->nombre_completo}}</p>
-                @endforeach
-            @endif
             <p>FACILITADOR</p>
             <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->
         </div>
