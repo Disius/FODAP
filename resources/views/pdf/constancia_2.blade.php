@@ -187,7 +187,7 @@
                 <th colspan="4">Temario</th>
             </tr>
             <tr>
-                <th>No.</th>
+                <th  style="width: 10px;">No.</th>
                 <th>Temas</th>
                 <th>No.</th>
                 <th>Temas</th>
