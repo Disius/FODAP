@@ -73,18 +73,18 @@ console.log(props.cursos_periodos)
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-center">
-                            <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                <div class="flex justify-center">
-                                    <h2 class="text-sm font-medium text-gray-900">Total de cursos realizados en el periodo agosto-diciembre de {{date}}</h2>
-                                </div>
-                                <div class="container mx-auto">
-                                    <p class="font-semibold pa-5 text-center text-6xl">
-                                        {{props.cursos_periodos[1]}}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+<!--                        <div class="flex justify-center">-->
+<!--                            <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">-->
+<!--                                <div class="flex justify-center">-->
+<!--                                    <h2 class="text-sm font-medium text-gray-900">Total de cursos realizados en el periodo agosto-diciembre de {{date}}</h2>-->
+<!--                                </div>-->
+<!--                                <div class="container mx-auto">-->
+<!--                                    <p class="font-semibold pa-5 text-center text-6xl">-->
+<!--                                        {{props.cursos_periodos[1]}}-->
+<!--                                    </p>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
                         <div class="flex justify-center">
                             <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
                                 <div class="flex justify-center">
