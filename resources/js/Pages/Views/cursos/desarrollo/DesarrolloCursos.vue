@@ -175,7 +175,7 @@ onMounted(() => {
                         </v-btn>
                     </NavLink>
                 </div>
-                  <div class="flex justify-center">
+                  <div class="flex justify-center ml-16">
                     <NavLink :href="route('count.cursos')" method="post" as="button">
                         <v-btn block size="large" color="blue-darken-1" prepend-icon="mdi-key-variant" height="50" width="550">
                             Claves de curso
@@ -184,7 +184,7 @@ onMounted(() => {
                       <div class="flex justify-start ml-5">
                           <v-tooltip location="right">
                               <template v-slot:activator="{ props }">
-                                  <v-btn icon color="warning" v-bind="props" size="normal">
+                                  <v-btn icon color="warning" v-bind="props" size="large">
                                       <v-icon>
                                           mdi-help
                                       </v-icon>
