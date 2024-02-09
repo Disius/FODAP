@@ -159,28 +159,30 @@ onMounted(() => {
 
       <div class="mt-6 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
           <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-              <v-row justify="center" class="">
-                  <v-col xs="9" sm="8" lg="6" cols="6" align="center">
-                      <NavLink :href="route('index.registros.c')" as="button">
-                          <v-btn block size="large" color="blue-darken-1" prepend-icon="mdi-archive" height="50"
-                                 width="550">
-                              Ver todos los registros
-                          </v-btn>
-                      </NavLink>
-                  </v-col>
-                  <v-col sm="9" lg="6" cols="6" align="center">
-                      <NavLink :href="route('create.curso')">
-                          <v-btn block size="large" color="blue-darken-1" prepend-icon="mdi-pencil" height="50" width="550">
-                              Crear Curso
-                          </v-btn>
-                      </NavLink>
-                  </v-col>
-              </v-row>
-          </div>
-      </div>
-      <div class="mt-6 max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-          <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-
+              <div class="grid gap-5 grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
+                <div class="flex justify-center items-center">
+                    <NavLink :href="route('index.registros.c')" as="button">
+                        <v-btn block size="large" color="blue-darken-1" prepend-icon="mdi-archive" height="50"
+                               width="550">
+                            Ver todos los registros
+                        </v-btn>
+                    </NavLink>
+                </div>
+                <div class="flex justify-center">
+                    <NavLink :href="route('create.curso')" as="button">
+                        <v-btn block size="large" color="blue-darken-1" prepend-icon="mdi-pencil" height="50" width="550">
+                            Crear Curso
+                        </v-btn>
+                    </NavLink>
+                </div>
+                  <div class="flex justify-center">
+                    <NavLink :href="route('count.cursos')" method="post" as="button">
+                        <v-btn block size="large" color="blue-darken-1" prepend-icon="mdi-key-variant" height="50" width="550">
+                            Claves de curso
+                        </v-btn>
+                    </NavLink>
+                </div>
+              </div>
           </div>
       </div>
   </AuthenticatedLayout>

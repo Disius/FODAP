@@ -42,7 +42,7 @@ onMounted(() => {
                             </div>
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 lg:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Tablero
                                 </NavLink>
@@ -107,8 +107,8 @@ onMounted(() => {
                                         </NavLink>
                                 </template>
                                 <template v-if="user.role === 1 || user.role === 2">
-<!--                                    :active="route().current('index.desarrollo.cursos')"-->
-                                    <NavLink href="#">
+<!--                                    :active="route().current('index.estadisticas')"-->
+                                    <NavLink :href="route('index.estadisticas')" :active="route().current('index.estadisticas')">
                                         Estadisticas
                                     </NavLink>
                                 </template>
@@ -141,7 +141,7 @@ onMounted(() => {
                         </div>
 
                         <!-- Hamburger -->
-                        <div class="-mr-2 flex items-center sm:hidden">
+                        <div class="-mr-2 flex items-center lg:hidden">
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
                                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
@@ -176,7 +176,7 @@ onMounted(() => {
                 <!-- Responsive Navigation Menu -->
                 <div
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-                    class="sm:hidden"
+                    class="lg:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">

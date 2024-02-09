@@ -105,4 +105,8 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::post('/subir/logotecnm', [GestionParametrosController::class, 'upLogo_tecnm'])->name('subir.logoTecnm');
     Route::post('/subir/logoeducacion', [GestionParametrosController::class, 'upLogo_educacion'])->name('subir.logoEducacion');
 
+
+//    Estadisticas
+    Route::get('/desarrollo/estadisticas', [\App\Http\Controllers\EstadisticasController::class, 'index_estadisticas'])->name('index.estadisticas');
+
 });

@@ -158,17 +158,62 @@ class CoursesController extends Controller
     }
 
     public function count_generate_curso_clave(){
+        $type = null;
         $anio = date('Y');
         $cursos = DeteccionNecesidades::whereYear('fecha_F', '=', $anio)
-            ->count();
-        for ($i = 1; $i <= $cursos; $i++) {
-            $claveCurso = 'TNM-021-' . $i . '-' . $anio;
-            $clave = ClaveCurso::create([
-                'curso_id' => $cursos[$i]->id,
-                'clave' => $claveCurso,
-            ]);
-            $clave->save();
+            ->orderBy('id', 'asc')
+            ->get();
+
+        foreach ($cursos as $curso) {
+            // Verificar si el curso ya tiene clave asignada
+            $anio = explode("-", $curso->fecha_F);
+            if (!ClaveCurso::where('curso_id', $curso->id)->exists()) {
+                // Obtener el número de curso
+                $n = ClaveCurso::count() + 1;
+
+                // Crear la clave de curso
+                $claveCurso = 'TNM-021-' . $n . '-' . $anio[0];
+                $clave = ClaveCurso::create([
+                    'curso_id' => $curso->id,
+                    'clave' => $claveCurso,
+                ]);
+                $clave->save();
+
+                // Determinar el tipo y crear la clave de validación
+                $type = ($curso->tipo_FDoAP == 1) ? 'FD' : 'AP';
+                $claveValidacion = 'SA-DDA-' . $type . '-' . $n . '-' . $anio[0];
+                $claveV = ClaveValidacion::create([
+                    'curso_id' => $curso->id,
+                    'clave' => $claveValidacion
+                ]);
+                $claveV->save();
+            }
         }
+//        for ($i = 0; $i < $cursos->count(); $i++) {
+//            $claveCurso = 'TNM-021-' . $i . '-' . $anio;
+//            $clave = ClaveCurso::create([
+//                'curso_id' => $cursos[$i]->id,
+//                'clave' => $claveCurso,
+//            ]);
+//            $clave->save();
+//
+//            switch ($cursos[$i]->tipo_FDoAP){
+//                case 1: $type = 'FD';
+//                    break;
+//                case 2: $type = 'AP';
+//                    break;
+//            }
+//            $claveValidacion = 'SA-DDA-'.$type.'-'.$cursos[$i]->id.'-'.$anio;
+//            $claveV = ClaveValidacion::create([
+//                'curso_id' => $cursos[$i]->id,
+//                'clave' => $claveValidacion
+//            ]);
+//            $claveV->save();
+//
+//            break;
+//        }
+        return redirect()->route('index.desarrollo.cursos')->with('message', 'Claves de cursos generada');
+
     }
 
     public static function clave_generar($curso_id){

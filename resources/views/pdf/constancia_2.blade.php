@@ -141,16 +141,26 @@
             </table>
         </div>
         <div class="square">
-            <table class="w100">
-                <tr>
-                    <td class="titles content center">Este evento quedó registrado con la clave: </td>
-                </tr>
-            </table>
-            <table class="w100">
-                <tr>
-                    <td class="titles content center">{{$curso->clave_curso->clave}}</td>
-                </tr>
-            </table>
+            @if($docente->tipo_plaza == 1 || $docente->tipo_plaza == 2)
+                <table class="w100">
+                    <tr>
+                        <td class="titles content center">Este evento quedó registrado con la clave: </td>
+                    </tr>
+                </table>
+                <table class="w100">
+                        <tr>
+                            <td class="titles content center">{{$curso->clave_curso->clave}}</td>
+                        </tr>
+                </table>
+            @else
+                <table class="w100">
+
+                    <tr>
+{{--                        <td class="titles content center">{{$curso->clave_curso->clave}}</td>--}}
+                    </tr>
+
+                </table>
+            @endif
             <table class="w100">
                 <tr>
                     <td class="titles content center">Tuxtla Gutiérrez, Chis. {{$day}} de {{$month_get[0]}} de {{$anio}}</td>
@@ -189,7 +199,7 @@
             <tr>
                 <th  style="width: 10px;">No.</th>
                 <th>Temas</th>
-                <th>No.</th>
+                <th style="width: 5px">No.</th>
                 <th>Temas</th>
             </tr>
             @php

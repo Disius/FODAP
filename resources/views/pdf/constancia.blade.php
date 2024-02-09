@@ -138,7 +138,7 @@
             align-items: center;
             font-weight: normal;
             text-align: justify;
-            margin-left: 80px;
+            margin-left: 97px;
             font-family: 'Montserrat';
             font-size: 12pt;
             width: 600px;
@@ -152,7 +152,7 @@
             align-items: center;
             font-weight: normal;
             text-align: justify;
-            margin-left: 390px;
+            margin-left: 460px;
             font-family: 'Montserrat';
             font-size: 10pt;
         }
@@ -279,21 +279,21 @@
     <div class="footer">
         <div class="director-signature" style="float: right;">
             <!-- Firma del director -->
-            @foreach($facilitador as $facilitadores)
-{{--                <p>{{$facilitadores->nombre_completo}}</p>--}}
-                @if ($facilitador->isEmpty())
-                    <p>No hay facilitadores disponibles</p>
-                @elseif ($facilitador->count() == 1)
-                    <p>{{$facilitador[0]->nombre_completo}}</p>
-                @elseif ($facilitador->count() == 2)
+            @if(count($facilitador) != 0)
+                @foreach($facilitador as $facilitadores)
+                    @if ($facilitador->isEmpty())
+                        <p>No hay facilitadores disponibles</p>
+                    @elseif ($facilitador->count() == 1)
                         <p>{{$facilitadores->nombre_completo}}</p>
-                @else
-{{--                    @foreach($facilitador as $facilitadores)--}}
-{{--                        <p>{{$facilitadores->nombre_completo}}</p>--}}
-{{--                    @endforeach--}}
-                @endif
-            @endforeach
-            <p>FACILITADOR</p>
+                    @elseif ($facilitador->count() == 2)
+                        <p>{{$facilitadores->nombre_completo}}</p>
+                    @else
+                    @endif
+                @endforeach
+            @else
+                <p>{{$docente->inscrito[0]->facilitador_externo}}</p>
+            @endif
+            <p>FACILITADOR (A)</p>
             <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->
         </div>
         <div class="teacher-signature" style="float: left;">

@@ -54,6 +54,7 @@ class DeteccionNecesidades extends Model
         'anio_realizacion'
     ];
 
+    protected $with = ['clave_curso', 'clave_validacion'];
     public function deteccion_facilitador(){
         return $this->belongsToMany(Docente::class, 'deteccion_has_facilitadores', 'deteccion_id', 'docente_id');
     }
