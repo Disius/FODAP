@@ -181,6 +181,18 @@ onMounted(() => {
                             Claves de curso
                         </v-btn>
                     </NavLink>
+                      <div class="flex justify-start ml-5">
+                          <v-tooltip location="right">
+                              <template v-slot:activator="{ props }">
+                                  <v-btn icon color="warning" v-bind="props" size="normal">
+                                      <v-icon>
+                                          mdi-help
+                                      </v-icon>
+                                  </v-btn>
+                              </template>
+                              <span>Esto unicamente debe ser ejecutado por periodo.</span>
+                          </v-tooltip>
+                      </div>
                 </div>
               </div>
           </div>
