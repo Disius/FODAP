@@ -16,9 +16,11 @@ const props = defineProps({
     auth: Object,
     notifications: Array,
     can_install: Boolean,
+    sesion: Object,
+    token: String
 });
 
-
+console.log(props.token)
 
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification((notification) => {

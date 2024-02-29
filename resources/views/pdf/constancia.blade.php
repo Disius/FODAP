@@ -6,9 +6,9 @@
 {{--    <link rel="preconnect" href="https://fonts.googleapis.com">--}}
 {{--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>--}}
 {{--    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">--}}
-    <style>
+   <style>
         @font-face {
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black';
             font-weight: 800;
             /* Asegúrate de que la ruta y el formato coincidan con los archivos descargados */
         }
@@ -28,27 +28,30 @@
         .header {
             display: flex;
             position: relative;
-            top: 200px;
+            top: 108px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             font-weight: normal;
-            font-family: 'Montserrat';
-            font-size: 17pt;
+            font-family: 'Montserrat-Black';
+            font-weight: bold;
+            font-size: 18pt;
+            margin-rigth: 1.5px;
         }
         .text-position {
             display: flex;
             position: relative;
-            top: 210px;
+            top: 112px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             font-weight: normal;
             text-align: start;
-            margin-left: 100px;
-            font-family: 'Montserrat';
+            margin-left: 80px;
+            font-family: 'Montserrat-Black';
             font-size: 14pt;
+            font-weight: bold;
         }
         .text-2 {
             display: flex;
@@ -59,7 +62,7 @@
             align-items: center;
             font-weight: normal;
             text-align: center;
-            margin-right: 50px;
+            margin-right: 25px;
             font-family: 'Montserrat';
             font-size: 14pt;
         }
@@ -72,9 +75,10 @@
             align-items: center;
             font-weight: normal;
             text-align: center;
-            margin-right: 50px;
+            margin-right: 25px;
             font-family: 'Montserrat';
-            font-size: 21pt;
+            font-size: 22pt;
+            font-weight: bold;
         }
         .text-4 {
             display: flex;
@@ -85,9 +89,9 @@
             align-items: center;
             font-weight: normal;
             text-align: center;
-            margin-right: 50px;
+            margin-right: 40px;
             font-family: 'Montserrat';
-            font-size: 21pt;
+            font-size: 14pt;
         }
         .text-5 {
             display: flex;
@@ -98,9 +102,9 @@
             align-items: center;
             font-weight: bold;
             text-align: center;
-            margin-right: 50px;
+            margin-right: 40px;
             font-family: 'Montserrat';
-            font-size: 23pt;
+            font-size: 22pt;
         }
         .text-6 {
             display: flex;

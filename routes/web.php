@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\AcademicosController;
 use App\Models\User;
-
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,9 +34,10 @@ Route::get('/', function () {
     ]);
 })->name('main');
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (Request $request) {
     return Inertia::render('Dashboard', [
         'notifications' => auth()->user()->unreadNotifications,
+        'sesion' => session('user_id')
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

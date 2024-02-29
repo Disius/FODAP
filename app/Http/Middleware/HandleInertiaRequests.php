@@ -8,8 +8,10 @@ use App\Http\Controllers\DocenteController;
 use App\Http\Controllers\GestionParametrosController;
 use App\Http\Controllers\Installer;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SessionController;
 use App\Models\Docente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
@@ -59,7 +61,6 @@ class HandleInertiaRequests extends Middleware
                 'message' => fn () => $request->session()->get('message')
             ],
             'can_install' => Installer::can_install(),
-            // 'facilitador' => $request->user() ? $request->user()->hasPermissionTo('facilitador') : null
         ]);
     }
 }
