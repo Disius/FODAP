@@ -265,7 +265,7 @@
         Por su destacada participación en el Curso/taller:
     </div>
     <div class="text-7">
-        "{{$docente->inscrito[0]->nombreCurso}}"
+        "{{$curso->nombreCurso}}"
     </div>
     <div class="text-8">
         Que dentro del programa Institucional de Formación Docente y Actualización
