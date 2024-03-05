@@ -28,12 +28,11 @@
         .header {
             display: flex;
             position: relative;
-            top: 108px;
+            top: 90px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            font-weight: normal;
             font-family: 'Montserrat-Black';
             font-weight: bold;
             font-size: 18pt;
@@ -46,7 +45,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-weight: normal;
             text-align: start;
             margin-left: 80px;
             font-family: 'Montserrat-Black';
