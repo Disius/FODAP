@@ -28,7 +28,7 @@
         .header {
             display: flex;
             position: relative;
-            top: 168px;
+            top: 164px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -40,7 +40,7 @@
         .text-position {
             display: flex;
             position: relative;
-            top: 172px;
+            top: 168px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
