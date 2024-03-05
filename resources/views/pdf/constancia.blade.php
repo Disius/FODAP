@@ -36,12 +36,11 @@
             font-family: 'Montserrat-Black';
             font-weight: bold;
             font-size: 18pt;
-            margin-rigth: 1.5px;
         }
         .text-position {
             display: flex;
             position: relative;
-            top: 170px;
+            top: 172px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
