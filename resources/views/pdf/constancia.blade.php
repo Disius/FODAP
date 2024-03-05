@@ -36,6 +36,7 @@
             font-family: 'Montserrat-Black';
             font-weight: bold;
             font-size: 18pt;
+            margin-left: 40px;
         }
         .text-position {
             display: flex;
