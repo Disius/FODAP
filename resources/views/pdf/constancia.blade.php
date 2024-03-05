@@ -269,7 +269,7 @@
     </div>
     <div class="text-8">
         Que dentro del programa Institucional de Formación Docente y Actualización
-        Profesional @if($docente->inscrito[0]->periodo === 1)
+        Profesional @if($curso->periodo === 1)
                         enero-junio
         @else
                         agosto-diciembre
@@ -282,24 +282,23 @@
 
     <div class="footer">
         <div class="director-signature" style="float: right;">
-            <!-- Firma del director -->
+            <!-- Firma del facilitador -->
             @if(count($facilitador) != 0)
-                @foreach($facilitador as $facilitadores)
-                    @if ($facilitador->isEmpty())
-                        <p>No hay facilitadores disponibles</p>
-                    @elseif ($facilitador->count() == 1)
-                        <p>{{$facilitadores->nombre_completo}}</p>
-                    @elseif ($facilitador->count() == 2)
-                        <p>{{$facilitadores->nombre_completo}}</p>
-                    @else
-                    @endif
-                @endforeach
+            <p>{{$facilitador[0]->nombre_completo}}</p>
             @else
-                <p>{{$docente->inscrito[0]->facilitador_externo}}</p>
+                <p>{{$curso->facilitador_externo}}</p>
             @endif
             <p>FACILITADOR (A)</p>
             <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->
         </div>
+        @if (count($facilitador) == 2)
+            <div class="director-signature" style="float: right;">
+                <!-- Firma del facilitador -->
+                <p>{{$facilitador[1]->nombre_completo}}</p>
+                <p>FACILITADOR (A)</p>
+                <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->
+            </div>
+        @endif
         <div class="teacher-signature" style="float: left;">
             <!-- Firma del maestro -->
             <p>{{$director[0]->nameDirector}}</p>
