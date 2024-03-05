@@ -41,12 +41,12 @@
         .text-position {
             display: flex;
             position: relative;
-            top: 174px;
+            top: 175px;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: start;
-            margin-left: 100px;
+            margin-left: 80px;
             font-family: 'Montserrat-Black';
             font-size: 14pt;
             font-weight: bold;
