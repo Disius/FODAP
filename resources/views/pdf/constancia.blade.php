@@ -172,23 +172,42 @@
             font-family: 'Montserrat';
             font-size: 9pt;
         }
+        /*.footer {*/
+        /*    position: fixed;*/
+        /*    bottom: 250px;*/
+        /*    width: 100%;*/
+        /*    text-align: center;*/
+        /*    padding: 10px;;*/
+
+        /*}*/
+
+        /*.director-signature {*/
+        /*    float: right;*/
+        /*    margin-right: 160px;*/
+        /*}*/
+
+        /*.teacher-signature {*/
+        /*    float: left;*/
+        /*    margin-left: 80px;*/
+        /*}*/
         .footer {
             position: fixed;
             bottom: 250px;
             width: 100%;
             text-align: center;
-            padding: 10px;;
-
+            padding: 10px;
         }
 
         .director-signature {
             float: right;
-            margin-right: 160px;
+            margin-right: 80px; /* Ajusta este valor según sea necesario */
+            width: 30%; /* Ajusta este valor según sea necesario */
         }
 
         .teacher-signature {
             float: left;
-            margin-left: 80px;
+            margin-left: 80px; /* Ajusta este valor según sea necesario */
+            width: 30%; /* Ajusta este valor según sea necesario */
         }
         .custom_table {
             table-layout: fixed;
@@ -290,7 +309,7 @@
             <!-- Puedes agregar la imagen de la firma u otro contenido aquí -->
         </div>
         @if (count($facilitador) == 2)
-            <div class="director-signature" style="float: right;">
+            <div class="director-signature" style="float: none;">
                 <!-- Firma del facilitador -->
                 <p>{{$facilitador[1]->nombre_completo}}</p>
                 <p>FACILITADOR (A)</p>
