@@ -8,7 +8,7 @@
 {{--    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">--}}
    <style>
         @font-face {
-            font-family: 'Montserrat-Black';
+            font-family: 'Montserrat-Black', sans-serif;
             font-weight: 800;
             /* Asegúrate de que la ruta y el formato coincidan con los archivos descargados */
         }
@@ -24,6 +24,7 @@
             min-height: 100vh; /* Asegura que el cuerpo tenga al menos la altura de la ventana gráfica (viewport height) */
             display: flex;
             flex-direction: column;
+            font-family: 'Montserrat-Black', sans-serif;
         }
         .header {
             display: flex;
@@ -33,7 +34,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            font-family: 'Montserrat-Black';
+            font-family: 'Montserrat-Black', sans-serif;
             font-weight: bold;
             font-size: 18pt;
             margin-left: 42px;
@@ -47,7 +48,7 @@
             align-items: center;
             text-align: start;
             margin-left: 90px;
-            font-family: 'Montserrat-Black';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 14pt;
             font-weight: bold;
         }
@@ -61,7 +62,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 25px;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 14pt;
         }
         .text-3 {
@@ -71,10 +72,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-weight: normal;
             text-align: center;
             margin-right: 25px;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 22pt;
             font-weight: bold;
         }
@@ -88,7 +88,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 40px;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 14pt;
         }
         .text-5 {
@@ -101,7 +101,7 @@
             font-weight: bold;
             text-align: center;
             margin-right: 40px;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 22pt;
         }
         .text-6 {
@@ -114,7 +114,7 @@
             font-weight: normal;
             text-align: center;
             margin-right: 50px;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 14pt;
         }
         .text-7 {
@@ -127,7 +127,7 @@
             font-weight: bold;
             text-align: center;
             margin-right: 50px;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 17pt;
             margin-left: 50px;
         }
@@ -141,7 +141,7 @@
             font-weight: normal;
             text-align: justify;
             margin-left: 97px;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 12pt;
             width: 600px;
         }
@@ -155,14 +155,14 @@
             font-weight: normal;
             text-align: justify;
             margin-left: 460px;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 10pt;
         }
         .firmaDirector {
             font-weight: normal;
             text-align: center;
             margin-left: 390px;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 9pt;
         }
         .nameDirector {
@@ -201,7 +201,7 @@
         p {
             font-weight: normal;
             text-align: center;
-            font-family: 'Montserrat';
+            font-family: 'Montserrat-Black', sans-serif;
             font-size: 8pt;
         }
 
