@@ -46,7 +46,7 @@
             justify-content: center;
             align-items: center;
             text-align: start;
-            margin-left: 80px;
+            margin-left: 90px;
             font-family: 'Montserrat-Black';
             font-size: 14pt;
             font-weight: bold;
