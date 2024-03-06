@@ -34,7 +34,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            font-family: 'Montserrat-Black', sans-serif;
+            font-family: 'Montserrat-ExtraBold', sans-serif;
             font-weight: bold;
             font-size: 18pt;
             margin-left: 42px;
@@ -48,7 +48,7 @@
             align-items: center;
             text-align: start;
             margin-left: 90px;
-            font-family: 'Montserrat-Black', sans-serif;
+            font-family: 'Montserrat-ExtraBold', sans-serif;
             font-size: 14pt;
             font-weight: bold;
         }
@@ -74,7 +74,7 @@
             align-items: center;
             text-align: center;
             margin-right: 25px;
-            font-family: 'Montserrat-Black', sans-serif;
+            font-family: 'Montserrat-ExtraBold', sans-serif;
             font-size: 22pt;
             font-weight: bold;
         }
@@ -101,7 +101,7 @@
             font-weight: bold;
             text-align: center;
             margin-right: 40px;
-            font-family: 'Montserrat-Black', sans-serif;
+            font-family: 'Montserrat-ExtraBold', sans-serif;
             font-size: 22pt;
         }
         .text-6 {
@@ -127,7 +127,7 @@
             font-weight: bold;
             text-align: center;
             margin-right: 50px;
-            font-family: 'Montserrat-Black', sans-serif;
+            font-family: 'Montserrat-ExtraBold', sans-serif;
             font-size: 17pt;
             margin-left: 50px;
         }
