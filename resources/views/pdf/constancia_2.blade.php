@@ -5,6 +5,11 @@
     <!-- Styles -->
 
     <style>
+        @font-face {
+            font-family: 'Montserrat-Black', sans-serif;
+            font-weight: 800;
+            /* Asegúrate de que la ruta y el formato coincidan con los archivos descargados */
+        }
         @page {
             size: A4 landscape;
         }
@@ -43,7 +48,7 @@
             font-size: 7pt;
             font-weight: 100;
             white-space: nowrap;
-            font-family: Calibri, sans-serif;
+            font-family: 'Montserrat-Black', sans-serif;
             text-align: center;
         }
         .center {
@@ -51,7 +56,7 @@
         }
         .content {
             font-size: 7pt;
-            font-family: Calibri, sans-serif;
+            font-family: 'Montserrat-Black', sans-serif;
             font-weight: normal;
         }
 
@@ -68,6 +73,7 @@
 
         .custom_table td,th {
             border: 1px solid #000;
+            font-family: 'Montserrat-Black', sans-serif;
         }
 
 
