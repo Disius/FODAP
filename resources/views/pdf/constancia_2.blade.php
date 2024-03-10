@@ -46,7 +46,6 @@
         }
         .titles {
             font-size: 7pt;
-            font-weight: 100;
             white-space: nowrap;
             font-family: 'Montserrat-Black', sans-serif;
             text-align: center;
@@ -105,7 +104,7 @@
         <div class="square">
             <table class="w100">
                 <tr>
-                    <td class="titles">Nivel Educativo del Curso</td>
+                    <td class="titles" style="font-family: 'Montserrat-Black', sans-serif;">Nivel Educativo del Curso</td>
                     <td class="uline content center w100"> Superior </td>
                 </tr>
             </table>
@@ -198,28 +197,29 @@
     </div>
 
 
-        <table class="custom_table">
-            <tr class="title-row">
-                <th colspan="4">Temario</th>
-            </tr>
+    <table class="custom_table">
+        <tr class="title-row">
+            <th colspan="4">Temario</th>
+        </tr>
+        <tr>
+            <th>No.</th>
+            <th>Temas</th>
+            <th>No.</th>
+            <th>Temas</th>
+        </tr>
+        @php
+            $maxTemas = 14;
+            $mitadTemas = ceil($maxTemas / 2);
+        @endphp
+        @for($i = 0; $i < $mitadTemas; $i++)
             <tr>
-                <th  style="width: 10px;">No.</th>
-                <th>Temas</th>
-                <th style="width: 5px">No.</th>
-                <th>Temas</th>
+                <td>{{ ($i < count($ficha->temas)) ? $i + 1 : '' }}</td>
+                <td>{{ ($i < count($ficha->temas)) ? $ficha->temas[$i]->name_tema : '' }}</td>
+                <td>{{ ($i + $mitadTemas < count($ficha->temas)) ? $i + $mitadTemas + 1 : '' }}</td>
+                <td>{{ ($i + $mitadTemas < count($ficha->temas)) ? $ficha->temas[$i + $mitadTemas]->name_tema : '' }}</td>
             </tr>
-            @php
-                $maxTemas = 14;
-            @endphp
-            @for($i = 0; $i < $maxTemas; $i++)
-                <tr>
-                    <td>{{ ($i < count($ficha->temas)) ? $i + 1 : '' }}</td>
-                    <td>{{ ($i < count($ficha->temas)) ? $ficha->temas[$i]->name_tema : '' }}</td>
-                    <td>{{ ($i < count($ficha->temas)) ? $i + 5 : '' }}</td>
-                    <td>{{ ($i < count($ficha->temas)) ? ' ' : '' }}</td>
-                </tr>
-            @endfor
-        </table>
+        @endfor
+    </table>
 </body>
 
 </html>
