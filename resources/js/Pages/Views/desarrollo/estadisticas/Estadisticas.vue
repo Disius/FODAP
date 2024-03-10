@@ -4,159 +4,189 @@ import GraficaCursos from "@/Pages/Views/desarrollo/estadisticas/components/Graf
 import {computed, ref} from "vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import {da} from "vuetify/locale";
 
 const props = defineProps({
     cursos_anio: Number,
     cursos_periodos: Array,
     cursos_tipo: Array,
+    docente_carrera: Array,
+    total_cursos_ap_fd: Array,
 })
-
+const showingNavigationDropdown = ref(false)
+const showingNavigationDropdown2 = ref(false)
+const showingNavigationDropdown3 = ref(false)
+const showingNavigationDropdown4 = ref(false)
 const date = computed(() => {
     let date = new Date();
     return date.getFullYear()
 })
 
-console.log(props.cursos_periodos)
+
 </script>
 
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-lg font-medium text-gray-900">Estadisticas</h2>
+            <h2 class="text-xl font-medium text-gray-900">Estadisticas</h2>
         </template>
 
         <div>
             <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
-                    <div class="grid grid-cols-1 lg:grid-cols-2">
-                        <div class="flex justify-center">
-                            <h2 class="text-6xl font-semibold text-gray-900">Cursos</h2>
-                        </div>
-                        <div class="flex justify-center">
-                            <primary-button>Descargar Reporte</primary-button>
+                    <div class="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-7xl w-full hover:brightness-100 ma-10">
+                        <div class="grid gap-5 grid-cols-1 md:grid-cols-2">
+                            <div class="flex justify-center items-center">
+                                <p class="text-center text-4xl ma-5">Cursos realizados en {{date}}</p>
+                            </div>
+                            <div class="flex justify-center items-center">
+                                <p class="text-center font-bold text-4xl ma-5">{{props.cursos_anio}}</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3">
+                    <div class="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-7xl w-full hover:brightness-100 ma-10">
                         <div class="flex justify-center">
-                            <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                <div class="flex justify-center">
-                                    <h2 class="text-sm font-medium text-gray-900">Total de cursos realizados en {{date}}</h2>
-                                </div>
-                                <div class="container mx-auto">
-                                    <p class="font-semibold pa-5 text-center text-6xl mt-5">
-                                        {{props.cursos_anio}}
-                                    </p>
+                            <div class="grid grid-cols-2 md:grid-cols-2"  @click="showingNavigationDropdown = !showingNavigationDropdown">
+                                <p class="ma-10 text-center text-2xl">Total de "Tipos de curso"</p>
+                                <div class="flex justify-center items-center mt-2">
+                                    <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
                                 </div>
                             </div>
                         </div>
+                        <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }">
+                            <div class="flex justify-center ma-10">
+                                <table class="table-auto border-collapse border-2 border-black">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-2 border-black">Tipo de curso</th>
+                                        <th class="border-2 border-black pa-2">Total de "tipo de curso" en {{date}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(c, i) in props.cursos_tipo" :key="i">
+                                        <td class="border-2 border-black pa-2">
+                                            <p class="text-center text-xl text-gray-900 pa-5">
+                                                {{c.tipo}}
+                                            </p>
+                                        </td>
+                                        <td class="border-2 border-black">
+                                            <p class="text-center font-bold text-2xl">
+                                                {{c.total}}
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-7xl w-full hover:brightness-100 ma-10">
                         <div class="flex justify-center">
-                            <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                <div class="flex justify-center">
-                                    <h2 class="text-sm font-medium text-gray-900">Total de cursos realizados en el periodo enero-junio de {{date}}</h2>
-                                </div>
-                                <div class="container mx-auto mt-7">
-                                    <p class="font-semibold pa-5 text-center text-6xl">
-                                        {{props.cursos_periodos[0]}}
-                                    </p>
+                            <div class="grid grid-cols-2 md:grid-cols-2"  @click="showingNavigationDropdown2 = !showingNavigationDropdown2">
+                                <p class="ma-10 text-center text-2xl">Total de cursos por periodo (enero-junio / agosto-diciembre)</p>
+                                <div class="flex justify-center items-center mt-2">
+                                    <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
                                 </div>
                             </div>
                         </div>
+                        <div :class="{ block: showingNavigationDropdown2, hidden: !showingNavigationDropdown2 }">
+                            <div class="flex justify-center ma-10">
+                                <table class="table-auto border-collapse border-2 border-black">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-2 border-black">Periodo</th>
+                                        <th class="border-2 border-black pa-2">Total de cursos {{date}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(p, i) in props.cursos_periodos" :key="i">
+                                        <td class="border-2 border-black pa-2">
+                                            <p class="text-center text-xl text-gray-900 pa-5">
+                                                {{p.periodo}}
+                                            </p>
+                                        </td>
+                                        <td class="border-2 border-black">
+                                            <p class="text-center font-bold text-2xl">
+                                                {{p.total}}
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-7xl w-full hover:brightness-100 ma-10">
                         <div class="flex justify-center">
-                            <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                <div class="flex justify-center">
-                                    <h2 class="text-sm font-medium text-gray-900">Total de cursos realizados en el periodo agosto-diciembre de {{date}}</h2>
-                                </div>
-                                <div class="container mx-auto">
-                                    <p class="font-semibold pa-5 text-center text-6xl">
-                                        {{props.cursos_periodos[1]}}
-                                    </p>
+                            <div class="grid grid-cols-2 md:grid-cols-2" @click="showingNavigationDropdown3 = !showingNavigationDropdown3">
+                                <p class="ma-10 text-center text-2xl">Total de docentes capacitados por carrera en {{date}}</p>
+                                <div class="flex justify-center items-center mt-2">
+                                    <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
                                 </div>
                             </div>
                         </div>
-<!--                        <div class="flex justify-center">-->
-<!--                            <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">-->
-<!--                                <div class="flex justify-center">-->
-<!--                                    <h2 class="text-sm font-medium text-gray-900">Total de cursos realizados en el periodo agosto-diciembre de {{date}}</h2>-->
-<!--                                </div>-->
-<!--                                <div class="container mx-auto">-->
-<!--                                    <p class="font-semibold pa-5 text-center text-6xl">-->
-<!--                                        {{props.cursos_periodos[1]}}-->
-<!--                                    </p>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <div :class="{ block: showingNavigationDropdown3, hidden: !showingNavigationDropdown3 }">
+                            <div class="ma-10 flex justify-center">
+                                <table class="table-auto border-collapse border-2 border-black">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-2 border-black">Carrera</th>
+                                            <th class="border-2 border-black pa-2">Total de docentes capacitados en {{date}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(t, i) in props.docente_carrera" :key="i">
+                                            <td class="border-2 border-black">
+                                                <p class="text-center text-xl text-gray-900 pa-2">
+                                                    {{t.carrera}}
+                                                </p>
+                                            </td>
+                                            <td class="border-2 border-black">
+                                                <p class="text-center font-bold text-2xl">
+                                                    {{t.total}}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-7xl w-full hover:brightness-100 ma-10">
                         <div class="flex justify-center">
-                            <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                <div class="flex justify-center">
-                                    <h2 class="text-sm font-medium text-gray-900">Total de TALLERES realizados en {{date}}</h2>
-                                </div>
-                                <div class="container mx-auto">
-                                    <p class="font-semibold pa-5 text-center text-6xl">
-                                        {{props.cursos_tipo[0]}}
-                                    </p>
+                            <div class="grid grid-cols-2 md:grid-cols-2" @click="showingNavigationDropdown4 = !showingNavigationDropdown4">
+                                <p class="ma-10 text-center text-2xl">Total de cursos de formación docente y actualización profesional en {{date}}</p>
+                                <div class="flex justify-center items-center mt-2">
+                                    <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-center">
-                            <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                <div class="flex justify-center">
-                                    <h2 class="text-sm font-medium text-gray-900">Totalidad de actividades tipo curso realizados en {{date}}</h2>
-                                </div>
-                                <div class="container mx-auto">
-                                    <p class="font-semibold pa-5 text-center text-6xl">
-                                        {{props.cursos_tipo[1]}}
-                                    </p>
-                                </div>
+                        <div :class="{ block: showingNavigationDropdown4, hidden: !showingNavigationDropdown4 }">
+                            <div class="ma-10 flex justify-center">
+                                <table class="table-auto border-collapse border-2 border-black">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-2 border-black">Tipo</th>
+                                            <th class="border-2 border-black pa-2">Total en {{date}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(t, i) in props.total_cursos_ap_fd" :key="i">
+                                            <td class="border-2 border-black">
+                                                <p class="text-center text-xl text-gray-900 pa-2">
+                                                    {{t.tipo}}
+                                                </p>
+                                            </td>
+                                            <td class="border-2 border-black">
+                                                <p class="text-center font-bold text-2xl">
+                                                    {{t.total}}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="flex justify-center">
-                            <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                <div class="flex justify-center">
-                                    <h2 class="text-sm font-medium text-gray-900">Total de CURSOS-TALLER realizados en {{date}}</h2>
-                                </div>
-                                <div class="container mx-auto">
-                                    <p class="font-semibold pa-5 text-center text-6xl">
-                                        {{props.cursos_tipo[2]}}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                            <div class="flex justify-center">
-                                <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                    <div class="flex justify-center">
-                                        <h2 class="text-sm font-medium text-gray-900">Total de FOROS realizados en {{date}}</h2>
-                                    </div>
-                                    <div class="container mx-auto">
-                                        <p class="font-semibold pa-5 text-center text-6xl">
-                                            {{props.cursos_tipo[3]}}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex justify-center">
-                                <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                    <div class="flex justify-center">
-                                        <h2 class="text-sm font-medium text-gray-900">Totalidad de SEMINARIOS realizados en {{date}}</h2>
-                                    </div>
-                                    <div class="container mx-auto">
-                                        <p class="font-semibold pa-5 text-center text-6xl">
-                                            {{props.cursos_tipo[4]}}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex justify-center">
-                                <div class="bg-gradient-to-b from-white to-blue-200 p-4 mt-2 sm:p-8 shadow sm:rounded-lg">
-                                    <div class="flex justify-center">
-                                        <h2 class="text-sm font-medium text-gray-900">Total de DIPLOMADOS realizados en {{date}}</h2>
-                                    </div>
-                                    <div class="container mx-auto">
-                                        <p class="font-semibold pa-5 text-center text-6xl">
-                                            {{props.cursos_tipo[5]}}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
                     </div>
                 </div>
             </div>

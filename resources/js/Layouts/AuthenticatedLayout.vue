@@ -254,6 +254,11 @@ onMounted(() => {
                                     Facilitador
                                 </ResponsiveNavLink>
                             </template>
+                            <template v-if="user.role === 1 || user.role === 2">
+                                <ResponsiveNavLink :href="route('index.estadisticas')" :active="route().current('index.estadisticas')">
+                                    Estadisticas
+                                </ResponsiveNavLink>
+                            </template>
                             <ResponsiveNavLink :href="route('profile.edit')"> Perfil </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Cerrar Sesión
