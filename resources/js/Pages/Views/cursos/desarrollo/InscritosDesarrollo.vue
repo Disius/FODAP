@@ -281,7 +281,7 @@ const custom_snackbar = (snack) => {
             </div>
             <div class="grid grid-cols-4">
                 <template v-if="props.curso.estado === 0 || props.curso.estado === 1">
-                    <div class="flex justify-start">
+                    <div class="flex justify-start ml-5">
                         <NavLink :href="route('index.desarrollo.cursos')" as="button" type="button">
                             <v-btn icon color="blue-darken-1">
                                 <v-icon>mdi-arrow-left</v-icon>
