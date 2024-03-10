@@ -265,7 +265,7 @@ const custom_snackbar = (snack) => {
     <AuthenticatedLayout>
         <template #header>
             <div class="grid grid-cols-3">
-                <div class="flex justify-center">
+                <div class="flex justify-center ma-5">
                     <h2 class="text-h5 font-medium text-gray-900">{{props.curso.nombreCurso}}</h2>
                 </div>
                 <template v-if="props.curso.clave_curso !== null">
