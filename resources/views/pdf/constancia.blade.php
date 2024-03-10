@@ -34,7 +34,7 @@
 </head>
 
 <body style="font-family: 'Montserrat-Black', sans-serif;">
-    <div style="margin-top: 133px"></div>
+    <div style="margin-top: 140px"></div>
     <table width="100%">
         <tr>
             <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-ExtraBold', sans-serif; font-size: 18pt; font-weight: bold">
@@ -130,7 +130,7 @@
             </td>
         </tr>
     </table>
-    <div style="margin-top: 200px"></div>
+    <div style="margin-top: 180px"></div>
     <table>
         <tr>
             <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-ExtraBold', sans-serif; font-size: 9pt;  font-weight: bold;padding-left: 50px">
