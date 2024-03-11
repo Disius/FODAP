@@ -1,10 +1,11 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import GraficaCursos from "@/Pages/Views/desarrollo/estadisticas/components/GraficaCursos.vue";
 import {computed, ref} from "vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import {da} from "vuetify/locale";
+import {Link} from "@inertiajs/vue3";
+import axios from "axios";
+
 
 const props = defineProps({
     cursos_anio: Number,
@@ -22,7 +23,19 @@ const date = computed(() => {
     return date.getFullYear()
 })
 
+function download_excel_tipo(){
+    axios.get(route('excel.cursos.tipo')).then(res => {
+            const url = '/storage/estadisticas_tipo.xlsx';
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'estadisticas_tipo.xlsx');
+            document.body.appendChild(link);
+            link.click();
+    }).catch(error => {
+        console.log(error)
 
+    })
+}
 </script>
 
 <template>
@@ -34,6 +47,17 @@ const date = computed(() => {
         <div>
             <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
+<!--                    <div class="flex justify-end mr-16">-->
+<!--&lt;!&ndash;                        <Link :href="route('download.cursos.excel')" as="button">&ndash;&gt;-->
+<!--                            <v-btn-->
+<!--                                prepend-icon="mdi-microsoft-excel"-->
+<!--                                color="green-lighten-1"-->
+<!--                                @click="download_excel"-->
+<!--                            >-->
+<!--                                Generar Excel-->
+<!--                            </v-btn>-->
+<!--&lt;!&ndash;                        </Link>&ndash;&gt;-->
+<!--                    </div>-->
                     <div class="max-w-lg mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-7xl w-full hover:brightness-100 ma-10">
                         <div class="grid gap-5 grid-cols-1 md:grid-cols-2">
                             <div class="flex justify-center items-center">
@@ -54,6 +78,15 @@ const date = computed(() => {
                             </div>
                         </div>
                         <div :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }">
+                            <div class="flex justify-end mr-10">
+                                <v-btn
+                                    prepend-icon="mdi-microsoft-excel"
+                                    color="green-lighten-1"
+                                    @click="download_excel_tipo"
+                                >
+                                    Generar Excel
+                                </v-btn>
+                            </div>
                             <div class="flex justify-center ma-10">
                                 <table class="table-auto border-collapse border-2 border-black">
                                     <thead>

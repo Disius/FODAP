@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EstadisticasExport;
 use App\Models\DeteccionNecesidades;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EstadisticasController extends Controller
 {
@@ -46,7 +48,7 @@ class EstadisticasController extends Controller
     }
     public static function estadistica_cursos_tipo(){
         $anio = date('Y');
-        $cursos_taller = DeteccionNecesidades::with('inscritos') ->whereYear('fecha_F', '=', $anio)
+        $cursos_taller = DeteccionNecesidades::with('inscritos')->whereYear('fecha_F', '=', $anio)
             ->where(function($query){
                 $query->where('estado', '=', 2)
                     ->where('tipo_actividad', '=', 1);
@@ -87,7 +89,7 @@ class EstadisticasController extends Controller
         );
     }
 
-    public function docente_carrera(){
+    public static function docente_carrera(){
         $mecanica = DeteccionNecesidades::with('docente_inscrito')
             ->where('carrera_dirigido', '=', 1)->get();
         $sistemas = DeteccionNecesidades::with('docente_inscrito')
@@ -183,7 +185,7 @@ class EstadisticasController extends Controller
         );
     }
 
-    public function fd_ap_cursos(){
+    public static function fd_ap_cursos(){
         $fd = DeteccionNecesidades::where('tipo_FDoAP', 1)->get();
         $ap = DeteccionNecesidades::where('tipo_FDoAP', 2)->get();
 
@@ -191,5 +193,9 @@ class EstadisticasController extends Controller
             array("tipo" => "Formación Docente", "total" => $fd->count()),
             array("tipo" => "Actualización Profesional", "total" => $ap->count()),
         );
+    }
+
+    public function export_excel_tipo(){
+        return Excel::store(new EstadisticasExport(), '/public/estadisticas_tipo.xlsx');
     }
 }
