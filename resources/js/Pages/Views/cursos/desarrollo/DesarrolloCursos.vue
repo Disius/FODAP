@@ -65,7 +65,32 @@ onMounted(() => {
     curso_store.get_curso_desarrollo()
 
 });
+function download_excel_clave_curso(){
+    axios.get(route('excel.claves.curso')).then(res => {
+        const url = '/storage/claves_curso.xlsx';
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'claves_curso.xlsx');
+        document.body.appendChild(link);
+        link.click();
+    }).catch(error => {
+        alert("Error al descargar el recurso. Reporte de error: " + error.response.data)
 
+    })
+}
+function download_excel_clave_curso_validacion(){
+    axios.get(route('excel.claves.curso.validacion')).then(res => {
+        const url = '/storage/claves_validacion.xlsx';
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'claves_validacion.xlsx');
+        document.body.appendChild(link);
+        link.click();
+    }).catch(error => {
+        alert("Error al descargar el recurso. Reporte de error: " + error.response.data)
+
+    })
+}
 </script>
 
 <template>
@@ -74,15 +99,31 @@ onMounted(() => {
       <h2 class="text-lg font-medium text-gray-900">Cursos</h2>
     </template>
 
-    <v-container>
-        <v-row justify="end">
-            <v-col cols="12">
-                <v-btn prepend-icon="mdi-file-pdf-box" size="large" @click="pdf_dialog = true" color="blue-darken-1">
-                    Generar PDF PIFDAP
-                </v-btn>
-            </v-col>
-        </v-row>
-    </v-container>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 ma-5">
+        <div class="flex justify-center">
+            <v-btn prepend-icon="mdi-file-pdf-box" size="large" @click="pdf_dialog = true" color="blue-darken-1">
+                Generar PDF PIFDAP
+            </v-btn>
+        </div>
+        <div class="flex justify-end">
+            <v-btn
+                prepend-icon="mdi-microsoft-excel"
+                color="green-lighten-1"
+                @click="download_excel_clave_curso"
+            >
+                Generar Claves de Curso
+            </v-btn>
+        </div>
+        <div class="flex justify-start">
+            <v-btn
+                prepend-icon="mdi-microsoft-excel"
+                color="green-lighten-1"
+                @click="download_excel_clave_curso_validacion"
+            >
+                Generar Claves de validación
+            </v-btn>
+        </div>
+    </div>
     <DialogPIFAP v-model="pdf_dialog" @update:modelValue="pdf_dialog = $event"></DialogPIFAP>
       <div class="mt-2 mx-auto sm:px-6 lg:px-8 space-y-6">
           <div class="p-4 mt-2 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -184,7 +225,7 @@ onMounted(() => {
                       <div class="flex justify-start ml-5">
                           <v-tooltip location="right">
                               <template v-slot:activator="{ props }">
-                                  <v-btn icon color="warning" v-bind="props" size="large">
+                                  <v-btn icon color="warning" v-bind="props" size="small">
                                       <v-icon>
                                           mdi-help
                                       </v-icon>

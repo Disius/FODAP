@@ -3,6 +3,7 @@
 use App\Http\Controllers\DesarrolloController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\EstadisticasController;
+use App\Http\Controllers\ExcelExportsController;
 use App\Http\Controllers\GestionParametrosController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -110,4 +111,6 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
 //    Estadisticas
     Route::get('/desarrollo/estadisticas', [EstadisticasController::class, 'index_estadisticas'])->name('index.estadisticas');
     Route::get('/exportar/estadisticas/', [EstadisticasController::class, 'export_excel_tipo'])->name('excel.cursos.tipo');
+    Route::get('/exportar/claves-curso/', [ExcelExportsController::class, 'export_Claves_curso'])->name('excel.claves.curso');
+    Route::get('/exportar/claves-validacion/', [ExcelExportsController::class, 'export_Claves_curso_validacion'])->name('excel.claves.curso.validacion');
 });
