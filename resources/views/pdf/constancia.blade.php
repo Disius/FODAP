@@ -8,7 +8,7 @@
 {{--    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap" rel="stylesheet">--}}
    <style>
         @font-face {
-            font-family: 'Montserrat-Black', sans-serif;
+            font-family: 'Montserrat-ExtraBold', sans-serif;
             font-weight: 800;
             /* Asegúrate de que la ruta y el formato coincidan con los archivos descargados */
         }
@@ -33,16 +33,16 @@
 
 </head>
 
-<body style="font-family: 'Montserrat-Black', sans-serif;">
+<body style="">
     <div style="margin-top: 160px"></div>
-    <table width="100%">
+    <table width="100%" style="margin-left: 15px">
         <tr>
-            <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-ExtraBold', sans-serif; font-size: 18pt; font-weight: bold">
+            <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-ExtraBold', sans-serif; font-size: 18pt; font-weight: bolder">
                 EL TECNOLÓGICO NACIONAL DE MÉXICO
             </td>
         </tr>
     </table>
-    <table width="100%">
+    <table width="100%" style="margin-left: 15px">
         <tr>
             <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-ExtraBold', sans-serif; font-size: 14pt; font-weight: bold">
                 A TRAVÉS DEL {{$instituto[0]->name}}
@@ -50,7 +50,7 @@
         </tr>
     </table>
     <div style="margin-top: 20px"></div>
-    <table width="100%">
+    <table width="100%" style="margin-left: 15px">
         <tr>
             <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-Black', sans-serif; font-size: 14pt;">
                 OTORGA LA PRESENTE
@@ -58,7 +58,7 @@
         </tr>
     </table>
     <div style="margin-top: 20px"></div>
-    <table width="100%">
+    <table width="100%" style="margin-left: 15px">
         <tr>
             <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-ExtraBold', sans-serif; font-size: 22pt; font-weight: bold">
                 CONSTANCIA
@@ -66,7 +66,7 @@
         </tr>
     </table>
     <div style="margin-top: 20px"></div>
-    <table width="100%">
+    <table width="100%" style="margin-left: 15px">
         <tr>
             <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-Black', sans-serif; font-size: 14pt;">
                 A
@@ -74,7 +74,7 @@
         </tr>
     </table>
     <div style="margin-top: 20px"></div>
-    <table width="100%">
+    <table width="100%" style="margin-left: 15px">
         <tr>
             <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-ExtraBold', sans-serif; font-size: 24pt; font-weight: bold;">
                 {{$docente->nombre_completo}}
@@ -82,7 +82,7 @@
         </tr>
     </table>
     <div style="margin-top: 50px"></div>
-    <table width="100%">
+    <table width="100%" style="margin-left: 15px">
         <tr>
             <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-Black', sans-serif; font-size: 14pt;">
                 Por su destacada participación en el
@@ -103,16 +103,16 @@
         </tr>
     </table>
     <div style="margin-top: 10px"></div>
-    <table width="100%">
+    <table width="100%" style="margin-left: 15px">
         <tr>
             <td style="text-align: center; vertical-align: middle; font-family: 'Montserrat-Black', sans-serif; font-size: 16pt; font-weight: bold;">
                 "{{$curso->nombreCurso}}"
             </td>
         </tr>
     </table>
-    <table>
+    <table style="margin-left: 20px">
         <tr>
-            <td style="text-align: justify; font-family: 'Montserrat-Black', sans-serif; font-size: 12pt; width: 20%; padding: 20px 90px 20px 90px">
+            <td style="text-align: justify; font-family: 'Montserrat-Black', sans-serif; font-size: 10pt; width: 20%; padding: 20px 90px 20px 90px">
                 Que dentro del programa Institucional de Formación Docente y Actualización Profesional @if($curso->periodo === 1)
                     Enero-Junio
                 @else
@@ -125,7 +125,7 @@
     <div style="margin-top: 15px"></div>
     <table>
         <tr>
-            <td style="text-align: justify; font-family: 'Montserrat-Black', sans-serif; font-size: 8pt; padding-left: 450px">
+            <td style="text-align: justify; font-family: 'Montserrat-Black', sans-serif; font-size: 8pt; padding-left: 420px">
                 Tuxtla Gutierrez, Chiapas; {{$month[2]}} {{$month[1]}} de {{$formatFechasF[0]}}
             </td>
         </tr>

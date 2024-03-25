@@ -171,6 +171,9 @@ class PDFController extends Controller
         $month = $this->parse_date($fecha);
 
         $pdf_1 = Pdf::loadView('pdf.constancia', compact('year', 'instituto', 'docente', 'formatFechasI', 'formatFechasF', 'month', 'facilitador', 'director', 'curso'))
+            ->setOptions([
+                'fontDir' => storage_path('app/public/fonts/'),
+            ])
             ->output();
 
         $path = 'constancia1.pdf';
