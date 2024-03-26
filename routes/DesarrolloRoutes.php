@@ -1,5 +1,6 @@
 <?php
 
+use App\Exports\EstadisticasExport;
 use App\Http\Controllers\DesarrolloController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\EstadisticasController;
@@ -113,4 +114,5 @@ Route::middleware(['auth', 'role:Jefe del Departamento de Desarrollo Academico|C
     Route::get('/exportar/estadisticas/', [EstadisticasController::class, 'export_excel_tipo'])->name('excel.cursos.tipo');
     Route::get('/exportar/claves-curso/', [ExcelExportsController::class, 'export_Claves_curso'])->name('excel.claves.curso');
     Route::get('/exportar/claves-validacion/', [ExcelExportsController::class, 'export_Claves_curso_validacion'])->name('excel.claves.curso.validacion');
+    Route::get('/exportar/periodos', [ExcelExportsController::class, 'export_cursos_periodo'])->name('reporte.periodos');
 });
