@@ -195,8 +195,8 @@ class EstadisticasController extends Controller
             $total_f_logistica = $mecanica[$i]->docente_inscrito->where('sexo', 2)->count();
         }
         $total_mecatronica = 0;
-        $total_m_electronica = 0;
-        $total_f_electronica = 0;
+        $total_m_mecatronica = 0;
+        $total_f_mecatronica = 0;
         for ($i = 0; $i < count($mecatronica) - 1; $i++) {
             $total_mecatronica = $mecatronica[$i]->docente_inscrito->count() + $mecatronica[$i + 1]->docente_inscrito->count();
             $total_m_mecatronica = $mecatronica[$i]->docente_inscrito->where('sexo', 1)->count();

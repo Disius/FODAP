@@ -145,7 +145,7 @@ const fullYears = computed(() => {
                             </v-select>
                         </div>
                         <div class="flex justify-start ml-10 items-center">
-                            <v-btn icon="mdi-calendar-search" color="blue-darken"</v-btn>
+                            <v-btn icon="mdi-calendar-search" color="blue-darken"></v-btn>
                         </div>
                     </div>
 
