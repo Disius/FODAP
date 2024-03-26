@@ -210,7 +210,12 @@ onMounted(() => {
                         </template>
                     </template>
                     <template v-slot:item.departamento="{ item }">
-                        <p>{{ item.departamento.nameDepartamento }}</p>
+                        <template v-if="item.departamento !== null">
+                            <p>{{ item.departamento.nameDepartamento }}</p>
+                        </template>
+                        <template v-else>
+                            <p></p>
+                        </template>
                     </template>
                     <template v-slot:item.options="{ item }">
                         <NavLink
