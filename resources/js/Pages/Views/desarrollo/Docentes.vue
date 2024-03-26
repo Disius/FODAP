@@ -44,6 +44,7 @@ const header = [
     { key: "apellidoMat", title: "Apellido Materno" },
     { key: "email", title: "Correo institucional" },
     { key: "sexo", title: "Género" },
+    { key: "departamento", title: "Departamento adscrito" },
     { key: "options", title: "Editar" },
     { key: "delete", title: "Eliminar" },
 ];
@@ -115,6 +116,7 @@ function DropOut(id) {
     docente_id.value = id;
     eliminar.value = true;
 }
+
 onMounted(() => {
     window.Echo.private(`App.Models.User.${props.auth.user.id}`).notification(
         (notification) => {
@@ -200,6 +202,9 @@ onMounted(() => {
                         <template v-if="item.sexo === 2">
                             <p>FEMENINO</p>
                         </template>
+                    </template>
+                    <template v-slot:item.departamento="{ item }">
+                        <p>{{ item.nameDepartamento }}</p>
                     </template>
                     <template v-slot:item.options="{ item }">
                         <NavLink

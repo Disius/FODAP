@@ -60,9 +60,10 @@ class DesarrolloController extends Controller
         ]);
     }
 
-    public function index_registros(){
+    public function index_registros()
+    {
         $cursos_fd = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'docente_inscrito')
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->where('estado', '=', 2)
                     ->orWhere('aceptado', '=', 1);
             })
@@ -72,7 +73,7 @@ class DesarrolloController extends Controller
             ->get();
 
         $cursos_ap = DeteccionNecesidades::with('carrera', 'deteccion_facilitador', 'docente_inscrito')
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->where('estado', '=', 2)
                     ->orWhere('aceptado', '=', 1);
             })
@@ -92,13 +93,14 @@ class DesarrolloController extends Controller
         ]);
     }
 
-    public function desarrollo_cursos(){
+    public function desarrollo_cursos()
+    {
         CoursesController::state_curso();
         date_default_timezone_set('America/Mexico_City');
 
         $cursos = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'departamento', 'jefe'])
             ->where('aceptado', '=', 1)
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->where('estado', '=', 0)
                     ->orWhere('estado', '=', 1);
             })
@@ -138,36 +140,35 @@ class DesarrolloController extends Controller
     {
         $departamento = $this->query_carrera($request->carrera_dirigido);
         $totalHoras = CoursesController::total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
-        if($departamento->nameCarrera == 'Todas las carreras'){
+        if ($departamento->nameCarrera == 'Todas las carreras') {
             $deteccion = DeteccionNecesidades::create($request->validated() + [
-                    'aceptado' => 1,
-                    'obs' => $request->observaciones != null ? 1 : 0,
-                    'total_horas' => $totalHoras,
-                    'facilitador_externo' =>  $request->facilitador_externo,
-                    'observaciones' => $request->observaciones,
-                    'id_lugar' => $request->id_lugar,
-                ]);
-
+                'aceptado' => 1,
+                'obs' => $request->observaciones != null ? 1 : 0,
+                'total_horas' => $totalHoras,
+                'facilitador_externo' =>  $request->facilitador_externo,
+                'observaciones' => $request->observaciones,
+                'id_lugar' => $request->id_lugar,
+            ]);
         } else {
-//            $departamento = $this->query_carrera($request->carrera_dirigido);
+            //            $departamento = $this->query_carrera($request->carrera_dirigido);
             $deteccion = DeteccionNecesidades::create($request->validated() + [
-                    'id_jefe' => $departamento->departamento->jefe_id,
-                    'aceptado' => 1,
-                    'obs' => $request->observaciones != null ? 1 : 0,
-                    'total_horas' => $totalHoras,
-                    'id_departamento' => $departamento->departamento->id,
-                    'facilitador_externo' =>  $request->facilitador_externo,
-                    'observaciones' => $request->observaciones,
-                    'id_lugar' => $request->id_lugar,
-                ]);
-
+                'id_jefe' => $departamento->departamento->jefe_id,
+                'aceptado' => 1,
+                'obs' => $request->observaciones != null ? 1 : 0,
+                'total_horas' => $totalHoras,
+                'id_departamento' => $departamento->departamento->id,
+                'facilitador_externo' =>  $request->facilitador_externo,
+                'observaciones' => $request->observaciones,
+                'id_lugar' => $request->id_lugar,
+            ]);
         }
         $deteccion->deteccion_facilitador()->toggle($request->input('facilitadores', []));
         $deteccion->save();
         return Redirect::route('index.desarrollo.cursos');
     }
 
-    public function edit_curso($id){
+    public function edit_curso($id)
+    {
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'jefe', 'departamento'])->find($id);
         $carrera = Carrera::all();
         $docente = Docente::all();
@@ -187,10 +188,10 @@ class DesarrolloController extends Controller
             'posgrado' => $posgrado,
             'tipo_plaza' => $tipoplaza,
         ]);
-
     }
 
-    public function update_curso(CursoRequest $request, $id){
+    public function update_curso(CursoRequest $request, $id)
+    {
         $totalHoras = CoursesController::total_horas($request->fecha_I, $request->fecha_F, $request->hora_I, $request->hora_F);
         // $departamento = $this->query_carrera($request->carrera_dirigido);
         $facilitadores = $request->input('facilitadores', []);
@@ -206,10 +207,9 @@ class DesarrolloController extends Controller
 
         $curso->deteccion_facilitador()->sync([]);
 
-        if(count($facilitadores) > 3){
+        if (count($facilitadores) > 3) {
             return Redirect::back()->withErrors('Excede el limite de docentes');
-        }
-        else{
+        } else {
             $curso->deteccion_facilitador()->sync(
                 $facilitadores,
                 false
@@ -222,10 +222,12 @@ class DesarrolloController extends Controller
         }
     }
 
-    public static function query_carrera($query){
+    public static function query_carrera($query)
+    {
         return Carrera::with('departamento')->where('id', '=', $query)->first();
     }
-    public static function query_consult_carrera(){
+    public static function query_consult_carrera()
+    {
         return Carrera::with('departamento')->get();
     }
     /**
@@ -246,7 +248,7 @@ class DesarrolloController extends Controller
 
         event(new CursosAceptados($detecciones));
 
-        User::where('departamento_id', $detecciones->id_departamento)->role(['Jefes Academicos'])->each(function(User $user) use ($detecciones){
+        User::where('departamento_id', $detecciones->id_departamento)->role(['Jefes Academicos'])->each(function (User $user) use ($detecciones) {
             $user->notify(new AceptadoNotification($detecciones, $user));
         });
 
@@ -284,7 +286,7 @@ class DesarrolloController extends Controller
             'obs' => 1
         ]);
 
-        User::where('departamento_id', $deteccion->id_departamento)->role(['Jefes Academicos'])->each(function(User $user) use ($deteccion){
+        User::where('departamento_id', $deteccion->id_departamento)->role(['Jefes Academicos'])->each(function (User $user) use ($deteccion) {
             $user->notify(new ObservacionNotification($deteccion, $user));
         });
 
@@ -293,7 +295,8 @@ class DesarrolloController extends Controller
         return Redirect::route('show.Cdetecciones', ['id' => $id]);
     }
 
-    public function index_curso_inscrito_desarrollo($id){
+    public function index_curso_inscrito_desarrollo($id)
+    {
         $docente = Docente::orderBy('nombre', 'asc')->get();
         $curso = DeteccionNecesidades::with(['carrera', 'deteccion_facilitador', 'docente_inscrito', 'clave_curso', 'clave_validacion', 'lugar', 'ficha_tecnica'])->find($id);
         $inscritos = DB::table('docente')
@@ -315,14 +318,15 @@ class DesarrolloController extends Controller
         ]);
     }
 
-    public function delete($id){
+    public function delete($id)
+    {
         $deteccion = DeteccionNecesidades::find($id);
 
         event(new DeleteDeteccionEvent($deteccion));
 
         $deteccion->delete();
 
-        if ($deteccion->aceptado == 1){
+        if ($deteccion->aceptado == 1) {
             return Redirect::route('index.desarrollo.cursos');
         }
 
@@ -339,10 +343,10 @@ class DesarrolloController extends Controller
         if ($num <= $deteccion->numeroProfesores) {
 
 
-            foreach ($request->id_docente as $docente){
-                if($deteccion->docente_inscrito()->where('docente_id', $docente)->exists()){
+            foreach ($request->id_docente as $docente) {
+                if ($deteccion->docente_inscrito()->where('docente_id', $docente)->exists()) {
                     return back()->withErrors('Este docente ya esta inscrito');
-                }else{
+                } else {
                     $deteccion->docente_inscrito()->attach($docente);
                 }
             }
@@ -354,9 +358,10 @@ class DesarrolloController extends Controller
         }
     }
 
-    public function desinscribirse(Request $request, $docente){
+    public function desinscribirse(Request $request, $docente)
+    {
         $curso = $request->curso;
-        $teacher = Docente::with(['inscrito' => function($query) use ($curso){
+        $teacher = Docente::with(['inscrito' => function ($query) use ($curso) {
             $query->where('inscripcion.curso_id', '=', $curso);
         }])->find($docente);
 
@@ -365,8 +370,9 @@ class DesarrolloController extends Controller
         return redirect()->route('index.desarrollo.inscritos', ['id' => $curso])->with('message', 'Docente eliminado del curso');
     }
 
-    public function docentes(){
-        $docentes = Docente::with('usuario')->orderBy('nombre')->get();
+    public function docentes()
+    {
+        $docentes = Docente::with('usuario', 'carrera', 'departamento')->orderBy('nombre')->get();
         $user = User::with('docente')->get();
         $carrera = Carrera::all();
         $departamento = Departamento::select('nameDepartamento', 'id')->get();
@@ -386,7 +392,8 @@ class DesarrolloController extends Controller
             'posgrado' => $posgrado,
         ]);
     }
-    public function create_docentes(){
+    public function create_docentes()
+    {
         $carrera = Carrera::all();
         $departamento = Departamento::select('nameDepartamento', 'id')->get();
         $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
@@ -402,7 +409,8 @@ class DesarrolloController extends Controller
             'posgrado' => $posgrado,
         ]);
     }
-    public function store_docentes(Request $request){
+    public function store_docentes(Request $request)
+    {
         try {
             $request->validate([
                 'nombre' => 'required',
@@ -415,23 +423,24 @@ class DesarrolloController extends Controller
                 ->where('apellidoMat', $request->apellidoMat)
                 ->first();
 
-            if ($docente_find){
+            if ($docente_find) {
                 return redirect()->back()->withErrors('Este docente se encuentra registrado.');
-            }else {
+            } else {
                 DocenteController::create_instance_docente($request);
             }
             return Redirect::route('index.docentes');
-
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             DB::rollBack();
             return Redirect::route('index.docentes')->withErrors('error', 'Error a la hora de crear el registro: ' . $exception->getMessage());
         }
     }
 
-    public function delete_docente_desarrollo($id){
+    public function delete_docente_desarrollo($id)
+    {
         DocenteController::delete_docente($id);
     }
-    public function edit_docente($id){
+    public function edit_docente($id)
+    {
         $carrera = $this->query_consult_carrera();
         $tipoPlaza = DB::table('tipo_plaza')->select('id', 'nombre')->get();
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
@@ -448,27 +457,30 @@ class DesarrolloController extends Controller
         ]);
     }
 
-    public function update_docente(Request $request, $id){
+    public function update_docente(Request $request, $id)
+    {
         DocenteController::updated_instance_docente($request, $id);
         return Redirect::route('index.docentes');
     }
     //revisar este otro metodo
-    public function calificaciones_desarrollo(Request $request){
+    public function calificaciones_desarrollo(Request $request)
+    {
         $request->validate([
             'docente_id' => 'required',
             'calificacion' => 'required',
             'curso_id' => 'required',
         ]);
 
-            DocenteController::add_calificacion($request);
+        DocenteController::add_calificacion($request);
 
-            $syncCalificacion = $this->consult_to_sync($request->curso_id, $request->docente_id);
-            event(new CalificacionEvent($syncCalificacion));
+        $syncCalificacion = $this->consult_to_sync($request->curso_id, $request->docente_id);
+        event(new CalificacionEvent($syncCalificacion));
 
         return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
     }
 
-    public function update_calificaciones_desarrollo(Request $request){
+    public function update_calificaciones_desarrollo(Request $request)
+    {
         $request->validate([
             'docente_id' => 'required',
             'calificacion' => 'required',
@@ -477,12 +489,12 @@ class DesarrolloController extends Controller
 
         DocenteController::update_calificacion($request, $request->docente_id);
         return Redirect::route('index.desarrollo.inscritos', ['id' => $request->curso_id]);
-
     }
-    public static function consult_to_sync($curso_id, $docente_id){
+    public static function consult_to_sync($curso_id, $docente_id)
+    {
         $syncCalificacion = DB::table('docente')
             ->join('inscripcion', 'inscripcion.docente_id', '=', 'docente.id')
-            ->leftJoin('calificaciones', function($join) {
+            ->leftJoin('calificaciones', function ($join) {
                 $join->on('calificaciones.docente_id', '=', 'docente.id')
                     ->on('calificaciones.curso_id', '=', 'inscripcion.curso_id'); // Agregar esta condición
             })
