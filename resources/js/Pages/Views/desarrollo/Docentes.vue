@@ -26,7 +26,10 @@ const props = defineProps({
     carrera: Array,
     departamento: Array,
     errors: null,
+    data: Number,
 });
+
+console.log(props.data);
 
 const search = ref("");
 const dialog = ref(false);
