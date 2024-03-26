@@ -122,6 +122,8 @@ class EstadisticasController extends Controller
             ->where('carrera_dirigido', '=', 12)->get();
         $todas_carreras = DeteccionNecesidades::with('docente_inscrito')
             ->where('carrera_dirigido', '=', 13)->get();
+
+        //Cuantps dpcentes por carrera, cuantos fueron mujeres y cuantos fueron hombres   
         $total_mecanica = 0;
         $total_m_mecanica = 0;
         $total_f_mecanica = 0;
@@ -142,7 +144,7 @@ class EstadisticasController extends Controller
         $total_m_industrial = 0;
         $total_f_industrial = 0;
         for ($i = 0; $i < count($industrial) - 1; $i++) {
-            $total_sistemas = $industrial[$i]->docente_inscrito->count() + $industrial[$i + 1]->docente_inscrito->count();
+            $total_industrial = $industrial[$i]->docente_inscrito->count() + $industrial[$i + 1]->docente_inscrito->count();
             $total_m_industrial = $industrial[$i]->docente_inscrito->where('sexo', 1)->count();
             $total_f_industrial = $industrial[$i]->docente_inscrito->where('sexo', 2)->count();
         }
@@ -166,7 +168,7 @@ class EstadisticasController extends Controller
         $total_m_bio = 0;
         $total_f_bio = 0;
         for ($i = 0; $i < count($bio) - 1; $i++) {
-            $total_electrica = $bio[$i]->docente_inscrito->count() + $bio[$i + 1]->docente_inscrito->count();
+            $total_bio = $bio[$i]->docente_inscrito->count() + $bio[$i + 1]->docente_inscrito->count();
             $total_m_bio = $bio[$i]->docente_inscrito->where('sexo', 1)->count();
             $total_f_bio = $bio[$i]->docente_inscrito->where('sexo', 2)->count();
         }
@@ -174,7 +176,7 @@ class EstadisticasController extends Controller
         $total_m_quimica = 0;
         $total_f_quimica = 0;
         for ($i = 0; $i < count($quimica) - 1; $i++) {
-            $total_electrica = $quimica[$i]->docente_inscrito->count() + $quimica[$i + 1]->docente_inscrito->count();
+            $total_quimica = $quimica[$i]->docente_inscrito->count() + $quimica[$i + 1]->docente_inscrito->count();
             $total_m_quimica = $quimica[$i]->docente_inscrito->where('sexo', 1)->count();
             $total_f_quimica = $quimica[$i]->docente_inscrito->where('sexo', 2)->count();
         }
@@ -191,8 +193,8 @@ class EstadisticasController extends Controller
         $total_f_logistica = 0;
         for ($i = 0; $i < count($logistica) - 1; $i++) {
             $total_logistica = $logistica[$i]->docente_inscrito->count() + $logistica[$i + 1]->docente_inscrito->count();
-            $total_m_logistica = $mecanica[$i]->docente_inscrito->where('sexo', 1)->count();
-            $total_f_logistica = $mecanica[$i]->docente_inscrito->where('sexo', 2)->count();
+            $total_m_logistica = $logistica[$i]->docente_inscrito->where('sexo', 1)->count();
+            $total_f_logistica = $logistica[$i]->docente_inscrito->where('sexo', 2)->count();
         }
         $total_mecatronica = 0;
         $total_m_mecatronica = 0;
