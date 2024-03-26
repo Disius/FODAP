@@ -129,8 +129,8 @@ class EstadisticasController extends Controller
         $total_f_mecanica = 0;
         for ($i = 0; $i < count($mecanica) - 1; $i++) {
             $total_mecanica = $mecanica[$i]->docente_inscrito->count() + $mecanica[$i + 1]->docente_inscrito->count();
-            $total_m_mecanica = $mecanica[$i]->docente_inscrito->where('sexo', 1)->count() +  $mecanica[$i]->docente_inscrito->where('sexo', 1)->count();
-            $total_f_mecanica = $mecanica[$i]->docente_inscrito->where('sexo', 2)->count() +  $mecanica[$i]->docente_inscrito->where('sexo', 2)->count();
+            $total_m_mecanica = $mecanica[$i]->docente_inscrito->where('sexo', 1)->count() +  $mecanica[$i + 1]->docente_inscrito->where('sexo', 1)->count();
+            $total_f_mecanica = $mecanica[$i]->docente_inscrito->where('sexo', 2)->count() +  $mecanica[$i + 1]->docente_inscrito->where('sexo', 2)->count();
         }
         $total_sistemas = 0;
         $total_m_sistemas = 0;
