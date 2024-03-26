@@ -380,10 +380,6 @@ class DesarrolloController extends Controller
         $puesto = DB::table('puesto')->select('id', 'nombre')->get();
         $posgrado = DB::table('posgrado')->select('id', 'nombre')->get();
 
-        $total_mecanica = Docente::where(function ($query) {
-            $query->where('carrera_id', '=', 1);
-        })->count();
-
         return Inertia::render('Views/desarrollo/Docentes', [
             'docentes' => $docentes,
             'user' => $user,
@@ -392,7 +388,6 @@ class DesarrolloController extends Controller
             'tipo_plaza' => $tipoPlaza,
             'puesto' => $puesto,
             'posgrado' => $posgrado,
-            'data' => $total_mecanica,
         ]);
     }
     public function create_docentes()
