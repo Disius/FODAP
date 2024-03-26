@@ -199,8 +199,11 @@ onMounted(() => {
                         <template v-if="item.sexo === 1">
                             <p>MASCULINO</p>
                         </template>
-                        <template v-if="item.sexo === 2">
+                        <template v-else-if="item.sexo === 2">
                             <p>FEMENINO</p>
+                        </template>
+                        <template v-else>
+                            <p></p>
                         </template>
                     </template>
                     <template v-slot:item.departamento="{ item }">
