@@ -16,14 +16,14 @@ import ApplicationLogoEducacion from "@/Components/ApplicationLogoEducacion.vue"
                 <div class="flex items-center space-x-4">
                     <Link :href="route('main')">
                         <ApplicationLogo
-                            class="block h-16 w-20 fill-current text-gray-800 mb-5"
+                            class="block h-16 w-28 fill-current text-gray-800 mb-5"
                         />
                     </Link>
                 </div>
                 <div>
                     <Link :href="route('main')">
                         <ApplicationLogoTecNM
-                            class="block h-16 w-20 fill-current text-gray-800 mb-5"
+                            class="block h-16 w-28 fill-current text-gray-800 mb-5"
                         />
                     </Link>
                 </div>
@@ -37,7 +37,7 @@ import ApplicationLogoEducacion from "@/Components/ApplicationLogoEducacion.vue"
             <div class="container mx-auto text-center">
                 <div class="flex justify-center items-center space-x-4">
                     <ApplicationLogoEducacion
-                        class="block h-16 w-20 fill-current text-gray-800 mb-5"
+                        class="block h-16 w-28 fill-current text-gray-800 mb-5"
                     />
                 </div>
             </div>
