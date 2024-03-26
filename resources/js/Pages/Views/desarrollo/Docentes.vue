@@ -204,7 +204,7 @@ onMounted(() => {
                         </template>
                     </template>
                     <template v-slot:item.departamento="{ item }">
-                        <p>{{ item.nameDepartamento }}</p>
+                        <p>{{ item.departamento.nameDepartamento }}</p>
                     </template>
                     <template v-slot:item.options="{ item }">
                         <NavLink
